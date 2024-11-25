@@ -1,30 +1,22 @@
 // Carousel.tsx
 import React, { useState } from "react";
-import SwiperCore, { Navigation, Scrollbar, A11y } from "swiper";
+import SwiperCore from "swiper";
+import { Navigation, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import styles from "./styles.module.css";
-import { client } from "@/src/lib/apollo";
-import { useQuery } from "@apollo/client";
 import { GoChevronRight, GoChevronLeft } from "react-icons/go";
-import {
-  PublishedEventsDocument,
-  PublishedEventsQuery,
-} from "@/src/generated/generated";
 import Link from "next/link";
 import { generateEventUrl } from "@/src/utils/url";
-
-// Import Swiper styles
-import "swiper/swiper-bundle.min.css";
-
-// Install Swiper modules
-SwiperCore.use([Navigation, Scrollbar, A11y]);
 
 interface CarouselProps {
   events?: Array<{ id: string; name: string; image: string }>;
 }
 
 const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {
+  // Install Swiper modules
+  SwiperCore.use([Navigation, Scrollbar, A11y]);
+
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleSlideChange = (swiper: any) => {

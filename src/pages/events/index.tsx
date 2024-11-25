@@ -252,9 +252,8 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                       leave="transition duration-300 ease-out"
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
-                      className="overflow-hidden bg-primary-300 border border-primary-200/80 top-11 p-2 absolute z-[100] text-center rounded-3xl shadow-black/80 shadow-2xl"
                     >
-                      <Menu.Items className="flex flex-col gap-2 mt-1">
+                      <Menu.Items className="overflow-hidden bg-primary-300 border border-primary-200/80 top-11 p-2 absolute z-[100] text-center rounded-3xl shadow-black/80 shadow-2xl flex flex-col gap-2 mt-1">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
                             {({ active }) => (
@@ -329,9 +328,8 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                       leave="transition duration-300 ease-out"
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
-                      className="overflow-hidden bg-primary-300 border border-primary-200/80 top-11 p-2 mt-1 absolute z-[100] text-center rounded-3xl shadow-black/80 shadow-2xl"
                     >
-                      <Menu.Items className="flex flex-col gap-2">
+                      <Menu.Items className=" overflow-hidden bg-primary-300 border border-primary-200/80 top-11 p-2 mt-1 absolute z-[100] text-center rounded-3xl shadow-black/80 shadow-2xl flex flex-col gap-2">
                         {categoryFilters.map((filter) => (
                           <Menu.Item key={filter}>
                             {({ active }) => (

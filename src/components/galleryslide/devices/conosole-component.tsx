@@ -1,7 +1,8 @@
 import { baseImageUrl } from "@/src/utils/url";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import { Autoplay, Mousewheel, Navigation, Swiper as SwiperType } from "swiper";
+import { Swiper as SwiperType } from "swiper";
+import { Navigation, Autoplay, Mousewheel } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import BlurImage from "../../blurImage";
 import Modal from "../gallery-modal";

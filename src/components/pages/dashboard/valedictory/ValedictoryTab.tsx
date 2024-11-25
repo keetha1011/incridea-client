@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FC, useEffect, useState } from "react";
 import Spinner from "@/src/components/spinner";
 import { useQuery } from "@apollo/client";
@@ -21,8 +20,26 @@ const ValedictoryTab: FC = () => {
   } = useQuery(CompletedEventsDocument);
   // console.log("eventsData", eventsData);
   const [query, setQuery] = useState("");
-  const [csvData, setCsvData] = useState([]);
-  const [csvData1, setCsvData1] = useState([]);
+  const [csvData, setCsvData] = useState<
+    {
+      name: string;
+      phoneno: string | null | undefined;
+      college: string | null | undefined;
+      email: string;
+      pid: string;
+      teamId: string | undefined;
+      teamName: string | undefined;
+      eventName: string;
+    }[]
+  >([]);
+  const [csvData1, setCsvData1] = useState<
+    {
+      eventName: string;
+      winner?: string;
+      runnerUp?: string;
+      secondRunnerUp?: string;
+    }[]
+  >([]);
 
   const headers1 = [
     { label: "Event Name", key: "eventName" },
@@ -42,8 +59,18 @@ const ValedictoryTab: FC = () => {
   ];
   useEffect(() => {
     const processData = () => {
+      if (
+        eventsData?.completedEvents.__typename !== "QueryCompletedEventsSuccess"
+      )
+        return;
+
       eventsData?.completedEvents.data.map((event) => {
-        const temp = {
+        const temp: {
+          eventName: string;
+          winner?: string;
+          runnerUp?: string;
+          secondRunnerUp?: string;
+        } = {
           eventName: event.name,
         };
         event.winner?.map((eventData) => {
@@ -61,21 +88,39 @@ const ValedictoryTab: FC = () => {
       });
 
       eventsData?.completedEvents.data.map((event) => {
-        const temp = {};
-        temp.eventName = event.name;
-        event.winner.map((eventData) => {
+        const temp: {
+          eventName: string;
+          winner?: string;
+          runnerUp?: string;
+          secondRunnerUp?: string;
+          teamId?: string;
+          teamName?: string;
+        } = {
+          eventName: event.name,
+        };
+        event?.winner?.map((eventData) => {
           temp.teamId = idToTeamId(eventData.team.id);
           temp.teamName = eventData.team.name;
           eventData.team.members.map((data) => {
-            const tempp = {};
-            tempp.name = data.user.name;
-            tempp.phoneno = data.user.phoneNumber;
-            tempp.college = data.user.college?.name;
-            tempp.email = data.user.email;
-            tempp.pid = idToPid(data.user.id);
-            tempp.teamId = temp.teamId;
-            tempp.teamName = temp.teamName;
-            tempp.eventName = temp.eventName;
+            const tempp: {
+              name: string;
+              phoneno: string | null | undefined;
+              college: string | null | undefined;
+              email: string;
+              pid: string;
+              teamId: string | undefined;
+              teamName: string | undefined;
+              eventName: string;
+            } = {
+              name: data.user.name,
+              phoneno: data.user.phoneNumber,
+              college: data.user.college?.name,
+              email: data.user.email,
+              pid: idToPid(data.user.id),
+              teamId: temp.teamId,
+              teamName: temp.teamName,
+              eventName: temp.eventName,
+            };
             setCsvData((prev) => [...prev, tempp]);
           });
         });

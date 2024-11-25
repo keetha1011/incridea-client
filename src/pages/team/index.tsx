@@ -1,7 +1,5 @@
 import TeamCard from "@/src/components/pages/about/TeamCard";
-import { baseImageUrl } from "@/src/utils/url";
 import { NextPage } from "next";
-import { VikingHell, pressStart } from "../_app";
 
 const Team: NextPage = () => {
   return (

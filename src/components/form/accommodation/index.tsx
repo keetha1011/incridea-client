@@ -192,9 +192,9 @@ const AccommodationForm: FunctionComponent = () => {
               value={gender}
               onChange={(value) => {
                 setAccommodationInfo((prev) => {
-                  return { ...prev, gender: value.toUpperCase() };
+                  return { ...prev, gender: value?.toUpperCase() ?? "" };
                 });
-                setGender(value);
+                setGender(value ?? "");
               }}
             >
               <div className="relative">

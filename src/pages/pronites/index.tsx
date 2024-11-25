@@ -1,7 +1,12 @@
 import * as THREE from "three";
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Text, useTexture, MeshReflectorMaterial } from "@react-three/drei";
+import {
+  Text,
+  useTexture,
+  MeshReflectorMaterial,
+  useProgress,
+} from "@react-three/drei";
 import { SlVolume2, SlVolumeOff } from "react-icons/sl";
 import ProniteCard from "@/src/components/pronites/card";
 import gsap from "gsap";
@@ -10,7 +15,6 @@ import Dhvani from "@/src/components/pronites/dhvani";
 import Nakash from "@/src/components/pronites/nakash";
 import { baseImageUrl, baseAudioUrl } from "@/src/utils/url";
 import Loader from "@/src/components/pronite/loader";
-import { useProgress } from "@react-three/drei";
 import Info from "@/src/components/pronites/info";
 
 const artists = [
@@ -34,7 +38,7 @@ export default function App() {
   const [isArtist1, setIsArtist1] = useState(true);
   const angle = useRef<number>(0);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const timeRef = useRef<NodeJS.Timer | null>(null);
+  const timeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [instruction, setInstruction] = useState<boolean>(true);
 

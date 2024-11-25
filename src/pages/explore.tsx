@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import YouTube, { YouTubePlayer } from "react-youtube";
+import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
 import Button from "../components/button";
 import { IoIosSkipForward } from "react-icons/io";
 import { SlVolumeOff, SlVolume2 } from "react-icons/sl";
@@ -15,6 +15,33 @@ const Explore = () => {
   const blackScreenRef = useRef<HTMLDivElement>(null);
   const YTPlayerRef = useRef<YouTubePlayer>(null);
   const skipRef = useRef<HTMLDivElement>(null);
+
+  const onReady: YouTubeProps["onReady"] = (e) => {
+    YTPlayerRef.current = e.target;
+    e.target.playVideo();
+  };
+
+  const onPlay: YouTubeProps["onPlay"] = (e) => {
+    console.log(YTPlayerRef.current);
+    if (blackScreenRef.current) blackScreenRef.current.style.display = "none";
+    setClickThru(false);
+  };
+
+  const onPause: YouTubeProps["onPause"] = (e) => {
+    e.target.playVideo();
+  };
+
+  const onEnd: YouTubeProps["onEnd"] = (e) => {
+    if (blackScreenRef.current)
+      blackScreenRef.current.style.display = "initial";
+    router.push("/explore/level1");
+  };
+
+  const onError: YouTubeProps["onError"] = (e) => {
+    if (blackScreenRef.current)
+      blackScreenRef.current.style.display = "initial";
+    router.push("/explore/level1");
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -95,32 +122,11 @@ const Explore = () => {
             mute: 1,
           },
         }}
-        onReady={(e) => {
-          YTPlayerRef.current = e.target;
-          e.target.playVideo();
-        }}
-        onPlay={(e) => {
-          console.log(YTPlayerRef.current);
-          if (blackScreenRef.current)
-            blackScreenRef.current.style.display = "none";
-          setClickThru(false);
-        }}
-        onPause={(e) => {
-          e.target.playVideo();
-        }}
-        onEnd={(e) => {
-          if (blackScreenRef.current)
-            blackScreenRef.current.style.display = "initial";
-          router.push("/explore/level1");
-        }}
-        onError={(e) => {
-          if (blackScreenRef.current)
-            blackScreenRef.current.style.display = "initial";
-          router.push("/explore/level1");
-        }}
-        onStateChange={(e) => {}}
-        onPlaybackRateChange={(e) => {}}
-        onPlaybackQualityChange={(e) => {}}
+        onReady={onReady}
+        onPlay={onPlay}
+        onPause={onPause}
+        onEnd={onEnd}
+        onError={onError}
       />
     </div>
   );

@@ -87,7 +87,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   const [selectedCollege, setSelectedCollege] = useState<{
     name: string;
     id: string;
-  }>({
+  } | null>({
     name: "",
     id: "",
   });
@@ -137,7 +137,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       return;
     }
 
-    if (selectedCollege.name === "N.M.A.M. Institute of Technology") {
+    if (selectedCollege?.name === "N.M.A.M. Institute of Technology") {
       if (userInfo.email.split("@").length > 1) {
         setError('Please only enter your USN without "@nmamit.in"');
         return;
@@ -161,7 +161,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       variables: {
         name: userInfo.name,
         email:
-          selectedCollege.name === "N.M.A.M. Institute of Technology"
+          selectedCollege?.name === "N.M.A.M. Institute of Technology"
             ? `${userInfo.email.trim()}@nmamit.in`
             : userInfo.email,
         password: userInfo.password,
@@ -174,7 +174,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           emailVerificationMutation({
             variables: {
               email:
-                selectedCollege.name === "N.M.A.M. Institute of Technology"
+                selectedCollege?.name === "N.M.A.M. Institute of Technology"
                   ? `${userInfo.email}@nmamit.in`
                   : userInfo.email,
             },
@@ -233,7 +233,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             type="text"
             required
             className={`${
-              selectedCollege.name === "Other" ? "mt-2" : "mt-2"
+              selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
             } py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400   placeholder:text-slate-400 md:focus:border-[#dd5c6e] outline-none`}
             placeholder="Name"
           />
@@ -243,7 +243,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             onChange={(value) => {
               setUserInfo((prev) => ({
                 ...prev,
-                college: value.id,
+                college: value?.id ?? "",
               }));
               setSelectedCollege(value);
             }}
@@ -311,7 +311,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             </div>
           </Combobox>
 
-          {selectedCollege.name === "Other" && (
+          {selectedCollege?.name === "Other" && (
             <div className="bg-blue-100 p-2 flex items-center gap-3 px-4 rounded-md font-semibold text-blue-500">
               <AiOutlineInfoCircle className="shrink-0" />
               <div>
@@ -345,12 +345,12 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               name="email"
               required
               className={`${
-                selectedCollege.name == "N.M.A.M. Institute of Technology" &&
+                selectedCollege?.name == "N.M.A.M. Institute of Technology" &&
                 "pr-28"
               } w-full py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400   placeholder:text-slate-400    md:focus:border-[#dd5c6e] outline-none`}
               placeholder="Email"
             />
-            {selectedCollege.name === "N.M.A.M. Institute of Technology" && (
+            {selectedCollege?.name === "N.M.A.M. Institute of Technology" && (
               <span className="absolute top-0 mt-2 right-0 mr-3 ">
                 @nmamit.in
               </span>
@@ -444,7 +444,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         <div className="bg-secondary-300 p-4 flex flex-col text-center  items-center gap-3 rounded-md font-semibold text-[#d7037f]">
           <div>
             Verification email sent to {userInfo.email}
-            {selectedCollege.name === "N.M.A.M. Institute of Technology" &&
+            {selectedCollege?.name === "N.M.A.M. Institute of Technology" &&
               "@nmamit.in"}
             <br />
             Please check your inbox.

@@ -12,6 +12,7 @@ query GetScoreSheetJury($eventId: ID!, $roundNo: Int!) {
             criteriaId
             score
             criteriaName
+            criteriaType
           }
           judgeId
           judgeName

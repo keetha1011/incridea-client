@@ -14,7 +14,7 @@ const Accommodation: NextPage = () => {
 
   if (loading) return <Loader />;
   if (!user) router.push("/login");
-  if(user?.college?.id == "1") router.push("/profile");
+  if (user?.college?.id == "1") router.push("/profile");
   return (
     <>
       <div className="px-4 md:px-6 pt-32 pb-10 min-h-screen text-white bg-gradient-to-b from-primary-300 to-primary-500">
@@ -34,8 +34,9 @@ const Accommodation: NextPage = () => {
             Internal Accommodation
           </h2>
           <h5 className="bodyFont text-center mt-5 md:mt-7 text-base md:text-xl max-w-7xl mx-auto">
-            Before you make the next move, read through the list of T&C, and register
-            yourself for the internal accommodation by filling the form below.
+            Before you make the next move, read through the list of T&C, and
+            register yourself for the internal accommodation by filling the form
+            below.
           </h5>
 
           <div className="bodyFont md:px-10 px-5 md:mt-8 mt-6 max-w-7xl mx-auto bg-white/20 rounded-sm md:py-7 py-4">

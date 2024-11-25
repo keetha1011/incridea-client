@@ -4,14 +4,13 @@ import Scene2 from "@/src/components/scene2";
 import { AddXpDocument } from "@/src/generated/generated";
 import { baseAudioUrl } from "@/src/utils/url";
 import { useMutation } from "@apollo/client";
-import { ScrollControls, useScroll } from "@react-three/drei";
+import { ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Level3() {
   const mainThemeAudioRef = useRef<HTMLAudioElement>(null);
-  const secondAudioRef = useRef<HTMLAudioElement>(null);
   const [muted, setIsMuted] = useState(true);
   const [calledXp, setCalledXp] = useState(false);
 
@@ -52,7 +51,7 @@ export default function Level3() {
       //check if the key 4,f,r,f,h is pressed
       if (event.key === stack[0]) {
         stack.shift();
-        if(stack.length === 0){
+        if (stack.length === 0) {
           //add mutation here for xp points
           handleAddXp();
         }

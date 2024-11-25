@@ -1,6 +1,4 @@
 import { NextPage } from "next";
-import Image from "next/image";
-import { VikingHell } from "../_app";
 
 const Guidelines: NextPage = () => {
   return (

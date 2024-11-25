@@ -9,7 +9,7 @@ import { NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { Autoplay, Navigation, Pagination, Swiper as SwiperType } from "swiper";
+import { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";

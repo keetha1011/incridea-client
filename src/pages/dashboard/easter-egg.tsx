@@ -47,7 +47,9 @@ const EasterEggDashboard = (props: Props) => {
   const [sortedSubmissions, setSortedSubmissions] = useState<any>([]);
 
   useEffect(() => {
-    if (data?.getAllSubmissions.__typename === "QueryGetAllSubmissionsSuccess") {
+    if (
+      data?.getAllSubmissions.__typename === "QueryGetAllSubmissionsSuccess"
+    ) {
       const sorted = [...data.getAllSubmissions.data].sort((a, b) => {
         if (a.user.name < b.user.name) return -1;
         if (a.user.name > b.user.name) return 1;
@@ -59,7 +61,9 @@ const EasterEggDashboard = (props: Props) => {
 
   useEffect(() => {
     if (query === "") {
-      if (data?.getAllSubmissions.__typename === "QueryGetAllSubmissionsSuccess") {
+      if (
+        data?.getAllSubmissions.__typename === "QueryGetAllSubmissionsSuccess"
+      ) {
         const sorted = [...data.getAllSubmissions.data].sort((a, b) => {
           if (a.user.name < b.user.name) return -1;
           if (a.user.name > b.user.name) return 1;
@@ -76,7 +80,9 @@ const EasterEggDashboard = (props: Props) => {
       const clue = submission.card.clue.toLowerCase();
       const queryLower = query.toLowerCase();
       return (
-        name.includes(queryLower) || pid.includes(queryLower) || clue.includes(queryLower)
+        name.includes(queryLower) ||
+        pid.includes(queryLower) ||
+        clue.includes(queryLower)
       );
     });
     setSortedSubmissions(filtered);
@@ -141,7 +147,8 @@ const EasterEggDashboard = (props: Props) => {
           onClick={() => setHighlightedImage(null)}
           as="div"
           className="relative z-[900] "
-          onClose={() => setHighlightedImage(null)}>
+          onClose={() => setHighlightedImage(null)}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -149,7 +156,8 @@ const EasterEggDashboard = (props: Props) => {
             enterTo="opacity-100"
             leave="ease-in duration-200"
             leaveFrom="opacity-100"
-            leaveTo="opacity-0">
+            leaveTo="opacity-0"
+          >
             <div className="fixed inset-0 bg-black/25 backdrop-blur-sm" />
           </Transition.Child>
 
@@ -162,7 +170,8 @@ const EasterEggDashboard = (props: Props) => {
                 enterTo="opacity-100 scale-100"
                 leave="ease-in duration-200"
                 leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95">
+                leaveTo="opacity-0 scale-95"
+              >
                 <Image
                   src={highlightedImage || ""}
                   width={1000}
@@ -191,28 +200,32 @@ const EasterEggDashboard = (props: Props) => {
             noScaleOnHover
             onClick={() => setSelected("Day1")}
             intent={selected === "Day1" ? "primary" : "ghost"}
-            fullWidth>
+            fullWidth
+          >
             Day 1
           </Button>
           <Button
             noScaleOnHover
             onClick={() => setSelected("Day2")}
             intent={selected === "Day2" ? "primary" : "ghost"}
-            fullWidth>
+            fullWidth
+          >
             Day 2
           </Button>
           <Button
             noScaleOnHover
             onClick={() => setSelected("Day3")}
             intent={selected === "Day3" ? "primary" : "ghost"}
-            fullWidth>
+            fullWidth
+          >
             Day 3
           </Button>
           <Button
             noScaleOnHover
             onClick={() => setSelected("Day4")}
             intent={selected === "Day4" ? "primary" : "ghost"}
-            fullWidth>
+            fullWidth
+          >
             Day 4
           </Button>
         </div>
@@ -221,14 +234,16 @@ const EasterEggDashboard = (props: Props) => {
             onClick={() => setShowSubmissions(true)}
             noScaleOnHover
             intent={showSubmissions ? "info" : "secondary"}
-            fullWidth>
+            fullWidth
+          >
             Submissions
           </Button>
           <Button
             onClick={() => setShowSubmissions(false)}
             noScaleOnHover
             intent={!showSubmissions ? "info" : "secondary"}
-            fullWidth>
+            fullWidth
+          >
             Cards
           </Button>
         </div>
@@ -243,38 +258,43 @@ const EasterEggDashboard = (props: Props) => {
                   sortedSubmissions.length === 0 ? (
                     <span className="text-white/70">No submissions found</span>
                   ) : (
-                    sortedSubmissions.map((submission: Submission, index: number) => (
-                      <div
-                        className="flex md:flex-row flex-col rounded-sm overflow-hidden justify-between md:grow md:shrink-0 bg-white/20"
-                        key={index}>
-                        <div className="flex flex-col gap-1.5 p-3 max-w-sm">
-                          <span>
-                            <span className="font-semibold">Name:</span>{" "}
-                            {submission.user.name}
-                          </span>
-                          <span>
-                            <span className="font-semibold">PID:</span>{" "}
-                            {idToPid(submission.user.id)}
-                          </span>
-                          <span>
-                            <span className="font-semibold">Clue ID:</span>{" "}
-                            {submission.card.id}
-                          </span>
-                          <span>
-                            <span className="font-semibold">Clue:</span>{" "}
-                            {submission.card.clue}
-                          </span>
+                    sortedSubmissions.map(
+                      (submission: Submission, index: number) => (
+                        <div
+                          className="flex md:flex-row flex-col rounded-sm overflow-hidden justify-between md:grow md:shrink-0 bg-white/20"
+                          key={index}
+                        >
+                          <div className="flex flex-col gap-1.5 p-3 max-w-sm">
+                            <span>
+                              <span className="font-semibold">Name:</span>{" "}
+                              {submission.user.name}
+                            </span>
+                            <span>
+                              <span className="font-semibold">PID:</span>{" "}
+                              {idToPid(submission.user.id)}
+                            </span>
+                            <span>
+                              <span className="font-semibold">Clue ID:</span>{" "}
+                              {submission.card.id}
+                            </span>
+                            <span>
+                              <span className="font-semibold">Clue:</span>{" "}
+                              {submission.card.clue}
+                            </span>
+                          </div>
+                          <Image
+                            onClick={() =>
+                              setHighlightedImage(submission.image)
+                            }
+                            className="cursor-pointer md:max-w-[250px] max-w-full md:ml-auto md:object-right object-center max-h-[200px] object-contain"
+                            alt="submission"
+                            src={submission.image}
+                            width={500}
+                            height={500}
+                          />
                         </div>
-                        <Image
-                          onClick={() => setHighlightedImage(submission.image)}
-                          className="cursor-pointer md:max-w-[250px] max-w-full md:ml-auto md:object-right object-center max-h-[200px] object-contain"
-                          alt="submission"
-                          src={submission.image}
-                          width={500}
-                          height={500}
-                        />
-                      </div>
-                    ))
+                      )
+                    )
                   )
                 ) : (
                   <span className="text-white/70 mt-10">
@@ -297,7 +317,8 @@ const EasterEggDashboard = (props: Props) => {
                           className={`${
                             (deleteCardLoading || cardsLoading) &&
                             "opacity-80 pointer-events-none"
-                          } md:basis-[45%] min-w-[300px] basis-full bg-white/20  flex flex-col shadow-sm rounded-md`}>
+                          } md:basis-[45%] min-w-[300px] basis-full bg-white/20  flex flex-col shadow-sm rounded-md`}
+                        >
                           <div className="mb-2 gap-2 items-center text-xl titleFont md:px-4 md:pt-4 px-4 pt-4 flex">
                             <h2>Clue ID: {card.id}</h2>
                             <MdDelete
@@ -317,7 +338,9 @@ const EasterEggDashboard = (props: Props) => {
                               className="justify-self-end ml-auto hover:text-red-700 cursor-pointer text-red-500"
                             />
                           </div>
-                          <h2 className="mb-4 bodyFont md:px-4  px-4 ">{card.clue}</h2>
+                          <h2 className="mb-4 bodyFont md:px-4  px-4 ">
+                            {card.clue}
+                          </h2>
                         </div>
                       ))
                     ) : (

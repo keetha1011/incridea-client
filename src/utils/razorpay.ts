@@ -4,6 +4,7 @@ import {
   FestRegPaymentOrderDocument,
 } from "../generated/generated";
 import { client } from "../lib/apollo";
+
 export const initializeRazorpay = () => {
   return new Promise((resolve) => {
     const script = document.createElement("script");

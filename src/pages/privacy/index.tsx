@@ -1,6 +1,5 @@
 import { NextPage } from "next";
-import Image from "next/image";
-import { gilroy } from "../_app";
+
 const Privacy: NextPage = () => {
   return (
     <div

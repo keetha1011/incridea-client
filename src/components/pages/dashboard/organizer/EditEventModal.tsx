@@ -199,7 +199,6 @@ export default function EditEventModal({
                 </label>
                 <select
                   id="eventType"
-                  placeholder="Event Type"
                   value={eventType}
                   onChange={(e) => setEventType(e.target.value)}
                   className="w-full  bg-gray-600 border border-gray-600 h-10 px-4 pr-16 rounded-lg text-sm focus:outline-none focus:ring-2 ring-gray-500"
@@ -217,7 +216,6 @@ export default function EditEventModal({
                 </label>
                 <select
                   id="category"
-                  placeholder="Category"
                   value={category as string}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full  bg-gray-600 border border-gray-600 h-10 px-4 pr-16 rounded-lg text-sm focus:outline-none focus:ring-2 ring-gray-500"

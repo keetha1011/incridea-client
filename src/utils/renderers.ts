@@ -1,4 +1,4 @@
-import { ReactChild, ReactElement } from "react";
+import { ReactElement } from "react";
 
 const sharedClasses = "";
 const bodyClasses = "text-lg text-gray-200";

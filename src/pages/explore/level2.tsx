@@ -1,10 +1,7 @@
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { getProject } from "@theatre/core";
-// import studio from "@theatre/studio";
 import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
-import extension from "@theatre/r3f/dist/extension";
-// import dynamic from "next/dynamic";
 import { ScrollControls } from "@react-three/drei";
 import BookModal from "@/src/components/explore/BookModal";
 import ExploreNav from "@/src/components/explore/exploreNav";
@@ -14,9 +11,7 @@ import {
   PublishedEventsDocument,
   PublishedEventsQuery,
 } from "@/src/generated/generated";
-import { client } from "@/src/lib/apollo";
 import { useQuery } from "@apollo/client";
-import studio from "@theatre/studio";
 import dynamic from "next/dynamic";
 import scene1 from "../../../public/assets/3d/state4.json";
 import AudioPlayer from "@/src/components/explore/AudioPlayer";
@@ -25,11 +20,6 @@ import { baseAudioUrl } from "@/src/utils/url";
 const Scene1 = dynamic(() => import("@/src/components/scene1"), {
   ssr: false,
 });
-// import studio from "@theatre/studio";
-// import extension from "@theatre/r3f/dist/extension";
-
-// studio.extend(extension);
-// studio.initialize();
 
 const demoSheet = getProject("Scene 1", { state: scene1 }).sheet("Scene 1");
 const App = () => {

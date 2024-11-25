@@ -1,5 +1,5 @@
-import VerifyEmailComponent from '@/src/components/form/verifyEmail';
-import { NextPage } from 'next';
+import VerifyEmailComponent from "@/src/components/form/verifyEmail";
+import { NextPage } from "next";
 
 const VerifyEmail: NextPage = () => {
   return (

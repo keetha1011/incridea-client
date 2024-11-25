@@ -7,14 +7,14 @@ import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Toaster } from "react-hot-toast";
 import Loader from "../components/Loader";
 const Navbar = dynamic(() => import("../components/navbar"), { ssr: false });
 import HeadComponent from "../components/head";
 import Footer from "../components/footer";
-import localFont from "@next/font/local";
-import { Press_Start_2P } from "@next/font/google";
+import localFont from "next/font/local";
+import { Press_Start_2P } from "next/font/google";
 
 export const VikingHell = localFont({
   src: "../font/Viking Hell.otf",

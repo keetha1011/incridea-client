@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Banner from "../../components/AboutUs/Banner";
 import { baseImageUrl } from "@/src/utils/url";
 

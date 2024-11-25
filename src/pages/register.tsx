@@ -3,14 +3,12 @@ import React, { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useRouter } from "next/router";
 import Button from "../components/button";
-import { makePayment } from "../utils/razorpay";
 import Spinner from "../components/spinner";
 import Link from "next/link";
 import Loader from "../components/Loader";
 import { AccommodationRequestsByUserDocument } from "../generated/generated";
 import { useQuery } from "@apollo/client";
 import ViewUserAccommodation from "../components/pages/profile/viewUserAccommodation";
-import { IoEye } from "react-icons/io5";
 
 const Register: NextPage = () => {
   const { error, user, loading: userLoading } = useAuth();
@@ -84,7 +82,9 @@ const Register: NextPage = () => {
               <Spinner className="w-fit" size={"small"} intent={"white"} />
             )}{" "}
           </Button>
-          <h2 className="text-xs md:text-sm mt-2 text-gray-100">Registration are closed.</h2>
+          <h2 className="text-xs md:text-sm mt-2 text-gray-100">
+            Registration are closed.
+          </h2>
           <h1 className="text-xs md:text-sm mt-2 text-gray-100">
             By clicking the above button, you agree to the mentioned terms and
             conditions

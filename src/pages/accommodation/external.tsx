@@ -14,7 +14,7 @@ const Accommodation: NextPage = () => {
 
   if (loading) return <Loader />;
   if (!user) router.push("/login");
-  if(user?.college?.id == "1") router.push("/profile");
+  if (user?.college?.id == "1") router.push("/profile");
   return (
     <>
       <div className="px-4 md:px-6 pt-32 pb-10 min-h-screen text-white bg-gradient-to-b from-primary-300 to-primary-500">
@@ -34,8 +34,8 @@ const Accommodation: NextPage = () => {
             External Accommodation
           </h2>
           <h5 className="bodyFont text-center mt-5 md:mt-7 text-base md:text-xl max-w-7xl mx-auto">
-          Before you make the next move, read through the list of T&C, and register
-            yourself for the external accommodation.
+            Before you make the next move, read through the list of T&C, and
+            register yourself for the external accommodation.
           </h5>
 
           <div className="bodyFont md:px-10 px-5 md:mt-8 mt-6 max-w-7xl mx-auto bg-white/20 rounded-sm md:py-7 py-4">
@@ -44,17 +44,32 @@ const Accommodation: NextPage = () => {
             </h2>
 
             <ol className="mt-2 list-decimal pl-4">
-            <li>
-            If you have chosen external accommodation, please find the excel sheet provided with detail regarding the same.
+              <li>
+                If you have chosen external accommodation, please find the excel
+                sheet provided with detail regarding the same.
               </li>
               <li>
-            You are to choose the hotel of your choice from the sheet and contact them for booking; once you have confirmed the booking, you must contact the Point of Contact given below and inform them regarding the same.
+                You are to choose the hotel of your choice from the sheet and
+                contact them for booking; once you have confirmed the booking,
+                you must contact the Point of Contact given below and inform
+                them regarding the same.
               </li>
-              <li>For any further clarifications regarding the same and transport from the place of accommodation, contact: +918747960666, +918618378701 </li>
-              <li>External Accommodation Details:  <Link href="https://docs.google.com/spreadsheets/d/1Y2QheAsJjUr54LAvzXVVJjIGFXXBNTsn/edit#gid=1791495064" target="_blank" className="underline">Accommodation Details Excel Sheet</Link> </li>
+              <li>
+                For any further clarifications regarding the same and transport
+                from the place of accommodation, contact: +918747960666,
+                +918618378701{" "}
+              </li>
+              <li>
+                External Accommodation Details:{" "}
+                <Link
+                  href="https://docs.google.com/spreadsheets/d/1Y2QheAsJjUr54LAvzXVVJjIGFXXBNTsn/edit#gid=1791495064"
+                  target="_blank"
+                  className="underline"
+                >
+                  Accommodation Details Excel Sheet
+                </Link>{" "}
+              </li>
             </ol>
-
-            
           </div>
         </div>
       </div>

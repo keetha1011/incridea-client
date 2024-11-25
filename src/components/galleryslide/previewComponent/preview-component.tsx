@@ -2,7 +2,13 @@ import { baseImageUrl } from "@/src/utils/url";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Autoplay, FreeMode, Mousewheel, Navigation, Thumbs } from "swiper";
+import {
+  Autoplay,
+  FreeMode,
+  Mousewheel,
+  Navigation,
+  Thumbs,
+} from "swiper/modules";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";

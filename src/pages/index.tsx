@@ -1,5 +1,4 @@
 import { useQuery } from "@apollo/client";
-import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,17 +8,13 @@ import { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 import ArcadeLoader from "../components/Loader/arcadeLoader";
 import Button from "../components/button";
-import CountDown from "../components/pages/countdown";
 import Spinner from "../components/spinner";
-import Arcade from "../components/svg/arcade";
 import { GetUserXpDocument } from "../generated/generated";
 import { useAuth } from "../hooks/useAuth";
 import { baseImageUrl } from "../utils/url";
 import { VikingHell } from "./_app";
 
 export default function Landing() {
-  const landingContainer = useRef(null);
-  const [pageLoader, setPageLoader] = useState<boolean>(true);
   const router = useRouter();
   const { data: userXp, loading: userXpLoading } = useQuery(
     GetUserXpDocument,

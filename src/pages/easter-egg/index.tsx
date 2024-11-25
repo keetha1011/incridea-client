@@ -1,4 +1,3 @@
-import Button from "@/src/components/button";
 import ImageUpload from "@/src/components/easter-egg/imageUpload";
 import Spinner from "@/src/components/spinner";
 import {
@@ -13,7 +12,6 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
-import { FaCheck } from "react-icons/fa";
 
 type Props = {};
 
@@ -43,7 +41,6 @@ const EasterEgg: NextPage = (props: Props) => {
     },
   });
 
-  
   const {
     data: submissions,
     loading: submissionsLoading,
@@ -100,7 +97,7 @@ const EasterEgg: NextPage = (props: Props) => {
           Find clues across the campus and upload them here
         </h2>
         <h2 className="bodyFont font-semibold text-center text-white text-xl mb-8">
-          Note: Your submissions are autosaved after uploading 
+          Note: Your submissions are autosaved after uploading
         </h2>
         {cardsLoading ? (
           <Spinner />
@@ -110,14 +107,15 @@ const EasterEgg: NextPage = (props: Props) => {
               {cards.getCards.data.map((card, index) => (
                 <div
                   key={index}
-                  className="md:basis-[45%] min-w-[300px] basis-full bg-black/20  flex flex-col shadow-sm rounded-md">
+                  className="md:basis-[45%] min-w-[300px] basis-full bg-black/20  flex flex-col shadow-sm rounded-md"
+                >
                   <h2 className="mb-2 text-xl titleFont md:px-6 md:pt-6 px-4 pt-4">
                     Clue {index + 1}
                   </h2>
                   <h2 className="mb-3 bodyFont md:px-6  px-4 ">{card.clue}</h2>
                   <div className="md:px-6 md:pb-4 flex flex-col grow">
                     <ImageUpload
-                    cardId={card.id}
+                      cardId={card.id}
                       loading={submissionsLoading}
                       existingImage={
                         submissions?.submissionsByUser.__typename ===

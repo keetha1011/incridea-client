@@ -4,91 +4,93 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
+export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  Date: any;
-  DateTime: any;
+  ID: { input: string; output: string; }
+  String: { input: string; output: string; }
+  Boolean: { input: boolean; output: boolean; }
+  Int: { input: number; output: number; }
+  Float: { input: number; output: number; }
+  Date: { input: any; output: any; }
+  DateTime: { input: any; output: any; }
 };
 
 export type AllSubmissions = {
   __typename?: 'AllSubmissions';
-  fitbAns?: Maybe<Scalars['String']>;
-  isRight?: Maybe<Scalars['Boolean']>;
-  laAns?: Maybe<Scalars['String']>;
-  longAnsIsRight?: Maybe<Scalars['String']>;
-  mcqAns?: Maybe<Scalars['String']>;
+  fitbAns?: Maybe<Scalars['String']['output']>;
+  isRight?: Maybe<Scalars['Boolean']['output']>;
+  laAns?: Maybe<Scalars['String']['output']>;
+  longAnsIsRight?: Maybe<Scalars['String']['output']>;
+  mcqAns?: Maybe<Scalars['String']['output']>;
   options?: Maybe<Array<Option>>;
-  qId: Scalars['String'];
-  qType: Scalars['String'];
-  question: Scalars['String'];
-  userId: Scalars['String'];
+  qId: Scalars['String']['output'];
+  qType: Scalars['String']['output'];
+  question: Scalars['String']['output'];
+  userId: Scalars['String']['output'];
 };
 
 export type Branch = {
   __typename?: 'Branch';
   branchReps: Array<BranchRep>;
   events: Array<Event>;
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type BranchRep = {
   __typename?: 'BranchRep';
-  branchId: Scalars['ID'];
+  branchId: Scalars['ID']['output'];
   user: User;
-  userId: Scalars['ID'];
+  userId: Scalars['ID']['output'];
 };
 
 export type Card = {
   __typename?: 'Card';
-  clue: Scalars['String'];
-  day: Scalars['String'];
-  id: Scalars['ID'];
+  clue: Scalars['String']['output'];
+  day: Scalars['String']['output'];
+  id: Scalars['ID']['output'];
   submissions: Array<Submission>;
 };
 
 export type College = {
   __typename?: 'College';
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type Comments = {
   __typename?: 'Comments';
-  comment: Scalars['String'];
-  eventId: Scalars['ID'];
+  comment: Scalars['String']['output'];
+  eventId: Scalars['ID']['output'];
   judge: Judge;
   round: Round;
-  roundNo: Scalars['Int'];
+  roundNo: Scalars['Int']['output'];
   team: Team;
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['output'];
 };
 
 export type CreateCriteriaInput = {
-  eventId: Scalars['ID'];
-  name?: InputMaybe<Scalars['String']>;
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  name?: InputMaybe<Scalars['String']['input']>;
+  roundNo: Scalars['Int']['input'];
   type?: InputMaybe<CriteriaType>;
 };
 
 export type Criteria = {
   __typename?: 'Criteria';
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  type: Scalars['String'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  type: Scalars['String']['output'];
 };
 
 export type CriteriaJuryView = {
   __typename?: 'CriteriaJuryView';
-  criteriaId: Scalars['Int'];
-  criteriaName: Scalars['String'];
+  criteriaId: Scalars['Int']['output'];
+  criteriaName: Scalars['String']['output'];
   criteriaType: CriteriaType;
-  score: Scalars['Float'];
+  score: Scalars['Float']['output'];
 };
 
 export enum CriteriaType {
@@ -106,27 +108,27 @@ export enum DayType {
 
 export type Error = {
   __typename?: 'Error';
-  message: Scalars['String'];
+  message: Scalars['String']['output'];
 };
 
 export type Event = {
   __typename?: 'Event';
   branch: Branch;
-  category?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  eventType: Scalars['String'];
-  fees: Scalars['Int'];
-  id: Scalars['ID'];
-  image?: Maybe<Scalars['String']>;
-  maxTeamSize: Scalars['Int'];
-  maxTeams?: Maybe<Scalars['Int']>;
-  minTeamSize: Scalars['Int'];
-  name: Scalars['String'];
+  category?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  eventType: Scalars['String']['output'];
+  fees: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  image?: Maybe<Scalars['String']['output']>;
+  maxTeamSize: Scalars['Int']['output'];
+  maxTeams?: Maybe<Scalars['Int']['output']>;
+  minTeamSize: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
   organizers: Array<Organizer>;
-  published: Scalars['Boolean'];
+  published: Scalars['Boolean']['output'];
   rounds: Array<Round>;
   teams: Array<Team>;
-  venue?: Maybe<Scalars['String']>;
+  venue?: Maybe<Scalars['String']['output']>;
   winner?: Maybe<Array<Winners>>;
 };
 
@@ -138,19 +140,19 @@ export enum EventCategory {
 }
 
 export type EventCreateInput = {
-  description?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']['input']>;
   eventType?: InputMaybe<EventType>;
-  name: Scalars['String'];
-  venue?: InputMaybe<Scalars['String']>;
+  name: Scalars['String']['input'];
+  venue?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EventPaymentOrder = {
   __typename?: 'EventPaymentOrder';
   Team: Team;
-  amount: Scalars['Int'];
-  id: Scalars['ID'];
-  orderId: Scalars['ID'];
-  status: Scalars['String'];
+  amount: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  orderId: Scalars['ID']['output'];
+  status: Scalars['String']['output'];
 };
 
 export enum EventType {
@@ -162,38 +164,38 @@ export enum EventType {
 
 export type EventUpdateInput = {
   category?: InputMaybe<EventCategory>;
-  description?: InputMaybe<Scalars['String']>;
-  eventDate?: InputMaybe<Scalars['Date']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  eventDate?: InputMaybe<Scalars['Date']['input']>;
   eventType?: InputMaybe<EventType>;
-  fees?: InputMaybe<Scalars['Int']>;
-  image?: InputMaybe<Scalars['String']>;
-  maxTeamSize?: InputMaybe<Scalars['Int']>;
-  maxTeams?: InputMaybe<Scalars['Int']>;
-  minTeamSize?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
-  venue?: InputMaybe<Scalars['String']>;
+  fees?: InputMaybe<Scalars['Int']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
+  maxTeamSize?: InputMaybe<Scalars['Int']['input']>;
+  maxTeams?: InputMaybe<Scalars['Int']['input']>;
+  minTeamSize?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  venue?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FitbSubmission = {
   __typename?: 'FITBSubmission';
-  OptionId: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
+  OptionId: Scalars['ID']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
   options: Options;
   team: Team;
-  teamId: Scalars['ID'];
-  updatedAt: Scalars['DateTime'];
-  value: Scalars['String'];
+  teamId: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type Hotel = {
   __typename?: 'Hotel';
-  createdAt?: Maybe<Scalars['DateTime']>;
-  details?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  price: Scalars['Int'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  price: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
 export type Judge = {
@@ -205,39 +207,39 @@ export type Judge = {
 export type JudgeJuryView = {
   __typename?: 'JudgeJuryView';
   criteria: Array<CriteriaJuryView>;
-  judgeId: Scalars['Int'];
-  judgeName: Scalars['String'];
+  judgeId: Scalars['Int']['output'];
+  judgeName: Scalars['String']['output'];
 };
 
 export type LaSubmission = {
   __typename?: 'LASubmission';
   Question: Question;
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
-  isRight: Scalars['String'];
-  questionId: Scalars['ID'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  isRight: Scalars['String']['output'];
+  questionId: Scalars['ID']['output'];
   team: Team;
-  teamId: Scalars['ID'];
-  updatedAt: Scalars['DateTime'];
-  value: Scalars['String'];
+  teamId: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
+  value: Scalars['String']['output'];
 };
 
 export type Level = {
   __typename?: 'Level';
-  id: Scalars['ID'];
-  point: Scalars['Int'];
+  id: Scalars['ID']['output'];
+  point: Scalars['Int']['output'];
   xp: Array<Xp>;
 };
 
 export type McqSubmission = {
   __typename?: 'MCQSubmission';
-  OptionId: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
+  OptionId: Scalars['ID']['output'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
   options: Options;
   team: Team;
-  teamId: Scalars['ID'];
-  updatedAt: Scalars['DateTime'];
+  teamId: Scalars['ID']['output'];
+  updatedAt: Scalars['DateTime']['output'];
 };
 
 export type Mutation = {
@@ -306,82 +308,82 @@ export type Mutation = {
 
 
 export type MutationAddAccommodationRequestArgs = {
-  IdCard: Scalars['String'];
-  checkIn: Scalars['String'];
-  checkOut: Scalars['String'];
-  gender: Scalars['String'];
-  hotelId: Scalars['Int'];
+  IdCard: Scalars['String']['input'];
+  checkIn: Scalars['String']['input'];
+  checkOut: Scalars['String']['input'];
+  gender: Scalars['String']['input'];
+  hotelId: Scalars['Int']['input'];
 };
 
 
 export type MutationAddBranchArgs = {
-  name: Scalars['String'];
+  name: Scalars['String']['input'];
 };
 
 
 export type MutationAddBranchRepArgs = {
-  branchId: Scalars['ID'];
-  userId: Scalars['ID'];
+  branchId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationAddCommentArgs = {
-  comment: Scalars['String'];
-  eventId: Scalars['Int'];
-  roundNo: Scalars['Int'];
-  teamId: Scalars['Int'];
+  comment: Scalars['String']['input'];
+  eventId: Scalars['Int']['input'];
+  roundNo: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
 };
 
 
 export type MutationAddLevelArgs = {
-  point: Scalars['Int'];
+  point: Scalars['Int']['input'];
 };
 
 
 export type MutationAddOrganizerArgs = {
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationAddScoreArgs = {
-  criteriaId: Scalars['Int'];
-  score: Scalars['String'];
-  teamId: Scalars['Int'];
+  criteriaId: Scalars['Int']['input'];
+  score: Scalars['String']['input'];
+  teamId: Scalars['Int']['input'];
 };
 
 
 export type MutationAddXpArgs = {
-  levelId: Scalars['ID'];
+  levelId: Scalars['ID']['input'];
 };
 
 
 export type MutationChangeSelectStatusArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type MutationCompleteRoundArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type MutationConfirmTeamArgs = {
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationCreateCardArgs = {
-  clue: Scalars['String'];
+  clue: Scalars['String']['input'];
   day: DayType;
 };
 
 
 export type MutationCreateCollegeArgs = {
-  details?: InputMaybe<Scalars['String']>;
-  name: Scalars['String'];
+  details?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 
@@ -396,18 +398,18 @@ export type MutationCreateEventArgs = {
 
 
 export type MutationCreateHotelArgs = {
-  details: Scalars['String'];
-  name: Scalars['String'];
-  price: Scalars['Float'];
+  details: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
 };
 
 
 export type MutationCreateJudgeArgs = {
-  email: Scalars['String'];
-  eventId: Scalars['ID'];
-  name: Scalars['String'];
-  password: Scalars['String'];
-  roundNo: Scalars['Int'];
+  email: Scalars['String']['input'];
+  eventId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
@@ -417,86 +419,86 @@ export type MutationCreatePaymentOrderArgs = {
 
 
 export type MutationCreateRoundArgs = {
-  date: Scalars['String'];
-  eventId: Scalars['ID'];
+  date: Scalars['String']['input'];
+  eventId: Scalars['ID']['input'];
 };
 
 
 export type MutationCreateSubmissionArgs = {
-  cardId: Scalars['Int'];
-  image: Scalars['String'];
+  cardId: Scalars['Int']['input'];
+  image: Scalars['String']['input'];
 };
 
 
 export type MutationCreateTeamArgs = {
-  eventId: Scalars['ID'];
-  name: Scalars['String'];
+  eventId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 };
 
 
 export type MutationCreateWinnerArgs = {
-  eventId: Scalars['ID'];
-  teamId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  teamId: Scalars['ID']['input'];
   type: WinnerType;
 };
 
 
 export type MutationDeleteCardArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteCriteriaArgs = {
-  criteriaId: Scalars['ID'];
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  criteriaId: Scalars['ID']['input'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type MutationDeleteEventArgs = {
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 };
 
 
 export type MutationDeleteHotelArgs = {
-  hotelId: Scalars['String'];
+  hotelId: Scalars['String']['input'];
 };
 
 
 export type MutationDeleteJudgeArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteRoundArgs = {
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteTeamArgs = {
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteWinnerArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type MutationEventPaymentOrderArgs = {
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationJoinTeamArgs = {
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationLeaveTeamArgs = {
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 };
 
 
@@ -506,111 +508,111 @@ export type MutationLoginArgs = {
 
 
 export type MutationOrganizerAddTeamMemberArgs = {
-  teamId: Scalars['ID'];
-  userId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationOrganizerCreateTeamArgs = {
-  eventId: Scalars['ID'];
-  name: Scalars['String'];
+  eventId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 };
 
 
 export type MutationOrganizerDeleteTeamArgs = {
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationOrganizerDeleteTeamMemberArgs = {
-  teamId: Scalars['ID'];
-  userId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationOrganizerMarkAttendanceArgs = {
-  attended?: Scalars['Boolean'];
-  teamId: Scalars['ID'];
+  attended?: Scalars['Boolean']['input'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationOrganizerMarkAttendanceSoloArgs = {
-  attended?: Scalars['Boolean'];
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  attended?: Scalars['Boolean']['input'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationOrganizerRegisterSoloArgs = {
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationPromoteToNextRoundArgs = {
-  roundNo: Scalars['ID'];
-  selected?: Scalars['Boolean'];
-  teamId: Scalars['ID'];
+  roundNo: Scalars['ID']['input'];
+  selected?: Scalars['Boolean']['input'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type MutationPublishEventArgs = {
-  id: Scalars['ID'];
-  published: Scalars['Boolean'];
+  id: Scalars['ID']['input'];
+  published: Scalars['Boolean']['input'];
 };
 
 
 export type MutationRefreshTokenArgs = {
-  refreshToken: Scalars['String'];
+  refreshToken: Scalars['String']['input'];
 };
 
 
 export type MutationRegisterProniteArgs = {
-  userId?: InputMaybe<Scalars['ID']>;
+  userId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
 export type MutationRegisterSoloEventArgs = {
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 };
 
 
 export type MutationRemoveBranchRepArgs = {
-  branchId: Scalars['ID'];
-  userId: Scalars['ID'];
+  branchId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationRemoveCollegeArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type MutationRemoveOrganizerArgs = {
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationRemoveTeamMemberArgs = {
-  teamId: Scalars['ID'];
-  userId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type MutationResetPasswordArgs = {
-  password: Scalars['String'];
-  token: Scalars['String'];
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 };
 
 
 export type MutationSendEmailVerificationArgs = {
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 };
 
 
 export type MutationSendPasswordResetEmailArgs = {
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 };
 
 
@@ -620,33 +622,33 @@ export type MutationSignUpArgs = {
 
 
 export type MutationUpdateCardArgs = {
-  clue: Scalars['String'];
+  clue: Scalars['String']['input'];
   day: DayType;
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type MutationUpdateEventArgs = {
   data: EventUpdateInput;
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type MutationUpdateProfileImageArgs = {
-  imageURL: Scalars['String'];
+  imageURL: Scalars['String']['input'];
 };
 
 
 export type MutationUpdateStatusArgs = {
-  bookingId: Scalars['String'];
-  hotelId: Scalars['String'];
-  room: Scalars['String'];
-  status: Scalars['String'];
+  bookingId: Scalars['String']['input'];
+  hotelId: Scalars['String']['input'];
+  room: Scalars['String']['input'];
+  status: Scalars['String']['input'];
 };
 
 
 export type MutationVerifyEmailArgs = {
-  token: Scalars['String'];
+  token: Scalars['String']['input'];
 };
 
 export type MutationAddAccommodationRequestResult = Error | MutationAddAccommodationRequestSuccess;
@@ -821,7 +823,7 @@ export type MutationDeleteEventResult = Error | MutationDeleteEventSuccess;
 
 export type MutationDeleteEventSuccess = {
   __typename?: 'MutationDeleteEventSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationDeleteHotelResult = Error | MutationDeleteHotelSuccess;
@@ -921,7 +923,7 @@ export type MutationOrganizerMarkAttendanceSoloResult = Error | MutationOrganize
 
 export type MutationOrganizerMarkAttendanceSoloSuccess = {
   __typename?: 'MutationOrganizerMarkAttendanceSoloSuccess';
-  data: Scalars['Int'];
+  data: Scalars['Int']['output'];
 };
 
 export type MutationOrganizerMarkAttendanceSuccess = {
@@ -947,7 +949,7 @@ export type MutationPublishEventResult = Error | MutationPublishEventSuccess;
 
 export type MutationPublishEventSuccess = {
   __typename?: 'MutationPublishEventSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationRefreshTokenResult = Error | MutationRefreshTokenSuccess;
@@ -975,21 +977,21 @@ export type MutationRemoveBranchRepResult = Error | MutationRemoveBranchRepSucce
 
 export type MutationRemoveBranchRepSuccess = {
   __typename?: 'MutationRemoveBranchRepSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationRemoveCollegeResult = Error | MutationRemoveCollegeSuccess;
 
 export type MutationRemoveCollegeSuccess = {
   __typename?: 'MutationRemoveCollegeSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationRemoveOrganizerResult = Error | MutationRemoveOrganizerSuccess;
 
 export type MutationRemoveOrganizerSuccess = {
   __typename?: 'MutationRemoveOrganizerSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationRemoveTeamMemberResult = Error | MutationRemoveTeamMemberSuccess;
@@ -1010,14 +1012,14 @@ export type MutationSendEmailVerificationResult = Error | MutationSendEmailVerif
 
 export type MutationSendEmailVerificationSuccess = {
   __typename?: 'MutationSendEmailVerificationSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationSendPasswordResetEmailResult = Error | MutationSendPasswordResetEmailSuccess;
 
 export type MutationSendPasswordResetEmailSuccess = {
   __typename?: 'MutationSendPasswordResetEmailSuccess';
-  data: Scalars['String'];
+  data: Scalars['String']['output'];
 };
 
 export type MutationSignUpResult = Error | MutationSignUpSuccess;
@@ -1064,19 +1066,19 @@ export type MutationVerifyEmailSuccess = {
 
 export type Option = {
   __typename?: 'Option';
-  answer: Scalars['String'];
-  id: Scalars['String'];
+  answer: Scalars['String']['output'];
+  id: Scalars['String']['output'];
 };
 
 export type Options = {
   __typename?: 'Options';
   FITBSubmissions: Array<FitbSubmission>;
   MCQSubmissions: Array<McqSubmission>;
-  id: Scalars['ID'];
-  isAnswer: Scalars['Boolean'];
+  id: Scalars['ID']['output'];
+  isAnswer: Scalars['Boolean']['output'];
   question: Question;
-  questionId: Scalars['ID'];
-  value: Scalars['String'];
+  questionId: Scalars['ID']['output'];
+  value: Scalars['String']['output'];
 };
 
 export enum OrderType {
@@ -1086,33 +1088,33 @@ export enum OrderType {
 
 export type Organizer = {
   __typename?: 'Organizer';
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['output'];
   user: User;
 };
 
 export type PageInfo = {
   __typename?: 'PageInfo';
-  endCursor?: Maybe<Scalars['String']>;
-  hasNextPage: Scalars['Boolean'];
-  hasPreviousPage: Scalars['Boolean'];
-  startCursor?: Maybe<Scalars['String']>;
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
+  hasPreviousPage: Scalars['Boolean']['output'];
+  startCursor?: Maybe<Scalars['String']['output']>;
 };
 
 export type PaymentOrder = {
   __typename?: 'PaymentOrder';
-  amount: Scalars['Int'];
-  id: Scalars['ID'];
-  orderId: Scalars['ID'];
-  status: Scalars['String'];
+  amount: Scalars['Int']['output'];
+  id: Scalars['ID']['output'];
+  orderId: Scalars['ID']['output'];
+  status: Scalars['String']['output'];
   user: User;
 };
 
 export type ProniteRegistration = {
   __typename?: 'ProniteRegistration';
-  createdAt: Scalars['DateTime'];
-  proniteDay: Scalars['String'];
+  createdAt: Scalars['DateTime']['output'];
+  proniteDay: Scalars['String']['output'];
   user: User;
-  userId: Scalars['ID'];
+  userId: Scalars['ID']['output'];
 };
 
 export type Query = {
@@ -1133,7 +1135,7 @@ export type Query = {
   getAllQuizSubmissions: QueryGetAllQuizSubmissionsResult;
   getAllSubmissions: QueryGetAllSubmissionsResult;
   getAllquestions: QueryGetAllquestionsResult;
-  getAvatars: Scalars['String'];
+  getAvatars: Scalars['String']['output'];
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
@@ -1160,7 +1162,7 @@ export type Query = {
   submissionsByUser: QuerySubmissionsByUserResult;
   teamDetails: QueryTeamDetailsResult;
   teamsByRound: QueryTeamsByRoundConnection;
-  totalRegistrations: Scalars['Int'];
+  totalRegistrations: Scalars['Int']['output'];
   userById: QueryUserByIdResult;
   users: QueryUsersConnection;
   winnersByEvent: QueryWinnersByEventResult;
@@ -1168,47 +1170,47 @@ export type Query = {
 
 
 export type QueryAccommodationRequestByDayArgs = {
-  date: Scalars['DateTime'];
+  date: Scalars['DateTime']['input'];
 };
 
 
 export type QueryAccommodationRequestByHotelArgs = {
-  name: Scalars['String'];
+  name: Scalars['String']['input'];
 };
 
 
 export type QueryAccommodationRequestsByUserIdArgs = {
-  userId: Scalars['ID'];
+  userId: Scalars['ID']['input'];
 };
 
 
 export type QueryEventByIdArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type QueryEventByOrganizerArgs = {
-  organizerId: Scalars['ID'];
+  organizerId: Scalars['ID']['input'];
 };
 
 
 export type QueryEventsArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  contains?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  contains?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
 export type QueryEventsByBranchRepArgs = {
-  branchRepId: Scalars['ID'];
+  branchRepId: Scalars['ID']['input'];
 };
 
 
 export type QueryGetAllQuizSubmissionsArgs = {
-  eventId: Scalars['String'];
-  quizId: Scalars['String'];
+  eventId: Scalars['String']['input'];
+  quizId: Scalars['String']['input'];
 };
 
 
@@ -1218,12 +1220,12 @@ export type QueryGetAllSubmissionsArgs = {
 
 
 export type QueryGetAllquestionsArgs = {
-  quizId: Scalars['String'];
+  quizId: Scalars['String']['input'];
 };
 
 
 export type QueryGetBranchArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
@@ -1233,71 +1235,71 @@ export type QueryGetCardsArgs = {
 
 
 export type QueryGetCommentArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  teamId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type QueryGetLevelXpArgs = {
-  levelId: Scalars['ID'];
+  levelId: Scalars['ID']['input'];
 };
 
 
 export type QueryGetQuizByEventArgs = {
-  eventId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
 };
 
 
 export type QueryGetRoundStatusArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type QueryGetScoreArgs = {
-  criteriaId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  teamId: Scalars['ID'];
+  criteriaId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  teamId: Scalars['ID']['input'];
 };
 
 
 export type QueryGetScoreSheetJuryViewArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type QueryGetSubmissionByUserArgs = {
-  quizId: Scalars['String'];
-  teamId: Scalars['String'];
+  quizId: Scalars['String']['input'];
+  teamId: Scalars['String']['input'];
 };
 
 
 export type QueryGetTotalScoresArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type QueryGetUserLevelScoreArgs = {
-  levelId: Scalars['ID'];
+  levelId: Scalars['ID']['input'];
 };
 
 
 export type QueryJudgeGetTeamsByRoundArgs = {
-  eventId: Scalars['Int'];
-  roundId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
+  roundId: Scalars['Int']['input'];
 };
 
 
 export type QueryMyTeamArgs = {
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 };
 
 
 export type QueryRoundsByEventArgs = {
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 };
 
 
@@ -1307,43 +1309,43 @@ export type QuerySubmissionsByUserArgs = {
 
 
 export type QueryTeamDetailsArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type QueryTeamsByRoundArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  contains?: InputMaybe<Scalars['String']>;
-  eventId: Scalars['ID'];
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  roundNo: Scalars['Int'];
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  contains?: InputMaybe<Scalars['String']['input']>;
+  eventId: Scalars['ID']['input'];
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type QueryTotalRegistrationsArgs = {
-  date?: InputMaybe<Scalars['Date']>;
-  last?: InputMaybe<Scalars['Int']>;
+  date?: InputMaybe<Scalars['Date']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
 export type QueryUserByIdArgs = {
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 };
 
 
 export type QueryUsersArgs = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  contains?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  contains?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
 export type QueryWinnersByEventArgs = {
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 };
 
 export type QueryAccommodationRequestsResult = Error | QueryAccommodationRequestsSuccess;
@@ -1375,7 +1377,7 @@ export type QueryEventsConnection = {
 
 export type QueryEventsConnectionEdge = {
   __typename?: 'QueryEventsConnectionEdge';
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   node: Event;
 };
 
@@ -1527,7 +1529,7 @@ export type QueryTeamsByRoundConnection = {
 
 export type QueryTeamsByRoundConnectionEdge = {
   __typename?: 'QueryTeamsByRoundConnectionEdge';
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   node: Team;
 };
 
@@ -1546,7 +1548,7 @@ export type QueryUsersConnection = {
 
 export type QueryUsersConnectionEdge = {
   __typename?: 'QueryUsersConnectionEdge';
-  cursor: Scalars['String'];
+  cursor: Scalars['String']['output'];
   node: User;
 };
 
@@ -1560,67 +1562,67 @@ export type QueryWinnersByEventSuccess = {
 export type Question = {
   __typename?: 'Question';
   LASubmissions: Array<LaSubmission>;
-  id: Scalars['ID'];
-  image?: Maybe<Scalars['String']>;
-  negativePoint: Scalars['Int'];
+  id: Scalars['ID']['output'];
+  image?: Maybe<Scalars['String']['output']>;
+  negativePoint: Scalars['Int']['output'];
   options: Array<Options>;
-  point: Scalars['Int'];
-  question: Scalars['String'];
-  questionType: Scalars['String'];
+  point: Scalars['Int']['output'];
+  question: Scalars['String']['output'];
+  questionType: Scalars['String']['output'];
   quiz: Quiz;
-  quizId: Scalars['ID'];
+  quizId: Scalars['ID']['output'];
 };
 
 export type Quiz = {
   __typename?: 'Quiz';
-  description?: Maybe<Scalars['String']>;
-  endTime: Scalars['DateTime'];
-  eventId: Scalars['ID'];
-  id: Scalars['ID'];
-  name: Scalars['String'];
+  description?: Maybe<Scalars['String']['output']>;
+  endTime: Scalars['DateTime']['output'];
+  eventId: Scalars['ID']['output'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   questions: Array<Question>;
   round: Round;
-  roundNo: Scalars['Int'];
-  startTime: Scalars['DateTime'];
+  roundNo: Scalars['Int']['output'];
+  startTime: Scalars['DateTime']['output'];
 };
 
 export type Round = {
   __typename?: 'Round';
-  completed: Scalars['Boolean'];
+  completed: Scalars['Boolean']['output'];
   criteria?: Maybe<Array<Criteria>>;
-  date?: Maybe<Scalars['DateTime']>;
+  date?: Maybe<Scalars['DateTime']['output']>;
   event: Event;
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['output'];
   judges: Array<Judge>;
-  roundNo: Scalars['Int'];
-  selectStatus: Scalars['Boolean'];
+  roundNo: Scalars['Int']['output'];
+  selectStatus: Scalars['Boolean']['output'];
 };
 
 export type ScoreSheetJuryView = {
   __typename?: 'ScoreSheetJuryView';
   judges: Array<JudgeJuryView>;
-  teamId: Scalars['Int'];
-  teamName: Scalars['String'];
-  teamScore: Scalars['Float'];
+  teamId: Scalars['Int']['output'];
+  teamName: Scalars['String']['output'];
+  teamScore: Scalars['Float']['output'];
 };
 
 export type Scores = {
   __typename?: 'Scores';
   criteria: Criteria;
-  criteriaId: Scalars['ID'];
+  criteriaId: Scalars['ID']['output'];
   judge: Judge;
-  score: Scalars['String'];
+  score: Scalars['String']['output'];
   team: Team;
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['output'];
 };
 
 export type Submission = {
   __typename?: 'Submission';
   card: Card;
-  cardId: Scalars['ID'];
-  image: Scalars['String'];
+  cardId: Scalars['ID']['output'];
+  image: Scalars['String']['output'];
   user: User;
-  userId: Scalars['ID'];
+  userId: Scalars['ID']['output'];
 };
 
 export type Subscription = {
@@ -1631,14 +1633,14 @@ export type Subscription = {
 
 
 export type SubscriptionGetRoundStatusArgs = {
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 };
 
 
 export type SubscriptionJudgeGetTeamsByRoundArgs = {
-  eventId: Scalars['Int'];
-  roundId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
+  roundId: Scalars['Int']['input'];
 };
 
 export type SubscriptionGetRoundStatusResult = Error | SubscriptionGetRoundStatusSuccess;
@@ -1650,14 +1652,14 @@ export type SubscriptionGetRoundStatusSuccess = {
 
 export type Team = {
   __typename?: 'Team';
-  attended: Scalars['Boolean'];
-  confirmed: Scalars['Boolean'];
+  attended: Scalars['Boolean']['output'];
+  confirmed: Scalars['Boolean']['output'];
   event: Event;
-  id: Scalars['ID'];
-  leaderId?: Maybe<Scalars['Int']>;
+  id: Scalars['ID']['output'];
+  leaderId?: Maybe<Scalars['Int']['output']>;
   members: Array<TeamMember>;
-  name: Scalars['String'];
-  roundNo: Scalars['Int'];
+  name: Scalars['String']['output'];
+  roundNo: Scalars['Int']['output'];
 };
 
 export type TeamMember = {
@@ -1668,61 +1670,61 @@ export type TeamMember = {
 
 export type TotalScores = {
   __typename?: 'TotalScores';
-  criteriaType: Scalars['String'];
-  judgeScore: Scalars['Float'];
-  teamId: Scalars['Int'];
-  totalScore: Scalars['Float'];
+  criteriaType: Scalars['String']['output'];
+  judgeScore: Scalars['Float']['output'];
+  teamId: Scalars['Int']['output'];
+  totalScore: Scalars['Float']['output'];
 };
 
 export type User = {
   __typename?: 'User';
   college?: Maybe<College>;
-  createdAt: Scalars['Date'];
-  email: Scalars['String'];
+  createdAt: Scalars['Date']['output'];
+  email: Scalars['String']['output'];
   hotel?: Maybe<UserInHotel>;
-  id: Scalars['ID'];
-  isVerified: Scalars['Boolean'];
-  name: Scalars['String'];
-  phoneNumber?: Maybe<Scalars['String']>;
-  profileImage?: Maybe<Scalars['String']>;
-  role: Scalars['String'];
+  id: Scalars['ID']['output'];
+  isVerified: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  phoneNumber?: Maybe<Scalars['String']['output']>;
+  profileImage?: Maybe<Scalars['String']['output']>;
+  role: Scalars['String']['output'];
   xp?: Maybe<Array<Xp>>;
 };
 
 export type UserCreateInput = {
-  collegeId: Scalars['Int'];
-  email: Scalars['String'];
-  name: Scalars['String'];
-  password: Scalars['String'];
-  phoneNumber: Scalars['String'];
-  profileImage: Scalars['String'];
+  collegeId: Scalars['Int']['input'];
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  phoneNumber: Scalars['String']['input'];
+  profileImage: Scalars['String']['input'];
 };
 
 export type UserInHotel = {
   __typename?: 'UserInHotel';
-  IdCard?: Maybe<Scalars['String']>;
-  ac: Scalars['Boolean'];
-  checkIn?: Maybe<Scalars['DateTime']>;
-  checkOut?: Maybe<Scalars['DateTime']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  gender: Scalars['String'];
+  IdCard?: Maybe<Scalars['String']['output']>;
+  ac: Scalars['Boolean']['output'];
+  checkIn?: Maybe<Scalars['DateTime']['output']>;
+  checkOut?: Maybe<Scalars['DateTime']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  gender: Scalars['String']['output'];
   hotel: Hotel;
-  id: Scalars['ID'];
-  room?: Maybe<Scalars['String']>;
-  status: Scalars['String'];
-  updatedAt?: Maybe<Scalars['DateTime']>;
+  id: Scalars['ID']['output'];
+  room?: Maybe<Scalars['String']['output']>;
+  status: Scalars['String']['output'];
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
   user: User;
 };
 
 export type UserLoginInput = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 };
 
 export type UserLoginPayload = {
   __typename?: 'UserLoginPayload';
-  accessToken: Scalars['String'];
-  refreshToken: Scalars['String'];
+  accessToken: Scalars['String']['output'];
+  refreshToken: Scalars['String']['output'];
 };
 
 export enum WinnerType {
@@ -1734,130 +1736,130 @@ export enum WinnerType {
 export type Winners = {
   __typename?: 'Winners';
   event: Event;
-  id: Scalars['ID'];
+  id: Scalars['ID']['output'];
   team: Team;
-  type: Scalars['String'];
+  type: Scalars['String']['output'];
 };
 
 export type Xp = {
   __typename?: 'XP';
-  createdAt: Scalars['DateTime'];
-  id: Scalars['ID'];
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
   level: Level;
   user: User;
 };
 
 export type DeleteRoundMutationVariables = Exact<{
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteRoundMutation = { __typename?: 'Mutation', deleteRound: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteRoundSuccess', data: { __typename?: 'Round', eventId: string, roundNo: number } } };
 
 export type OrganizerMarkAttendanceSoloMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
-  attended: Scalars['Boolean'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+  attended: Scalars['Boolean']['input'];
 }>;
 
 
 export type OrganizerMarkAttendanceSoloMutation = { __typename?: 'Mutation', organizerMarkAttendanceSolo: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerMarkAttendanceSoloSuccess', data: number } };
 
 export type UpdateAccommodationStatusMutationVariables = Exact<{
-  bookingId: Scalars['String'];
-  status: Scalars['String'];
-  hotelId: Scalars['String'];
-  room: Scalars['String'];
+  bookingId: Scalars['String']['input'];
+  status: Scalars['String']['input'];
+  hotelId: Scalars['String']['input'];
+  room: Scalars['String']['input'];
 }>;
 
 
 export type UpdateAccommodationStatusMutation = { __typename?: 'Mutation', updateStatus: { __typename: 'Error', message: string } | { __typename: 'MutationUpdateStatusSuccess', data: { __typename?: 'UserInHotel', status: string, room?: string | null, user: { __typename?: 'User', name: string }, hotel: { __typename?: 'Hotel', name: string } } } };
 
 export type AddAccommodationRequestMutationVariables = Exact<{
-  checkInTime: Scalars['String'];
-  checkOutTime: Scalars['String'];
-  gender: Scalars['String'];
-  hotelId: Scalars['Int'];
-  id: Scalars['String'];
+  checkInTime: Scalars['String']['input'];
+  checkOutTime: Scalars['String']['input'];
+  gender: Scalars['String']['input'];
+  hotelId: Scalars['Int']['input'];
+  id: Scalars['String']['input'];
 }>;
 
 
 export type AddAccommodationRequestMutation = { __typename?: 'Mutation', addAccommodationRequest: { __typename: 'Error', message: string } | { __typename: 'MutationAddAccommodationRequestSuccess', data: { __typename?: 'UserInHotel', checkIn?: any | null, checkOut?: any | null, gender: string, status: string, user: { __typename?: 'User', name: string, phoneNumber?: string | null } } } };
 
 export type AddBranchMutationVariables = Exact<{
-  name: Scalars['String'];
+  name: Scalars['String']['input'];
 }>;
 
 
 export type AddBranchMutation = { __typename?: 'Mutation', addBranch: { __typename: 'Error', message: string } | { __typename: 'MutationAddBranchSuccess', data: { __typename?: 'Branch', id: string, name: string } } };
 
 export type AddBranchRepMutationVariables = Exact<{
-  branchId: Scalars['ID'];
-  userId: Scalars['ID'];
+  branchId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type AddBranchRepMutation = { __typename?: 'Mutation', addBranchRep: { __typename: 'Error', message: string } | { __typename: 'MutationAddBranchRepSuccess', data: { __typename?: 'BranchRep', branchId: string, userId: string } } };
 
 export type AddCommentMutationVariables = Exact<{
-  comment: Scalars['String'];
-  eventId: Scalars['Int'];
-  roundNo: Scalars['Int'];
-  teamId: Scalars['Int'];
+  comment: Scalars['String']['input'];
+  eventId: Scalars['Int']['input'];
+  roundNo: Scalars['Int']['input'];
+  teamId: Scalars['Int']['input'];
 }>;
 
 
 export type AddCommentMutation = { __typename?: 'Mutation', addComment: { __typename: 'Error', message: string } | { __typename: 'MutationAddCommentSuccess' } };
 
 export type AddOrganizerMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type AddOrganizerMutation = { __typename?: 'Mutation', addOrganizer: { __typename: 'Error', message: string } | { __typename: 'MutationAddOrganizerSuccess' } };
 
 export type AddScoreMutationVariables = Exact<{
-  criteriaId: Scalars['Int'];
-  score: Scalars['String'];
-  teamId: Scalars['Int'];
+  criteriaId: Scalars['Int']['input'];
+  score: Scalars['String']['input'];
+  teamId: Scalars['Int']['input'];
 }>;
 
 
 export type AddScoreMutation = { __typename?: 'Mutation', addScore: { __typename: 'Error', message: string } | { __typename: 'MutationAddScoreSuccess' } };
 
 export type AddXpMutationVariables = Exact<{
-  levelId: Scalars['ID'];
+  levelId: Scalars['ID']['input'];
 }>;
 
 
 export type AddXpMutation = { __typename?: 'Mutation', addXP: { __typename: 'Error', message: string } | { __typename: 'MutationAddXPSuccess', data: { __typename?: 'XP', id: string, level: { __typename?: 'Level', id: string, point: number } } } };
 
 export type ChangeSelectStatusMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
 export type ChangeSelectStatusMutation = { __typename?: 'Mutation', changeSelectStatus: { __typename: 'Error', message: string } | { __typename: 'MutationChangeSelectStatusSuccess', data: { __typename?: 'Round', selectStatus: boolean } } };
 
 export type CompleteRoundMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
 export type CompleteRoundMutation = { __typename?: 'Mutation', completeRound: { __typename: 'Error', message: string } | { __typename: 'MutationCompleteRoundSuccess' } };
 
 export type ConfirmTeamMutationVariables = Exact<{
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type ConfirmTeamMutation = { __typename?: 'Mutation', confirmTeam: { __typename: 'Error', message: string } | { __typename: 'MutationConfirmTeamSuccess' } };
 
 export type CreateCardMutationVariables = Exact<{
-  clue: Scalars['String'];
+  clue: Scalars['String']['input'];
   day: DayType;
 }>;
 
@@ -1865,17 +1867,17 @@ export type CreateCardMutationVariables = Exact<{
 export type CreateCardMutation = { __typename?: 'Mutation', createCard: { __typename: 'Error' } | { __typename: 'MutationCreateCardSuccess' } };
 
 export type CreateCollegeMutationVariables = Exact<{
-  details: Scalars['String'];
-  name: Scalars['String'];
+  details: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 }>;
 
 
 export type CreateCollegeMutation = { __typename?: 'Mutation', createCollege: { __typename: 'Error', message: string } | { __typename: 'MutationCreateCollegeSuccess', data: { __typename?: 'College', id: string, name: string } } };
 
 export type CreateCriteriaMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  name: Scalars['String'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
   type: CriteriaType;
 }>;
 
@@ -1884,59 +1886,59 @@ export type CreateCriteriaMutation = { __typename?: 'Mutation', createCriteria: 
 
 export type CreateEventMutationVariables = Exact<{
   eventType: EventType;
-  name: Scalars['String'];
+  name: Scalars['String']['input'];
 }>;
 
 
 export type CreateEventMutation = { __typename?: 'Mutation', createEvent: { __typename: 'Error', message: string } | { __typename: 'MutationCreateEventSuccess' } };
 
 export type CreateHotelMutationVariables = Exact<{
-  details: Scalars['String'];
-  name: Scalars['String'];
-  price: Scalars['Float'];
+  details: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  price: Scalars['Float']['input'];
 }>;
 
 
 export type CreateHotelMutation = { __typename?: 'Mutation', createHotel: { __typename: 'Error', message: string } | { __typename: 'MutationCreateHotelSuccess', data: { __typename?: 'Hotel', createdAt?: any | null, details?: string | null, id: string, name: string, price: number, updatedAt?: any | null } } };
 
 export type CreateJudgeMutationVariables = Exact<{
-  email: Scalars['String'];
-  eventId: Scalars['ID'];
-  name: Scalars['String'];
-  password: Scalars['String'];
-  roundNo: Scalars['Int'];
+  email: Scalars['String']['input'];
+  eventId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
 export type CreateJudgeMutation = { __typename?: 'Mutation', createJudge: { __typename: 'Error', message: string } | { __typename: 'MutationCreateJudgeSuccess' } };
 
 export type CreateRoundMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  date: Scalars['String'];
+  eventId: Scalars['ID']['input'];
+  date: Scalars['String']['input'];
 }>;
 
 
 export type CreateRoundMutation = { __typename?: 'Mutation', createRound: { __typename: 'Error', message: string } | { __typename: 'MutationCreateRoundSuccess', data: { __typename?: 'Round', eventId: string, roundNo: number } } };
 
 export type CreateSubmissionMutationVariables = Exact<{
-  cardId: Scalars['Int'];
-  image: Scalars['String'];
+  cardId: Scalars['Int']['input'];
+  image: Scalars['String']['input'];
 }>;
 
 
 export type CreateSubmissionMutation = { __typename?: 'Mutation', createSubmission: { __typename: 'Error' } | { __typename: 'MutationCreateSubmissionSuccess' } };
 
 export type CreateTeamMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  name: Scalars['String'];
+  eventId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 }>;
 
 
 export type CreateTeamMutation = { __typename?: 'Mutation', createTeam: { __typename: 'Error', message: string } | { __typename: 'MutationCreateTeamSuccess', data: { __typename?: 'Team', name: string, id: string, confirmed: boolean, event: { __typename?: 'Event', id: string, name: string }, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', id: string, name: string } }> } } };
 
 export type CreateWinnerMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  teamId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  teamId: Scalars['ID']['input'];
   type: WinnerType;
 }>;
 
@@ -1944,67 +1946,67 @@ export type CreateWinnerMutationVariables = Exact<{
 export type CreateWinnerMutation = { __typename?: 'Mutation', createWinner: { __typename: 'Error', message: string } | { __typename: 'MutationCreateWinnerSuccess' } };
 
 export type DeleteCardMutationVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteCardMutation = { __typename?: 'Mutation', deleteCard: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteCardSuccess' } };
 
 export type DeleteCriteriaMutationVariables = Exact<{
-  criteriaId: Scalars['ID'];
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  criteriaId: Scalars['ID']['input'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
 export type DeleteCriteriaMutation = { __typename?: 'Mutation', deleteCriteria: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteCriteriaSuccess' } };
 
 export type DeleteEventMutationVariables = Exact<{
-  id: Scalars['Int'];
+  id: Scalars['Int']['input'];
 }>;
 
 
 export type DeleteEventMutation = { __typename?: 'Mutation', deleteEvent: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteEventSuccess', data: string } };
 
 export type DeleteHotelMutationVariables = Exact<{
-  id: Scalars['String'];
+  id: Scalars['String']['input'];
 }>;
 
 
 export type DeleteHotelMutation = { __typename?: 'Mutation', deleteHotel: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteHotelSuccess', data: { __typename?: 'Hotel', details?: string | null, id: string, name: string, price: number } } };
 
 export type DeleteJudgeMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteJudgeMutation = { __typename?: 'Mutation', deleteJudge: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteJudgeSuccess' } };
 
 export type DeleteTeamMutationVariables = Exact<{
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteTeamMutation = { __typename?: 'Mutation', deleteTeam: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteTeamSuccess' } };
 
 export type DeleteWinnerMutationVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type DeleteWinnerMutation = { __typename?: 'Mutation', deleteWinner: { __typename: 'Error', message: string } | { __typename: 'MutationDeleteWinnerSuccess' } };
 
 export type EmailVerificationMutationVariables = Exact<{
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 }>;
 
 
 export type EmailVerificationMutation = { __typename?: 'Mutation', sendEmailVerification: { __typename: 'Error', message: string } | { __typename: 'MutationSendEmailVerificationSuccess', data: string } };
 
 export type EventPaymentOrderMutationVariables = Exact<{
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
@@ -2016,180 +2018,180 @@ export type FestRegPaymentOrderMutationVariables = Exact<{ [key: string]: never;
 export type FestRegPaymentOrderMutation = { __typename?: 'Mutation', createPaymentOrder: { __typename: 'Error', message: string } | { __typename: 'MutationCreatePaymentOrderSuccess', data: { __typename?: 'PaymentOrder', amount: number, orderId: string, status: string, user: { __typename?: 'User', email: string, name: string } } } };
 
 export type JoinTeamMutationVariables = Exact<{
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type JoinTeamMutation = { __typename?: 'Mutation', joinTeam: { __typename: 'Error', message: string } | { __typename: 'MutationJoinTeamSuccess', data: { __typename?: 'TeamMember', team: { __typename?: 'Team', id: string, name: string, confirmed: boolean, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', name: string, id: string } }>, event: { __typename?: 'Event', id: string, name: string, maxTeamSize: number, description?: string | null, eventType: string } } } } };
 
 export type LeaveTeamMutationVariables = Exact<{
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type LeaveTeamMutation = { __typename?: 'Mutation', leaveTeam: { __typename: 'Error', message: string } | { __typename: 'MutationLeaveTeamSuccess' } };
 
 export type OrganizerAddTeamMemberMutationVariables = Exact<{
-  teamId: Scalars['ID'];
-  userId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type OrganizerAddTeamMemberMutation = { __typename?: 'Mutation', organizerAddTeamMember: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerAddTeamMemberSuccess', data: { __typename?: 'TeamMember', team: { __typename?: 'Team', id: string }, user: { __typename?: 'User', id: string } } } };
 
 export type OrganizerCreateTeamMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  name: Scalars['String'];
+  eventId: Scalars['ID']['input'];
+  name: Scalars['String']['input'];
 }>;
 
 
 export type OrganizerCreateTeamMutation = { __typename?: 'Mutation', organizerCreateTeam: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerCreateTeamSuccess', data: { __typename?: 'Team', id: string, name: string } } };
 
 export type OrganizerDeleteTeamMutationVariables = Exact<{
-  teamId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type OrganizerDeleteTeamMutation = { __typename?: 'Mutation', organizerDeleteTeam: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerDeleteTeamSuccess', data: { __typename?: 'Team', name: string, id: string } } };
 
 export type OrganizerDeleteTeamMemberMutationVariables = Exact<{
-  teamId: Scalars['ID'];
-  userId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type OrganizerDeleteTeamMemberMutation = { __typename?: 'Mutation', organizerDeleteTeamMember: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerDeleteTeamMemberSuccess', data: { __typename?: 'TeamMember', user: { __typename?: 'User', id: string }, team: { __typename?: 'Team', id: string } } } };
 
 export type OrganizerMarkAttendanceMutationVariables = Exact<{
-  attended: Scalars['Boolean'];
-  teamId: Scalars['ID'];
+  attended: Scalars['Boolean']['input'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type OrganizerMarkAttendanceMutation = { __typename?: 'Mutation', organizerMarkAttendance: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerMarkAttendanceSuccess', data: { __typename?: 'Team', id: string, name: string } } };
 
 export type OrganizerRegisterSoloMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type OrganizerRegisterSoloMutation = { __typename?: 'Mutation', organizerRegisterSolo: { __typename: 'Error', message: string } | { __typename: 'MutationOrganizerRegisterSoloSuccess', data: { __typename?: 'Team', attended: boolean, id: string, name: string } } };
 
 export type PromoteToNextRoundMutationVariables = Exact<{
-  roundNo: Scalars['ID'];
-  teamId: Scalars['ID'];
-  selected: Scalars['Boolean'];
+  roundNo: Scalars['ID']['input'];
+  teamId: Scalars['ID']['input'];
+  selected: Scalars['Boolean']['input'];
 }>;
 
 
 export type PromoteToNextRoundMutation = { __typename?: 'Mutation', promoteToNextRound: { __typename: 'Error', message: string } | { __typename: 'MutationPromoteToNextRoundSuccess' } };
 
 export type PublishEventMutationVariables = Exact<{
-  published: Scalars['Boolean'];
-  id: Scalars['ID'];
+  published: Scalars['Boolean']['input'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type PublishEventMutation = { __typename?: 'Mutation', publishEvent: { __typename: 'Error', message: string } | { __typename: 'MutationPublishEventSuccess', data: string } };
 
 export type RefreshTokenMutationVariables = Exact<{
-  refreshToken: Scalars['String'];
+  refreshToken: Scalars['String']['input'];
 }>;
 
 
 export type RefreshTokenMutation = { __typename?: 'Mutation', refreshToken: { __typename: 'Error', message: string } | { __typename: 'MutationRefreshTokenSuccess', data: { __typename?: 'UserLoginPayload', accessToken: string, refreshToken: string } } };
 
 export type RegisterProniteMutationVariables = Exact<{
-  userId: Scalars['ID'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type RegisterProniteMutation = { __typename?: 'Mutation', registerPronite: { __typename: 'Error', message: string } | { __typename: 'MutationRegisterProniteSuccess', data: { __typename?: 'ProniteRegistration', proniteDay: string, user: { __typename?: 'User', email: string, id: string, name: string, phoneNumber?: string | null, role: string, college?: { __typename?: 'College', name: string } | null } } } };
 
 export type RegisterSoloEventMutationVariables = Exact<{
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 }>;
 
 
 export type RegisterSoloEventMutation = { __typename?: 'Mutation', registerSoloEvent: { __typename: 'Error', message: string } | { __typename: 'MutationRegisterSoloEventSuccess', data: { __typename?: 'Team', id: string, name: string, confirmed: boolean, event: { __typename?: 'Event', id: string, eventType: string, name: string }, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', id: string, name: string } }> } } };
 
 export type RemoveBranchRepMutationVariables = Exact<{
-  userId: Scalars['ID'];
-  branchId: Scalars['ID'];
+  userId: Scalars['ID']['input'];
+  branchId: Scalars['ID']['input'];
 }>;
 
 
 export type RemoveBranchRepMutation = { __typename?: 'Mutation', removeBranchRep: { __typename: 'Error', message: string } | { __typename: 'MutationRemoveBranchRepSuccess', data: string } };
 
 export type RemoveCollegeMutationVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type RemoveCollegeMutation = { __typename?: 'Mutation', removeCollege: { __typename: 'Error', message: string } | { __typename: 'MutationRemoveCollegeSuccess', data: string } };
 
 export type RemoveOrganizerMutationVariables = Exact<{
-  eventId: Scalars['ID'];
-  userId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type RemoveOrganizerMutation = { __typename?: 'Mutation', removeOrganizer: { __typename: 'Error', message: string } | { __typename: 'MutationRemoveOrganizerSuccess', data: string } };
 
 export type RemoveTeamMemberMutationVariables = Exact<{
-  teamId: Scalars['ID'];
-  userId: Scalars['ID'];
+  teamId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
 export type RemoveTeamMemberMutation = { __typename?: 'Mutation', removeTeamMember: { __typename: 'Error', message: string } | { __typename: 'MutationRemoveTeamMemberSuccess' } };
 
 export type ResetPasswordMutationVariables = Exact<{
-  password: Scalars['String'];
-  token: Scalars['String'];
+  password: Scalars['String']['input'];
+  token: Scalars['String']['input'];
 }>;
 
 
 export type ResetPasswordMutation = { __typename?: 'Mutation', resetPassword: { __typename: 'Error', message: string } | { __typename: 'MutationResetPasswordSuccess' } };
 
 export type ResetPasswordEmailMutationVariables = Exact<{
-  email: Scalars['String'];
+  email: Scalars['String']['input'];
 }>;
 
 
 export type ResetPasswordEmailMutation = { __typename?: 'Mutation', sendPasswordResetEmail: { __typename: 'Error', message: string } | { __typename: 'MutationSendPasswordResetEmailSuccess', data: string } };
 
 export type SignInMutationVariables = Exact<{
-  email: Scalars['String'];
-  password: Scalars['String'];
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
 }>;
 
 
 export type SignInMutation = { __typename?: 'Mutation', login: { __typename: 'Error', message: string } | { __typename: 'MutationLoginSuccess', data: { __typename?: 'UserLoginPayload', accessToken: string, refreshToken: string } } };
 
 export type SignUpMutationVariables = Exact<{
-  email: Scalars['String'];
-  name: Scalars['String'];
-  password: Scalars['String'];
-  collegeId: Scalars['Int'];
-  phoneNumber: Scalars['String'];
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  collegeId: Scalars['Int']['input'];
+  phoneNumber: Scalars['String']['input'];
 }>;
 
 
 export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename: 'Error', message: string } | { __typename: 'MutationSignUpSuccess' } };
 
 export type UpdateEventMutationVariables = Exact<{
-  description?: InputMaybe<Scalars['String']>;
-  fees?: InputMaybe<Scalars['Int']>;
-  maxTeamSize?: InputMaybe<Scalars['Int']>;
-  maxTeams?: InputMaybe<Scalars['Int']>;
-  minTeamSize?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
-  venue?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
+  description?: InputMaybe<Scalars['String']['input']>;
+  fees?: InputMaybe<Scalars['Int']['input']>;
+  maxTeamSize?: InputMaybe<Scalars['Int']['input']>;
+  maxTeams?: InputMaybe<Scalars['Int']['input']>;
+  minTeamSize?: InputMaybe<Scalars['Int']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  venue?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['ID']['input'];
   eventType?: InputMaybe<EventType>;
-  image?: InputMaybe<Scalars['String']>;
+  image?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<EventCategory>;
 }>;
 
@@ -2197,28 +2199,28 @@ export type UpdateEventMutationVariables = Exact<{
 export type UpdateEventMutation = { __typename?: 'Mutation', updateEvent: { __typename: 'Error', message: string } | { __typename: 'MutationUpdateEventSuccess', data: { __typename?: 'Event', id: string } } };
 
 export type UpdateProfileImageMutationVariables = Exact<{
-  imageURL: Scalars['String'];
+  imageURL: Scalars['String']['input'];
 }>;
 
 
 export type UpdateProfileImageMutation = { __typename?: 'Mutation', updateProfileImage: { __typename: 'Error', message: string } | { __typename?: 'MutationUpdateProfileImageSuccess' } };
 
 export type VerifyEmailMutationVariables = Exact<{
-  token: Scalars['String'];
+  token: Scalars['String']['input'];
 }>;
 
 
 export type VerifyEmailMutation = { __typename?: 'Mutation', verifyEmail: { __typename: 'Error', message: string } | { __typename: 'MutationVerifyEmailSuccess' } };
 
 export type AccommodationRequestByDayQueryVariables = Exact<{
-  date: Scalars['DateTime'];
+  date: Scalars['DateTime']['input'];
 }>;
 
 
 export type AccommodationRequestByDayQuery = { __typename?: 'Query', accommodationRequestByDay: Array<{ __typename?: 'UserInHotel', checkIn?: any | null, checkOut?: any | null, createdAt?: any | null, gender: string, id: string, room?: string | null, ac: boolean, status: string, updatedAt?: any | null, hotel: { __typename?: 'Hotel', createdAt?: any | null, details?: string | null, id: string, name: string, price: number, updatedAt?: any | null }, user: { __typename?: 'User', createdAt: any, email: string, id: string, isVerified: boolean, name: string, phoneNumber?: string | null, college?: { __typename?: 'College', id: string, name: string } | null } }> };
 
 export type AccommodationRequestByHotelQueryVariables = Exact<{
-  name: Scalars['String'];
+  name: Scalars['String']['input'];
 }>;
 
 
@@ -2235,7 +2237,7 @@ export type AccommodationRequestsByUserQueryVariables = Exact<{ [key: string]: n
 export type AccommodationRequestsByUserQuery = { __typename?: 'Query', accommodationRequestsByUser: Array<{ __typename?: 'UserInHotel', checkIn?: any | null, checkOut?: any | null, room?: string | null, status: string, hotel: { __typename?: 'Hotel', name: string, price: number } }> };
 
 export type AccommodationRequestsByUserIdQueryVariables = Exact<{
-  userId: Scalars['ID'];
+  userId: Scalars['ID']['input'];
 }>;
 
 
@@ -2266,28 +2268,28 @@ export type GetCardsQueryVariables = Exact<{
 export type GetCardsQuery = { __typename?: 'Query', getCards: { __typename: 'Error', message: string } | { __typename: 'QueryGetCardsSuccess', data: Array<{ __typename?: 'Card', clue: string, day: string, id: string }> } };
 
 export type EventByIdQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type EventByIdQuery = { __typename?: 'Query', eventById: { __typename?: 'Event', id: string, description?: string | null, eventType: string, name: string, venue?: string | null, minTeamSize: number, maxTeams?: number | null, maxTeamSize: number, image?: string | null, fees: number, published: boolean, category?: string | null, organizers: Array<{ __typename?: 'Organizer', user: { __typename?: 'User', email: string, name: string, phoneNumber?: string | null } }>, rounds: Array<{ __typename?: 'Round', completed: boolean, roundNo: number, date?: any | null }> } };
 
 export type EventsQueryVariables = Exact<{
-  first: Scalars['Int'];
+  first: Scalars['Int']['input'];
 }>;
 
 
 export type EventsQuery = { __typename?: 'Query', events: { __typename?: 'QueryEventsConnection', edges: Array<{ __typename?: 'QueryEventsConnectionEdge', cursor: string, node: { __typename?: 'Event', id: string, description?: string | null, eventType: string, name: string, fees: number, image?: string | null, maxTeamSize: number, maxTeams?: number | null, minTeamSize: number, published: boolean, category?: string | null, venue?: string | null, branch: { __typename?: 'Branch', id: string, name: string }, rounds: Array<{ __typename?: 'Round', completed: boolean, roundNo: number, date?: any | null, eventId: string, event: { __typename?: 'Event', branch: { __typename?: 'Branch', id: string, name: string } } }>, teams: Array<{ __typename?: 'Team', id: string, attended: boolean, confirmed: boolean, leaderId?: number | null, name: string, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', id: string, name: string, phoneNumber?: string | null, role: string, email: string, isVerified: boolean, createdAt: any } }> }> } } | null> } };
 
 export type EventsByBranchRepQueryVariables = Exact<{
-  branchRepId: Scalars['ID'];
+  branchRepId: Scalars['ID']['input'];
 }>;
 
 
 export type EventsByBranchRepQuery = { __typename?: 'Query', eventsByBranchRep: Array<{ __typename?: 'Event', description?: string | null, eventType: string, fees: number, id: string, category?: string | null, image?: string | null, maxTeamSize: number, maxTeams?: number | null, minTeamSize: number, name: string, published: boolean, venue?: string | null, rounds: Array<{ __typename?: 'Round', completed: boolean, roundNo: number, eventId: string, date?: any | null, judges: Array<{ __typename?: 'Judge', user: { __typename?: 'User', email: string, name: string, id: string } }> }>, organizers: Array<{ __typename?: 'Organizer', user: { __typename?: 'User', email: string, name: string, id: string } }>, branch: { __typename?: 'Branch', id: string, name: string } }> };
 
 export type EventByOrganizerQueryVariables = Exact<{
-  organizerId: Scalars['ID'];
+  organizerId: Scalars['ID']['input'];
 }>;
 
 
@@ -2321,9 +2323,9 @@ export type BranchesQueryVariables = Exact<{ [key: string]: never; }>;
 export type BranchesQuery = { __typename?: 'Query', getBranches: Array<{ __typename?: 'Branch', id: string, name: string, branchReps: Array<{ __typename?: 'BranchRep', branchId: string, userId: string, user: { __typename?: 'User', email: string, id: string, isVerified: boolean, name: string, phoneNumber?: string | null, role: string } }> }> };
 
 export type GetCommentQueryVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  teamId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
@@ -2335,25 +2337,25 @@ export type GetXpLeaderboardQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetXpLeaderboardQuery = { __typename?: 'Query', getXpLeaderboard: { __typename: 'Error', message: string } | { __typename: 'QueryGetXpLeaderboardSuccess', data: Array<{ __typename?: 'XP', id: string, createdAt: any, level: { __typename?: 'Level', id: string, point: number }, user: { __typename?: 'User', name: string, id: string, email: string, createdAt: any, isVerified: boolean, phoneNumber?: string | null, role: string } }> } };
 
 export type GetScoreQueryVariables = Exact<{
-  criteriaId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  teamId: Scalars['ID'];
+  criteriaId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  teamId: Scalars['ID']['input'];
 }>;
 
 
 export type GetScoreQuery = { __typename?: 'Query', getScore: { __typename: 'Error', message: string } | { __typename: 'QueryGetScoreSuccess', data: { __typename?: 'Scores', score: string } } };
 
 export type GetScoreSheetJuryQueryVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
-export type GetScoreSheetJuryQuery = { __typename?: 'Query', getScoreSheetJuryView: { __typename: 'Error', message: string } | { __typename: 'QueryGetScoreSheetJuryViewSuccess', data: Array<{ __typename?: 'ScoreSheetJuryView', teamId: number, teamName: string, teamScore: number, judges: Array<{ __typename?: 'JudgeJuryView', judgeId: number, judgeName: string, criteria: Array<{ __typename?: 'CriteriaJuryView', criteriaId: number, score: number, criteriaName: string }> }> }> } };
+export type GetScoreSheetJuryQuery = { __typename?: 'Query', getScoreSheetJuryView: { __typename: 'Error', message: string } | { __typename: 'QueryGetScoreSheetJuryViewSuccess', data: Array<{ __typename?: 'ScoreSheetJuryView', teamId: number, teamName: string, teamScore: number, judges: Array<{ __typename?: 'JudgeJuryView', judgeId: number, judgeName: string, criteria: Array<{ __typename?: 'CriteriaJuryView', criteriaId: number, score: number, criteriaName: string, criteriaType: CriteriaType }> }> }> } };
 
 export type GetTotalScoresQueryVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
@@ -2370,7 +2372,7 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me: { __typename: 'Error', message: string } | { __typename: 'QueryMeSuccess', data: { __typename?: 'User', createdAt: any, email: string, id: string, isVerified: boolean, name: string, phoneNumber?: string | null, role: string, profileImage?: string | null, college?: { __typename?: 'College', id: string, name: string } | null } } };
 
 export type MyTeamQueryVariables = Exact<{
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 }>;
 
 
@@ -2397,64 +2399,64 @@ export type RoundByJudgeQueryVariables = Exact<{ [key: string]: never; }>;
 export type RoundByJudgeQuery = { __typename?: 'Query', roundByJudge: { __typename: 'Error', message: string } | { __typename: 'QueryRoundByJudgeSuccess', data: { __typename?: 'Round', eventId: string, roundNo: number, criteria?: Array<{ __typename?: 'Criteria', id: string, name: string, type: string }> | null, event: { __typename?: 'Event', name: string, eventType: string, rounds: Array<{ __typename?: 'Round', roundNo: number, completed: boolean }> } } } };
 
 export type RoundsByEventQueryVariables = Exact<{
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 }>;
 
 
 export type RoundsByEventQuery = { __typename?: 'Query', roundsByEvent: Array<{ __typename?: 'Round', completed: boolean, date?: any | null, eventId: string, roundNo: number }> };
 
 export type SearchUsersQueryVariables = Exact<{
-  contains?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  after?: InputMaybe<Scalars['String']>;
+  contains?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
 export type SearchUsersQuery = { __typename?: 'Query', users: { __typename?: 'QueryUsersConnection', pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean }, edges: Array<{ __typename?: 'QueryUsersConnectionEdge', cursor: string, node: { __typename?: 'User', id: string, name: string, role: string, email: string } } | null> } };
 
 export type TeamDetailsQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type TeamDetailsQuery = { __typename?: 'Query', teamDetails: { __typename: 'Error', message: string } | { __typename: 'QueryTeamDetailsSuccess', data: { __typename?: 'Team', attended: boolean, confirmed: boolean, id: string, name: string, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', createdAt: any, email: string, id: string, isVerified: boolean, name: string, phoneNumber?: string | null, role: string, college?: { __typename?: 'College', name: string } | null } }>, event: { __typename?: 'Event', eventType: string } } } };
 
 export type TeamsByRoundQueryVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
-  after?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
-  contains?: InputMaybe<Scalars['String']>;
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  contains?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
 export type TeamsByRoundQuery = { __typename?: 'Query', teamsByRound: { __typename?: 'QueryTeamsByRoundConnection', edges: Array<{ __typename?: 'QueryTeamsByRoundConnectionEdge', node: { __typename?: 'Team', attended: boolean, id: string, name: string, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', id: string, name: string, phoneNumber?: string | null, email: string } }> } } | null>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null } } };
 
 export type UserByIdQueryVariables = Exact<{
-  id: Scalars['ID'];
+  id: Scalars['ID']['input'];
 }>;
 
 
 export type UserByIdQuery = { __typename?: 'Query', userById: { __typename: 'Error', message: string } | { __typename: 'QueryUserByIdSuccess', data: { __typename?: 'User', email: string, id: string, name: string, phoneNumber?: string | null, college?: { __typename?: 'College', name: string } | null } } };
 
 export type WinnersByEventQueryVariables = Exact<{
-  eventId: Scalars['ID'];
+  eventId: Scalars['ID']['input'];
 }>;
 
 
 export type WinnersByEventQuery = { __typename?: 'Query', winnersByEvent: { __typename: 'Error', message: string } | { __typename: 'QueryWinnersByEventSuccess', data: Array<{ __typename?: 'Winners', id: string, type: string, team: { __typename?: 'Team', attended: boolean, confirmed: boolean, leaderId?: number | null, id: string, name: string, roundNo: number, members: Array<{ __typename?: 'TeamMember', user: { __typename?: 'User', createdAt: any, id: string, email: string, isVerified: boolean, name: string, phoneNumber?: string | null, role: string } }> } }> } };
 
 export type GetRoundStatusSubscriptionVariables = Exact<{
-  eventId: Scalars['ID'];
-  roundNo: Scalars['Int'];
+  eventId: Scalars['ID']['input'];
+  roundNo: Scalars['Int']['input'];
 }>;
 
 
 export type GetRoundStatusSubscription = { __typename?: 'Subscription', getRoundStatus: { __typename: 'Error', message: string } | { __typename: 'SubscriptionGetRoundStatusSuccess', data: { __typename?: 'Round', selectStatus: boolean } } };
 
 export type JudgeGetTeamsByRoundSubscriptionVariables = Exact<{
-  eventId: Scalars['Int'];
-  roundId: Scalars['Int'];
+  eventId: Scalars['Int']['input'];
+  roundId: Scalars['Int']['input'];
 }>;
 
 
@@ -2539,7 +2541,7 @@ export const BranchesDocument = {"kind":"Document","definitions":[{"kind":"Opera
 export const GetCommentDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetComment"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getComment"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"eventId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}}},{"kind":"Argument","name":{"kind":"Name","value":"roundNo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}}},{"kind":"Argument","name":{"kind":"Name","value":"teamId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetCommentSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"comment"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetCommentQuery, GetCommentQueryVariables>;
 export const GetXpLeaderboardDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetXpLeaderboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getXpLeaderboard"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetXpLeaderboardSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"level"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"point"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"isVerified"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"role"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetXpLeaderboardQuery, GetXpLeaderboardQueryVariables>;
 export const GetScoreDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetScore"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"criteriaId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getScore"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"criteriaId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"criteriaId"}}},{"kind":"Argument","name":{"kind":"Name","value":"roundNo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}}},{"kind":"Argument","name":{"kind":"Name","value":"teamId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"teamId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetScoreSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"score"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetScoreQuery, GetScoreQueryVariables>;
-export const GetScoreSheetJuryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetScoreSheetJury"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getScoreSheetJuryView"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"eventId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}}},{"kind":"Argument","name":{"kind":"Name","value":"roundNo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetScoreSheetJuryViewSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"judges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"criteria"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"criteriaId"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"criteriaName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"judgeId"}},{"kind":"Field","name":{"kind":"Name","value":"judgeName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"teamId"}},{"kind":"Field","name":{"kind":"Name","value":"teamName"}},{"kind":"Field","name":{"kind":"Name","value":"teamScore"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetScoreSheetJuryQuery, GetScoreSheetJuryQueryVariables>;
+export const GetScoreSheetJuryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetScoreSheetJury"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getScoreSheetJuryView"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"eventId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}}},{"kind":"Argument","name":{"kind":"Name","value":"roundNo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetScoreSheetJuryViewSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"judges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"criteria"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"criteriaId"}},{"kind":"Field","name":{"kind":"Name","value":"score"}},{"kind":"Field","name":{"kind":"Name","value":"criteriaName"}},{"kind":"Field","name":{"kind":"Name","value":"criteriaType"}}]}},{"kind":"Field","name":{"kind":"Name","value":"judgeId"}},{"kind":"Field","name":{"kind":"Name","value":"judgeName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"teamId"}},{"kind":"Field","name":{"kind":"Name","value":"teamName"}},{"kind":"Field","name":{"kind":"Name","value":"teamScore"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetScoreSheetJuryQuery, GetScoreSheetJuryQueryVariables>;
 export const GetTotalScoresDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetTotalScores"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getTotalScores"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"eventId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"eventId"}}},{"kind":"Argument","name":{"kind":"Name","value":"roundNo"},"value":{"kind":"Variable","name":{"kind":"Name","value":"roundNo"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetTotalScoresSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"judgeScore"}},{"kind":"Field","name":{"kind":"Name","value":"teamId"}},{"kind":"Field","name":{"kind":"Name","value":"totalScore"}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetTotalScoresQuery, GetTotalScoresQueryVariables>;
 export const GetUserXpDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserXp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getUserXp"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryGetUserXpSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"level"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"point"}}]}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<GetUserXpQuery, GetUserXpQueryVariables>;
 export const MeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"me"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Error"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"QueryMeSuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"college"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isVerified"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"phoneNumber"}},{"kind":"Field","name":{"kind":"Name","value":"role"}},{"kind":"Field","name":{"kind":"Name","value":"profileImage"}},{"kind":"Field","name":{"kind":"Name","value":"college"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<MeQuery, MeQueryVariables>;

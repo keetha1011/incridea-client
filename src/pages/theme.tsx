@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Confetti from "react-dom-confetti";
-import Loader from "../components/Loader";
+import { useEffect } from "react";
 import { baseImageUrl } from "../utils/url";
 
 function Theme() {

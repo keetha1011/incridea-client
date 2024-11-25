@@ -1,5 +1,5 @@
 export function parseTime(timeString: string): number {
-  const timeParts = timeString.split(':').map(Number);
+  const timeParts = timeString.split(":").map(Number);
   let totalMilliseconds = 0;
   if (timeParts.length === 1) {
     totalMilliseconds = timeParts[0];
@@ -23,15 +23,15 @@ export function formatTime(milliseconds: number): string {
   const minutes = Math.floor((milliseconds % 3600000) / 60000);
   const seconds = Math.floor((milliseconds % 60000) / 1000);
   const millisecondsLeft = milliseconds % 1000;
-  let timeString = '';
+  let timeString = "";
   if (hours > 0) {
     timeString += `${hours}:`;
   }
   if (hours > 0 || minutes > 0) {
-    timeString += `${minutes.toString().padStart(2, '0')}:`;
+    timeString += `${minutes.toString().padStart(2, "0")}:`;
   }
-  timeString += `${seconds.toString().padStart(2, '0')}.${millisecondsLeft
+  timeString += `${seconds.toString().padStart(2, "0")}.${millisecondsLeft
     .toString()
-    .padStart(3, '0')}`;
+    .padStart(3, "0")}`;
   return timeString;
 }

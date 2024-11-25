@@ -594,23 +594,3 @@ export const StatusBadge = ({ status }: { status: string }) => {
     );
   return null;
 };
-
-type customRound = {
-  completed: Scalars["Boolean"];
-  criteria?: Maybe<Criteria[]> | undefined;
-  date?: Maybe<Scalars["DateTime"]>;
-  event: Event;
-  eventId: Scalars["ID"];
-  judges: Array<Judge>;
-  roundNo: Scalars["Int"];
-  selectStatus: Scalars["Boolean"];
-};
-
-const isCompleted = (rounds: customRound[]) => {
-  const totalRounds = rounds.length;
-  let completedRounds = 0;
-  rounds.forEach((round) => {
-    if (round.completed === true) completedRounds++;
-  });
-  return totalRounds === completedRounds;
-};

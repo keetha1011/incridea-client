@@ -107,19 +107,22 @@ const Navbar = () => {
           leave="transition-all ease-in-out duration-300"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
-          className="lg:hidden"
         >
-          {links.map((link) => (
-            <Link
-              key={link.url}
-              href={link.url}
-              onClick={closeMenu}
-              className="block pb-3 px-2 text-sm text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.9)]"
-            >
-              {link.label}
-            </Link>
-          ))}
-          {!(router.pathname === "/login") && <AuthButtons className="mb-2" />}
+          <div className="lg:hidden">
+            {links.map((link) => (
+              <Link
+                key={link.url}
+                href={link.url}
+                onClick={closeMenu}
+                className="block pb-3 px-2 text-sm text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.9)]"
+              >
+                {link.label}
+              </Link>
+            ))}
+            {!(router.pathname === "/login") && (
+              <AuthButtons className="mb-2" />
+            )}
+          </div>
         </Transition>
       </div>
     </nav>

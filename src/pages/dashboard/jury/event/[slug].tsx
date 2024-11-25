@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Spinner from "@/src/components/spinner";
 import { useAuth } from "@/src/hooks/useAuth";
 import { useRouter } from "next/router";
@@ -16,8 +15,6 @@ import { StatusBadge } from "..";
 import { NextPage, NextPageContext } from "next";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
-import Modal from "@/src/components/modal";
-import Button from "@/src/components/button";
 import ViewTeamModal from "@/src/components/pages/dashboard/jury/ViewTeamModal";
 import ViewWinners from "@/src/components/pages/dashboard/jury/viewWinners";
 
@@ -190,6 +187,18 @@ const RoundTable = ({
   );
 };
 
+type a = {
+  __typename?: "JudgeJuryView";
+  judgeId: number;
+  judgeName: string;
+  criteria: Array<{
+    __typename?: "CriteriaJuryView";
+    criteriaId: number;
+    score: number;
+    criteriaName: string;
+  }>;
+}[];
+
 const JudgeTable = ({
   judges,
   teams,
@@ -197,8 +206,8 @@ const JudgeTable = ({
   judges: QueryGetScoreSheetJuryViewSuccess["data"][0]["judges"];
   teams: QueryGetScoreSheetJuryViewSuccess["data"];
 }) => {
-  const [csvData, setCsvData] = useState([]);
-  const [judgeName, setJudgeName] = useState(null);
+  const [csvData, setCsvData] = useState<{}[]>([]);
+  const [judgeName, setJudgeName] = useState<string | null>(null);
   const process = (judgeId: any) => {
     const judgesData: any = [];
     const teamData: any = [];
@@ -212,7 +221,9 @@ const JudgeTable = ({
     data.push({ JudgeName: judgesData[0][0]?.judgeName });
 
     teamData.map((team: any, index: any) => {
-      let obj = {};
+      let obj: {
+        [key: string]: any;
+      } = {};
       let sum = 0;
       obj["teamNames"] = team;
       judgesData[index][0]?.criteria?.map((data: any) => {
@@ -294,7 +305,10 @@ const JudgeTable = ({
                 >
                   {team.teamName}
                 </div>
-                <ViewTeamModal teamId={team.teamId} teamName={team.teamName} />
+                <ViewTeamModal
+                  teamId={team.teamId.toString()}
+                  teamName={team.teamName}
+                />
 
                 {team.judges
                   .find((j) => j.judgeId === judge.judgeId)

@@ -83,7 +83,6 @@ const AddAccommodateDetails: FC<{
               }}
               value={hotelDetails}
               id="hotelName"
-              placeholder="Hotel Name"
               className="border text-sm rounded-lg block w-11/12 p-2.5 bg-gray-600 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 ring-gray-500"
             >
               {allHotels?.getAllHotels.map((hot) => (
@@ -118,7 +117,6 @@ const AddAccommodateDetails: FC<{
               }}
               value={status}
               id="status"
-              placeholder="Status"
               className="border text-sm rounded-lg block w-11/12 p-2.5 bg-gray-600 border-gray-600 placeholder-gray-400 text-white focus:outline-none focus:ring-2 ring-gray-500"
             >
               {Object.values(AccommodationStatus).map((item, index) => (
