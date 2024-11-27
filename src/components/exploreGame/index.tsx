@@ -1,24 +1,21 @@
-/* eslint-disable @next/next/no-img-element */
-import styles from "@/src/components/explore/audioPlayer.module.css";
-import { AddXpDocument, GetUserXpDocument } from "@/src/generated/generated";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { AiFillSound, AiOutlineSound } from "react-icons/ai";
-import { IoVolumeHigh, IoVolumeMute } from "react-icons/io5";
 import { MdArrowRightAlt } from "react-icons/md";
 import Typewriter from "typewriter-effect";
-import Button from "../button";
-import AudioPlayer from "../explore/AudioPlayer";
-import ExploreNav from "../explore/exploreNav";
+
+import AudioPlayer from "~/components/explore/AudioPlayer";
+import ExploreNav from "~/components/explore/exploreNav";
+import { env } from "~/env";
+import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
+
 import {
   SpriteDimensions,
   platformDimensions,
   platformSpriteDimensions,
 } from "./gameConstants";
-import { baseImageUrl, baseAudioUrl } from "@/src/utils/url";
 
 const fps: number = 60;
 const actionKeys: string[] = [];
@@ -46,7 +43,10 @@ const ExploreGame = () => {
     if (isMutedRef.current) {
       return;
     }
-    const isJump = path === `${baseAudioUrl}/audio/jump.mp3` ? true : false;
+    const isJump =
+      path === `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/jump.mp3`
+        ? true
+        : false;
     if (isJump && audioElement === "jump") {
       return;
     }
@@ -82,7 +82,7 @@ const ExploreGame = () => {
               backgroundColor: "#7628D0",
               color: "white",
             },
-          }
+          },
         );
       }
     });
@@ -143,16 +143,16 @@ const ExploreGame = () => {
       const leftPlatformSpriteHeight =
         window.innerHeight * platformDimensions.left.heightPercentage;
       const leftPlatformSpriteWidth = Math.ceil(
-        leftPlatformSpriteHeight * platformDimensions.left.aspectRatio
+        leftPlatformSpriteHeight * platformDimensions.left.aspectRatio,
       );
 
       setLeftPlatformX(
         window.innerWidth * 0.5 -
-          leftPlatformSpriteWidth * platformDimensions.left.xPercentage
+          leftPlatformSpriteWidth * platformDimensions.left.xPercentage,
       );
 
       setLeftPlatformY(
-        window.innerHeight * platformDimensions.left.yPercentage
+        window.innerHeight * platformDimensions.left.yPercentage,
       );
 
       setLeftPlatformHeight(leftPlatformSpriteHeight);
@@ -161,16 +161,16 @@ const ExploreGame = () => {
       const rightPlatformSpriteHeight =
         window.innerHeight * platformDimensions.right.heightPercentage;
       const rightPlatformSpriteWidth = Math.ceil(
-        leftPlatformSpriteHeight * platformDimensions.right.aspectRatio
+        leftPlatformSpriteHeight * platformDimensions.right.aspectRatio,
       );
 
       setRightPlatformX(
         window.innerWidth * 0.5 -
-          rightPlatformSpriteWidth * platformDimensions.right.xPercentage
+          rightPlatformSpriteWidth * platformDimensions.right.xPercentage,
       );
 
       setRightPlatformY(
-        window.innerHeight * platformDimensions.right.yPercentage
+        window.innerHeight * platformDimensions.right.yPercentage,
       );
 
       setRightPlatformHeight(rightPlatformSpriteHeight);
@@ -181,7 +181,7 @@ const ExploreGame = () => {
   function MoveRight() {
     if (frameCount === 0 && isGrounded) {
       if (
-        spriteIndex >= SpriteDimensions.right[1].length - 1 &&
+        spriteIndex >= SpriteDimensions.right[1]!.length - 1 &&
         frameCount == 0
       )
         spriteIndex = 0;
@@ -190,12 +190,15 @@ const ExploreGame = () => {
     if (player.current.x < boundary.right) {
       player.current.x += velocity.current.x;
     }
-    movementSoundTrigger(`${baseAudioUrl}/audio/XMovement.mp3`, 300);
+    movementSoundTrigger(
+      `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/XMovement.mp3`,
+      300,
+    );
   }
 
   function MoveLeft() {
     if (frameCount === 0 && isGrounded) {
-      if (spriteIndex >= SpriteDimensions.left[1].length - 1) spriteIndex = 0;
+      if (spriteIndex >= SpriteDimensions.left[1]!.length - 1) spriteIndex = 0;
       else {
         spriteIndex++;
       }
@@ -203,18 +206,24 @@ const ExploreGame = () => {
     if (player.current.x > boundary.left) {
       player.current.x -= velocity.current.x;
     }
-    movementSoundTrigger(`${baseAudioUrl}/audio/XMovement.mp3`, 300);
+    movementSoundTrigger(
+      `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/XMovement.mp3`,
+      300,
+    );
   }
 
   function Jump() {
-    movementSoundTrigger(`${baseAudioUrl}/audio/jump.mp3`, 250);
+    movementSoundTrigger(
+      `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/jump.mp3`,
+      250,
+    );
     audioElement = "jump";
     if (isGrounded) {
       velocity.current.y = -Math.sqrt(
         window.innerHeight *
           (1.62 - platformDimensions.left.yPercentage) *
           2 *
-          gravity
+          gravity,
       );
       isGrounded = false;
     }
@@ -250,7 +259,7 @@ const ExploreGame = () => {
 
   function drawBackground(
     ctx: CanvasRenderingContext2D | null | undefined,
-    background: HTMLImageElement
+    background: HTMLImageElement,
   ) {
     // console.log(ctx);
     if (ctx) {
@@ -258,21 +267,21 @@ const ExploreGame = () => {
       const imgWidth = Math.ceil((imgHeight * 2) / 7); // 1000 is the width of the background image, 3500 is the height of the background image
       const repeatCount = Math.ceil(window.innerWidth / imgWidth);
       for (let i = 0; i < repeatCount; i++) {
-        ctx?.drawImage(background, i * imgWidth, 0, imgWidth, imgHeight);
+        ctx.drawImage(background, i * imgWidth, 0, imgWidth, imgHeight);
       }
     }
   }
 
   const drawGround = (
     ctx: CanvasRenderingContext2D | null | undefined,
-    platformSprite: HTMLImageElement
+    platformSprite: HTMLImageElement,
   ) => {
     if (canvas.current && ctx) {
       // Drawing the ground
       const groundSpriteHeight = window.innerHeight * 0.3;
       const groundSpriteWidth = Math.ceil((groundSpriteHeight * 500) / 245); // 500 is the width of the platform sprite, 245 is the height of the platform sprite
       const repeatCountGround = Math.ceil(
-        window.innerWidth / groundSpriteWidth
+        window.innerWidth / groundSpriteWidth,
       );
       for (let i = 0; i < repeatCountGround; i++) {
         ctx.drawImage(
@@ -284,7 +293,7 @@ const ExploreGame = () => {
           i * groundSpriteWidth,
           window.innerHeight * 1.7,
           groundSpriteWidth,
-          groundSpriteHeight
+          groundSpriteHeight,
         );
       }
 
@@ -302,7 +311,7 @@ const ExploreGame = () => {
           i * grassSpriteWidth,
           window.innerHeight * 1.577,
           grassSpriteWidth,
-          grassSpriteHeight
+          grassSpriteHeight,
         );
       }
     }
@@ -310,14 +319,14 @@ const ExploreGame = () => {
 
   const drawPlatform = (
     ctx: CanvasRenderingContext2D | null | undefined,
-    platformSprite: HTMLImageElement
+    platformSprite: HTMLImageElement,
   ) => {
     if (canvas.current && ctx) {
       // Drawing the central platform
       const centralPlatformSpriteHeight =
         window.innerHeight * platformDimensions.centre.heightPercentage;
       const centralPlatformSpriteWidth = Math.ceil(
-        centralPlatformSpriteHeight * platformDimensions.centre.aspectRatio
+        centralPlatformSpriteHeight * platformDimensions.centre.aspectRatio,
       );
       ctx.drawImage(
         platformSprite,
@@ -329,23 +338,23 @@ const ExploreGame = () => {
           centralPlatformSpriteWidth * platformDimensions.centre.xPercentage,
         window.innerHeight * platformDimensions.centre.yPercentage,
         centralPlatformSpriteWidth,
-        centralPlatformSpriteHeight
+        centralPlatformSpriteHeight,
       );
 
       // Drawing the left platform
       const leftPlatformSpriteHeight =
         window.innerHeight * platformDimensions.left.heightPercentage;
       const leftPlatformSpriteWidth = Math.ceil(
-        leftPlatformSpriteHeight * platformDimensions.left.aspectRatio
+        leftPlatformSpriteHeight * platformDimensions.left.aspectRatio,
       );
 
       setLeftPlatformX(
         window.innerWidth * 0.5 -
-          leftPlatformSpriteWidth * platformDimensions.left.xPercentage
+          leftPlatformSpriteWidth * platformDimensions.left.xPercentage,
       );
 
       setLeftPlatformY(
-        window.innerHeight * platformDimensions.left.yPercentage
+        window.innerHeight * platformDimensions.left.yPercentage,
       );
 
       setLeftPlatformHeight(leftPlatformSpriteHeight);
@@ -361,23 +370,23 @@ const ExploreGame = () => {
           leftPlatformSpriteWidth * platformDimensions.left.xPercentage,
         window.innerHeight * platformDimensions.left.yPercentage,
         leftPlatformSpriteWidth,
-        leftPlatformSpriteHeight
+        leftPlatformSpriteHeight,
       );
 
       // Drawing the right platform
       const rightPlatformSpriteHeight =
         window.innerHeight * platformDimensions.right.heightPercentage;
       const rightPlatformSpriteWidth = Math.ceil(
-        leftPlatformSpriteHeight * platformDimensions.right.aspectRatio
+        leftPlatformSpriteHeight * platformDimensions.right.aspectRatio,
       );
 
       setRightPlatformX(
         window.innerWidth * 0.5 -
-          rightPlatformSpriteWidth * platformDimensions.right.xPercentage
+          rightPlatformSpriteWidth * platformDimensions.right.xPercentage,
       );
 
       setRightPlatformY(
-        window.innerHeight * platformDimensions.right.yPercentage
+        window.innerHeight * platformDimensions.right.yPercentage,
       );
 
       setRightPlatformHeight(rightPlatformSpriteHeight);
@@ -393,30 +402,30 @@ const ExploreGame = () => {
           rightPlatformSpriteWidth * platformDimensions.right.xPercentage,
         window.innerHeight * platformDimensions.right.yPercentage,
         rightPlatformSpriteWidth,
-        rightPlatformSpriteHeight
+        rightPlatformSpriteHeight,
       );
     }
   };
 
   const collisionDetection = (
-    ctx: CanvasRenderingContext2D | null | undefined
+    ctx: CanvasRenderingContext2D | null | undefined,
   ) => {
     const centralPlatformSpriteHeight =
       window.innerHeight * platformDimensions.centre.heightPercentage;
     const centralPlatformSpriteWidth = Math.ceil(
-      centralPlatformSpriteHeight * platformDimensions.centre.aspectRatio
+      centralPlatformSpriteHeight * platformDimensions.centre.aspectRatio,
     );
 
     const leftPlatformSpriteHeight =
       window.innerHeight * platformDimensions.left.heightPercentage;
     const leftPlatformSpriteWidth = Math.ceil(
-      leftPlatformSpriteHeight * platformDimensions.left.aspectRatio
+      leftPlatformSpriteHeight * platformDimensions.left.aspectRatio,
     );
 
     const rightPlatformSpriteHeight =
       window.innerHeight * platformDimensions.right.heightPercentage;
     const rightPlatformSpriteWidth = Math.ceil(
-      rightPlatformSpriteHeight * platformDimensions.right.aspectRatio
+      rightPlatformSpriteHeight * platformDimensions.right.aspectRatio,
     );
 
     // ctx?.strokeRect(
@@ -448,7 +457,10 @@ const ExploreGame = () => {
       // Standing on the ground
       if (audioElement !== "ground") {
         audioElement = "ground";
-        movementSoundTrigger(`${baseAudioUrl}/audio/thud.mp3`, 300);
+        movementSoundTrigger(
+          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thud.mp3`,
+          300,
+        );
       }
       isGrounded = true;
       player.current.y = window.innerHeight * 1.62 - player.current.height;
@@ -475,7 +487,10 @@ const ExploreGame = () => {
       isGrounded = true;
       if (audioElement !== "left") {
         audioElement = "left";
-        movementSoundTrigger(`${baseAudioUrl}/audio/thump.mp3`, 300);
+        movementSoundTrigger(
+          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
+          300,
+        );
       }
 
       if (showScheduleFlag) {
@@ -526,7 +541,10 @@ const ExploreGame = () => {
       // Standing on the right platform
       if (audioElement !== "right") {
         audioElement = "right";
-        movementSoundTrigger(`${baseAudioUrl}/audio/thump.mp3`, 300);
+        movementSoundTrigger(
+          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
+          300,
+        );
       }
       isGrounded = true;
       if (showRuleBookFlag) {
@@ -576,7 +594,10 @@ const ExploreGame = () => {
       // Standing on the central platform
       if (audioElement !== "middle") {
         audioElement = "middle";
-        movementSoundTrigger(`${baseAudioUrl}/audio/thump.mp3`, 300);
+        movementSoundTrigger(
+          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
+          300,
+        );
       }
       isGrounded = true;
       if (showAboutFlag) {
@@ -606,7 +627,10 @@ const ExploreGame = () => {
       velocity.current.y = 0;
 
       /* ######### EASTER EGG GOES HERE ######### */
-      movementSoundTrigger(`${baseAudioUrl}/audio/thud.mp3`, 300);
+      movementSoundTrigger(
+        `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thud.mp3`,
+        300,
+      );
       handleAddXp();
       //replace with xp sound
       return;
@@ -670,8 +694,10 @@ const ExploreGame = () => {
 
     const currentSpriteState =
       spriteState === "idle"
-        ? SpriteDimensions[isRightDirection ? "right" : "left"][0][0]
-        : SpriteDimensions[isRightDirection ? "right" : "left"][1][spriteIndex];
+        ? SpriteDimensions[isRightDirection ? "right" : "left"][0]![0]
+        : SpriteDimensions[isRightDirection ? "right" : "left"][1]![
+            spriteIndex
+          ];
 
     player.current.y += velocity.current.y;
     collisionDetection(ctx.current);
@@ -684,14 +710,14 @@ const ExploreGame = () => {
     if (ctx) {
       ctx.current?.drawImage(
         ryokoSprite.current as HTMLImageElement,
-        currentSpriteState.x,
-        currentSpriteState.y,
-        currentSpriteState.width,
-        currentSpriteState.height,
+        currentSpriteState!.x,
+        currentSpriteState!.y,
+        currentSpriteState!.width,
+        currentSpriteState!.height,
         player.current.x,
         player.current.y,
         player.current.width,
-        player.current.height
+        player.current.height,
       );
     }
 
@@ -708,7 +734,7 @@ const ExploreGame = () => {
     ctx.current = canvas.current?.getContext("2d");
     window.addEventListener("resize", resizeCanvas);
     window.addEventListener("keydown", (event) =>
-      keyboardDownEventHandler(event)
+      keyboardDownEventHandler(event),
     );
     window.addEventListener("keyup", (event) => keyboardUpEventHandler(event));
     // window.addEventListener("scroll", () => {
@@ -719,10 +745,10 @@ const ExploreGame = () => {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("keydown", (event) =>
-        keyboardDownEventHandler(event)
+        keyboardDownEventHandler(event),
       );
       window.removeEventListener("keyup", (event) =>
-        keyboardUpEventHandler(event)
+        keyboardUpEventHandler(event),
       );
       // window.removeEventListener("scroll", () => {
       //   setScrollY(window.scrollY);
@@ -749,44 +775,44 @@ const ExploreGame = () => {
       <ExploreNav />
       <AudioPlayer
         mainThemeAudioRef={mainThemeAudioRef}
-        mainTheme={`${baseAudioUrl}/audio/Level1MainTheme.mp3`}
+        mainTheme={`${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/Level1MainTheme.mp3`}
         isMuted={isMuted}
         setIsMuted={setIsMuted}
       ></AudioPlayer>
-      <div className="h-[200vh] relative w-full overflow-clip">
+      <div className="relative h-[200vh] w-full overflow-clip">
         <div className="hidden">
           <img
-            src={`${baseImageUrl}/assets/spriteSheets/ryokoSpriteSheet.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/spriteSheets/ryokoSpriteSheet.png`}
             alt=""
             ref={ryokoSprite}
           />
           <img
-            src={`${baseImageUrl}/assets/spriteSheets/background.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/spriteSheets/background.png`}
             alt=""
             ref={background}
           />
           <img
-            src={`${baseImageUrl}/assets/spriteSheets/platformSprite2.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/spriteSheets/platformSprite2.png`}
             alt=""
             ref={platformSprite}
           />
         </div>
-        <div className="flex w-full justify-center items-center">
+        <div className="flex w-full items-center justify-center">
           <div
-            className="absolute bg-[#d64d00] z-50 h-max w-max top-[20%] text-[#fec3b5] font-PressStart text-center sm:p-12 border-l-4 border-t-4 border-white p-4 rounded-lg"
+            className="absolute top-[20%] z-50 h-max w-max rounded-lg border-l-4 border-t-4 border-white bg-[#d64d00] p-4 text-center font-PressStart text-[#fec3b5] sm:p-12"
             style={{ borderStyle: "outset" }}
           >
-            <h1 className="lg:text-8xl md:text-7xl sm:text-6xl text-4xl">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl">
               INCRIDEA
             </h1>
-            <h3 className="lg:text-5xl md:text-4xl sm:text-3xl text-xl">
+            <h3 className="text-xl sm:text-3xl md:text-4xl lg:text-5xl">
               DICE OF DESTINY
             </h3>
-            <span className="absolute -top-16 text-white left-0 flex flex-col lg:text-xl md:text-lg sm:text-md text-sm">
+            <span className="sm:text-md absolute -top-16 left-0 flex flex-col text-sm text-white md:text-lg lg:text-xl">
               <p>RYOKO</p>
               <p>000006</p>
             </span>
-            <span className="absolute -bottom-5 text-white right-0 lg:text-xl md:text-lg sm:text-md text-sm">
+            <span className="sm:text-md absolute -bottom-5 right-0 text-sm text-white md:text-lg lg:text-xl">
               © Incridea 2024
             </span>
           </div>
@@ -825,21 +851,21 @@ const ExploreGame = () => {
             pointerEvents: scrollY > 400 && showAbout ? "all" : "none",
             transition: "opacity 0.5s ease-in-out",
           }}
-          className="absolute z-50  h-[20rem] md:h-[24rem] sm:h-[20rem] sm:w-[32rem] sm:text-xs sm:top-[35%]  md:w-[36rem] md:text-sm w-[22rem] text-[0.6rem]  top-[30%] mx-4 text-opacity-80  bg-[#86d6e9]/30 p-6 xl:top-[45%] xl:left-6 xl:max-w-xl xl:text-base xl:h-[28rem]  text-white font-PressStart justify-evenly text-justify space-y-4 rounded-lg transition-all duration-300 ease-in-out"
+          className="absolute top-[30%] z-50 mx-4 h-[20rem] w-[22rem] justify-evenly space-y-4 rounded-lg bg-[#86d6e9]/30 p-6 text-justify font-PressStart text-[0.6rem] text-white text-opacity-80 transition-all duration-300 ease-in-out sm:top-[35%] sm:h-[20rem] sm:w-[32rem] sm:text-xs md:h-[24rem] md:w-[36rem] md:text-sm xl:left-6 xl:top-[45%] xl:h-[28rem] xl:max-w-xl xl:text-base"
         >
           <Typewriter
             onInit={(typewriter) => {
               typewriter
                 .changeDelay(30)
                 .typeString(
-                  "Incridea, the national level techno-cultural fest of NMAM Institute of Technology, Nitte, is a vibrant celebration of technical, literary, and cultural activities, spanning over three days and 40+ events to find new horizons.<br/><br/> Now it's time to make your move, as you enter the game world of board and pixels, where you will be met with labyrinths of games and wonders. Roll the Dice, your Destiny Awaits!"
+                  "Incridea, the national level techno-cultural fest of NMAM Institute of Technology, Nitte, is a vibrant celebration of technical, literary, and cultural activities, spanning over three days and 40+ events to find new horizons.<br/><br/> Now it's time to make your move, as you enter the game world of board and pixels, where you will be met with labyrinths of games and wonders. Roll the Dice, your Destiny Awaits!",
                 )
 
                 .start();
             }}
           />
 
-          <span className="absolute bottom-1 right-2 text-xs font-mono">
+          <span className="absolute bottom-1 right-2 font-mono text-xs">
             Try controlling Ryoko
           </span>
         </div>
@@ -851,20 +877,20 @@ const ExploreGame = () => {
               (scrollY > 400 && showRuleBook) || showSchedule ? "all" : "none",
             transition: "opacity 0.5s ease-in-out",
           }}
-          className="absolute z-50 h-max sm:max-w-lg sm:text-xs sm:top-[35%] md:max-w-xl md:text-sm max-w-md text-xs top-[30%] mx-4 text-opacity-80  bg-[#86d6e9]/30 p-6 xl:top-[45%] xl:left-6 left-12 xl:max-w-xl xl:text-base  text-white font-PressStart justify-evenly text-justify space-y-4 rounded-lg transition-all duration-300 ease-in-out"
+          className="absolute left-12 top-[30%] z-50 mx-4 h-max max-w-md justify-evenly space-y-4 rounded-lg bg-[#86d6e9]/30 p-6 text-justify font-PressStart text-xs text-white text-opacity-80 transition-all duration-300 ease-in-out sm:top-[35%] sm:max-w-lg sm:text-xs md:max-w-xl md:text-sm xl:left-6 xl:top-[45%] xl:max-w-xl xl:text-base"
         >
           {/* <p>Jello</p> */}
           <div className="flex w-full justify-center">
             <Image
               src={
                 showRuleBook
-                  ? `${baseImageUrl}/assets/png/ruleBook.png`
-                  : `${baseImageUrl}/assets/png/rulebook.png`
+                  ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/ruleBook.png`
+                  : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/rulebook.png`
               }
               alt="RuleBook"
               width={500}
               height={500}
-              className="w-[10rem] h-[15rem] sm:w-[12rem] sm:h-[18rem] md:w-[14rem] md:h-[21rem] xl:w-[20rem] xl:h-[30rem]"
+              className="h-[15rem] w-[10rem] sm:h-[18rem] sm:w-[12rem] md:h-[21rem] md:w-[14rem] xl:h-[30rem] xl:w-[20rem]"
             />
           </div>
           <a
@@ -873,7 +899,7 @@ const ExploreGame = () => {
                 ? "https://drive.google.com/file/d/1H43LJXI4E-HELku71b9NLOBRoDpmxuHk/view?usp=drive_link"
                 : "https://drive.google.com/file/d/1oqBkgCtTzA3asYb1UUKmUE092fRiobJG/view?usp=drive_link"
             }
-            className="flex w-full justify-center py-4 bg-orange-500 rounded-xl"
+            className="flex w-full justify-center rounded-xl bg-orange-500 py-4"
             download
           >
             <button className="px-4">
@@ -882,17 +908,17 @@ const ExploreGame = () => {
           </a>
         </div>
 
-        <div className="absolute sm:top-[57%] top-[75%] sm:right-12 right-2 z-50 text-white font-bold animate-pulse pointer-events-none">
+        <div className="pointer-events-none absolute right-2 top-[75%] z-50 animate-pulse font-bold text-white sm:right-12 sm:top-[57%]">
           <MdArrowRightAlt
             size={80}
-            className="text-white justify-center w-full flex"
+            className="flex w-full justify-center text-white"
           />
           <span>Move to Level 2</span>
         </div>
-        <canvas ref={canvas} className="h-[200vh] w-full absolute"></canvas>
+        <canvas ref={canvas} className="absolute h-[200vh] w-full"></canvas>
 
         <div
-          className="sticky h-screen top-0 justify-end items-end flex w-full "
+          className="sticky top-0 flex h-screen w-full items-end justify-end"
           style={{
             opacity: scrollY > window.innerHeight * 0.5 ? 0.5 : 0,
             pointerEvents: scrollY > window.innerHeight * 0.5 ? "all" : "none",
@@ -927,7 +953,7 @@ const ExploreGame = () => {
                   actionKeys.splice(actionKeys.indexOf("ArrowRight"), 1);
                 }
               }}
-              className="pointer-events-auto select-none z-10"
+              className="pointer-events-auto z-10 select-none"
             >
               <g id="Rectangle 6" filter="url(#filter0_b_95_21)">
                 <rect
@@ -971,7 +997,7 @@ const ExploreGame = () => {
                   actionKeys.splice(actionKeys.indexOf("ArrowUp"), 1);
                 }
               }}
-              className="pointer-events-auto select-none z-10"
+              className="pointer-events-auto z-10 select-none"
             >
               <g id="Rectangle 6_2" filter="url(#filter1_b_95_21)">
                 <rect
@@ -1019,7 +1045,7 @@ const ExploreGame = () => {
                   actionKeys.splice(actionKeys.indexOf("ArrowLeft"), 1);
                 }
               }}
-              className="pointer-events-auto select-none z-10"
+              className="pointer-events-auto z-10 select-none"
             >
               <g id="Rectangle 7" filter="url(#filter2_b_95_21)">
                 <rect

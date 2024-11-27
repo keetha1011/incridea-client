@@ -1,6 +1,7 @@
-import { baseImageUrl } from "@/src/utils/url";
 import Image from "next/image";
 import React, { FC } from "react";
+
+import { env } from "~/env";
 
 const EventsPeek: FC<{
   speed: number;
@@ -36,17 +37,22 @@ const EventsPeek: FC<{
         data-scroll
         data-scroll-speed={speed}
         data-scroll-direction="horizontal"
-        className="w-[500%] md:w-[350%] lg:w-[250%] flex gap-2 py-2 items-center backdrop-filter">
+        className="flex w-[500%] items-center gap-2 py-2 backdrop-filter md:w-[350%] lg:w-[250%]"
+      >
         {images.slice(0, 10).map((i, idx) => {
           return (
-            <div className="flex justify-center items-start gap-5" key={idx}>
+            <div className="flex items-start justify-center gap-5" key={idx}>
               <Image
-                src={baseImageUrl + "/assets/Core_Event_Posters/" + i}
+                src={
+                  env.NEXT_PUBLIC_BASE_IMAGE_URL +
+                  "/assets/Core_Event_Posters/" +
+                  i
+                }
                 alt="Gallery Image"
                 width={500}
                 height={300}
               />
-              <div className="absolute top-0 left-0 w-full h-full bg-blue-300 bg-opacity-[3%]"></div>
+              <div className="absolute left-0 top-0 h-full w-full bg-blue-300 bg-opacity-[3%]"></div>
             </div>
           );
         })}
@@ -54,8 +60,8 @@ const EventsPeek: FC<{
     </section>
   ) : (
     <>
-      <div className="w-full relative">
-        <div className="py-2 m-auto rotate-[15deg] overflow-hidden relative top-28 right-20 w-[200%]">
+      <div className="relative w-full">
+        <div className="relative right-20 top-28 m-auto w-[200%] rotate-[15deg] overflow-hidden py-2">
           <ul
             className="flex w-[calc(250px*20)] animate-scroll-reverse"
             style={{
@@ -63,25 +69,30 @@ const EventsPeek: FC<{
               willChange: "translate, transform",
               transitionDelay: "10ms",
               transitionTimingFunction: "ease-in-out",
-            }}>
+            }}
+          >
             {images.map((i, idx) => {
               return (
-                <li className="w-[250px] py-2 px-1" key={idx}>
+                <li className="w-[250px] px-1 py-2" key={idx}>
                   <Image
-                    src={baseImageUrl + "/assets/Core_Event_Posters/" + i}
+                    src={
+                      env.NEXT_PUBLIC_BASE_IMAGE_URL +
+                      "/assets/Core_Event_Posters/" +
+                      i
+                    }
                     alt={i.slice(0, i.indexOf("."))}
                     width={500}
                     height={300}
                   />
-                  <div className="absolute top-0 left-0 w-full h-full bg-blue-300 bg-opacity-[1%]"></div>
+                  <div className="absolute left-0 top-0 h-full w-full bg-blue-300 bg-opacity-[1%]"></div>
                 </li>
               );
             })}
           </ul>
-        <div className="absolute h-full w-[200%] py-10 inset-0 backdrop-blur-sm"></div>
+          <div className="absolute inset-0 h-full w-[200%] py-10 backdrop-blur-sm"></div>
         </div>
 
-        <div className="py-2 m-auto -rotate-[15deg] overflow-hidden relative -top-36 right-20 w-[200%]">
+        <div className="relative -top-36 right-20 m-auto w-[200%] -rotate-[15deg] overflow-hidden py-2">
           <ul
             className="flex w-[calc(250px*20)] animate-scroll"
             style={{
@@ -89,17 +100,22 @@ const EventsPeek: FC<{
               willChange: "translate, transform",
               transitionDelay: "10ms",
               transitionTimingFunction: "ease-in-out",
-            }}>
+            }}
+          >
             {images.map((i, idx) => {
               return (
-                <li className="w-[250px] py-2 px-1" key={idx}>
+                <li className="w-[250px] px-1 py-2" key={idx}>
                   <Image
-                    src={baseImageUrl + "/assets/Core_Event_Posters/" + i}
+                    src={
+                      env.NEXT_PUBLIC_BASE_IMAGE_URL +
+                      "/assets/Core_Event_Posters/" +
+                      i
+                    }
                     alt={i.slice(0, i.indexOf("."))}
                     width={500}
                     height={300}
                   />
-                  <div className="absolute top-0 left-0 w-full h-full bg-blue-300 bg-opacity-[1%]"></div>
+                  <div className="absolute left-0 top-0 h-full w-full bg-blue-300 bg-opacity-[1%]"></div>
                 </li>
               );
             })}

@@ -1,10 +1,11 @@
-import { useAuth } from "@/src/hooks/useAuth";
-import { useRouter } from "next/router";
 import { NextPage } from "next";
-import Spinner from "@/src/components/spinner";
+import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
-import Dashboard from "@/src/components/layout/dashboard";
-import EventList from "@/src/components/pages/dashboard/branchrep/EventList";
+
+import EventList from "~/components/general/dashboard/branchrep/EventList";
+import Dashboard from "~/components/layout/dashboard";
+import Spinner from "~/components/spinner";
+import { useAuth } from "~/hooks/useAuth";
 
 const BranchRep: NextPage = () => {
   const router = useRouter();
@@ -12,7 +13,7 @@ const BranchRep: NextPage = () => {
 
   if (loading)
     return (
-      <div className="h-screen w-screen flex justify-center">
+      <div className="flex h-screen w-screen justify-center">
         <Spinner />
       </div>
     );
@@ -30,7 +31,7 @@ const BranchRep: NextPage = () => {
     <Dashboard>
       <Toaster />
       {/* Welcome Header */}
-      <h1 className="text-4xl mb-3">
+      <h1 className="mb-3 text-4xl">
         Hello <span className="font-semibold">{user?.name}</span>!
       </h1>
       <div className="mt-3">

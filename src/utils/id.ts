@@ -3,7 +3,9 @@ export const idToPid = (id: string) => {
 };
 
 export const pidToId = (pid: string) => {
-  return pid.startsWith("INC24") ? parseInt(pid?.split("-")[1]).toString() : "";
+  return pid.startsWith("INC24")
+    ? parseInt(pid?.split("-")[1]!).toString()
+    : "";
 };
 
 export const idToTeamId = (id: string) => {
@@ -11,5 +13,5 @@ export const idToTeamId = (id: string) => {
 };
 
 export const teamIdToId = (teamId: string) => {
-  return parseInt(teamId?.split("-")[1]).toString();
+  return parseInt(teamId?.split("-")[1]!).toString();
 };

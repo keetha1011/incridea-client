@@ -19,7 +19,7 @@ const Parallax = ({
   const transform = useTransform(
     scrollYProgress,
     [0, 1],
-    [-100 * speed, 100 * speed]
+    [-100 * speed, 100 * speed],
   );
 
   return (

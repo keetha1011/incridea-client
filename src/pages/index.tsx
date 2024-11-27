@@ -1,4 +1,5 @@
 import { useQuery } from "@apollo/client";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
@@ -6,26 +7,27 @@ import { NextRouter, useRouter } from "next/router";
 import Parallax from "parallax-js";
 import { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
-import ArcadeLoader from "../components/Loader/arcadeLoader";
-import Button from "../components/button";
-import Spinner from "../components/spinner";
-import { GetUserXpDocument } from "../generated/generated";
-import { useAuth } from "../hooks/useAuth";
-import { baseImageUrl } from "../utils/url";
-import { VikingHell } from "./_app";
+
+import Button from "~/components/button";
+import ArcadeLoader from "~/components/loader/arcadeLoader";
+import Spinner from "~/components/spinner";
+import { env } from "~/env";
+import { GetUserXpDocument } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
+import { cn } from "~/lib/utils";
 
 export default function Landing() {
   const router = useRouter();
   const { data: userXp, loading: userXpLoading } = useQuery(
     GetUserXpDocument,
-    {}
+    {},
   );
   const [xp, setXp] = useState<number>(0);
 
   useEffect(() => {
     if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess") {
       setXp(
-        userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0)
+        userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0),
       );
     } else {
       setXp(0);
@@ -33,7 +35,7 @@ export default function Landing() {
   }, [userXpLoading]);
 
   return (
-    <main className="h-screen relative overflow-hidden">
+    <main className="relative h-screen overflow-hidden">
       {typeof window !== "undefined" && (
         <>
           {window.sessionStorage.getItem("arcadeLoader") ? null : (
@@ -61,34 +63,34 @@ export const HomeFooter = () => {
     return () => clearTimeout(timeout);
   }, [show]);
   return (
-    <footer className="absolute w-full text-gray-200 bottom-0 flex flex-col gap-2 md:gap-4">
+    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4">
       {show && (
-        <ul className="flex flex-wrap whitespace-nowrap flex-row flex-1 gap-2 md:gap-5 justify-center text-xs sm:text-xs items-center mb-5">
-          <li className="text-white hover:text-gray-300 transition-colors duration-300">
+        <ul className="mb-5 flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
+          <li className="text-white transition-colors duration-300 hover:text-gray-300">
             <Link href="/privacy">Privacy Policy</Link>
           </li>
           |
-          <li className="text-white hover:text-gray-300 transition-colors duration-300">
+          <li className="text-white transition-colors duration-300 hover:text-gray-300">
             <Link href="/rules">Terms & Conditions</Link>
           </li>
           |
-          <li className="text-white hover:text-gray-300 transition-colors duration-300">
+          <li className="text-white transition-colors duration-300 hover:text-gray-300">
             <Link href="/guidelines">Guidelines</Link>
           </li>
           |
-          <li className="text-white hover:text-gray-300 transition-colors duration-300">
+          <li className="text-white transition-colors duration-300 hover:text-gray-300">
             <Link href="/refund">Refund Policy</Link>
           </li>
           |
-          <li className="text-white hover:text-gray-300 transition-colors duration-300">
+          <li className="text-white transition-colors duration-300 hover:text-gray-300">
             <Link href="/contact">Contact Us</Link>
           </li>
         </ul>
       )}
       {!show && (
-        <p className="text-center text-xs pb-3">
+        <p className="pb-3 text-center text-xs">
           <Link
-            className="flex justify-center items-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
+            className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
             href="/team"
           >
             Made with <BsFillSuitHeartFill className="mx-2" /> by Technical Team
@@ -115,18 +117,18 @@ export const Menu: FC<{
   const { user, loading, error } = useAuth();
 
   return (
-    <div className="w-screen overflow-x-hidden flex flex-col absolute bottom-0 left-0 h-full justify-center items-center">
-      <div className="lg:flex flex-col hidden  absolute bottom-10 items-center sm:flex-row  md:gap-10 my-24 gap-3  w-fit ">
+    <div className="absolute bottom-0 left-0 flex h-full w-screen flex-col items-center justify-center overflow-x-hidden">
+      <div className="absolute bottom-10 my-24 hidden w-fit flex-col items-center gap-3 sm:flex-row md:gap-10 lg:flex">
         <Button
           intent={"primary"}
-          className="h-fit w-52  px-4 sm:px-12"
+          className="h-fit w-52 px-4 sm:px-12"
           size={"xlarge"}
           onClick={() => {
             loading
               ? null
               : user
-              ? router.push("/profile")
-              : router.push("/login");
+                ? router.push("/profile")
+                : router.push("/login");
           }}
         >
           {loading ? (
@@ -148,9 +150,12 @@ export const Menu: FC<{
           Explore
         </Button>
       </div>
-      <div className="space-y-5 absolute flex flex-col w-fit h-fit -right-8 bottom-[15%]  lg:absolute ">
+      <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
         <h3
-          className={`text-2xl hidden md:block  md:mb-5 sm:text-4xl  text-white  tracking-widest text-center ${VikingHell.className} `}
+          className={cn(
+            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
+            // VikingHell.className,
+          )}
         >
           Menu
         </h3>
@@ -158,14 +163,14 @@ export const Menu: FC<{
           <>
             <Button
               intent={"ghost"}
-              className="lg:hidden !bg-primary-800/70 block w-52 md:w-80 justify-center md:justify-end px-12 md:px-16"
+              className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
               size={"xlarge"}
               onClick={() => {
                 loading
                   ? null
                   : user
-                  ? router.push("/profile")
-                  : router.push("/login");
+                    ? router.push("/profile")
+                    : router.push("/login");
               }}
             >
               {loading ? (
@@ -178,7 +183,7 @@ export const Menu: FC<{
             </Button>
             <Button
               intent={"ghost"}
-              className="lg:hidden !bg-primary-800/70 block w-52 md:w-80 justify-center md:justify-end px-12 md:px-16"
+              className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
               size={"xlarge"}
               onClick={() => {
                 router.push("/explore");
@@ -191,7 +196,7 @@ export const Menu: FC<{
         {navItems.map((e, i) => (
           <Link key={i} href={e.href}>
             <Button
-              className="w-52 md:w-80 justify-center md:justify-end px-12 md:px-16"
+              className="w-52 justify-center px-12 md:w-80 md:justify-end md:px-16"
               size={"xlarge"}
             >
               {e.target}
@@ -215,17 +220,23 @@ export const HomeUi: FC<{
   });
 
   const Logo = useRef(null);
-  gsap.from(Logo.current, {
-    delay: 0,
-    duration: 0,
-    scale: 3,
-    opacity: 0.6,
-    zIndex: 9999,
-  });
-  gsap.to(Logo.current, {
-    duration: 2,
-    scale: 1,
-    opacity: 1,
+
+  useGSAP(() => {
+    if (!Logo.current) return;
+
+    gsap.from(Logo.current, {
+      delay: 0,
+      duration: 0,
+      scale: 3,
+      opacity: 0.6,
+      zIndex: 9999,
+    });
+
+    gsap.to(Logo.current, {
+      duration: 2,
+      scale: 1,
+      opacity: 1,
+    });
   });
 
   return (
@@ -233,9 +244,9 @@ export const HomeUi: FC<{
       {/* <CountDown /> */}
       <section
         id="scene"
-        className="relative bg-gradient-to-b min-h-screen from-[#00002a] via-[#1c23bb] to-pink-800/50"
+        className="relative min-h-screen bg-gradient-to-b from-[#00002a] via-[#1c23bb] to-pink-800/50"
       >
-        <div className="h-screen w-screen absolute">
+        <div className="absolute h-screen w-screen">
           <div id="foglayer_01" className="fog">
             <div className="image01"></div>
             <div className="image02"></div>
@@ -250,61 +261,61 @@ export const HomeUi: FC<{
           </div>
         </div>
 
-        <div data-depth="0.5" className="absolute  h-screen w-screen ">
-          <div className="opacity-50 translate-y-16 h-[75vh] md:h-full absolute bottom-0 left-[50%] -translate-x-1/2 md:left-0 md:translate-x-0 md:w-full aspect-video  ">
+        <div data-depth="0.5" className="absolute h-screen w-screen">
+          <div className="absolute bottom-0 left-[50%] aspect-video h-[75vh] -translate-x-1/2 translate-y-16 opacity-50 md:left-0 md:h-full md:w-full md:translate-x-0">
             <Image
-              src={`${baseImageUrl}/assets/home/moon.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/moon.png`}
               alt="Gradient"
               width={1920}
               height={1080}
-              className="object-bottom  h-full w-full object-contain"
+              className="h-full w-full object-contain object-bottom"
             />
           </div>
         </div>
-        <div data-depth="0.4" className="h-screen w-screen absolute">
+        <div data-depth="0.4" className="absolute h-screen w-screen">
           <Image
-            src={`${baseImageUrl}/assets/home/stars.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/stars.png`}
             alt="Gradient"
             width={1920}
             height={1080}
-            className="w-full h-full object-center object-cover absolute "
+            className="absolute h-full w-full object-cover object-center"
           />
         </div>
 
         <div data-depth="0.3" className="absolute h-screen w-screen">
-          <div className="h-full absolute aspect-video right-0  translate-x-[18%]  sm:translate-x-[12%] md:translate-x-[10%] bottom-0 lg:translate-x-[4%] translate-y-[3%]">
+          <div className="absolute bottom-0 right-0 aspect-video h-full translate-x-[18%] translate-y-[3%] sm:translate-x-[12%] md:translate-x-[10%] lg:translate-x-[4%]">
             <Image
-              src={`${baseImageUrl}/assets/home/portal.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/portal.png`}
               alt="Portal"
               width={2050}
               height={1080}
-              className="w-full h-full object-cover object-right-bottom  "
+              className="h-full w-full object-cover object-right-bottom"
             />
           </div>
         </div>
         <div
           data-depth="0.2"
-          className="absolute flex  items-center  justify-center h-screen w-screen"
+          className="absolute flex h-screen w-screen items-center justify-center"
         >
-          <div className="w-fit mx-auto p-5 mt-[3%]" ref={Logo}>
+          <div className="mx-auto mt-[3%] w-fit p-5" ref={Logo}>
             <Image
-              src={`${baseImageUrl}/assets/home/DoD.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/DoD.png`}
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="object-center max-w-xl w-full h-fit object-contain"
+              className="h-fit w-full max-w-xl object-contain object-center"
             />
           </div>
         </div>
         <div data-depth="0.1" className="absolute h-screen w-screen">
-          <div className="h-full absolute aspect-video left-0 -translate-x-[20%] sm:-translate-x-[18%]  md:-translate-x-[12%] bottom-0 lg:-translate-x-[10%] translate-y-[3%]   ">
+          <div className="absolute bottom-0 left-0 aspect-video h-full -translate-x-[20%] translate-y-[3%] sm:-translate-x-[18%] md:-translate-x-[12%] lg:-translate-x-[10%]">
             <Image
-              src={`${baseImageUrl}/assets/home/ryoko.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/ryoko.png`}
               id="Ryoko"
               alt="Ryoko looking at portal"
               width={1920}
               height={1080}
-              className="w-full h-full object-cover object-left-bottom"
+              className="h-full w-full object-cover object-left-bottom"
             />
           </div>
         </div>

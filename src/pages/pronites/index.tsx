@@ -1,34 +1,42 @@
-import * as THREE from "three";
-import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useGSAP } from "@gsap/react";
 import {
   Text,
   useTexture,
   MeshReflectorMaterial,
   useProgress,
 } from "@react-three/drei";
-import { SlVolume2, SlVolumeOff } from "react-icons/sl";
-import ProniteCard from "@/src/components/pronites/card";
+import { Canvas, useFrame } from "@react-three/fiber";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import Dhvani from "@/src/components/pronites/dhvani";
-import Nakash from "@/src/components/pronites/nakash";
-import { baseImageUrl, baseAudioUrl } from "@/src/utils/url";
-import Loader from "@/src/components/pronite/loader";
-import Info from "@/src/components/pronites/info";
+import dynamic from "next/dynamic";
+import React, { Suspense, useEffect, useRef, useState } from "react";
+import { SlVolume2, SlVolumeOff } from "react-icons/sl";
+import * as THREE from "three";
+
+import Loader from "~/components/pronite/loader";
+import ProniteCard from "~/components/pronites/card";
+import Info from "~/components/pronites/info";
+import { env } from "~/env";
+
+const Dhvani = dynamic(() => import("~/components/pronites/dhvani"), {
+  ssr: false,
+});
+
+const Nakash = dynamic(() => import("~/components/pronites/nakash"), {
+  ssr: false,
+});
 
 const artists = [
   {
     name: "Dhvani Bhanushali",
     time: "23rd Feb @ 7PM",
-    imageSrc: `${baseImageUrl}/assets/jpeg/DhvaniBhanushali.jpeg`,
-    audioSrc: `${baseAudioUrl}/assets/mp3/DhvaniBhanushali.mp3`,
+    imageSrc: `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/jpeg/DhvaniBhanushali.jpeg`,
+    audioSrc: `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/assets/mp3/DhvaniBhanushali.mp3`,
   },
   {
     name: "Nakash Aziz",
     time: "24th Feb @ 7PM",
-    imageSrc: `${baseImageUrl}/assets/jpeg/Nakash.jpeg`,
-    audioSrc: `${baseAudioUrl}/assets/mp3/NakashAziz.mp3`,
+    imageSrc: `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/jpeg/Nakash.jpeg`,
+    audioSrc: `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/assets/mp3/NakashAziz.mp3`,
   },
 ];
 
@@ -56,7 +64,7 @@ export default function App() {
   useEffect(() => {
     if (!loading) {
       audioRef.current &&
-        (audioRef.current.src = artists[isArtist1 ? 0 : 1].audioSrc);
+        (audioRef.current.src = artists[isArtist1 ? 0 : 1]!.audioSrc);
       audioRef.current && (audioRef.current.currentTime = 0);
       audioRef.current?.play();
 
@@ -96,12 +104,12 @@ export default function App() {
   return (
     <>
       <ProniteCard
-        artist={{ ...artists[0] }}
+        artist={{ ...artists[0]! }}
         isArtist={isArtist1}
         gradient="pink"
       />
       <ProniteCard
-        artist={{ ...artists[1] }}
+        artist={{ ...artists[1]! }}
         isArtist={!isArtist1}
         gradient="blue"
       />
@@ -111,17 +119,17 @@ export default function App() {
           if (audioRef.current) audioRef.current.muted = !isMuted;
           setIsMuted(!isMuted);
         }}
-        className="absolute text-white top-[95px] right-3 z-50 cursor-pointer"
+        className="absolute right-3 top-[95px] z-50 cursor-pointer text-white"
       >
         {isMuted ? (
-          <SlVolumeOff className="w-8 h-8 transition-colors duration-150" />
+          <SlVolumeOff className="h-8 w-8 transition-colors duration-150" />
         ) : (
-          <SlVolume2 className="w-8 h-8 transition-colors duration-150" />
+          <SlVolume2 className="h-8 w-8 transition-colors duration-150" />
         )}
       </button>
       <audio ref={audioRef} loop={true} muted={isMuted}></audio>
       {instruction && !loading && (
-        <div className="animate-pulse absolute bottom-48 md:bottom-56 lg:bottom-10 opacity-65 text-gray-400 left-1/2 -translate-x-1/2 z-50 text-base md:text-lg xl:text-xl">
+        <div className="absolute bottom-48 left-1/2 z-50 -translate-x-1/2 animate-pulse text-base text-gray-400 opacity-65 md:bottom-56 md:text-lg lg:bottom-10 xl:text-xl">
           Click to see next artist
         </div>
       )}
@@ -167,11 +175,11 @@ export default function App() {
 function DhvaniText(props: { position: [x: number, y: number, z: number] }) {
   const [video] = useState(() =>
     Object.assign(document.createElement("video"), {
-      src: `${baseAudioUrl}/assets/mp4/dhvani.mp4`,
+      src: `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/assets/mp4/dhvani.mp4`,
       crossOrigin: "Anonymous",
       loop: true,
       muted: true,
-    })
+    }),
   );
   useEffect(() => void video.play(), [video]);
 
@@ -211,11 +219,11 @@ function DhvaniText(props: { position: [x: number, y: number, z: number] }) {
 function NakashText(props: { position: [x: number, y: number, z: number] }) {
   const [video] = useState(() =>
     Object.assign(document.createElement("video"), {
-      src: `${baseAudioUrl}/assets/mp4/nakash.mp4`,
+      src: `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/assets/mp4/nakash.mp4`,
       crossOrigin: "Anonymous",
       loop: true,
       muted: true,
-    })
+    }),
   );
   useEffect(() => void video.play(), [video]);
 
@@ -255,8 +263,8 @@ function NakashText(props: { position: [x: number, y: number, z: number] }) {
 
 function Ground() {
   const [floor, normal] = useTexture([
-    `${baseImageUrl}/assets/pronite/SurfaceImperfections003_1K_var1.jpg`,
-    `${baseImageUrl}/assets/pronite/SurfaceImperfections003_1K_Normal.jpg`,
+    `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/pronite/SurfaceImperfections003_1K_var1.jpg`,
+    `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/pronite/SurfaceImperfections003_1K_Normal.jpg`,
   ]);
   return (
     <mesh rotation={[-Math.PI / 2, 0, Math.PI / 2]}>
@@ -282,7 +290,7 @@ function Intro() {
   return useFrame((state) => {
     state.camera.position.lerp(
       vec.set(state.pointer.x * 5, 3 + state.pointer.y * 2, 14),
-      0.05
+      0.05,
     );
     state.camera.lookAt(0, 0, 0);
   });

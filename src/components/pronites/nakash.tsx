@@ -1,8 +1,9 @@
-import * as THREE from "three";
-import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations, useFBX } from "@react-three/drei";
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
 import { GLTF } from "three-stdlib";
-import { baseImageUrl } from "@/src/utils/url";
+
+import { env } from "~/env";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -25,14 +26,14 @@ type GLTFResult = GLTF & {
 export default function Nakash(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group | null>(null);
   const { nodes, materials } = useGLTF(
-    `${baseImageUrl}/assets/3d/naakashAnimated.glb`
+    `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/naakashAnimated.glb`,
   ) as GLTFResult;
   // const { actions } = useAnimations(animations, group);
   const { animations } = useFBX("/assets/3d/nakashSinging.fbx");
   const { actions, names } = useAnimations(animations, group);
 
   useEffect(() => {
-    actions[names[0]]?.reset().play();
+    if (names.length > 0) actions[names[0]!]?.reset().play();
   }, [actions, names]);
   return (
     <group ref={group} {...props} dispose={null}>
@@ -75,4 +76,6 @@ export default function Nakash(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload(`${baseImageUrl}/assets/3d/naakashAnimated.glb`);
+useGLTF.preload(
+  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/naakashAnimated.glb`,
+);

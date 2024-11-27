@@ -1,15 +1,32 @@
-/** @type {import('next').NextConfig} */
+// TODO(Omkar): Add PWA support
+// import PWA from "next-pwa";
+// const withPWA = PWA({
+//   dest: "public",
+//   disable: env.NODE_ENV === "development",
+// });
 
-const runtimeCaching = require('next-pwa/cache');
-const withPWA = require('next-pwa')({
-  dest: 'public',
-  disable: process.env.NODE_ENV === 'development',
-  runtimeCaching,
-});
+/**
+ * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
+ * for Docker builds.
+ */
+import "./src/env.js";
 
-module.exports = withPWA({
+/** @type {import("next").NextConfig} */
+const config = {
   reactStrictMode: true,
+
   images: {
-    domains: ['res.cloudinary.com', 'incridemo.web.app',],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "incridemo.web.app",
+      },
+    ],
   },
-})
+};
+
+export default config;

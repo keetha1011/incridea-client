@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
-const ExploreGame = dynamic(() => import("@/src/components/exploreGame/"), {
+
+const ExploreGame = dynamic(() => import("~/components/exploreGame/"), {
   ssr: false,
 });
 

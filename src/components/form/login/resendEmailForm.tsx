@@ -1,10 +1,11 @@
+import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { FaAngleLeft } from "react-icons/fa";
-import Button from "../../button";
-import Spinner from "../../spinner";
-import { useMutation } from "@apollo/client";
-import { EmailVerificationDocument } from "@/src/generated/generated";
+
+import Button from "~/components/button";
+import Spinner from "~/components/spinner";
+import { EmailVerificationDocument } from "~/generated/generated";
 
 type Props = {
   setWhichForm: (whichForm: "signIn" | "resetPassword" | "signUp") => void;
@@ -49,19 +50,19 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
   return (
     <>
       <form
-        className={`relative py-3 px-3 flex flex-col gap-2 min-h-full justify-center ${
-          loading && "cursor-not-allowed pointer-events-none"
+        className={`relative flex min-h-full flex-col justify-center gap-2 px-3 py-3 ${
+          loading && "pointer-events-none cursor-not-allowed"
         }`}
         onSubmit={handleSubmit}
       >
-        <h2 className="text-center text-2xl pb-1 font-semibold">
+        <h2 className="pb-1 text-center text-2xl font-semibold">
           Resend Verification Email
         </h2>
         {data?.sendEmailVerification.__typename ===
         "MutationSendEmailVerificationSuccess" ? (
-          <div className="flex flex-col gap-2 text-center items-center text-[#d7037f] bg-secondary-300 font-semibold p-4 pb-2 rounded-md">
+          <div className="flex flex-col items-center gap-2 rounded-md bg-secondary-300 p-4 pb-2 text-center font-semibold text-[#d7037f]">
             <BiCheckCircle size={"2rem"} />
-            <div className="bg-secondary-300 flex flex-col text-center mb-5 items-center gap-3 rounded-md font-semibold">
+            <div className="mb-5 flex flex-col items-center gap-3 rounded-md bg-secondary-300 text-center font-semibold">
               Verification email sent to {email}
               <br />
               Please check your inbox.
@@ -72,7 +73,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="font-normal underline text-sm transition-colors text-secondary-800 hover:font-medium"
+                  className="text-sm font-normal text-secondary-800 underline transition-colors hover:font-medium"
                 >
                   Click here to resend it
                 </button>
@@ -81,7 +82,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
           </div>
         ) : (
           <>
-            <h6 className="text-center mb-10 ">
+            <h6 className="mb-10 text-center">
               Enter your email to receive a verification link
             </h6>
             <input
@@ -92,12 +93,12 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
               }}
               type="email"
               required
-              className=" py-2 px-1 border-b  bg-transparent transition-all border-gray-400   placeholder:text-gray-500    md:focus:border-red-500 outline-none"
+              className="border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-gray-500 md:focus:border-red-500"
               placeholder="Email"
             />
 
             {(error || emailVerificationError) && (
-              <div className="bg-red-100 p-2 flex items-center gap-3 px-4 rounded-md font-semibold text-red-500 overflow-x-auto min-w-full">
+              <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
                 <BiErrorCircle size={"1.3rem"} />
                 {error || emailVerificationError?.message}
               </div>
@@ -108,7 +109,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
             </Button>
 
             {loading && (
-              <div className="absolute h-full w-full bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60 inset-0 cursor-not-allowed z-10 rounded-lg">
+              <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
                 <Spinner className="text-[#dd5c6e]" intent={"white"} />
               </div>
             )}

@@ -1,18 +1,20 @@
-import Button from "../button";
-import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
-import MainMenuModal from "./mainMenuModal";
-import { useAuth } from "@/src/hooks/useAuth";
-import { GetUserXpDocument } from "../../generated/generated";
 import Image from "next/image";
 import Link from "next/link";
-import { VikingHell } from "../../pages/_app";
+import { useState, useEffect } from "react";
+
+import Button from "~/components/button";
+import { GetUserXpDocument } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
+
+import MainMenuModal from "./mainMenuModal";
+
 export default function ExploreNav() {
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth();
   const { data: userXp, loading: userXpLoading } = useQuery(
     GetUserXpDocument,
-    {}
+    {},
   );
   const [xp, setXp] = useState<number>(0);
 
@@ -30,7 +32,7 @@ export default function ExploreNav() {
   useEffect(() => {
     if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess") {
       setXp(
-        userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0)
+        userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0),
       );
     } else {
       setXp(0);
@@ -39,18 +41,18 @@ export default function ExploreNav() {
 
   return (
     <>
-      <div className="fixed w-full flex justify-between items-center z-[1000] p-4">
+      <div className="fixed z-[1000] flex w-full items-center justify-between p-4">
         {user ? (
-          <div className="flex flex-row space-x-1 items-center titleFont text-white ">
+          <div className="titleFont flex flex-row items-center space-x-1 text-white">
             <Image
               src={"/assets/png/XP.png"}
               width={100}
               height={100}
               alt="map"
-              className="sm:h-10 sm:w-10 h-8 w-8"
+              className="h-8 w-8 sm:h-10 sm:w-10"
             />
 
-            <p className="font-sans relative text-xl">{xp}</p>
+            <p className="relative font-sans text-xl">{xp}</p>
           </div>
         ) : (
           <div></div>

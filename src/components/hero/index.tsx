@@ -1,16 +1,16 @@
 // @refresh reset
+import { Alignment, Fit, Layout, useRive } from "@rive-app/react-canvas";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import React from "react";
 
-import { Alignment, Fit, Layout, useRive } from '@rive-app/react-canvas';
-import { motion } from 'framer-motion';
-import React from 'react';
-import TextAnimation from '../animation/text';
-import Image from 'next/image';
-import { baseImageUrl } from '@/src/utils/url';
+import TextAnimation from "~/components/animation/text";
+import { env } from "~/env";
 
 const Hero: React.FC = () => {
   const { RiveComponent: LandingBg } = useRive({
     src: `assets/rive/landing-scene-bg-1.riv/`,
-    stateMachines: ['state-machine'],
+    stateMachines: ["state-machine"],
     autoplay: true,
     layout: new Layout({
       fit: Fit.FitWidth,
@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
   });
   const { RiveComponent: LandingWave } = useRive({
     src: `assets/rive/landing-scene-wave-1.riv/`,
-    stateMachines: ['state-machine'],
+    stateMachines: ["state-machine"],
     autoplay: true,
     layout: new Layout({
       fit: Fit.FitWidth,
@@ -30,15 +30,15 @@ const Hero: React.FC = () => {
   return (
     <section
       data-scroll-section
-      style={{willChange: 'transform'}}
-      className="relative bg-gradient-to-bl -z-10  from-indigo-200 via-sky-500 to-cyan-100"
+      style={{ willChange: "transform" }}
+      className="relative -z-10 bg-gradient-to-bl from-indigo-200 via-sky-500 to-cyan-100"
     >
       {/* 1. Sun Rays */}
       <Image
-        className="hidden md:block absolute  top-0 right-0 z-50 "
+        className="absolute right-0 top-0 z-50 hidden md:block"
         data-scroll
         data-scroll-speed="2"
-        src={`${baseImageUrl}/assets/png/lensflare.webp`}
+        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/lensflare.webp`}
         width={1000}
         height={1000}
         alt="flare"
@@ -48,20 +48,20 @@ const Hero: React.FC = () => {
       <motion.div
         data-scroll
         data-scroll-speed="-8"
-        className="absolute -z-10  top-9 md:top-0 left-0   "
+        className="absolute left-0 top-9 -z-10 md:top-0"
       >
-        <LandingBg className="h-[70vh] w-screen  md:h-screen " />
+        <LandingBg className="h-[70vh] w-screen md:h-screen" />
       </motion.div>
 
       {/* 3. Hero Title */}
       <motion.div
         data-scroll
         data-scroll-speed="-6"
-        className="absolute  -top-20 md:top-0 right-0 -z-10 backdrop-blur-[1px] text-white flex flex-col justify-center items-center w-screen min-h-screen"
+        className="absolute -top-20 right-0 -z-10 flex min-h-screen w-screen flex-col items-center justify-center text-white backdrop-blur-[1px] md:top-0"
       >
         <Image
-          className="w-full max-w-lg px-10 h-fit"
-          src={`${baseImageUrl}/assets/png/logo.png`}
+          className="h-fit w-full max-w-lg px-10"
+          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo.png`}
           priority
           width={500}
           height={500}
@@ -74,22 +74,23 @@ const Hero: React.FC = () => {
       </motion.div>
 
       {/* 4. Foreground Animation */}
-      <LandingWave className=" h-[75vh] w-screen  md:h-screen z-0" />
+      <LandingWave className="z-0 h-[75vh] w-screen md:h-screen" />
     </section>
   );
 };
 
 function Sun() {
   return (
-    <div className="w-40 h-40 rounded-full bg-yellow-400 relative">
+    <div className="relative h-40 w-40 rounded-full bg-yellow-400">
       {[...Array(8)].map((_, index) => (
         <div
           key={index}
-          className={`w-full h-2 rounded-full absolute ${index % 2 === 0 ? 'bg-transparent' : 'bg-yellow-500'
-            }`}
+          className={`absolute h-2 w-full rounded-full ${
+            index % 2 === 0 ? "bg-transparent" : "bg-yellow-500"
+          }`}
           style={{
-            top: '50%',
-            left: '50%',
+            top: "50%",
+            left: "50%",
             transform: `rotate(${index * 45}deg) translateY(-50%)`,
             background: `linear-gradient(to top, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%)`,
           }}

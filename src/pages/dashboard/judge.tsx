@@ -1,19 +1,20 @@
-import Dashboard from "@/src/components/layout/dashboard";
-import Criterias from "@/src/components/pages/dashboard/judge/Criterias";
-import SelectedTeamList from "@/src/components/pages/dashboard/judge/SelectedTeamList";
-import TeamList from "@/src/components/pages/dashboard/judge/TeamList";
-import Spinner from "@/src/components/spinner";
-import {
-  JudgeGetTeamsByRoundDocument,
-  RoundByJudgeDocument,
-  WinnersByEventDocument,
-} from "@/src/generated/generated";
-import { useAuth } from "@/src/hooks/useAuth";
 import { useQuery, useSubscription } from "@apollo/client";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
+
+import Criterias from "~/components/general/dashboard/judge/Criterias";
+import SelectedTeamList from "~/components/general/dashboard/judge/SelectedTeamList";
+import TeamList from "~/components/general/dashboard/judge/TeamList";
+import Dashboard from "~/components/layout/dashboard";
+import Spinner from "~/components/spinner";
+import {
+  JudgeGetTeamsByRoundDocument,
+  RoundByJudgeDocument,
+  WinnersByEventDocument,
+} from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 type Props = {};
 
@@ -46,7 +47,7 @@ const Judge: NextPage = (props: Props) => {
         !user ||
         loading ||
         !(data?.roundByJudge.__typename === "QueryRoundByJudgeSuccess"),
-    }
+    },
   );
 
   const { data: winners, loading: winnersLoading } = useQuery(
@@ -62,19 +63,19 @@ const Judge: NextPage = (props: Props) => {
           data?.roundByJudge.data.roundNo ===
             data.roundByJudge.data.event.rounds.length
         ),
-    }
+    },
   );
 
   const isCompleted =
     (data?.roundByJudge.__typename === "QueryRoundByJudgeSuccess" &&
       data.roundByJudge.data.event.rounds.find(
-        (round) => roundNo === round.roundNo
+        (round) => roundNo === round.roundNo,
       )?.completed) ||
     false;
 
   if (loading)
     return (
-      <div className="h-screen w-screen flex justify-center">
+      <div className="flex h-screen w-screen justify-center">
         <Spinner />
       </div>
     );
@@ -93,13 +94,13 @@ const Judge: NextPage = (props: Props) => {
     <Dashboard>
       <Toaster />
       <div
-        className={isCompleted ? "pointer-events-none opacity-30 relative" : ""}
+        className={isCompleted ? "pointer-events-none relative opacity-30" : ""}
       >
-        <div className="relative px-4 sm:px-10 py-4 flex flex-wrap justify-between items-center">
-          <h1 className="text-2xl sm:text-3xl mb-3">
+        <div className="relative flex flex-wrap items-center justify-between px-4 py-4 sm:px-10">
+          <h1 className="mb-3 text-2xl sm:text-3xl">
             Hello <span className="font-semibold">{user?.name}</span>!
           </h1>
-          <h1 className="text-2xl sm:text-3xl mb-3">
+          <h1 className="mb-3 text-2xl sm:text-3xl">
             {data?.roundByJudge.__typename === "QueryRoundByJudgeSuccess" && (
               <span>
                 Round {data.roundByJudge.data.roundNo} of{" "}
@@ -109,14 +110,14 @@ const Judge: NextPage = (props: Props) => {
           </h1>
         </div>
         {isCompleted && (
-          <div className="absolute top-0 left-0 w-full h-full bg-black/50 flex justify-center items-center">
+          <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-black/50">
             <h1 className="text-3xl font-semibold text-white">
               Thank you for judging this event!
             </h1>
           </div>
         )}
-        <div className="flex flex-wrap w-full justify-center sm:flex-nowrap min-h-[80vh] gap-3 px-8 sm:px-0 mb-10">
-          <div className="w-full sm:w-auto sm:basis-1/2 shrink-0 grow-0 bg-black/20 rounded-lg ">
+        <div className="mb-10 flex min-h-[80vh] w-full flex-wrap justify-center gap-3 px-8 sm:flex-nowrap sm:px-0">
+          <div className="w-full shrink-0 grow-0 rounded-lg bg-black/20 sm:w-auto sm:basis-1/2">
             {EventLoading ? (
               <Spinner />
             ) : (
@@ -143,7 +144,7 @@ const Judge: NextPage = (props: Props) => {
               </>
             )}
           </div>
-          <div className="w-full sm:w-auto sm:basis-1/2 shrink-0 grow-0 bg-black/20 rounded-lg ">
+          <div className="w-full shrink-0 grow-0 rounded-lg bg-black/20 sm:w-auto sm:basis-1/2">
             {EventLoading ? (
               <Spinner />
             ) : (
@@ -180,7 +181,7 @@ const Judge: NextPage = (props: Props) => {
                     )}
                   </>
                 ) : (
-                  <div className="flex justify-center items-center h-full">
+                  <div className="flex h-full items-center justify-center">
                     <h1 className="text-2xl font-semibold">
                       Choose a team to start judging.
                     </h1>

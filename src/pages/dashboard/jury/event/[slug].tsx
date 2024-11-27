@@ -1,39 +1,54 @@
-import Spinner from "@/src/components/spinner";
-import { useAuth } from "@/src/hooks/useAuth";
-import { useRouter } from "next/router";
-
 import { useQuery } from "@apollo/client";
-import Dashboard from "@/src/components/layout/dashboard";
 import { Tab } from "@headlessui/react";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+  NextPageContext,
+} from "next";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { CSVLink } from "react-csv";
+
+import ViewTeamModal from "~/components/general/dashboard/jury/ViewTeamModal";
+import ViewWinners from "~/components/general/dashboard/jury/viewWinners";
+import Dashboard from "~/components/layout/dashboard";
+import Spinner from "~/components/spinner";
 import {
   EventByIdDocument,
   EventByIdQuery,
   GetScoreSheetJuryDocument,
   QueryGetScoreSheetJuryViewSuccess,
-} from "@/src/generated/generated";
-import { StatusBadge } from "..";
-import { NextPage, NextPageContext } from "next";
-import { useState } from "react";
-import { CSVLink } from "react-csv";
-import ViewTeamModal from "@/src/components/pages/dashboard/jury/ViewTeamModal";
-import ViewWinners from "@/src/components/pages/dashboard/jury/viewWinners";
+} from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
-const Jury: NextPage<{ slug: string }> = (props) => {
+import { StatusBadge } from "..";
+
+const getServerSideProps = async (context: NextPageContext) => {
+  const query = context.query;
+  const slug = query.slug as string;
+  return { props: { slug: slug } };
+};
+
+const Page = ({
+  slug,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const { user, loading, error } = useAuth();
   const router = useRouter();
-  console.log(props.slug, props.slug.split("-")[-1]);
+
   const {
     data: event,
     loading: eventLoading,
     error: eventError,
   } = useQuery(EventByIdDocument, {
     variables: {
-      id: props.slug.split("-").pop() as string,
+      id: slug.split("-").pop() as string,
     },
   });
+
   if (loading || eventLoading)
     return (
-      <div className="h-screen w-screen flex justify-center">
+      <div className="flex h-screen w-screen justify-center">
         <Spinner />
       </div>
     );
@@ -53,8 +68,6 @@ const Jury: NextPage<{ slug: string }> = (props) => {
   );
 };
 
-export default Jury;
-
 const RoundTabs = ({
   rounds,
   eventId,
@@ -63,7 +76,7 @@ const RoundTabs = ({
   eventId: string;
 }) => {
   const getCompletedRounds = (
-    rounds: EventByIdQuery["eventById"]["rounds"]
+    rounds: EventByIdQuery["eventById"]["rounds"],
   ) => {
     let completedRounds = 0;
     rounds.forEach((round) => {
@@ -73,12 +86,12 @@ const RoundTabs = ({
   };
   const getRoundStatus = (
     round: EventByIdQuery["eventById"]["rounds"][0],
-    totalRounds: number
+    totalRounds: number,
   ) => {
     if (round.completed) return "COMPLETED";
     if (
       new Date(
-        rounds.find((r) => r.roundNo === round.roundNo)?.date
+        rounds.find((r) => r.roundNo === round.roundNo)?.date,
       ).getTime() > new Date().getTime()
     )
       return "YET_TO_START";
@@ -87,9 +100,9 @@ const RoundTabs = ({
   return (
     <Tab.Group
       as={"div"}
-      className="sm:rounded-xl mt-5 overflow-hidden border-0 border-gray-900/40"
+      className="mt-5 overflow-hidden border-0 border-gray-900/40 sm:rounded-xl"
     >
-      <Tab.List className="w-full overflow-x-auto flex  backdrop-blur-md bg-gray-400/20 ">
+      <Tab.List className="flex w-full overflow-x-auto bg-gray-400/20 backdrop-blur-md">
         {rounds.map((round) => (
           <Tab
             key={`${round.roundNo}-${eventId}`}
@@ -97,10 +110,10 @@ const RoundTabs = ({
           >
             {({ selected }) => (
               <button
-                className={` sm:px-5 transition-colors whitespace-nowrap sm:py-4 sm:text-lg text-base p-3 font-semibold ${
+                className={`whitespace-nowrap p-3 text-base font-semibold transition-colors sm:px-5 sm:py-4 sm:text-lg ${
                   selected
-                    ? "bg-gray-900 shadow-lg shadow-black text-white"
-                    : "bg-transparent hover:bg-gray-800/60 text-white"
+                    ? "bg-gray-900 text-white shadow-lg shadow-black"
+                    : "bg-transparent text-white hover:bg-gray-800/60"
                 }`}
               >
                 <span>Round {round.roundNo} </span>
@@ -114,10 +127,10 @@ const RoundTabs = ({
         <Tab className="focus:outline-none" key="winners">
           {({ selected }) => (
             <button
-              className={` sm:px-5 transition-colors whitespace-nowrap sm:py-4 sm:text-lg text-base p-3 font-semibold ${
+              className={`whitespace-nowrap p-3 text-base font-semibold transition-colors sm:px-5 sm:py-4 sm:text-lg ${
                 selected
-                  ? "bg-gray-900 shadow-lg shadow-black text-white"
-                  : "bg-transparent hover:bg-gray-800/60 text-white"
+                  ? "bg-gray-900 text-white shadow-lg shadow-black"
+                  : "bg-transparent text-white hover:bg-gray-800/60"
               }`}
             >
               <span>Winners</span>
@@ -156,22 +169,6 @@ const RoundTable = ({
       roundNo: roundNo,
     },
   });
-  /*
-   data {
-        judges {
-          criteria {
-            criteriaId
-            score
-          }
-          judgeId
-          judgeName
-        }
-        teamId
-        teamName
-        teamScore
-      }
-    }
-   */
 
   if (roundLoading) return <Spinner />;
   if (!round) return <div>Something went wrong</div>;
@@ -181,23 +178,11 @@ const RoundTable = ({
     return <div>Nothing to show</div>;
   return (
     <JudgeTable
-      judges={round.getScoreSheetJuryView.data[0].judges}
+      judges={round.getScoreSheetJuryView.data[0]!.judges}
       teams={round.getScoreSheetJuryView.data}
     />
   );
 };
-
-type a = {
-  __typename?: "JudgeJuryView";
-  judgeId: number;
-  judgeName: string;
-  criteria: Array<{
-    __typename?: "CriteriaJuryView";
-    criteriaId: number;
-    score: number;
-    criteriaName: string;
-  }>;
-}[];
 
 const JudgeTable = ({
   judges,
@@ -240,8 +225,8 @@ const JudgeTable = ({
 
   return (
     <Tab.Group>
-      <Tab.List className="w-full items-center gap-5 p-2 flex bg-gray-300/20 text-white">
-        <span className="font-semibold text-xl ml-3">Judges </span>
+      <Tab.List className="flex w-full items-center gap-5 bg-gray-300/20 p-2 text-white">
+        <span className="ml-3 text-xl font-semibold">Judges </span>
         {judges.map((judge) => (
           <Tab
             key={judge.judgeId}
@@ -253,7 +238,7 @@ const JudgeTable = ({
                   setCsvData(process(judge?.judgeId));
                   setJudgeName(judge?.judgeName);
                 }}
-                className={`font-semibold hover:bg-gray-700/90 shadow-md py-2 px-4 ${
+                className={`px-4 py-2 font-semibold shadow-md hover:bg-gray-700/90 ${
                   selected ? "bg-gray-700" : "bg-gray-600"
                 }`}
               >
@@ -263,13 +248,13 @@ const JudgeTable = ({
           </Tab>
         ))}
         {judgeName ? (
-          <button className="bg-green-500 p-2 rounded-sm ml-auto mr-5">
+          <button className="ml-auto mr-5 rounded-sm bg-green-500 p-2">
             <CSVLink data={csvData}>
               Download Score sheet by {judgeName}
             </CSVLink>
           </button>
         ) : (
-          <p className="ml-auto mr-5 font-semibold bg-gray-800 shadow-md p-3">
+          <p className="ml-auto mr-5 bg-gray-800 p-3 font-semibold shadow-md">
             Click a judge for download option
           </p>
         )}
@@ -277,27 +262,27 @@ const JudgeTable = ({
       <Tab.Panels>
         {judges.map((judge) => (
           <Tab.Panel key={judge.judgeName}>
-            <div className="hidden md:flex bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg bg-clip-padding  p-1 items-center justify-between gap-2.5 text-xl font-bold h-16">
-              <div className="basis-1/3 py-2.5 text-center pl-2">Team Name</div>
+            <div className="hidden h-16 items-center justify-between gap-2.5 bg-white bg-opacity-20 bg-clip-padding p-1 text-xl font-bold backdrop-blur-lg backdrop-filter md:flex">
+              <div className="basis-1/3 py-2.5 pl-2 text-center">Team Name</div>
               {judge.criteria.map((criteria) => (
                 <div
                   key={criteria.criteriaId}
-                  className="basis-1/3 py-2.5 text-center pl-2"
+                  className="basis-1/3 py-2.5 pl-2 text-center"
                 >
                   {criteria.criteriaName}
                 </div>
               ))}
-              <div className="basis-1/3 py-2.5 text-center pl-2">
+              <div className="basis-1/3 py-2.5 pl-2 text-center">
                 Judge Total
               </div>
-              <div className="basis-1/3 py-2.5 text-center pr-2">
+              <div className="basis-1/3 py-2.5 pr-2 text-center">
                 Grand Total
               </div>
             </div>
             {teams.map((team) => (
               <div
                 key={team.teamId}
-                className="bg-white/10 md:rounded-none rounded-lg md:p-4  p-3 flex flex-col md:flex-row md:items-center items-start md:justify-evenly w-full md:text-center mb-3 md:my-0"
+                className="mb-3 flex w-full flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-evenly md:rounded-none md:p-4 md:text-center"
               >
                 <div
                   onClick={() => setModal(true)}
@@ -315,12 +300,12 @@ const JudgeTable = ({
                   ?.criteria.map((criteria) => (
                     <div
                       key={criteria.criteriaId}
-                      className="basis-1/3  py-0.5 text-center text-lg"
+                      className="basis-1/3 py-0.5 text-center text-lg"
                     >
                       {criteria.score}
                     </div>
                   ))}
-                <div className="basis-1/3  py-0.5 text-center text-lg">
+                <div className="basis-1/3 py-0.5 text-center text-lg">
                   {team.judges
                     .find((j) => j.judgeId === judge.judgeId)
                     ?.criteria.reduce((acc, curr) => acc + curr.score, 0)}
@@ -337,7 +322,5 @@ const JudgeTable = ({
   );
 };
 
-export const getServerSideProps = async (context: NextPageContext) => {
-  const { slug } = context.query;
-  return { props: { slug: slug } };
-};
+export { getServerSideProps };
+export default Page;

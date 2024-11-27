@@ -1,6 +1,3 @@
-import Button from "@/src/components/button";
-import Carousel from "@/src/components/slider";
-import { AddXpDocument } from "@/src/generated/generated";
 import { useMutation } from "@apollo/client";
 import gsap from "gsap";
 import Image from "next/image";
@@ -8,8 +5,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
-import useStore from "../store/store";
-import { baseAudioUrl, baseImageUrl } from "@/src/utils/url";
+
+import Button from "~/components/button";
+import Carousel from "~/components/slider";
+import useStore from "~/components/store/store";
+import { env } from "~/env";
+import { AddXpDocument } from "~/generated/generated";
 
 interface DexProps {
   data?: Array<{ id: string; name: string; image: string }>;
@@ -58,14 +59,16 @@ const Pokedex: React.FC<DexProps> = ({
               backgroundColor: "#7628D0",
               color: "white",
             },
-          }
+          },
         );
       }
     });
   };
 
   useEffect(() => {
-    const audio = new Audio(`${baseAudioUrl}/audio/level2/pokemon.mp3`);
+    const audio = new Audio(
+      `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level2/pokemon.mp3`,
+    );
     audio.volume = 0.3;
     let mainRef = mainThemeAudioRef;
     if (isMuted) {
@@ -108,15 +111,15 @@ const Pokedex: React.FC<DexProps> = ({
 
   return (
     <div className="fixed inset-0 z-[100] bg-black bg-opacity-50">
-      <div className="page-container h-screen relative">
+      <div className="page-container relative h-screen">
         {/* Pokedex background */}
 
-        <div className="h-full w-full flex flex-col top-[5%] items-center relative animation-container z-0">
+        <div className="animation-container relative top-[5%] z-0 flex h-full w-full flex-col items-center">
           {/* Top part of Pokedex */}
           <div className="flex justify-end">
             {fullyOpen ? (
               <div
-                className="cursor-pointer absolute w-fit bg-[#3d0a10] px-4 py-4 rounded-bl-full rounded-tr-lg  z-50"
+                className="absolute z-50 w-fit cursor-pointer rounded-bl-full rounded-tr-lg bg-[#3d0a10] px-4 py-4"
                 style={{ pointerEvents: eventDex ? "all" : "none" }}
                 onClick={setEventDex}
               >
@@ -125,28 +128,28 @@ const Pokedex: React.FC<DexProps> = ({
             ) : null}
 
             <Image
-              src={`${baseImageUrl}/assets/svg/dextop.svg`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/dextop.svg`}
               alt="dexmid"
               width={2491}
               height={1082}
-              className="md:w-80 aspect-[2491/1082] top-5 animate-1 relative z-[1]"
+              className="animate-1 relative top-5 z-[1] aspect-[2491/1082] md:w-80"
             />
           </div>
 
           {/* Carousel at the center */}
-          <div className="flex flex-col overflow-x-clip lg:overflow-x-visible justify-center items-center relative z-0 w-full">
+          <div className="relative z-0 flex w-full flex-col items-center justify-center overflow-x-clip lg:overflow-x-visible">
             {/* Carousel */}
-            <div className="md:w-80 w-full relative z-10 bg-[#B5FFF7] flex flex-col justify-center p-[10px]">
+            <div className="relative z-10 flex w-full flex-col justify-center bg-[#B5FFF7] p-[10px] md:w-80">
               {/* Your carousel content goes here */}
-              <div className="w-full h-full relative bg-blue-500 rounded-xl flex flex-col items-center carousel-container py-2">
+              <div className="carousel-container relative flex h-full w-full flex-col items-center rounded-xl bg-blue-500 py-2">
                 <Carousel events={data} />
                 {/* Dex button inside the carousel container */}
                 <Link
                   href={"/events"}
-                  className="flex butanim w-full justify-center relative z-20 px-2 -bottom-1 mb-2"
+                  className="butanim relative -bottom-1 z-20 mb-2 flex w-full justify-center px-2"
                   target="_blank"
                 >
-                  <Button className="font-VikingHell h-full">
+                  <Button className="h-full font-VikingHell">
                     View Events
                   </Button>
                 </Link>
@@ -157,11 +160,11 @@ const Pokedex: React.FC<DexProps> = ({
           {/* Bottom part of Pokedex */}
           <div>
             <Image
-              src={`${baseImageUrl}/assets/svg/dexbot.svg`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/dexbot.svg`}
               alt="dexmid"
               width={2491}
               height={1082}
-              className="md:w-80 aspect-[2491/1022] bottom-10 animate-3 relative z-0"
+              className="animate-3 relative bottom-10 z-0 aspect-[2491/1022] md:w-80"
             />
           </div>
         </div>

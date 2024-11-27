@@ -1,14 +1,15 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FormEventHandler, FunctionComponent, useState } from "react";
-import { BiErrorCircle } from "react-icons/bi";
-import Button from "../../button";
-import Spinner from "../../spinner";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { BiErrorCircle } from "react-icons/bi";
+
+import Button from "~/components/button";
+import Spinner from "~/components/spinner";
 
 type SignInFormProps = {
   setWhichForm: (
-    whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail"
+    whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail",
   ) => void;
   setGotDialogBox: (gotDialogBox: boolean) => void;
   redirectUrl?: string;
@@ -65,12 +66,12 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
   return (
     <>
       <form
-        className={`relative py-3 px-3 flex justify-center flex-col gap-3 min-h-full z-40 ${
-          loading && "cursor-not-allowed pointer-events-none"
+        className={`relative z-40 flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${
+          loading && "pointer-events-none cursor-not-allowed"
         }`}
         onSubmit={handleSubmit}
       >
-        <h2 className="text-3xl text-center font-semibold">Welcome back!</h2>
+        <h2 className="text-center text-3xl font-semibold">Welcome back!</h2>
         <h6 className="mb-10 text-center font-semibold md:font-normal">
           Sign in using your email and password
         </h6>
@@ -78,7 +79,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           value={userInfo.email}
           id="email"
           onChange={handleChange}
-          className="placeholder:text-slate-400 py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400 md:focus:border-[#dd5c6e] outline-none"
+          className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
           type="email"
           name="email"
           placeholder="Email"
@@ -89,7 +90,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
             value={userInfo.password}
             id="password"
             onChange={handleChange}
-            className="placeholder:text-slate-400 py-2 px-1 w-full border-b text-sm md:text-base bg-transparent transition-all border-gray-400 md:focus:border-[#dd5c6e] outline-none"
+            className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
@@ -97,7 +98,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           />
           <button
             type="button"
-            className="absolute top-0 mt-2 right-0 hover:bg-orange-500 hover:bg-opacity-10 rounded-sm w-fit p-2"
+            className="absolute right-0 top-0 mt-2 w-fit rounded-sm p-2 hover:bg-orange-500 hover:bg-opacity-10"
             onClick={() => setShowPassword((prev) => !prev)}
           >
             {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
@@ -107,7 +108,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         <button
           onClick={() => setWhichForm("resetPassword")}
           type="button"
-          className="text-sm w-fit -md:mt-1 mb-2 hover:underline text-accent-300 text-start"
+          className="-md:mt-1 mb-2 w-fit text-start text-sm text-accent-300 hover:underline"
         >
           Forgot your password?
         </button>
@@ -117,13 +118,13 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         </Button>
 
         {loading && (
-          <div className="absolute h-full w-full bg-gradient-to-b from-[#1f2e97]/60 to-[#090d4b]/60 inset-0 cursor-not-allowed z-10 rounded-lg">
+          <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97]/60 to-[#090d4b]/60">
             <Spinner className="text-[#dd5c6e]" intent={"white"} />
           </div>
         )}
 
         {error && (
-          <div className="bg-red-100 p-2 flex items-center gap-3 px-4 rounded-md font-semibold text-red-500 max-w-[20px] overflow-x-auto min-w-full">
+          <div className="flex min-w-full max-w-[20px] items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
             <BiErrorCircle className="shrink-0" />
             <div>
               {error}
@@ -131,7 +132,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
                 <button
                   type="button"
                   onClick={() => setWhichForm("resendEmail")}
-                  className="inline-block transition-colors text-start hover:text-red-700 text-red-500 font-normal text-sm underline"
+                  className="inline-block text-start text-sm font-normal text-red-500 underline transition-colors hover:text-red-700"
                 >
                   Click here to resend verification email
                 </button>
@@ -140,9 +141,9 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           </div>
         )}
 
-        <div className="flex flex-col md:mt-2 mt-3 relative text-center">
+        <div className="relative mt-3 flex flex-col text-center md:mt-2">
           <hr className="my-3 border-accent-50" />
-          <h4 className="absolute top-0.5 translate-x-1/2 w-max mx-auto bg-[#1f2e97] rounded-full text-accent-50 right-1/2 px-3 py-[1px] text-sm">
+          <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-[#1f2e97] px-3 py-[1px] text-sm text-accent-50">
             New here?
           </h4>
           <Button
@@ -151,7 +152,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
             }}
             type="button"
             intent={"ghost"}
-            className="mt-5 mx-1"
+            className="mx-1 mt-5"
           >
             Sign up instead
           </Button>

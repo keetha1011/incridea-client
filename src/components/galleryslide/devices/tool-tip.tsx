@@ -29,9 +29,7 @@ const ToolTip = ({
 
   return (
     <div
-      className={`absolute w-full h-full group top-0 z-50 tracking-wide flex justify-center items-center         
-          ${isVisible ? "invisible" : ""}
-        `}
+      className={`group absolute top-0 z-50 flex h-full w-full items-center justify-center tracking-wide ${isVisible ? "invisible" : ""} `}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -39,7 +37,7 @@ const ToolTip = ({
       <p
         className={`${
           isVisible ? "visible" : "invisible"
-        } md:w-[130px] w-[60px] py-2 px-2 text-white rounded-md z-50 absolute text-center font-bold ${classValue}`}
+        } absolute z-50 w-[60px] rounded-md px-2 py-2 text-center font-bold text-white md:w-[130px] ${classValue}`}
         style={{
           top: "50%",
           left: "50%",

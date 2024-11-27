@@ -1,11 +1,13 @@
+import { useMutation } from "@apollo/client";
 import { Html, Plane, useScroll } from "@react-three/drei";
-import styles from "./sponsorAnnotation.module.css";
-import useStore from "../store/store";
 import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { AddXpDocument } from "@/src/generated/generated";
-import { useMutation } from "@apollo/client";
+
+import useStore from "~/components/store/store";
+import { AddXpDocument } from "~/generated/generated";
+
+import styles from "./sponsorAnnotation.module.css";
 
 const Sponsor = () => {
   const scroll = useScroll();
@@ -37,7 +39,7 @@ const Sponsor = () => {
               backgroundColor: "#7628D0",
               color: "white",
             },
-          }
+          },
         );
       }
     });

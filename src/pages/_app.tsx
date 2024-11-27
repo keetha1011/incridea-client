@@ -1,32 +1,34 @@
-import { useApollo } from "@/src/lib/apollo";
-import "@/src/styles/globals.css";
 import { ApolloProvider } from "@apollo/client";
 import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
-
+import { Press_Start_2P } from "next/font/google";
+import LocalFont from "next/font/local";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
-import Loader from "../components/Loader";
-const Navbar = dynamic(() => import("../components/navbar"), { ssr: false });
-import HeadComponent from "../components/head";
-import Footer from "../components/footer";
-import localFont from "next/font/local";
-import { Press_Start_2P } from "next/font/google";
 
-export const VikingHell = localFont({
+import Footer from "~/components/footer";
+import HeadComponent from "~/components/head";
+import Loader from "~/components/loader";
+import { useApollo } from "~/lib/apollo";
+import { cn } from "~/lib/utils";
+import "~/styles/globals.css";
+
+const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
+
+export const VikingHell = LocalFont({
   src: "../font/Viking Hell.otf",
   variable: "--font-viking-hell",
 });
 
-export const garetFont = localFont({
+export const garetFont = LocalFont({
   src: "../font/Garet-Book.otf",
   variable: "--font-Garet",
 });
 
-export const gilroy = localFont({
+export const gilroy = LocalFont({
   src: [
     {
       path: "../font/Gilroy-Regular.ttf",
@@ -81,7 +83,13 @@ export default function App({
           description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <div
-          className={`min-h-screen ${VikingHell.variable} ${pressStart.variable} ${garetFont.variable} ${gilroy.variable}`}
+          className={cn(
+            "min-h-scree",
+            // VikingHell.variable,
+            // pressStart.variable,
+            // garetFont.variable,
+            // gilroy.variable,
+          )}
         >
           <Component {...pageProps} />
           <Toaster />
@@ -97,7 +105,12 @@ export default function App({
         />
         <Loader />
         <div
-          className={`min-h-screen ${VikingHell.variable} ${pressStart.variable} ${garetFont.variable}`}
+          className={cn(
+            "min-h-screen",
+            // VikingHell.variable,
+            // pressStart.variable,
+            // garetFont.variable,
+          )}
         >
           <Component {...pageProps} />
           <Toaster />
@@ -114,7 +127,12 @@ export default function App({
         <Toaster />
         <Loader />
         <div
-          className={`min-h-screen ${VikingHell.variable} ${pressStart.variable} bg-[#7528cf] ${garetFont.variable}`}
+          className={cn(
+            "min-h-screen bg-[#7528cf]",
+            // VikingHell.variable,
+            // pressStart.variable,
+            // garetFont.variable,
+          )}
         >
           {!isLoading && <Navbar />}
           <AnimatePresence mode="wait">

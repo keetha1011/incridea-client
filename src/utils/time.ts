@@ -2,18 +2,18 @@ export function parseTime(timeString: string): number {
   const timeParts = timeString.split(":").map(Number);
   let totalMilliseconds = 0;
   if (timeParts.length === 1) {
-    totalMilliseconds = timeParts[0];
+    totalMilliseconds = timeParts[0]!;
   } else if (timeParts.length === 2) {
-    totalMilliseconds = timeParts[0] * 1000 + timeParts[1];
+    totalMilliseconds = timeParts[0]! * 1000 + timeParts[1]!;
   } else if (timeParts.length === 3) {
     totalMilliseconds =
-      timeParts[0] * 60000 + timeParts[1] * 1000 + timeParts[2];
+      timeParts[0]! * 60000 + timeParts[1]! * 1000 + timeParts[2]!;
   } else if (timeParts.length === 4) {
     totalMilliseconds =
-      timeParts[0] * 3600000 +
-      timeParts[1] * 60000 +
-      timeParts[2] * 1000 +
-      timeParts[3];
+      timeParts[0]! * 3600000 +
+      timeParts[1]! * 60000 +
+      timeParts[2]! * 1000 +
+      timeParts[3]!;
   }
   return totalMilliseconds;
 }

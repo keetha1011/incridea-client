@@ -1,8 +1,10 @@
+import { useMutation } from "@apollo/client";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
-import Spinner from "../spinner";
-import { CreateSubmissionDocument } from "@/src/generated/generated";
-import { useMutation } from "@apollo/client";
+
+import Spinner from "~/components/spinner";
+import { env } from "~/env";
+import { CreateSubmissionDocument } from "~/generated/generated";
 
 type Props = {
   existingImage?: string | null;
@@ -33,7 +35,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
     setMediaPreview(URL.createObjectURL(files[0]));
 
     const formData = new FormData();
-    const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/easter-egg/upload`;
+    const url = `${env.NEXT_PUBLIC_SERVER_URL}/easter-egg/upload`;
 
     setManualLoading(true);
 
@@ -79,8 +81,8 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
         onChange={handleChange}
       />
       <div
-        className={`min-h-[150px] bodyFont grow flex items-center justify-center cursor-pointer md:rounded-md rounded-b-md ${
-          highlighted ? "ring-2 ring-blue-500 bg-blue/20" : "bg-black/20 "
+        className={`bodyFont flex min-h-[150px] grow cursor-pointer items-center justify-center rounded-b-md md:rounded-md ${
+          highlighted ? "bg-blue/20 ring-2 ring-blue-500" : "bg-black/20"
         }`}
         onClick={() => {
           inputRef.current?.click();
@@ -114,7 +116,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
             <Image
               width={1500}
               height={1500}
-              className="object-contain h-64 "
+              className="h-64 object-contain"
               src={existingImage}
               alt="Clue Image"
             />
@@ -128,7 +130,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
             <Image
               width={1500}
               height={1500}
-              className="object-contain h-64 "
+              className="h-64 object-contain"
               src={mediaPreview}
               alt="Clue Image"
             />

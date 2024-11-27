@@ -1,25 +1,26 @@
-import {
-  CollegesDocument,
-  EmailVerificationDocument,
-  SignUpDocument,
-} from "@/src/generated/generated";
 import { useMutation, useQuery } from "@apollo/client";
 import { Combobox, Transition } from "@headlessui/react";
+import Link from "next/link";
 import { useState, FormEventHandler, FunctionComponent, Fragment } from "react";
-import { BiErrorCircle } from "react-icons/bi";
-import { BsChevronExpand } from "react-icons/bs";
-import Button from "../../button";
-import Spinner from "../../spinner";
 import {
   AiFillEye,
   AiFillEyeInvisible,
   AiOutlineInfoCircle,
 } from "react-icons/ai";
-import Link from "next/link";
+import { BiErrorCircle } from "react-icons/bi";
+import { BsChevronExpand } from "react-icons/bs";
+
+import Button from "~/components/button";
+import Spinner from "~/components/spinner";
+import {
+  CollegesDocument,
+  EmailVerificationDocument,
+  SignUpDocument,
+} from "~/generated/generated";
 
 type SignUpFormProps = {
   setWhichForm: (
-    whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail"
+    whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail",
   ) => void;
   setGotDialogBox: (gotDialogBox: boolean) => void;
 };
@@ -64,10 +65,10 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
   const sortColleges = () => {
     const nmamit = collegeData?.colleges.find(
-      (college) => college.name === "N.M.A.M. Institute of Technology"
+      (college) => college.name === "N.M.A.M. Institute of Technology",
     );
     const other = collegeData?.colleges.find(
-      (college) => college.name === "Other"
+      (college) => college.name === "Other",
     );
     const sortedColleges = [...(collegeData?.colleges || [])]
       .filter((college) => {
@@ -209,7 +210,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>
+      | React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setError("");
     setUserInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -218,11 +219,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`relative px-3 py-3 flex justify-center min-h-full flex-col gap-3 ${
-        loading && "cursor-not-allowed pointer-events-none"
+      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${
+        loading && "pointer-events-none cursor-not-allowed"
       }`}
     >
-      <p className="text-2xl text-center font-semibold mb-2">Welcome Player</p>
+      <p className="mb-2 text-center text-2xl font-semibold">Welcome Player</p>
 
       {!emailSuccess && (
         <>
@@ -234,7 +235,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             required
             className={`${
               selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
-            } py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400   placeholder:text-slate-400 md:focus:border-[#dd5c6e] outline-none`}
+            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]`}
             placeholder="Name"
           />
 
@@ -249,12 +250,12 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             }}
           >
             <div className="relative">
-              <div className="relative w-full md:focus-within:border-[#dd5c6e] md:focus:border-[#dd5c6e] border-gray-400 cursor-default overflow-hidden border-b ">
+              <div className="relative w-full cursor-default overflow-hidden border-b border-gray-400 md:focus-within:border-[#dd5c6e] md:focus:border-[#dd5c6e]">
                 <Combobox.Input
                   required
                   placeholder="College"
                   displayValue={(college: { name: string }) => college.name}
-                  className="w-full bg-transparent outline-none text-sm md:text-base py-2 pl-1 pr-10 placeholder:text-slate-400    "
+                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-slate-400 md:text-base"
                   onChange={(e) => setQuery(e.target.value)}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -271,9 +272,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                 leaveTo="opacity-0"
                 afterLeave={() => setQuery("")}
               >
-                <Combobox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 border text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                   {collegesLoading ? (
-                    <div className="select-none text-center py-2 px-4 italic">
+                    <div className="select-none px-4 py-2 text-center italic">
                       <Spinner
                         className="text-[#dd5c6e]"
                         size={"small"}
@@ -282,11 +283,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                     </div>
                   ) : filteredColleges?.length === 0 && query !== "" ? (
                     //FIXME no need to touch
-                    <div className="relative font-semibold md:text-base text-xs select-none py-2 px-4 text-gray-600">
+                    <div className="relative select-none px-4 py-2 text-xs font-semibold text-gray-600 md:text-base">
                       College not found. Please{" "}
                       <Link
                         href="/contact"
-                        className="underline hover:text-gray-700 cursor-pointer"
+                        className="cursor-pointer underline hover:text-gray-700"
                       >
                         contact admin.
                       </Link>
@@ -295,7 +296,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                     filteredColleges?.map((college) => (
                       <Combobox.Option
                         className={({ active }) =>
-                          `relative select-none py-2 text-xs md:text-base cursor-pointer px-4 ${
+                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
                             active ? "bg-[#dd5c6e] text-white" : "text-gray-900"
                           }`
                         }
@@ -312,23 +313,23 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           </Combobox>
 
           {selectedCollege?.name === "Other" && (
-            <div className="bg-blue-100 p-2 flex items-center gap-3 px-4 rounded-md font-semibold text-blue-500">
+            <div className="flex items-center gap-3 rounded-md bg-blue-100 p-2 px-4 font-semibold text-blue-500">
               <AiOutlineInfoCircle className="shrink-0" />
               <div>
-                <a className="inline-block transition-colors text-start text-blue-500 font-normal text-sm">
+                <a className="inline-block text-start text-sm font-normal text-blue-500 transition-colors">
                   This option is exclusively for invited participants without
                   access to pronites. If your college is not in the list above
                   and you are not invited, please{" "}
                   <Link
                     href="/contact"
-                    className="underline hover:text-blue-700 cursor-pointer"
+                    className="cursor-pointer underline hover:text-blue-700"
                   >
                     contact us
                   </Link>
                   . Refer to the{" "}
                   <Link
                     href="/guidelines"
-                    className="underline hover:text-blue-700 cursor-pointer"
+                    className="cursor-pointer underline hover:text-blue-700"
                   >
                     Guidelines
                   </Link>{" "}
@@ -347,11 +348,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               className={`${
                 selectedCollege?.name == "N.M.A.M. Institute of Technology" &&
                 "pr-28"
-              } w-full py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400   placeholder:text-slate-400    md:focus:border-[#dd5c6e] outline-none`}
+              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]`}
               placeholder="Email"
             />
             {selectedCollege?.name === "N.M.A.M. Institute of Technology" && (
-              <span className="absolute top-0 mt-2 right-0 mr-3 ">
+              <span className="absolute right-0 top-0 mr-3 mt-2">
                 @nmamit.in
               </span>
             )}
@@ -364,11 +365,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               type={showPassword ? "text" : "password"}
               required
               placeholder="Password"
-              className=" py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400 placeholder:text-slate-400    md:focus:border-[#dd5c6e] outline-none w-full"
+              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
             />
             <button
               type="button"
-              className="absolute top-0 mt-2 right-0 hover:bg-orange-500 hover:bg-opacity-10 rounded-sm w-fit p-2"
+              className="absolute right-0 top-0 mt-2 w-fit rounded-sm p-2 hover:bg-orange-500 hover:bg-opacity-10"
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
@@ -381,7 +382,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             type="text"
             required
             placeholder="Mobile"
-            className=" py-2 px-1 border-b text-sm md:text-base bg-transparent transition-all border-gray-400   placeholder:text-slate-400 md:focus:border-[#dd5c6e] outline-none"
+            className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
           />
 
           <div className="flex">
@@ -399,18 +400,18 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               }
             />
             <label htmlFor="termsCheckbox">
-              <span className="text-xs lg:text-sm md:text-base text-slate-400">
+              <span className="text-xs text-slate-400 md:text-base lg:text-sm">
                 I agree to all the{" "}
                 <Link
                   href="/rules"
-                  className="underline hover:text-slate-100 cursor-pointer"
+                  className="cursor-pointer underline hover:text-slate-100"
                 >
                   T&C
                 </Link>{" "}
                 and{" "}
                 <Link
                   href="/guidelines"
-                  className="underline hover:text-slate-100 cursor-pointer"
+                  className="cursor-pointer underline hover:text-slate-100"
                 >
                   Guidelines
                 </Link>{" "}
@@ -423,7 +424,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       )}
 
       {(error || mutationError || emailVerificationError) && (
-        <div className="bg-red-100 p-2 flex items-center gap-3 px-4 rounded-md font-semibold text-red-500 overflow-x-auto min-w-full">
+        <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
           <BiErrorCircle className="shrink-0" />
           <div>
             {error}
@@ -431,7 +432,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               <button
                 type="button"
                 onClick={() => setWhichForm("resendEmail")}
-                className="inline-block transition-colors text-start hover:text-red-700 text-red-500 font-normal text-sm underline"
+                className="inline-block text-start text-sm font-normal text-red-500 underline transition-colors hover:text-red-700"
               >
                 Click here to resend verification email
               </button>
@@ -441,21 +442,21 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       )}
 
       {emailSuccess && (
-        <div className="bg-secondary-300 p-4 flex flex-col text-center  items-center gap-3 rounded-md font-semibold text-[#d7037f]">
+        <div className="flex flex-col items-center gap-3 rounded-md bg-secondary-300 p-4 text-center font-semibold text-[#d7037f]">
           <div>
             Verification email sent to {userInfo.email}
             {selectedCollege?.name === "N.M.A.M. Institute of Technology" &&
               "@nmamit.in"}
             <br />
             Please check your inbox.
-            <hr className="border-secondary-600 mx-3 my-2" />
+            <hr className="mx-3 my-2 border-secondary-600" />
             <div className="text-sm font-normal">
               <p>Didn&apos;t receive the email?</p>
               <p>Make sure to check your spam folder.</p>
               <button
                 type="button"
                 onClick={resendEmail}
-                className="font-normal underline text-sm transition-colors text-secondary-800 hover:font-medium"
+                className="text-sm font-normal text-secondary-800 underline transition-colors hover:font-medium"
               >
                 Click here to resend it
               </button>
@@ -464,9 +465,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         </div>
       )}
 
-      <div className="flex flex-col mt-2 relative text-center">
+      <div className="relative mt-2 flex flex-col text-center">
         <hr className="my-3 border-accent-50" />
-        <h4 className="absolute top-0.5 translate-x-1/2 w-max mx-auto bg-[#1f2e97] rounded-full text-accent-50 right-1/2 md:px-2 px-3 text-sm">
+        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-[#1f2e97] px-3 text-sm text-accent-50 md:px-2">
           Already have an account?
         </h4>
         <Button
@@ -482,8 +483,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       </div>
 
       {(loading || emailVerificationLoading) && (
-        <div className="absolute h-full w-full bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60 inset-0 cursor-not-allowed z-10 flex flex-col items-center justify-center gap-4 rounded-lg">
-          <Spinner className="h-fit my-0 text-[#dd5c6e]" intent={"white"} />
+        <div className="absolute inset-0 z-10 flex h-full w-full cursor-not-allowed flex-col items-center justify-center gap-4 rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
+          <Spinner className="my-0 h-fit text-[#dd5c6e]" intent={"white"} />
           {emailVerificationLoading && (
             <p className="font-semibold">Sending Verification Email</p>
           )}

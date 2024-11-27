@@ -1,27 +1,29 @@
-import React, { Suspense, useRef, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { getProject } from "@theatre/core";
 import { PerspectiveCamera, SheetProvider, editable as e } from "@theatre/r3f";
-import { ScrollControls } from "@react-three/drei";
-import BookModal from "@/src/components/explore/BookModal";
-import ExploreNav from "@/src/components/explore/exploreNav";
-import Pokedex from "@/src/components/pokedex";
-import useStore from "@/src/components/store/store";
+import dynamic from "next/dynamic";
+import scene1 from "public/assets/3d/state4.json";
+import React, { Suspense, useRef, useState } from "react";
+
+import AudioPlayer from "~/components/explore/AudioPlayer";
+import BookModal from "~/components/explore/BookModal";
+import ExploreNav from "~/components/explore/exploreNav";
+import Pokedex from "~/components/pokedex";
+import useStore from "~/components/store/store";
+import { env } from "~/env";
 import {
   PublishedEventsDocument,
   PublishedEventsQuery,
-} from "@/src/generated/generated";
-import { useQuery } from "@apollo/client";
-import dynamic from "next/dynamic";
-import scene1 from "../../../public/assets/3d/state4.json";
-import AudioPlayer from "@/src/components/explore/AudioPlayer";
-import { baseAudioUrl } from "@/src/utils/url";
+} from "~/generated/generated";
 
-const Scene1 = dynamic(() => import("@/src/components/scene1"), {
+const Scene1 = dynamic(() => import("~/components/scene1"), {
   ssr: false,
 });
 
 const demoSheet = getProject("Scene 1", { state: scene1 }).sheet("Scene 1");
+
 const App = () => {
   const [instruction, setInstruction] = useState<boolean>(true);
   const {
@@ -33,7 +35,7 @@ const App = () => {
   let tempFilteredEvents = eventsData?.publishedEvents;
 
   tempFilteredEvents = tempFilteredEvents?.filter(
-    (event) => event.category === "CORE"
+    (event) => event.category === "CORE",
   );
 
   const events: Array<{ id: string; name: string; image: string }> =
@@ -52,10 +54,10 @@ const App = () => {
   const mainThemeAudioRef = useRef<HTMLAudioElement | null>(null);
 
   return (
-    <div className="w-full h-screen">
+    <div className="h-screen w-full">
       <AudioPlayer
         mainThemeAudioRef={mainThemeAudioRef}
-        mainTheme={`${baseAudioUrl}/audio/level2/main.mp3`}
+        mainTheme={`${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level2/main.mp3`}
         isMuted={isMuted}
         setIsMuted={setIsMuted}
       ></AudioPlayer>
@@ -110,7 +112,7 @@ const App = () => {
         )}
       </div>
       {instruction && (
-        <div className="absolute z-[100] text-white transition-all pointer-events-none duration-300 bottom-20 left-1/2 -translate-x-1/2 text-base md:text-lg 2xl:text-xl animate-pulse font-semibold">
+        <div className="pointer-events-none absolute bottom-20 left-1/2 z-[100] -translate-x-1/2 animate-pulse text-base font-semibold text-white transition-all duration-300 md:text-lg 2xl:text-xl">
           Scroll down to explore
         </div>
       )}

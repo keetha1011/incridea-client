@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect, useState } from "react";
 
 export const useContainerSize = (
-  ref: MutableRefObject<HTMLDivElement | null>
+  ref: MutableRefObject<HTMLDivElement | null>,
 ): {
   width: number;
   height: number;

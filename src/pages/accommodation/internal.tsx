@@ -1,12 +1,13 @@
-import React from "react";
-import AccommodationForm from "../../components/form/accommodation";
-import Button from "../../components/button";
+import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
 import { TbArrowBackUp } from "react-icons/tb";
-import { useAuth } from "../../hooks/useAuth";
-import { NextPage } from "next";
-import Loader from "../../components/Loader";
+
+import Button from "~/components/button";
+import AccommodationForm from "~/components/form/accommodation";
+import Loader from "~/components/loader";
+import { useAuth } from "~/hooks/useAuth";
 
 const Accommodation: NextPage = () => {
   const router = useRouter();
@@ -17,7 +18,7 @@ const Accommodation: NextPage = () => {
   if (user?.college?.id == "1") router.push("/profile");
   return (
     <>
-      <div className="px-4 md:px-6 pt-32 pb-10 min-h-screen text-white bg-gradient-to-b from-primary-300 to-primary-500">
+      <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pb-10 pt-32 text-white md:px-6">
         <div className="mx-auto max-w-4xl">
           <div className="p-4">
             <Link href="/accommodation">
@@ -29,18 +30,18 @@ const Accommodation: NextPage = () => {
           </div>
 
           <h2
-            className={`titleFont text-white text-center text-4xl md:text-5xl`}
+            className={`titleFont text-center text-4xl text-white md:text-5xl`}
           >
             Internal Accommodation
           </h2>
-          <h5 className="bodyFont text-center mt-5 md:mt-7 text-base md:text-xl max-w-7xl mx-auto">
+          <h5 className="bodyFont mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
             Before you make the next move, read through the list of T&C, and
             register yourself for the internal accommodation by filling the form
             below.
           </h5>
 
-          <div className="bodyFont md:px-10 px-5 md:mt-8 mt-6 max-w-7xl mx-auto bg-white/20 rounded-sm md:py-7 py-4">
-            <h2 className="font-semibold md:text-2xl text-base mb-1">
+          <div className="bodyFont mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
+            <h2 className="mb-1 text-base font-semibold md:text-2xl">
               Terms and Conditions
             </h2>
 
@@ -106,7 +107,7 @@ const Accommodation: NextPage = () => {
 
             <div className="mt-2">
               <Link
-                className="hover:text-gray-300 underline"
+                className="underline hover:text-gray-300"
                 href={"/guidelines"}
               >
                 Read More

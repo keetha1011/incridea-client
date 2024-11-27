@@ -1,10 +1,11 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
-import Button from "../components/button";
 import { IoIosSkipForward } from "react-icons/io";
 import { SlVolumeOff, SlVolume2 } from "react-icons/sl";
-import Image from "next/image";
+import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
+
+import Button from "~/components/button";
 
 const Explore = () => {
   const router = useRouter();
@@ -50,9 +51,9 @@ const Explore = () => {
   }, []);
 
   return (
-    <div className="absolute w-screen h-screen bg-black overflow-hidden">
+    <div className="absolute h-screen w-screen overflow-hidden bg-black">
       <div
-        className={`absolute w-screen h-screen z-40 ${
+        className={`absolute z-40 h-screen w-screen ${
           clickThru ? "pointer-events-none" : "pointer-events-auto"
         }`}
       ></div>
@@ -67,29 +68,29 @@ const Explore = () => {
             YTPlayerRef.current.mute();
           }
         }}
-        className="absolute text-white top-[3vh] right-[2vw] z-50 cursor-pointer"
+        className="absolute right-[2vw] top-[3vh] z-50 cursor-pointer text-white"
       >
         {isMuted ? (
-          <SlVolumeOff className="w-8 h-8 transition-colors duration-150" />
+          <SlVolumeOff className="h-8 w-8 transition-colors duration-150" />
         ) : (
-          <SlVolume2 className="w-8 h-8 transition-colors duration-150" />
+          <SlVolume2 className="h-8 w-8 transition-colors duration-150" />
         )}
       </button>
       <div
         ref={blackScreenRef}
-        className="w-screen bg-black h-screen absolute z-40 flex justify-center items-center"
+        className="absolute z-40 flex h-screen w-screen items-center justify-center bg-black"
       >
         <Image
           src="/assets/loader/dodLogo.png"
           alt=""
           height={180}
           width={180}
-          className="opacity-80 animate-pulse"
+          className="animate-pulse opacity-80"
         />
       </div>
       <div
         ref={skipRef}
-        className="absolute -right-1 bottom-[10vh] z-50 transition-all ease-in hover:scale-110 translate-x-[110%] duration-[400]"
+        className="absolute -right-1 bottom-[10vh] z-50 translate-x-[110%] transition-all duration-500 ease-in hover:scale-110"
       >
         <Button
           onClick={() => {

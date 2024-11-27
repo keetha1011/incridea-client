@@ -2,10 +2,10 @@ import { NextPage } from "next";
 
 const Guidelines: NextPage = () => {
   return (
-    <div className="overflow-x-hidden overflow-y-auto text-gray-100 p-5 sm:p-10 font-gilroy">
-      <div className="w-full max-w-7xl mx-auto">
+    <div className="overflow-y-auto overflow-x-hidden p-5 font-gilroy text-gray-100 sm:p-10">
+      <div className="mx-auto w-full max-w-7xl">
         <h1
-          className={`font-extrabold tracking-tight  pt-24 text-5xl mb-3 text-center`}
+          className={`mb-3 pt-24 text-center text-5xl font-extrabold tracking-tight`}
         >
           Guidelines and Regulations for Participating in Incridea 2024
         </h1>
@@ -16,7 +16,7 @@ const Guidelines: NextPage = () => {
             regulations that participants need to follow.
           </p>
 
-          <h2 className="text-2xl my-6 font-semibold ">
+          <h2 className="my-6 text-2xl font-semibold">
             Participant Registration, Entry, Identification and Access
           </h2>
           <ul className="mt-2 list-disc pl-4">
@@ -64,7 +64,7 @@ const Guidelines: NextPage = () => {
             </li>
           </ul>
 
-          <h2 className="text-2xl my-6 font-semibold ">Event Rules</h2>
+          <h2 className="my-6 text-2xl font-semibold">Event Rules</h2>
           <ul className="mt-2 list-disc pl-4">
             <li>
               The organisers of any event hold the right to change the rules of
@@ -82,36 +82,36 @@ const Guidelines: NextPage = () => {
             </li>
           </ul>
 
-          <h2 className="text-2xl my-6 font-semibold ">Championship Rules</h2>
+          <h2 className="my-6 text-2xl font-semibold">Championship Rules</h2>
           <ul className="mt-2 list-disc pl-4">
             <li>
               <p className="font-semibold">
                 Events will be classified into 3 categories:
               </p>
-              <div className="md:ml-4 flex flex-row text-center border-2 w-max my-3">
-                <div className="flex flex-col font-semibold border-r-2">
-                  <div className="p-2 border-b-2">Event Category</div>
-                  <div className="p-2 border-b-2">Winner</div>
-                  <div className="p-2 border-b-2">Runner-Up</div>
-                  <div className="p-2 "> Second Runner-Up</div>
+              <div className="my-3 flex w-max flex-row border-2 text-center md:ml-4">
+                <div className="flex flex-col border-r-2 font-semibold">
+                  <div className="border-b-2 p-2">Event Category</div>
+                  <div className="border-b-2 p-2">Winner</div>
+                  <div className="border-b-2 p-2">Runner-Up</div>
+                  <div className="p-2"> Second Runner-Up</div>
                 </div>
                 <div className="flex flex-col border-r-2">
-                  <div className="p-2 border-b-2 font-semibold">Gold</div>
-                  <div className="p-2 border-b-2">500</div>
-                  <div className="p-2 border-b-2">450</div>
-                  <div className="p-2 ">400</div>
+                  <div className="border-b-2 p-2 font-semibold">Gold</div>
+                  <div className="border-b-2 p-2">500</div>
+                  <div className="border-b-2 p-2">450</div>
+                  <div className="p-2">400</div>
                 </div>
                 <div className="flex flex-col border-r-2">
-                  <div className="p-2 border-b-2 font-semibold">Silver</div>
-                  <div className="p-2 border-b-2">350</div>
-                  <div className="p-2 border-b-2">300</div>
-                  <div className="p-2 ">250</div>
+                  <div className="border-b-2 p-2 font-semibold">Silver</div>
+                  <div className="border-b-2 p-2">350</div>
+                  <div className="border-b-2 p-2">300</div>
+                  <div className="p-2">250</div>
                 </div>
                 <div className="flex flex-col">
-                  <div className="p-2 border-b-2 font-semibold">Bronze</div>
-                  <div className="p-2 border-b-2">200</div>
-                  <div className="p-2 border-b-2">150</div>
-                  <div className="p-2 ">100</div>
+                  <div className="border-b-2 p-2 font-semibold">Bronze</div>
+                  <div className="border-b-2 p-2">200</div>
+                  <div className="border-b-2 p-2">150</div>
+                  <div className="p-2">100</div>
                 </div>
               </div>
             </li>
@@ -128,7 +128,7 @@ const Guidelines: NextPage = () => {
             <li>The point system does not apply to special events.</li>
           </ul>
 
-          <h2 className="text-2xl my-6 font-semibold ">Prohibited Conduct</h2>
+          <h2 className="my-6 text-2xl font-semibold">Prohibited Conduct</h2>
           <ul className="mt-2 list-disc pl-4">
             <li>
               The consumption of alcoholic drinks, use of tobacco products,
@@ -141,7 +141,7 @@ const Guidelines: NextPage = () => {
             </li>
           </ul>
 
-          <h2 className="text-2xl my-6 font-semibold ">
+          <h2 className="my-6 text-2xl font-semibold">
             Accommodation for external engineering students
           </h2>
           <ul className="mt-2 list-disc pl-4">
@@ -191,7 +191,7 @@ const Guidelines: NextPage = () => {
             </li>
           </ul>
 
-          <h2 className="text-2xl my-6 font-semibold ">
+          <h2 className="my-6 text-2xl font-semibold">
             Campus Rules and Regulations
           </h2>
           <ul className="mt-2 list-disc pl-4">
@@ -215,7 +215,7 @@ const Guidelines: NextPage = () => {
             in any case that requires it.
           </p>
 
-          <p className="mt-3 mb-4">
+          <p className="mb-4 mt-3">
             For further information regarding the fest and live updates, check
             out our website and Instagram handle.
           </p>

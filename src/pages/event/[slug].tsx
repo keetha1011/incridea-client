@@ -1,15 +1,10 @@
-import EventDetails from "@/src/components/pages/event/EventDetails";
-import EventRegistration from "@/src/components/pages/event/EventRegistration";
-import {
-  Event,
-  EventByIdDocument,
-  PublishedEventsSlugDocument,
-} from "@/src/generated/generated";
-import { client } from "@/src/lib/apollo";
+import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
+import { BiTimeFive } from "react-icons/bi";
 import { BsFillTelephoneFill } from "react-icons/bs";
+import { BsFillCalendar2WeekFill } from "react-icons/bs";
 import {
   IoCashOutline,
   IoInformationOutline,
@@ -18,11 +13,78 @@ import {
   IoPersonOutline,
 } from "react-icons/io5";
 import { MdOutlineMailOutline } from "react-icons/md";
-import { BiTimeFive } from "react-icons/bi";
-import { BsFillCalendar2WeekFill } from "react-icons/bs";
 
-function event({ event, error }: { event: Event; error: String }) {
+import EventDetails from "~/components/general/event/EventDetails";
+import EventRegistration from "~/components/general/event/EventRegistration";
+import {
+  EventByIdDocument,
+  EventByIdQuery,
+  PublishedEventsSlugDocument,
+} from "~/generated/generated";
+import { client } from "~/lib/apollo";
+
+type Props =
+  | {
+      event: EventByIdQuery["eventById"];
+      error?: never;
+    }
+  | {
+      event?: never;
+      error: String;
+    };
+
+const getStaticPaths: GetStaticPaths = async () => {
+  const { data: events } = await client.query({
+    query: PublishedEventsSlugDocument,
+  });
+
+  const paths = events.publishedEvents.map((event) => ({
+    params: {
+      slug: `${event.name.toLocaleLowerCase().split(" ").join("-")}-${
+        event.id
+      }`,
+    },
+  }));
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: 'blocking' } will server-render pages
+  // on-demand if the path doesn't exist.
+  return { paths, fallback: "blocking" };
+};
+
+const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+  try {
+    if (!params?.slug || params.slug instanceof Array)
+      throw new Error("Invalid event slug");
+
+    const { data: event } = await client.query({
+      query: EventByIdDocument,
+      variables: {
+        id: params.slug.split("-").pop() as string,
+      },
+      fetchPolicy: "no-cache",
+    });
+
+    return {
+      props: {
+        event: event.eventById,
+      },
+      revalidate: 60,
+    };
+  } catch (error: any) {
+    return {
+      props: {
+        error: error?.message || "Could not find event",
+      },
+      revalidate: 60,
+    };
+  }
+};
+
+const Page = ({ event, error }: Props) => {
   const getEventAttributes = () => {
+    if (!event) return [];
+
     let teamSizeText = "",
       eventTypeText = "";
     if (event.minTeamSize === event.maxTeamSize) {
@@ -35,8 +97,8 @@ function event({ event, error }: { event: Event; error: String }) {
 
     if (event.eventType.includes("MULTIPLE")) {
       eventTypeText =
-        event.eventType.split("_")[0][0] +
-        event.eventType.split("_")[0].slice(1).toLowerCase() +
+        event.eventType.split("_")[0]![0] +
+        event.eventType.split("_")[0]!.slice(1).toLowerCase() +
         " Event (Multiple Entry)";
     } else
       eventTypeText =
@@ -74,39 +136,63 @@ function event({ event, error }: { event: Event; error: String }) {
   };
 
   return (
-    <div className={`relative flex justify-center items-center`}>
+    <div className={`relative flex items-center justify-center`}>
       <Image
         alt="events-bg"
         src="/assets/eventSlug/cover.svg"
         height={1920}
         width={1080}
         priority
-        className={`w-screen h-screen object-cover object-center top-0 left-0 absolute`}
+        className={`absolute left-0 top-0 h-screen w-screen object-cover object-center`}
       />
       <Toaster />
-      {event ? (
+      {error && (
+        <div
+          className={`absolute inset-0 flex h-screen flex-col items-center justify-center gap-5 p-10 text-white`}
+        >
+          <h1 className={`text-3xl font-semibold`}>Oops!</h1>
+          <div className={`text-center`}>
+            <p>
+              Looks like you&apos;ve glitched out and got lost in the pixels!
+            </p>
+            <p>
+              Click{" "}
+              <Link className={`underline`} href={"/events"}>
+                here
+              </Link>{" "}
+              to head back to the events page
+            </p>
+          </div>
+          <p
+            className={`rounded-md bg-red-200 px-4 py-2 text-center text-red-800`}
+          >
+            <b>Error message:</b> {error}
+          </p>
+        </div>
+      )}
+      {event && (
         <section
-          className={`flex lg:flex-row flex-col gap-5 max-w-7xl mx-auto text-white h-screen overflow-y-scroll no-scrollbar lg:overflow-y-hidden`}
+          className={`no-scrollbar mx-auto flex h-screen max-w-7xl flex-col gap-5 overflow-y-scroll text-white lg:flex-row lg:overflow-y-hidden`}
         >
           <div
-            className={`overflow-x-visible lg:h-full lg:overflow-y-scroll lg:no-scrollbar px-3 pt-20 lg:pb-8`}
+            className={`lg:no-scrollbar overflow-x-visible px-3 pt-20 lg:h-full lg:overflow-y-scroll lg:pb-8`}
           >
             <div
-              className={`bg-primary-300/50 backdrop-filter backdrop-blur-xl border border-primary-200/80 p-5 rounded-xl basis-1/3`}
+              className={`basis-1/3 rounded-xl border border-primary-200/80 bg-primary-300/50 p-5 backdrop-blur-xl backdrop-filter`}
             >
-              <div className={`grow-0 space-y-4 sm:space-y-10 rounded-md`}>
+              <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
                     src={event.image as string}
                     // src="https://res.cloudinary.com/dg1941jdi/image/upload/v1706863440/Events/Usaravalli_1706863437635.png"
-                    className={`relative w-full sm:rounded-md rounded-t-md z-10`}
+                    className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
                     width={1000}
                     height={1000}
                   />
                 )}
                 <h1
-                  className={`font-VikingHell capitalize text-center text-3xl md:text-6xl tracking-wider px-4 pb-0 sm:p-0 font-bold`}
+                  className={`px-4 pb-0 text-center font-VikingHell text-3xl font-bold capitalize tracking-wider sm:p-0 md:text-6xl`}
                 >
                   {event.name}
                 </h1>
@@ -117,25 +203,25 @@ function event({ event, error }: { event: Event; error: String }) {
             </div>
           </div>
           <div
-            className={`basis-1/3 lg:h-full lg:overflow-y-scroll lg:no-scrollbar px-3 lg:pt-20 pb-8 w-full shrink-0 flex flex-col gap-5 items-center rounded-md`}
+            className={`lg:no-scrollbar flex w-full shrink-0 basis-1/3 flex-col items-center gap-5 rounded-md px-3 pb-8 lg:h-full lg:overflow-y-scroll lg:pt-20`}
           >
             <div
-              className={`bg-primary-300/50 backdrop-filter backdrop-blur-xl border border-primary-200/80 w-full p-5 rounded-xl`}
+              className={`w-full rounded-xl border border-primary-200/80 bg-primary-300/50 p-5 backdrop-blur-xl backdrop-filter`}
             >
               <div>
-                <div className={`space-y-1.5 order-2 w-full`}>
+                <div className={`order-2 w-full space-y-1.5`}>
                   {/* <hr className="w-48 h-1 mx-auto my-4 bg-secondary-800 border-0 rounded " /> */}
                   <h2
-                    className={`font-VikingHell tracking-wider mb-2 text-2xl md:text-4xl`}
+                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl`}
                   >
                     Details
                   </h2>
-                  <div className={`flex flex-wrap mt-2 gap-2 w-full bodyFont`}>
+                  <div className={`bodyFont mt-2 flex w-full flex-wrap gap-2`}>
                     {getEventAttributes().map((attr) =>
                       attr.text ? (
                         <div
                           key={attr.name}
-                          className={`text-sm md:text-md w-full flex items-center border border-secondary-400/40 gap-2 text-left bg-primary-200/30 p-1 rounded-full px-2`}
+                          className={`md:text-md flex w-full items-center gap-2 rounded-full border border-secondary-400/40 bg-primary-200/30 p-1 px-2 text-left text-sm`}
                         >
                           {<attr.Icon />}
                           <p>
@@ -145,7 +231,7 @@ function event({ event, error }: { event: Event; error: String }) {
                         </div>
                       ) : (
                         <></>
-                      )
+                      ),
                     )}
                   </div>
                   <div className={`text-sm`}>
@@ -153,14 +239,14 @@ function event({ event, error }: { event: Event; error: String }) {
                       {event.rounds.map((round) => (
                         <div
                           key={round.roundNo}
-                          className={`py-2 text-white bg-primary-200/30 space-y-2 px-3 items-center bodyFont border border-secondary-400/40 rounded-xl`}
+                          className={`bodyFont items-center space-y-2 rounded-xl border border-secondary-400/40 bg-primary-200/30 px-3 py-2 text-white`}
                         >
-                          <div className={` font-semibold `}>
+                          <div className={`font-semibold`}>
                             Round {round.roundNo}
                           </div>
                           <div className={`space-y-2`}>
                             <p
-                              className={`flex gap-2 items-center`}
+                              className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
                               <BsFillCalendar2WeekFill />
@@ -170,11 +256,11 @@ function event({ event, error }: { event: Event; error: String }) {
                                   {
                                     day: "numeric",
                                     month: "short",
-                                  }
+                                  },
                                 )}
                             </p>
                             <p
-                              className={`flex gap-2 items-center`}
+                              className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
                               <BiTimeFive />
@@ -185,7 +271,7 @@ function event({ event, error }: { event: Event; error: String }) {
                                     hour: "numeric",
                                     minute: "numeric",
                                     hour12: true,
-                                  }
+                                  },
                                 )}
                             </p>
                           </div>
@@ -194,7 +280,7 @@ function event({ event, error }: { event: Event; error: String }) {
                     </div>
                   </div>
                 </div>
-                <div className={`w-full flex justify-center order-1 mt-3`}>
+                <div className={`order-1 mt-3 flex w-full justify-center`}>
                   <EventRegistration
                     fees={event.fees}
                     eventId={event.id}
@@ -205,28 +291,28 @@ function event({ event, error }: { event: Event; error: String }) {
             </div>
             {event.organizers.length > 0 && (
               <div
-                className={`bg-primary-300/50 backdrop-filter backdrop-blur-xl border border-primary-200/80 p-5 rounded-xl w-full`}
+                className={`w-full rounded-xl border border-primary-200/80 bg-primary-300/50 p-5 backdrop-blur-xl backdrop-filter`}
               >
-                <div className={`w-full order-3`}>
+                <div className={`order-3 w-full`}>
                   <h2
-                    className={`font-VikingHell mb-2 text-2xl md:text-4xl tracking-wider`}
+                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl`}
                   >
                     Organizers
                   </h2>
-                  <div className={`space-y-2 w-full bodyFont`}>
-                    {event.organizers.map((organizer) => (
+                  <div className={`bodyFont w-full space-y-2`}>
+                    {event.organizers.map((organizer, idx) => (
                       <div
-                        key={organizer.user.id}
-                        className={`text-white w-full p-3 rounded-xl text-md border border-secondary-400/40 bg-primary-200/30`}
+                        key={idx}
+                        className={`text-md w-full rounded-xl border border-secondary-400/40 bg-primary-200/30 p-3 text-white`}
                       >
-                        <h3 className={`text-lg font-semibold mb-2`}>
+                        <h3 className={`mb-2 text-lg font-semibold`}>
                           {organizer.user.name}
                         </h3>
-                        <div className={`flex gap-2 flex-col`}>
+                        <div className={`flex flex-col gap-2`}>
                           {organizer.user.email && (
                             <a
                               href={`mailto:${organizer.user.email}`}
-                              className={`text-sm inline-flex overflow-x-auto items-center gap-2 hover:underline hover:underline-offset-4`}
+                              className={`inline-flex items-center gap-2 overflow-x-auto text-sm hover:underline hover:underline-offset-4`}
                             >
                               <MdOutlineMailOutline className={`text-lg`} />{" "}
                               {organizer.user.email}
@@ -235,7 +321,7 @@ function event({ event, error }: { event: Event; error: String }) {
                           {organizer.user.phoneNumber && (
                             <a
                               href={`tel:${organizer.user.phoneNumber}`}
-                              className={`text-sm inline-flex items-center gap-2 hover:underline hover:underline-offset-4`}
+                              className={`inline-flex items-center gap-2 text-sm hover:underline hover:underline-offset-4`}
                             >
                               <BsFillTelephoneFill className={`text-lg`} />{" "}
                               {organizer.user.phoneNumber}
@@ -250,80 +336,11 @@ function event({ event, error }: { event: Event; error: String }) {
             )}
           </div>
         </section>
-      ) : (
-        <div
-          className={`absolute inset-0 flex flex-col p-10 text-white justify-center gap-5 items-center h-screen`}
-        >
-          <h1 className={`text-3xl font-semibold `}>Oops!</h1>
-          <div className={`text-center`}>
-            <p>
-              Looks like you&apos;ve glitched out and got lost in the pixels!
-            </p>
-            <p>
-              Click{" "}
-              <Link className={`underline`} href={"/events"}>
-                here
-              </Link>{" "}
-              to head back to the events page
-            </p>
-          </div>
-          <p
-            className={`px-4 text-center py-2 rounded-md bg-red-200 text-red-800`}
-          >
-            <b>Error message:</b> {error}
-          </p>
-        </div>
       )}
     </div>
   );
-}
-
-export default event;
-
-// ISR
-export async function getStaticProps({ params }: { params: Params }) {
-  try {
-    const { data: event } = await client.query({
-      query: EventByIdDocument,
-      variables: {
-        id: params.slug.split("-").pop() as string,
-      },
-    });
-    return {
-      props: {
-        event: event.eventById,
-      },
-      revalidate: 60,
-    };
-  } catch (error: any) {
-    return {
-      props: {
-        error: error?.message || "Could not find event",
-        event: null,
-      },
-    };
-  }
-}
-
-export async function getStaticPaths() {
-  // Get the paths we want to pre-render based on posts
-  const { data: events } = await client.query({
-    query: PublishedEventsSlugDocument,
-  });
-  const paths = events.publishedEvents.map((event) => ({
-    params: {
-      slug: `${event.name.toLocaleLowerCase().split(" ").join("-")}-${
-        event.id
-      }`,
-    },
-  }));
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: 'blocking' } will server-render pages
-  // on-demand if the path doesn't exist.
-  return { paths, fallback: "blocking" };
-}
-
-type Params = {
-  slug: string;
 };
+
+export default Page;
+
+export { getStaticPaths, getStaticProps };

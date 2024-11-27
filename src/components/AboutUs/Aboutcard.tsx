@@ -10,7 +10,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ name, role, url }) => {
   return (
-    <div className="group sm:h-96 h-80 my-2 sm:my-0 sm:w-80 w-64 [perspective:1000px]">
+    <div className="group my-2 h-80 w-64 [perspective:1000px] sm:my-0 sm:h-96 sm:w-80">
       <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
         <div className="absolute inset-0">
           <Image

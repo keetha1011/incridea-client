@@ -1,14 +1,16 @@
-import * as THREE from "three";
-import React, { Dispatch, useRef } from "react";
 import { useGLTF, useScroll } from "@react-three/drei";
-import { GLTF } from "three-stdlib";
-import { useCurrentSheet } from "@theatre/r3f";
 import { useFrame } from "@react-three/fiber";
 import { ISheet, val } from "@theatre/core";
+import { useCurrentSheet } from "@theatre/r3f";
+import React, { Dispatch, useRef } from "react";
+import * as THREE from "three";
+import { GLTF } from "three-stdlib";
+
+import { env } from "~/env";
+
 import Annotation from "./annotation";
-import Sponsor from "./sponsor";
 import Level3 from "./level3Button";
-import { baseImageUrl } from "@/src/utils/url";
+import Sponsor from "./sponsor";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -64,8 +66,8 @@ export default function Scene1({
 }) {
   const group = useRef<THREE.Group>(null);
   const { nodes, materials } = useGLTF(
-    `${baseImageUrl}/assets/3d/level2-sponsorBook4.glb`,
-    true
+    `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/level2-sponsorBook4.glb`,
+    true,
   ) as GLTFResult;
   const sheet = useCurrentSheet();
   const scroll = useScroll();
@@ -491,4 +493,6 @@ export default function Scene1({
   );
 }
 
-useGLTF.preload(`${baseImageUrl}/assets/3d/level2-sponsorBook4.glb`);
+useGLTF.preload(
+  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/level2-sponsorBook4.glb`,
+);

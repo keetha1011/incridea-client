@@ -1,7 +1,9 @@
+import dynamic from "next/dynamic";
+import Image from "next/image";
+
 import Reveal from "./reveal";
 import ScrollLag from "./scrollLag";
-import Image from "next/image";
-import dynamic from "next/dynamic";
+
 const ReactPlayer = dynamic(() => import("react-player"), { ssr: false });
 
 type BannerProps = {
@@ -13,7 +15,7 @@ type BannerProps = {
 
 const Banner: React.FC<BannerProps> = ({ photo, text, video, credits }) => {
   return (
-    <div className="relative h-80 w-full overflow-hidden shrink-0">
+    <div className="relative h-80 w-full shrink-0 overflow-hidden">
       {photo && (
         <div className="absolute inset-0">
           <Image
@@ -26,7 +28,7 @@ const Banner: React.FC<BannerProps> = ({ photo, text, video, credits }) => {
         </div>
       )}
       {video && (
-        <div className="absolute w-full h-full justify-center items-center md:h-screen lg:h-screen xl:h-screen md:min-h-[396px] md:max-h-[525px] lg:min-h-[620px] lg:max-h-[640px] xl:min-h-[720px] xl:max-h-[780px] 2xl:h-[800px] flex justify-stretch">
+        <div className="absolute flex h-full w-full items-center justify-stretch md:h-screen md:max-h-[525px] md:min-h-[396px] lg:h-screen lg:max-h-[640px] lg:min-h-[620px] xl:h-screen xl:max-h-[780px] xl:min-h-[720px] 2xl:h-[800px]">
           <ReactPlayer
             url={video}
             playing

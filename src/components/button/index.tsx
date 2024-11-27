@@ -1,9 +1,15 @@
-import { VikingHell } from "@/src/pages/_app";
 import { cva, VariantProps } from "class-variance-authority";
 import React, { ReactChildren, ReactElement } from "react";
 
+import { cn } from "~/lib/utils";
+
+// import { VikingHell } from "~/pages/_app";
+
 const buttonStyles = cva(
-  `flex gap-2 items-center transition-all ${VikingHell.className} tracking-widest duration-300 ease-in-out`,
+  cn(
+    "flex gap-2 items-center transition-all tracking-widest duration-300 ease-in-out",
+    // VikingHell.className,
+  ),
   {
     variants: {
       intent: {
@@ -56,7 +62,7 @@ const buttonStyles = cva(
       intent: "primary",
       size: "medium",
     },
-  }
+  },
 );
 
 interface ButtonProps
@@ -88,7 +94,7 @@ const Button = ({
         noScaleOnHover
           ? "hover:scale-100"
           : "transition-transform duration-300 ease-in-out hover:scale-[1.03]"
-      } ${className + " active:scale-90 "} ${buttonStyles({
+      } ${className + " active:scale-90"} ${buttonStyles({
         intent,
         size,
         fullWidth,

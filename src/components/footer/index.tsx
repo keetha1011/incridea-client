@@ -1,6 +1,4 @@
 // @refresh reset
-
-import { baseImageUrl } from "@/src/utils/url";
 import { Alignment, Fit, Layout, useRive } from "@rive-app/react-canvas";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +6,8 @@ import { useRouter } from "next/router";
 import React from "react";
 import { BsFillSuitHeartFill, BsInstagram } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
+
+import { env } from "~/env";
 
 export function HomePageFooter() {
   const { RiveComponent } = useRive({
@@ -21,7 +21,7 @@ export function HomePageFooter() {
   });
   return (
     <div>
-      <RiveComponent className="w-screen   h-[50vh] lg:h-screen " />
+      <RiveComponent className="h-[50vh] w-screen lg:h-screen" />
       <FooterBody />
     </div>
   );
@@ -32,12 +32,12 @@ export function FooterBody() {
     <div
       id="footer"
       style={{ willChange: "transform" }}
-      className={`bodyFont snap-start relative`}
+      className={`bodyFont relative snap-start`}
     >
-      <div className="-mt-1 flex flex-col gap-5 md:flex-row bg-primary-700 text-gray-100 p-5 items-center justify-between">
+      <div className="-mt-1 flex flex-col items-center justify-between gap-5 bg-primary-700 p-5 text-gray-100 md:flex-row">
         <div className="md:basis-1/5">
           <Image
-            src={`${baseImageUrl}/assets/png/logo-black.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-black.png`}
             width={150}
             height={100}
             alt="Incridea Logo"
@@ -45,20 +45,20 @@ export function FooterBody() {
           />
         </div>
         <div className="md:basis-3/5">
-          <ul className="flex flex-wrap whitespace-nowrap flex-row flex-1 gap-2 md:gap-5 justify-center text-sm sm:text-sm items-center ">
-            <li className="text-white hover:text-gray-300 transition-colors duration-300">
+          <ul className="flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-sm sm:text-sm md:gap-5">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <Link href="/privacy">Privacy Policy</Link>
             </li>
             |
-            <li className="text-white hover:text-gray-300 transition-colors duration-300">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <Link href="/rules">Terms & Conditions</Link>
             </li>
             |
-            <li className="text-white hover:text-gray-300 transition-colors duration-300">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <Link href="/guidelines">Guidelines</Link>
             </li>
             |
-            <li className="text-white hover:text-gray-300 transition-colors duration-300">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <Link href="/refund">Refund Policy</Link>
             </li>
             |
@@ -68,8 +68,8 @@ export function FooterBody() {
           </ul>
         </div>
         <div className="md:basis-1/5">
-          <ul className="flex flex-1 gap-4 justify-center text-2xl items-center ">
-            <li className="text-white hover:text-gray-300 transition-colors duration-300">
+          <ul className="flex flex-1 items-center justify-center gap-4 text-2xl">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <a
                 target="_blank"
                 href="https://www.instagram.com/incridea/"
@@ -78,7 +78,7 @@ export function FooterBody() {
                 <BsInstagram />
               </a>
             </li>
-            <li className="text-white hover:text-gray-300 transition-colors duration-300">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <a
                 target="_blank"
                 className="text-3xl"
@@ -92,14 +92,14 @@ export function FooterBody() {
         </div>
       </div>
       <div className="bg-primary-800">
-        <p className="text-center p-5 text-gray-200 text-sm">
+        <p className="p-5 text-center text-sm text-gray-200">
           <Link
-            className="flex justify-center items-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300 duration-300"
+            className="flex items-center justify-center tracking-normal transition-all duration-300 hover:tracking-widest hover:text-gray-300"
             href="/team"
           >
             Made with <BsFillSuitHeartFill className="mx-2" /> by Technical Team
           </Link>
-          <span className="font-semibold mt-1 block">© Incridea 2024</span>
+          <span className="mt-1 block font-semibold">© Incridea 2024</span>
         </p>
       </div>
     </div>

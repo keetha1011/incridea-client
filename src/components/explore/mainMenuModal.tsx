@@ -1,15 +1,16 @@
-import Link from "next/link";
-import Button from "@/src/components/button";
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
-import { useAuth } from "@/src/hooks/useAuth";
 import Image from "next/image";
-import { useLayoutEffect, useEffect, useRef } from "react";
-import { VikingHell } from "../../pages/_app";
+import Link from "next/link";
 import { NextRouter, useRouter } from "next/router";
 import Parallax from "parallax-js";
-import { IoClose } from "react-icons/io5";
-import Spinner from "../spinner";
-import { baseImageUrl } from "@/src/utils/url";
+import { useLayoutEffect, useEffect, useRef } from "react";
+
+import Button from "~/components/button";
+import Spinner from "~/components/spinner";
+import { env } from "~/env";
+import { useAuth } from "~/hooks/useAuth";
+import { cn } from "~/lib/utils";
 
 type Props = {
   showModal: boolean;
@@ -30,10 +31,10 @@ const MainMenuModal: React.FunctionComponent<Props> = ({
   return (
     <div
       style={{ display: showModal ? "initial" : "none" }}
-      className="w-screen h-screen fixed z-[9999] backdrop-blur-sm inset-0"
+      className="fixed inset-0 z-[9999] h-screen w-screen backdrop-blur-sm"
     >
-      <div className="relative w-full h-full">
-        <div className="absolute -translate-x-2/4 -translate-y-2/4 top-2/4 left-2/4 z-[9999] bg-blue-400 h-[85%] w-[85%] overflow-clip rounded-xl">
+      <div className="relative h-full w-full">
+        <div className="absolute left-2/4 top-2/4 z-[9999] h-[85%] w-[85%] -translate-x-2/4 -translate-y-2/4 overflow-clip rounded-xl bg-blue-400">
           <HomeUi />
           <Menu
             router={router}
@@ -59,26 +60,32 @@ const HomeUi: React.FunctionComponent = () => {
   });
 
   const Logo = useRef(null);
-  gsap.from(Logo.current, {
-    delay: 0,
-    duration: 0,
-    scale: 3,
-    opacity: 0.6,
-    zIndex: 9999,
-  });
-  gsap.to(Logo.current, {
-    duration: 2,
-    scale: 1,
-    opacity: 1,
+
+  useGSAP(() => {
+    if (!Logo.current) return;
+
+    gsap.from(Logo.current, {
+      delay: 0,
+      duration: 0,
+      scale: 3,
+      opacity: 0.6,
+      zIndex: 9999,
+    });
+
+    gsap.to(Logo.current, {
+      duration: 2,
+      scale: 1,
+      opacity: 1,
+    });
   });
 
   return (
     <>
       <section
         id="scene"
-        className="relative bg-gradient-to-b min-h-full from-[#00002a] via-[#1c23bb] to-pink-800/50"
+        className="relative min-h-full bg-gradient-to-b from-[#00002a] via-[#1c23bb] to-pink-800/50"
       >
-        <div className="h-full w-full absolute">
+        <div className="absolute h-full w-full">
           <div id="foglayer_01" className="fog">
             <div className="image01"></div>
             <div className="image02"></div>
@@ -93,61 +100,61 @@ const HomeUi: React.FunctionComponent = () => {
           </div>
         </div>
 
-        <div data-depth="0.5" className="absolute  h-full w-full ">
-          <div className="opacity-50 translate-y-16 h-[75vh] md:h-full absolute bottom-0 left-[50%] -translate-x-1/2 md:left-0 md:translate-x-0 md:w-full aspect-video  ">
+        <div data-depth="0.5" className="absolute h-full w-full">
+          <div className="absolute bottom-0 left-[50%] aspect-video h-[75vh] -translate-x-1/2 translate-y-16 opacity-50 md:left-0 md:h-full md:w-full md:translate-x-0">
             <Image
-              src={`${baseImageUrl}/assets/home/moon.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/moon.png`}
               alt="Gradient"
               width={1920}
               height={1080}
-              className="object-bottom  h-full w-full object-contain"
+              className="h-full w-full object-contain object-bottom"
             />
           </div>
         </div>
-        <div data-depth="0.4" className="h-full w-full absolute">
+        <div data-depth="0.4" className="absolute h-full w-full">
           <Image
-            src={`${baseImageUrl}/assets/home/stars.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/stars.png`}
             alt="Gradient"
             width={1920}
             height={1080}
-            className="w-full h-full object-center object-cover absolute "
+            className="absolute h-full w-full object-cover object-center"
           />
         </div>
 
         <div data-depth="0.3" className="absolute h-full w-full">
-          <div className="h-full absolute aspect-video right-0  translate-x-[18%]  sm:translate-x-[12%] md:translate-x-[10%] bottom-0 lg:translate-x-[4.1%] translate-y-[4.1%]">
+          <div className="absolute bottom-0 right-0 aspect-video h-full translate-x-[18%] translate-y-[4.1%] sm:translate-x-[12%] md:translate-x-[10%] lg:translate-x-[4.1%]">
             <Image
-              src={`${baseImageUrl}/assets/home/portal.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/portal.png`}
               alt="Portal"
               width={2050}
               height={1080}
-              className="w-full h-full object-cover object-right-bottom  "
+              className="h-full w-full object-cover object-right-bottom"
             />
           </div>
         </div>
         <div
           data-depth="0.2"
-          className="absolute flex  items-center  justify-center h-full w-full"
+          className="absolute flex h-full w-full items-center justify-center"
         >
-          <div className="w-fit mx-auto p-5 mt-[3%]" ref={Logo}>
+          <div className="mx-auto mt-[3%] w-fit p-5" ref={Logo}>
             <Image
-              src={`${baseImageUrl}/assets/home/DoD.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/DoD.png`}
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="object-center max-w-xl w-full h-fit object-contain"
+              className="h-fit w-full max-w-xl object-contain object-center"
             />
           </div>
         </div>
         <div data-depth="0.1" className="absolute h-full w-full">
-          <div className="h-full absolute aspect-video left-0 -translate-x-[20%] sm:-translate-x-[18%]  md:-translate-x-[12%] bottom-0 lg:-translate-x-[10%] translate-y-[3%]   ">
+          <div className="absolute bottom-0 left-0 aspect-video h-full -translate-x-[20%] translate-y-[3%] sm:-translate-x-[18%] md:-translate-x-[12%] lg:-translate-x-[10%]">
             <Image
-              src={`${baseImageUrl}/assets/home/ryoko.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/ryoko.png`}
               id="Ryoko"
               alt="Ryoko looking at portal"
               width={1920}
               height={1080}
-              className="w-full h-full object-cover object-left-bottom"
+              className="h-full w-full object-cover object-left-bottom"
             />
           </div>
         </div>
@@ -172,10 +179,10 @@ const Menu: React.FunctionComponent<{
   const { user, loading, error } = useAuth();
 
   return (
-    <div className="w-full overflow-x-hidden flex flex-col absolute bottom-0 left-0 h-full justify-center items-center">
-      <div className="lg:flex flex-col hidden absolute bottom-10 items-center sm:flex-row  md:gap-10 my-24 gap-3  w-fit ">
+    <div className="absolute bottom-0 left-0 flex h-full w-full flex-col items-center justify-center overflow-x-hidden">
+      <div className="absolute bottom-10 my-24 hidden w-fit flex-col items-center gap-3 sm:flex-row md:gap-10 lg:flex">
         <Button
-          className="h-fit w-40  px-4 sm:px-12"
+          className="h-fit w-40 px-4 sm:px-12"
           size={"large"}
           onClick={() => {
             setShowModal(false);
@@ -193,15 +200,18 @@ const Menu: React.FunctionComponent<{
           </Button>
         </Link>
       </div>
-      <div className="space-y-5 absolute flex flex-col w-fit h-fit -right-8 bottom-[15%]  lg:absolute ">
+      <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
         <h3
-          className={`text-2xl hidden md:block md:mb-5 sm:text-4xl text-white tracking-widest text-center ${VikingHell.className}`}
+          className={cn(
+            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
+            // VikingHell.className,
+          )}
         >
           Menu
         </h3>
 
         <Button
-          className="w-40 md:w-64 justify-center md:justify-end px-12 md:px-16 lg:hidden"
+          className="w-40 justify-center px-12 md:w-64 md:justify-end md:px-16 lg:hidden"
           size={"large"}
           onClick={() => {
             setShowModal(false);
@@ -216,7 +226,7 @@ const Menu: React.FunctionComponent<{
         >
           <Button
             intent={"primary"}
-            className="w-40 md:w-64 justify-center md:justify-end px-12 md:px-16 hidden lg:flex"
+            className="hidden w-40 justify-center px-12 md:w-64 md:justify-end md:px-16 lg:flex"
             size={"large"}
           >
             {loading ? (
@@ -231,7 +241,7 @@ const Menu: React.FunctionComponent<{
         {navItems.map((e, i) => (
           <Link key={i} href={e.href} target="_blank">
             <Button
-              className="w-40 md:w-64 justify-center md:justify-end px-12 md:px-16"
+              className="w-40 justify-center px-12 md:w-64 md:justify-end md:px-16"
               size={"large"}
             >
               {e.target}
@@ -246,7 +256,7 @@ const Menu: React.FunctionComponent<{
             >
               <Button
                 intent={"ghost"}
-                className="lg:hidden !bg-primary-800/70 block w-40 md:w-64 justify-center md:justify-end px-12 md:px-16"
+                className="block w-40 justify-center !bg-primary-800/70 px-12 md:w-64 md:justify-end md:px-16 lg:hidden"
                 size={"large"}
               >
                 {loading ? (
@@ -261,7 +271,7 @@ const Menu: React.FunctionComponent<{
             <Link href="/">
               <Button
                 intent={"ghost"}
-                className="lg:hidden !bg-primary-800/70 block w-40 md:w-64 justify-center md:justify-end px-12 md:px-16"
+                className="block w-40 justify-center !bg-primary-800/70 px-12 md:w-64 md:justify-end md:px-16 lg:hidden"
                 size={"large"}
               >
                 Exit
@@ -276,8 +286,8 @@ const Menu: React.FunctionComponent<{
 
 const HomeFooter = () => {
   return (
-    <footer className="absolute w-full text-gray-200 bottom-0 ">
-      <p className="text-center p-5 text-sm">© Incridea 2024</p>
+    <footer className="absolute bottom-0 w-full text-gray-200">
+      <p className="p-5 text-center text-sm">© Incridea 2024</p>
     </footer>
   );
 };

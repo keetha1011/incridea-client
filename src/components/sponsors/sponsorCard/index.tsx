@@ -1,9 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import Button from "../../button";
 import { FiExternalLink } from "react-icons/fi";
-import { Sponsor } from "../sponsorDetails";
-import { baseImageUrl } from "@/src/utils/url";
+
+import Button from "~/components/button";
+import { Sponsor } from "~/components/sponsors/sponsorDetails";
+import { env } from "~/env";
 
 type SponsorCardProps = {
   sponsor: Sponsor;
@@ -16,26 +17,26 @@ const SponsorCard: React.FunctionComponent<SponsorCardProps> = ({
 }) => {
   return (
     <div
-      className={`w-full md:max-w-full py-8 px-10 bg-primary-500 border border-primary-200/70 opacity-[0.98] min-h-[300px] mt-3 flex flex-col gap-5 justify-between items-center rounded-2xl text-white ${
+      className={`mt-3 flex min-h-[300px] w-full flex-col items-center justify-between gap-5 rounded-2xl border border-primary-200/70 bg-primary-500 px-10 py-8 text-white opacity-[0.98] md:max-w-full ${
         isEven ? "md:flex-row-reverse" : "md:flex-row"
       }`}
     >
-      <div className="relative h-52 w-52 aspect-square flex justify-center items-center">
+      <div className="relative flex aspect-square h-52 w-52 items-center justify-center">
         <Image
-          src={`${baseImageUrl}/sponsors/${sponsor.logo}`}
+          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/sponsors/${sponsor.logo}`}
           fill={true}
           alt={sponsor.name + " logo"}
           className="rounded-2xl object-contain"
         />
       </div>
-      <div className="flex flex-col items-center justify-between gap-7 w-full h-full">
-        <div className="flex flex-col justify-between items-center gap-2">
-          <h2 className="text-3xl text-center">
+      <div className="flex h-full w-full flex-col items-center justify-between gap-7">
+        <div className="flex flex-col items-center justify-between gap-2">
+          <h2 className="text-center text-3xl">
             {sponsor.name.toLocaleUpperCase()}
           </h2>
-          <h3 className="text-xl text-center text-white/70">{sponsor.title}</h3>
+          <h3 className="text-center text-xl text-white/70">{sponsor.title}</h3>
         </div>
-        <p className="text-slate-300 max-w-prose text-justify leading-7 md:leading-8 text-base md:text-lg">
+        <p className="max-w-prose text-justify text-base leading-7 text-slate-300 md:text-lg md:leading-8">
           {sponsor?.desc}
         </p>
         {sponsor.websiteURL && (

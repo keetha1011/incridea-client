@@ -1,13 +1,18 @@
-import AudioPlayer from "@/src/components/explore/AudioPlayer";
-import ExploreNav from "@/src/components/explore/exploreNav";
-import Scene2 from "@/src/components/scene2";
-import { AddXpDocument } from "@/src/generated/generated";
-import { baseAudioUrl } from "@/src/utils/url";
 import { useMutation } from "@apollo/client";
 import { ScrollControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+
+import AudioPlayer from "~/components/explore/AudioPlayer";
+import ExploreNav from "~/components/explore/exploreNav";
+import { env } from "~/env";
+import { AddXpDocument } from "~/generated/generated";
+
+const Scene2 = dynamic(() => import("~/components/scene2"), {
+  ssr: false,
+});
 
 export default function Level3() {
   const mainThemeAudioRef = useRef<HTMLAudioElement>(null);
@@ -40,7 +45,7 @@ export default function Level3() {
               backgroundColor: "#7628D0",
               color: "white",
             },
-          }
+          },
         );
       }
     });
@@ -62,10 +67,10 @@ export default function Level3() {
   }, []);
 
   return (
-    <div className="w-full h-screen overflow-y-scroll">
+    <div className="h-screen w-full overflow-y-scroll">
       <AudioPlayer
         mainThemeAudioRef={mainThemeAudioRef}
-        mainTheme={`${baseAudioUrl}/audio/level3/main.mp3`}
+        mainTheme={`${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level3/main.mp3`}
         isMuted={muted}
         setIsMuted={setIsMuted}
       />
@@ -87,7 +92,7 @@ export default function Level3() {
         </ScrollControls>
       </Canvas>
       {instruction && (
-        <div className="absolute z-[100] text-white transition-all pointer-events-none duration-300 bottom-20 left-1/2 -translate-x-1/2 text-base md:text-lg 2xl:text-xl animate-pulse font-semibold">
+        <div className="pointer-events-none absolute bottom-20 left-1/2 z-[100] -translate-x-1/2 animate-pulse text-base font-semibold text-white transition-all duration-300 md:text-lg 2xl:text-xl">
           Scroll down to explore
         </div>
       )}

@@ -1,9 +1,10 @@
 // React component
-import styles from "@/src/components/galleryslide/styles/gallery.module.css";
-import { baseImageUrl } from "@/src/utils/url";
 import gsap from "gsap";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
+
+import styles from "~/components/galleryslide/styles/gallery.module.css";
+import { env } from "~/env";
 
 interface ProgressBarProps {
   year: number;
@@ -24,7 +25,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
 
     elements.forEach((element, index) => {
       if (index < filledSteps) {
-        element.classList.add(styles.filled);
+        element.classList.add(styles.filled!);
       }
 
       if (index === filledSteps - 1 && index < loadedSteps) {
@@ -32,7 +33,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
           element,
           { opacity: 0, scale: 0.5 },
           { opacity: 1, scale: 1, duration: 0.5, ease: "sine.inOut" },
-          0 
+          0,
         );
 
         const elementRect = element.getBoundingClientRect();
@@ -45,7 +46,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
               duration: 0.5,
               ease: "sine.inOut",
             },
-            0
+            0,
           );
         } else {
           tl.to(
@@ -55,14 +56,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
               duration: 0.5,
               ease: "sine.inOut",
             },
-            0
+            0,
           );
         }
       } else {
-        element.classList.remove(styles.filled);
+        element.classList.remove(styles.filled!);
       }
     });
-
   }, [filledSteps, loadedSteps, year]);
 
   return (
@@ -71,7 +71,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
         <div key={index} className={styles["progress-step"]}>
           {index < filledSteps && (
             <Image
-              src={`${baseImageUrl}/assets/png/${powerUpImages[index]}.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/${powerUpImages[index]}.png`}
               alt={`Step ${index + 1}`}
               width={200}
               height={200}
@@ -83,7 +83,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
       ))}
       {/* Character SVG */}
       <Image
-        src={`${baseImageUrl}/assets/svg/character.svg`}
+        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/character.svg`}
         alt="Character"
         width={50}
         height={50}

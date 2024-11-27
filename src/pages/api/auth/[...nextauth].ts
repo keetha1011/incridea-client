@@ -1,12 +1,10 @@
-import { isJwtExpired, getRefreshTokenExpiry } from "@/src/utils/jwt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { client } from "../../../lib/apollo";
 
-import {
-  SignInDocument,
-  RefreshTokenDocument,
-} from "../../../generated/generated";
+import { env } from "~/env";
+import { SignInDocument, RefreshTokenDocument } from "~/generated/generated";
+import { client } from "~/lib/apollo";
+import { isJwtExpired, getRefreshTokenExpiry } from "~/utils/jwt";
 
 declare module "next-auth" {
   /**
@@ -70,7 +68,7 @@ export default NextAuth({
     strategy: "jwt",
     maxAge: 7 * 24 * 60 * 60, // 7 days
   },
-  debug: process.env.NODE_ENV === "development",
+  debug: env.NODE_ENV === "development",
   providers: [
     CredentialsProvider({
       name: "Email",
@@ -95,6 +93,7 @@ export default NextAuth({
   pages: {
     signIn: "/login",
   },
+  secret: env.NEXTAUTH_SECRET,
   callbacks: {
     async redirect({ url, baseUrl }) {
       return baseUrl;
@@ -122,13 +121,13 @@ export default NextAuth({
       if (isJwtExpired(String(token.accessToken))) {
         console.log("expired, refreshing token");
         const [newAccessToken, newRefreshToken] = await refreshToken(
-          String(token.refreshToken)
+          String(token.refreshToken),
         );
         console.log(
           "newAccessToken",
           newAccessToken,
           "newRefreshToken",
-          newRefreshToken
+          newRefreshToken,
         );
         console.log("old token", token);
 
@@ -146,7 +145,7 @@ export default NextAuth({
 
         // unable to refresh tokens from backend, invalidate the token
         console.log(
-          "unable to refresh tokens from backend, invalidate the token"
+          "unable to refresh tokens from backend, invalidate the token",
         );
         return null;
       }

@@ -1,3 +1,6 @@
+import { useMutation, useQuery } from "@apollo/client";
+import { Combobox, Transition, Switch } from "@headlessui/react";
+import Link from "next/link";
 import {
   useState,
   FunctionComponent,
@@ -5,22 +8,20 @@ import {
   Fragment,
   useRef,
 } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import { BsChevronExpand } from "react-icons/bs";
+import { IoEye } from "react-icons/io5";
+import { MdModeEditOutline } from "react-icons/md";
+import { TbArrowBackUp } from "react-icons/tb";
+
+import Button from "~/components/button";
+import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
+import Spinner from "~/components/spinner";
+import createToast from "~/components/toast";
 import {
   AddAccommodationRequestDocument,
   GetAllHotelsDocument,
   AccommodationRequestsByUserDocument,
-} from "@/src/generated/generated";
-import Button from "../../button";
-import { MdModeEditOutline } from "react-icons/md";
-import createToast from "../../toast";
-import { Combobox, Transition, Switch } from "@headlessui/react";
-import { BsChevronExpand } from "react-icons/bs";
-import Link from "next/link";
-import { TbArrowBackUp } from "react-icons/tb";
-import Spinner from "../../spinner";
-import { IoEye } from "react-icons/io5";
-import ViewUserAccommodation from "../../pages/profile/viewUserAccommodation";
+} from "~/generated/generated";
 
 const AccommodationForm: FunctionComponent = () => {
   const [
@@ -139,9 +140,9 @@ const AccommodationForm: FunctionComponent = () => {
           setShowModal={setShowModal}
         />
       )}
-      <div className="mt-10 mb-4 px-6 py-8 h-max min-w-[350px] md:min-w-[450px] max-w-[350px] md:max-w-[450px] bg-[#561e98] rounded-md text-accent-200 ease-suck-in transition-all">
+      <div className="mb-4 mt-10 h-max min-w-[350px] max-w-[350px] rounded-md bg-[#561e98] px-6 py-8 text-accent-200 transition-all ease-suck-in md:min-w-[450px] md:max-w-[450px]">
         {accommodationLoading ? (
-          <div className="flex flex-col md:flex-row w-full">
+          <div className="flex w-full flex-col md:flex-row">
             <Spinner className="text-[#dd5c6e]" intent={"white"} />
           </div>
         ) : formSubmitted ? (
@@ -151,9 +152,9 @@ const AccommodationForm: FunctionComponent = () => {
             </div>
             <Link
               href="/profile"
-              className="flex justify-center items-center w-full"
+              className="flex w-full items-center justify-center"
             >
-              <Button size={"small"} className="w-max mt-3 md:mt-0">
+              <Button size={"small"} className="mt-3 w-max md:mt-0">
                 <TbArrowBackUp />
                 Go Back
               </Button>
@@ -169,7 +170,7 @@ const AccommodationForm: FunctionComponent = () => {
                 setShowModal(true);
               }}
               size={"small"}
-              className="ml-3 w-max mt-3 md:mt-0 self-center"
+              className="ml-3 mt-3 w-max self-center md:mt-0"
             >
               <IoEye />
               View Request
@@ -178,14 +179,14 @@ const AccommodationForm: FunctionComponent = () => {
         ) : (
           <form
             onSubmit={handleSubmit}
-            className={`flex py-3 px-3 relative justify-center min-h-full flex-col gap-5`}
+            className={`relative flex min-h-full flex-col justify-center gap-5 px-3 py-3`}
           >
             {(uploading || emailVerificationLoading) && (
-              <div className="absolute bg-[#561e98]/80 flex flex-col md:flex-row h-full w-full inset-0 cursor-not-allowed z-10 rounded-lg">
+              <div className="absolute inset-0 z-10 flex h-full w-full cursor-not-allowed flex-col rounded-lg bg-[#561e98]/80 md:flex-row">
                 <Spinner className="text-[#dd5c6e]" intent={"white"} />
               </div>
             )}
-            <p className="text-2xl text-center font-semibold mb-3">
+            <p className="mb-3 text-center text-2xl font-semibold">
               Accommodation Request
             </p>
             <Combobox
@@ -198,14 +199,14 @@ const AccommodationForm: FunctionComponent = () => {
               }}
             >
               <div className="relative">
-                <div className="relative w-full md:focus-within:border-[#dd5c6e] md:focus:border-[#dd5c6e] border-gray-400 cursor-default overflow-hidden border-b ">
+                <div className="relative w-full cursor-default overflow-hidden border-b border-gray-400 md:focus-within:border-[#dd5c6e] md:focus:border-[#dd5c6e]">
                   <Combobox.Input
                     required
                     placeholder="Gender"
                     displayValue={(gender: string) => {
                       return gender;
                     }}
-                    className="w-full bg-transparent outline-none text-sm md:text-base py-2 pl-1 pr-10 placeholder:text-slate-400"
+                    className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-slate-400 md:text-base"
                     onChange={(e) => setGenderQuery(e.target.value)}
                   />
                   <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -222,16 +223,16 @@ const AccommodationForm: FunctionComponent = () => {
                   leaveTo="opacity-0"
                   afterLeave={() => setGenderQuery("")}
                 >
-                  <Combobox.Options className="z-10 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 border text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                  <Combobox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
                     {filteredGenders?.length === 0 && genderQuery !== "" ? (
-                      <div className="relative font-semibold md:text-base text-xs select-none py-2 px-4 text-gray-600">
+                      <div className="relative select-none px-4 py-2 text-xs font-semibold text-gray-600 md:text-base">
                         Please select from dropdown
                       </div>
                     ) : (
                       filteredGenders?.map((gender) => (
                         <Combobox.Option
                           className={({ active }) =>
-                            `relative select-none py-2 text-xs md:text-base cursor-pointer px-4 ${
+                            `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
                               active
                                 ? "bg-[#dd5c6e] text-white"
                                 : "text-gray-900"
@@ -393,13 +394,13 @@ const AccommodationForm: FunctionComponent = () => {
               />
             </div> */}
             <div>
-              <label className="block mb-2 text-sm text-white">Upload ID</label>
+              <label className="mb-2 block text-sm text-white">Upload ID</label>
               <input
                 required
                 type="file"
                 id="image"
-                className="file:mr-4 file:py-2.5 file:rounded-r-none file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:transition-colors file:cursor-pointer file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border w-full text-sm rounded-lg block  bg-gray-600 border-gray-600 placeholder-slate-400 text-white focus:outline-none focus:ring-2 ring-gray-500"
-                onChange={(e) => handleUpload(e.target.files![0])}
+                className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-slate-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
+                onChange={(e) => handleUpload(e.target.files![0]!)}
               />
             </div>
             <Button
@@ -410,7 +411,7 @@ const AccommodationForm: FunctionComponent = () => {
               <MdModeEditOutline />
               Submit
             </Button>
-            <h1 className="text-xs md:text-sm text-gray-100">
+            <h1 className="text-xs text-gray-100 md:text-sm">
               By clicking the above button, you agree to the mentioned terms and
               conditions
             </h1>

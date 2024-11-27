@@ -1,20 +1,21 @@
-import TeamCard from "@/src/components/pages/about/TeamCard";
 import { NextPage } from "next";
+
+import TeamCard from "~/components/general/about/TeamCard";
 
 const Team: NextPage = () => {
   return (
-    <div className="pt-32 pb-10 min-h-screen bg-[#7628d0] flex flex-col gap-y-8">
+    <div className="flex min-h-screen flex-col gap-y-8 bg-[#7628d0] pb-10 pt-32">
       <div className="px-4">
         <h1
-          className={`text-2xl lg:text-4xl font-bold text-white text-center font-PressStart`}
+          className={`text-center font-PressStart text-2xl font-bold text-white lg:text-4xl`}
         >
           Incridea&apos;s Technical Team
         </h1>
-        <p className="text-lg lg:text-2xl font-bold text-white text-center bodyFont mt-5">
+        <p className="bodyFont mt-5 text-center text-lg font-bold text-white lg:text-2xl">
           Meet the developers
         </p>
       </div>
-      <div className="flex justify-center flex-wrap gap-10 max-w-[80rem] mx-auto px-2">
+      <div className="mx-auto flex max-w-[80rem] flex-wrap justify-center gap-10 px-2">
         {TeamMembers.map((member) => (
           <TeamCard
             key={member.name}

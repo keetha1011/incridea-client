@@ -1,16 +1,17 @@
-import { FC, useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import Button from "../button";
-import { useAuth } from "@/src/hooks/useAuth";
-import { BiMenuAltLeft as MenuIcon } from "react-icons/bi";
-import { AiOutlineClose as XIcon } from "react-icons/ai";
 import { Transition } from "@headlessui/react";
-import AuthenticatedButtons from "./authenticatedButtons";
-
-import CharacterAnimation from "../animation/character";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
-import { baseImageUrl } from "@/src/utils/url";
+import { FC, useState, useEffect } from "react";
+import { AiOutlineClose as XIcon } from "react-icons/ai";
+import { BiMenuAltLeft as MenuIcon } from "react-icons/bi";
+
+import CharacterAnimation from "~/components/animation/character";
+import Button from "~/components/button";
+import { env } from "~/env";
+import { useAuth } from "~/hooks/useAuth";
+
+import AuthenticatedButtons from "./authenticatedButtons";
 
 const Navbar = () => {
   const links = [
@@ -42,17 +43,17 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed font-VikingHell tracking-widest italic  top-0 z-20 bg-white backdrop-filter backdrop-blur-lg bg-opacity-10 border-b border-gray-200/30 w-full`}
+      className={`fixed top-0 z-20 w-full border-b border-gray-200/30 bg-white bg-opacity-10 font-VikingHell italic tracking-widest backdrop-blur-lg backdrop-filter`}
     >
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="mx-auto max-w-5xl px-4">
+        <div className="flex h-16 items-center justify-between">
           <Link
             href="/"
-            className="flex order-2 lg:order-1 items-center space-x-2"
+            className="order-2 flex items-center space-x-2 lg:order-1"
           >
             <Image
               className="w-24"
-              src={`${baseImageUrl}/assets/png/logo.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo.png`}
               alt="Logo"
               width={100}
               height={80}
@@ -60,7 +61,7 @@ const Navbar = () => {
             />
           </Link>
 
-          <div className="hidden space-x-5 lg:order-2 text-gray-900 lg:flex">
+          <div className="hidden space-x-5 text-gray-900 lg:order-2 lg:flex">
             {links.map((link) => (
               <Link
                 className="group text-white transition-colors duration-300"
@@ -74,18 +75,18 @@ const Navbar = () => {
                 <span
                   className={`${
                     activePath?.label === link.label ? "max-w-full" : "max-w-0"
-                  } block group-hover:max-w-full transition-all duration-500 h-0.5 bg-white`}
+                  } block h-0.5 bg-white transition-all duration-500 group-hover:max-w-full`}
                 ></span>
               </Link>
             ))}
           </div>
           {!(router.pathname === "/login") && (
-            <AuthButtons className="lg:order-3 hidden lg:flex" />
+            <AuthButtons className="hidden lg:order-3 lg:flex" />
           )}
           <div className="flex items-center space-x-4 lg:hidden">
             {isMenuOpen ? (
               <XIcon
-                className=" text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)] h-6 w-6 "
+                className="h-6 w-6 text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]"
                 onClick={toggleMenu}
               />
             ) : (
@@ -114,7 +115,7 @@ const Navbar = () => {
                 key={link.url}
                 href={link.url}
                 onClick={closeMenu}
-                className="block pb-3 px-2 text-sm text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.9)]"
+                className="block px-2 pb-3 text-sm text-white drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.9)]"
               >
                 {link.label}
               </Link>
@@ -156,7 +157,7 @@ const MobileButtons: FC<{
   const { status, user, error, loading } = useAuth();
   const router = useRouter();
   return (
-    <div className={`flex space-x-2  lg:px-0 ${className}`}>
+    <div className={`flex space-x-2 lg:px-0 ${className}`}>
       {status === "authenticated" &&
         (router.pathname === "/profile" &&
         user?.role !== "USER" &&

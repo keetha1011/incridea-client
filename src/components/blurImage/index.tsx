@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import { type FunctionComponent, useState } from 'react';
+import Image from "next/image";
+import { type FunctionComponent, useState } from "react";
 
 interface BlurImageProps {
   alt: string;
@@ -19,8 +19,8 @@ const BlurImage: FunctionComponent<BlurImageProps> = (props) => {
       alt={props.alt}
       className={`${props.className as string} duration-700 ease-in-out ${
         isLoading
-          ? 'scale-110 blur-lg grayscale'
-          : 'scale-100 blur-0 grayscale-0'
+          ? "scale-110 blur-lg grayscale"
+          : "scale-100 blur-0 grayscale-0"
       }`}
       onLoadingComplete={() => setLoading(false)}
     />

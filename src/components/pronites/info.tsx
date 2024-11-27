@@ -1,7 +1,9 @@
-import Button from "@/src/components/button";
-import Modal from "@/src/components/modal";
 import { Dispatch, useState } from "react";
 import { FaInfo } from "react-icons/fa";
+
+import Button from "~/components/button";
+import Modal from "~/components/modal";
+
 export default function Info() {
   const [showModal, setShowModal] = useState(false);
 
@@ -9,7 +11,7 @@ export default function Info() {
     <>
       <Button
         onClick={() => setShowModal(true)}
-        className="absolute text-white top-[100px] left-4 z-10"
+        className="absolute left-4 top-[100px] z-10 text-white"
       >
         <FaInfo />
       </Button>
@@ -21,8 +23,8 @@ export default function Info() {
           setShowModal(false);
         }}
       >
-        <div className="w-full justify-center h-full items-center flex p-8 xl:text-xl md:text-base text-sm">
-          <ol className="flex text-justify justify-center list-decimal pl-4 items-start gap-4 flex-col">
+        <div className="flex h-full w-full items-center justify-center p-8 text-sm md:text-base xl:text-xl">
+          <ol className="flex list-decimal flex-col items-start justify-center gap-4 pl-4 text-justify">
             <li>
               Admission to the pronite is only permitted after scanning the
               attendee&apos;s PIDs at the pronite scanning booth.

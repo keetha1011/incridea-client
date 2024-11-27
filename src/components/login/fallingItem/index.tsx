@@ -1,5 +1,5 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
 import Image from "next/image";
+import React, { FunctionComponent, useEffect, useState } from "react";
 
 type Prop = {
   delay: number;
@@ -17,7 +17,7 @@ const elements: string[] = [
   "coin.png",
   "potion.png",
   "bowArrow.png",
-];
+] as const;
 
 const getElement: () => number = () => {
   return Math.floor(Math.random() * 11);
@@ -33,14 +33,14 @@ const getPosition: () => number = () => {
 };
 
 const FallingItem: FunctionComponent<Prop> = ({ delay }) => {
-  const [src, setSrc] = useState(elements[getElement()]);
+  const [src, setSrc] = useState(elements[getElement()]!);
   const [left, setLeft] = useState(getPosition());
   const [size, setSize] = useState(getSize());
 
   useEffect(() => {
     setTimeout(() => {
       setInterval(() => {
-        setSrc(elements[getElement()]);
+        setSrc(elements[getElement()]!);
         setLeft(getPosition());
         setSize(getSize());
         // TODO: 100000 should be same as that in animation duration of free-fall in tailwind.config.js
@@ -50,7 +50,7 @@ const FallingItem: FunctionComponent<Prop> = ({ delay }) => {
 
   return (
     <div
-      className={"absolute animate-free-fall pointer-events-none"}
+      className={"pointer-events-none absolute animate-free-fall"}
       style={{
         animationDelay: `${delay}ms`,
         top: "0px",

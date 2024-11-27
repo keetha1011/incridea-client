@@ -1,12 +1,13 @@
+import { useMutation, useQuery } from "@apollo/client";
+import { useEffect, useState } from "react";
+
+import Button from "~/components/button";
+import Spinner from "~/components/spinner";
 import {
   RegisterProniteDocument,
   UserByIdDocument,
-} from "@/src/generated/generated";
-import { pidToId } from "@/src/utils/id";
-import { useMutation, useQuery } from "@apollo/client";
-import Button from "../button";
-import Spinner from "../spinner";
-import { useEffect, useState } from "react";
+} from "~/generated/generated";
+import { pidToId } from "~/utils/id";
 
 function Pronite({
   pId,
@@ -26,7 +27,7 @@ function Pronite({
       variables: {
         userId: pidToId(pId),
       },
-    }
+    },
   );
 
   const { data: userData, loading: userLoading } = useQuery(UserByIdDocument, {
@@ -47,7 +48,7 @@ function Pronite({
 
   return (
     <>
-      <div className="max-w-sm mt-1 mb-3">
+      <div className="mb-3 mt-1 max-w-sm">
         {!cameraOn ? (
           <Button
             onClick={() => {
@@ -56,16 +57,18 @@ function Pronite({
               setCameraOn(true);
             }}
             intent={"success"}
-            className="bg-blue-500 mx-auto hover:bg-blue-700 text-white font-bold py-2.5 px-7 rounded">
+            className="mx-auto rounded bg-blue-500 px-7 py-2.5 font-bold text-white hover:bg-blue-700"
+          >
             Scan Again
           </Button>
         ) : (
           <Button
             intent={"success"}
-            className="bg-blue-500 mx-auto hover:bg-blue-700 text-white font-bold py-2.5 px-7 rounded"
+            className="mx-auto rounded bg-blue-500 px-7 py-2.5 font-bold text-white hover:bg-blue-700"
             onClick={() => {
               registerPronite();
-            }}>
+            }}
+          >
             Register
           </Button>
         )}
@@ -76,8 +79,8 @@ function Pronite({
         </>
       ) : data?.registerPronite.__typename ===
         "MutationRegisterProniteSuccess" ? (
-        <div className="p-3 bg-white/10 rounded-md bodyFont">
-          <div className="text-lg leading-snug mb-1 text-green-500">
+        <div className="bodyFont rounded-md bg-white/10 p-3">
+          <div className="mb-1 text-lg leading-snug text-green-500">
             <span className="font-bold">{pId}</span> registered for Pronite
           </div>
           <div className="text-white">
@@ -93,15 +96,15 @@ function Pronite({
           </div>
         </div>
       ) : (
-        <div className="text-red-500 font-semibold bodyFont bg-white/10 rounded-md">
+        <div className="bodyFont rounded-md bg-white/10 font-semibold text-red-500">
           {userLoading && <Spinner intent={"white"} size={"small"} />}
           {data?.registerPronite.message && (
             <div>
               <p className="p-3 py-2">{data.registerPronite.message}</p>
               {userData?.userById.__typename === "QueryUserByIdSuccess" &&
                 !data.registerPronite.message.includes("authorized") && (
-                  <div className="p-3 bg-white/10 rounded-md bodyFont">
-                    <div className="text-lg leading-snug mb-1">
+                  <div className="bodyFont rounded-md bg-white/10 p-3">
+                    <div className="mb-1 text-lg leading-snug">
                       <span className="font-bold text-green-500">{pId}</span>
                     </div>
                     <div className="text-white">

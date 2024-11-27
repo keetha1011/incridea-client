@@ -1,13 +1,15 @@
-import { baseImageUrl } from "@/src/utils/url";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { Swiper as SwiperType } from "swiper";
 import { Navigation, Autoplay, Mousewheel } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import BlurImage from "../../blurImage";
-import Modal from "../gallery-modal";
-import PreviewComponent from "../previewComponent/preview-component";
-import styles from "../styles/shadow.module.css";
+
+import BlurImage from "~/components/blurImage";
+import Modal from "~/components/galleryslide/gallery-modal";
+import PreviewComponent from "~/components/galleryslide/previewComponent/preview-component";
+import styles from "~/components/galleryslide/styles/shadow.module.css";
+import { env } from "~/env";
+
 import ToolTip from "./tool-tip";
 
 const Console = ({ imgArr }: { imgArr: string[] }) => {
@@ -22,7 +24,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
 
   const handleImageLoad = (
     index: number,
-    event: React.SyntheticEvent<HTMLImageElement>
+    event: React.SyntheticEvent<HTMLImageElement>,
   ) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
     const isPortrait = naturalHeight > naturalWidth;
@@ -44,31 +46,31 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
       </h1> */}
       <div
         id="animation"
-        className="relative flex justify-center items-center md:w-[50vw] md:h-[50vw] w-[80vw] h-[65vw] mx-auto md:scale-[105%] scale-[140%] sm:top-20"
+        className="relative mx-auto flex h-[65vw] w-[80vw] scale-[140%] items-center justify-center sm:top-20 md:h-[50vw] md:w-[50vw] md:scale-[105%]"
       >
         <Image
           fill
           priority
-          src={`${baseImageUrl}/assets/svg/controller-tv.svg`}
+          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/controller-tv.svg`}
           alt="svg"
           id="image"
           className=""
         ></Image>
-        <div className="absolute md:w-[40vw] md:h-[23.6vw] md:right-[10vw] md:top-[19vw] w-[40vw] h-[40vw] z-10">
+        <div className="absolute z-10 h-[40vw] w-[40vw] md:right-[10vw] md:top-[19vw] md:h-[23.6vw] md:w-[40vw]">
           <Swiper
-            onBeforeInit={(swiper) => {
+            onBeforeInit={(swiper: SwiperType) => {
               swiperRef.current = swiper;
             }}
             mousewheel={true}
             modules={[Navigation, Autoplay, Mousewheel]}
             autoplay={true}
-            className="md:w-[38.3vw] md:h-[19.3vw] md:top-[-9.1vw] md:left-[5.3vw] z-50 w-[61vw] h-[30.8vw] top-[-4.1vw] -left-[10.1vw] relative"
+            className="relative -left-[10.1vw] top-[-4.1vw] z-50 h-[30.8vw] w-[61vw] md:left-[5.3vw] md:top-[-9.1vw] md:h-[19.3vw] md:w-[38.3vw]"
           >
             {imgArr.map((img, index) => {
               return (
                 <SwiperSlide
                   key={index}
-                  className="flex justify-center items-center text-center cursor-pointer"
+                  className="flex cursor-pointer items-center justify-center text-center"
                   onClick={() => {
                     setActiveModal(true);
                     setActiveIndex(index);
@@ -80,18 +82,18 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
                       text="click to preview image"
                     ></ToolTip>
                   )}
-                  <div className="relative w-full h-full flex justify-center items-center">
+                  <div className="relative flex h-full w-full items-center justify-center">
                     <BlurImage
                       fill
                       alt="Blurred Image"
-                      src={baseImageUrl + img}
+                      src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                       className="object-cover blur-xl"
                     />
                     <Image
                       fill
-                      src={baseImageUrl + img}
+                      src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                       alt="incridea"
-                      className={`object-cover z-10 ${
+                      className={`z-10 object-cover ${
                         portraitImages[index] ? "object-scale-down" : ""
                       }`}
                       priority
@@ -102,7 +104,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
               );
             })}
             <SwiperSlide
-              className="flex justify-center items-center bg-white text-center cursor-pointer"
+              className="flex cursor-pointer items-center justify-center bg-white text-center"
               onClick={() => {
                 setActiveIndex(imgArr.length);
                 setActiveModal(true);
@@ -112,7 +114,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
                 classValue="top-[0] text-center bg-black/60 sm:right-[12vw] right-0 text-xs border sm:text-lg"
                 text="click to watch aftermovie"
               ></ToolTip> */}
-              <div className="relative w-full h-full flex justify-center items-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <BlurImage
                   fill
                   alt="Blurred Image"
@@ -123,7 +125,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
                   fill
                   src={thumbnailSrc}
                   alt="incridea"
-                  className={`object-cover z-10`}
+                  className={`z-10 object-cover`}
                   priority
                 />
               </div>
@@ -134,7 +136,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
                 }}
                 className={
                   styles["text-shadow"] +
-                  ` text-base p-2 md:text-lg md:font-extrabold bg-transparent text-white absolute z-50 top-0 left-0 text-center w-full`
+                  ` absolute left-0 top-0 z-50 w-full bg-transparent p-2 text-center text-base text-white md:text-lg md:font-extrabold`
                 }
               >
                 Click to Watch After Movie
@@ -144,7 +146,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
 
           <button
             onClick={() => swiperRef.current?.slidePrev()}
-            className={`active:bg-gray-800 opacity-40 absolute w-[9vw] h-[9vw] top-[12vw] left-[41.5vw] md:top-[18.5vw] md:left-[18.5vw] md:w-[1.5vw] md:h-[1.5vw] rounded-full duration-300 transition-all ease-in-out animate-`}
+            className={`animate- absolute left-[41.5vw] top-[12vw] h-[9vw] w-[9vw] rounded-full opacity-40 transition-all duration-300 ease-in-out active:bg-gray-800 md:left-[18.5vw] md:top-[18.5vw] md:h-[1.5vw] md:w-[1.5vw]`}
           >
             {/* <ToolTip
               classValue="top-[-1vw] sm:right-[3vw] text-xs right-0 border sm:text-base"
@@ -153,7 +155,7 @@ const Console = ({ imgArr }: { imgArr: string[] }) => {
           </button>
           <button
             onClick={() => swiperRef.current?.slideNext()}
-            className="active:bg-gray-800 opacity-40 absolute w-[9vw] h-[9vw] top-[22vw] left-[41.5vw] md:top-[18.5vw] md:left-[20.5vw] md:w-[1.5vw] md:h-[1.5vw] rounded-full duration-300 transition-all ease-in-out animate-"
+            className="animate- absolute left-[41.5vw] top-[22vw] h-[9vw] w-[9vw] rounded-full opacity-40 transition-all duration-300 ease-in-out active:bg-gray-800 md:left-[20.5vw] md:top-[18.5vw] md:h-[1.5vw] md:w-[1.5vw]"
           >
             {/* <ToolTip
               classValue="top-[-6vw] sm:right-[-1.5vw] text-xs right-0 border sm:text-base"

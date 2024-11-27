@@ -8,10 +8,11 @@ import React, {
   useState,
 } from "react";
 import { MdVolumeOff, MdVolumeUp } from "react-icons/md";
-import Button from "../button";
-import Modal from "../modal";
+
+import Button from "~/components/button";
+import Modal from "~/components/modal";
+
 import styles from "./audioPlayer.module.css";
-// Adjust the path accordingly
 
 interface AudioPlayerProps {
   mainTheme: string;
@@ -86,7 +87,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   const router = useRouter();
 
   return (
-    <div className={"sticky h-0 top-20 z-[60]"}>
+    <div className={"sticky top-20 z-[60] h-0"}>
       <audio ref={mainThemeAudioRef} loop muted={isMuted} autoPlay playsInline>
         <source src={mainTheme} type="audio/mp3" />
         Your browser does not support the audio element.
@@ -97,10 +98,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
         className={styles["audio-player-button"]}
       >
         {isMuted && (
-          <MdVolumeOff className="w-10 h-10 transition-colors duration-150" />
+          <MdVolumeOff className="h-10 w-10 transition-colors duration-150" />
         )}
         {!isMuted && (
-          <MdVolumeUp className="w-10 h-10 transition-colors duration-150" />
+          <MdVolumeUp className="h-10 w-10 transition-colors duration-150" />
         )}
       </button>
       {/* <div className={styles["audio-player-volume"]}>
@@ -123,7 +124,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           onClose={() => setModal(false)}
         >
           <div className="flex flex-col justify-center">
-            <div className="flex justify-center gap-x-4 mt-5 lg:mb-0 mb-5">
+            <div className="mb-5 mt-5 flex justify-center gap-x-4 lg:mb-0">
               <Button
                 size={"medium"}
                 onClick={() => {
@@ -142,7 +143,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
                 No
               </Button>
             </div>
-            <div className="hidden lg:block rounded-xl bg-primary-300/30 border border-secondary-400/40 p-2 lg:p-5 m-2 lg:m-5">
+            <div className="m-2 hidden rounded-xl border border-secondary-400/40 bg-primary-300/30 p-2 lg:m-5 lg:block lg:p-5">
               <p className="text-center font-bold">How to Play?</p>
               <Image
                 src={"/assets/png/toolTip.png"}

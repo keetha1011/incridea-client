@@ -1,25 +1,26 @@
 import Image from "next/image";
 import React from "react";
-import Banner from "../../components/AboutUs/Banner";
-import { baseImageUrl } from "@/src/utils/url";
+
+import Banner from "~/components/AboutUs/Banner";
+import { env } from "~/env";
 
 const About = () => {
   return (
-    <div className="page-container flex flex-col md:gap-16 gap-y-2">
-      <div className="min-h-screen flex flex-col md:gap-16 gap-y-2">
+    <div className="page-container flex flex-col gap-y-2 md:gap-16">
+      <div className="flex min-h-screen flex-col gap-y-2 md:gap-16">
         <Banner
           video={"https://vimeo.com/883551016?share=copy"}
           text=""
           credits=""
         />
 
-        <span className="text-base md:text-lg xl:text-xl text-secondary-100">
-          <div className="flex md:flex-row flex-col justify-between items-center gap-8">
+        <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
+          <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
             <Image
-              src={`${baseImageUrl}/assets/png/nitteLogoWhite.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/nitteLogoWhite.png`}
               alt="image"
               loading="lazy"
-              className="object-contain h-full object-center top-0 md:w-1/3 w-3/4"
+              className="top-0 h-full w-3/4 object-contain object-center md:w-1/3"
               height={500}
               width={500}
             />
@@ -59,13 +60,13 @@ const About = () => {
         text=""
         credits=""
       />
-      <span className="text-base md:text-lg xl:text-xl text-secondary-100">
-        <div className="flex md:flex-row flex-col justify-between items-center gap-8">
+      <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
+        <div className="flex flex-col items-center justify-between gap-8 md:flex-row">
           <Image
-            src={`${baseImageUrl}/assets/png/logo-rim-white.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-rim-white.png`}
             alt="image"
             loading="lazy"
-            className="object-contain md:h-[32rem] h-[15rem] object-center top-0 md:w-1/3 w-3/4"
+            className="top-0 h-[15rem] w-3/4 object-contain object-center md:h-[32rem] md:w-1/3"
             height={400}
             width={400}
           />

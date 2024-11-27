@@ -1,13 +1,15 @@
 "use client";
-import Spinner from "@/src/components/spinner";
-import { GetXpLeaderboardDocument } from "@/src/generated/generated";
+
 import { useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
-import { idToPid } from "@/src/utils/id";
-import Image from "next/image";
 import { NextPage } from "next";
-import styles from "@/src/components/event/styles.module.css";
-import { baseImageUrl } from "@/src/utils/url";
+import Image from "next/image";
+import { useEffect, useState } from "react";
+
+import styles from "~/components/event/styles.module.css";
+import Spinner from "~/components/spinner";
+import { env } from "~/env";
+import { GetXpLeaderboardDocument } from "~/generated/generated";
+import { idToPid } from "~/utils/id";
 
 const LeaderBoard: NextPage = () => {
   interface UserTotalPoints {
@@ -20,7 +22,7 @@ const LeaderBoard: NextPage = () => {
   }
   const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
     GetXpLeaderboardDocument,
-    {}
+    {},
   );
 
   const [sortedLeaderboard, setSortedLeaderboard] = useState<
@@ -76,7 +78,7 @@ const LeaderBoard: NextPage = () => {
         ([userId, data]) => ({
           userId,
           ...data,
-        })
+        }),
       );
 
       // Sort the array in descending order based on total points
@@ -121,75 +123,75 @@ const LeaderBoard: NextPage = () => {
           ))}
         </div>
       )}
-      <div className="bg-gradient-to-b from-primary-300 to-primary-400 min-h-screen relative">
-        <div className=" bg-gradient-to-bl bg-white min-h-screen relative py-32">
+      <div className="relative min-h-screen bg-gradient-to-b from-primary-300 to-primary-400">
+        <div className="relative min-h-screen bg-white bg-gradient-to-bl py-32">
           <h1
-            className={`text-white text-5xl md:text-5xl text-center font-VikingHell`}
+            className={`text-center font-VikingHell text-5xl text-white md:text-5xl`}
           >
             XP Leaderboard
           </h1>
-          <h3 className="my-6 mx-2 md:mx-0 text-white text-xl md:text-3xl text-center">
+          <h3 className="mx-2 my-6 text-center text-xl text-white md:mx-0 md:text-3xl">
             Embark on an XP Quest: Uncover Hidden Easter Eggs and Level Up Your
             Experience!
           </h3>
-          <div className="flex mb-2 md:mx-36 mx-5 mt-10 md:mt-7 font-bold bg-primary-500 border border-primary-200/80 rounded-lg text-white bg-opacity-20 backdrop-filter backdrop-blur-lg bg-clip-padding rounded-t-lg p-1 items-center justify-evenly text-sm md:text-2xl  h-16">
+          <div className="mx-5 mb-2 mt-10 flex h-16 items-center justify-evenly rounded-lg rounded-t-lg border border-primary-200/80 bg-primary-500 bg-opacity-20 bg-clip-padding p-1 text-sm font-bold text-white backdrop-blur-lg backdrop-filter md:mx-36 md:mt-7 md:text-2xl">
             <h1 className="basis-1/4 text-center">Position</h1>
             <h1 className="basis-1/4 text-center">Player Id</h1>
             <h1 className="basis-1/4 text-center">Player Name</h1>
             <h1 className="basis-1/4 text-center">Xp Gained</h1>
           </div>
           {leaderboardLoading && (
-            <div className="flex mt-10 justify-center items-center">
+            <div className="mt-10 flex items-center justify-center">
               <Spinner className="text-gray-300" />
             </div>
           )}
-          <div className="md:mx-36 mx-5 text-white text-center flex flex-col gap-2 bodyFont">
+          <div className="bodyFont mx-5 flex flex-col gap-2 text-center text-white md:mx-36">
             {sortedLeaderboard.map((user, i) => (
               <div
                 key={user.userId}
                 className={`${getColor(
-                  i + 1
-                )} shadow-2xl rounded-lg flex flex-row items-center justify-center h-16 `}
+                  i + 1,
+                )} flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl`}
               >
-                <h1 className="basis-1/4 flex md:gap-1 justify-center items-center text-center text-base md:text-xl">
+                <h1 className="flex basis-1/4 items-center justify-center text-center text-base md:gap-1 md:text-xl">
                   {i + 1}.
                   <Image
                     src={
                       i + 1 === 1
-                        ? `${baseImageUrl}/assets/png/level3.png`
+                        ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level3.png`
                         : i + 1 === 2
-                        ? `${baseImageUrl}/assets/png/level2.png`
-                        : i + 1 === 3
-                        ? `${baseImageUrl}/assets/png/level1.png`
-                        : `${baseImageUrl}/assets/png/level4.png`
+                          ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level2.png`
+                          : i + 1 === 3
+                            ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level1.png`
+                            : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level4.png`
                     }
                     width={isMobile ? 20 : 50}
                     height={isMobile ? 20 : 50}
                     alt="medal"
-                    className="text-5xl flex justify-center items-center bg-transparent z-30 w-10 md:w-auto"
+                    className="z-30 flex w-10 items-center justify-center bg-transparent text-5xl md:w-auto"
                   />
                 </h1>
-                <h1 className="basis-1/4 flex justify-center items-center text-center text-sm md:text-xl font-semibold mx-2">
+                <h1 className="mx-2 flex basis-1/4 items-center justify-center text-center text-sm font-semibold md:text-xl">
                   {idToPid(user.userId)}
                 </h1>
-                <h1 className="basis-1/4 flex justify-center text-center items-center text-sm md:text-xl font-semibold capitalize">
+                <h1 className="flex basis-1/4 items-center justify-center text-center text-sm font-semibold capitalize md:text-xl">
                   {user.name}
                 </h1>
-                <h1 className="basis-1/4 flex flex-row justify-center items-center text-center font-semibold text-sm md:text-xl">
+                <h1 className="flex basis-1/4 flex-row items-center justify-center text-center text-sm font-semibold md:text-xl">
                   {user.levelPoints}
                   <Image
-                    src={`${baseImageUrl}/assets/png/XP.png`}
+                    src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/XP.png`}
                     width={isMobile ? 20 : 40}
                     height={isMobile ? 20 : 40}
                     alt="medal"
-                    className="text-5xl bg-transparent w-10 md:w-10 ml-1"
+                    className="ml-1 w-10 bg-transparent text-5xl md:w-10"
                   />
                 </h1>
               </div>
             ))}
             {sortedLeaderboard.length === 0 && !leaderboardLoading && (
-              <div className="flex justify-center items-center mx-3 mt-2">
-                <span className="text-gray-300 text-base md:text-xl">
+              <div className="mx-3 mt-2 flex items-center justify-center">
+                <span className="text-base text-gray-300 md:text-xl">
                   The XP leaderboard is currently as empty as a blank canvas,
                   waiting for the vibrant colors of your achievements to fill it
                   up!

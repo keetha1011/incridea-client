@@ -1,5 +1,7 @@
 import { useQuery } from "@apollo/client";
-import { MeDocument } from "../generated/generated";
+
+import { MeDocument } from "~/generated/generated";
+
 export enum AuthStatus {
   LOADING = "loading",
   NOT_AUTHENTICATED = "unauthenticated",

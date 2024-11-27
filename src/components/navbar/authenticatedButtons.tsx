@@ -1,9 +1,10 @@
-import { FC } from "react";
-import { User } from "@/src/generated/generated";
-import Link from "next/link";
-import Button from "../button";
-import { FaSignOutAlt } from "react-icons/fa";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { FC } from "react";
+import { FaSignOutAlt } from "react-icons/fa";
+
+import Button from "~/components/button";
+import { User } from "~/generated/generated";
 
 const AuthenticatedButtons: FC<{
   user: User | undefined | null;
@@ -16,7 +17,7 @@ const AuthenticatedButtons: FC<{
             <Button>Register </Button>
           </Link>
           <Button onClick={() => signOut()} className="w-fit" intent={"ghost"}>
-            <FaSignOutAlt className="inline-block mr-1" />
+            <FaSignOutAlt className="mr-1 inline-block" />
             Sign Out
           </Button>
         </div>

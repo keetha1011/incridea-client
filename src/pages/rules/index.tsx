@@ -2,15 +2,15 @@ import { NextPage } from "next";
 
 const Terms: NextPage = () => {
   return (
-    <div className="overflow-x-hidden overflow-y-auto text-gray-100 p-5 sm:p-10 font-gilroy">
-      <div className="w-full max-w-7xl mx-auto">
+    <div className="overflow-y-auto overflow-x-hidden p-5 font-gilroy text-gray-100 sm:p-10">
+      <div className="mx-auto w-full max-w-7xl">
         <h1
-          className={`font-extrabold tracking-tight  pt-24 text-5xl mb-3 text-center`}
+          className={`mb-3 pt-24 text-center text-5xl font-extrabold tracking-tight`}
         >
           Terms and Conditions
         </h1>
         <div className="">
-          <h2 className="text-2xl my-6 font-semibold">OVERVIEW</h2>
+          <h2 className="my-6 text-2xl font-semibold">OVERVIEW</h2>
           <p className="mt-2">
             This website is operated by NMAM Institute of Technology. Throughout
             the site, the terms &ldquo;we&rdquo;, &ldquo;us&rdquo; and
@@ -51,7 +51,7 @@ const Terms: NextPage = () => {
             after being notified of such changes via email constitutes
             acceptance of those changes.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 1 - INCRIDEA 2024 PARTICIPATION TERMS
           </h2>
           <p className="mt-2">
@@ -70,7 +70,7 @@ const Terms: NextPage = () => {
             disqualification from the event and may lead to further consequences
             as deemed necessary by NMAM Institute of Technology.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 2 - GENERAL CONDITIONS FOR INCRIDEA 2024 PARTICIPATION
           </h2>
           <p className="mt-2">
@@ -95,7 +95,7 @@ const Terms: NextPage = () => {
             The headings used in this agreement are included for convenience
             only and will not limit or otherwise affect these Terms.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 3 - ACCURACY, COMPLETENESS AND TIMELINESS OF INFORMATION FOR
             INCRIDEA 2024 PARTICIPATION
           </h2>
@@ -122,7 +122,7 @@ const Terms: NextPage = () => {
             information on the platform. You agree that it is your
             responsibility to monitor changes to the platform.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 4 - MODIFICATIONS TO INCRIDEA 2024 AND REGISTRATION PRICES
           </h2>
           <p className="mt-2">
@@ -141,7 +141,7 @@ const Terms: NextPage = () => {
             modification, price change, suspension, or discontinuance of
             Incridea 2024.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 5 - EVENTS AND SERVICES AT INCRIDEA 2024
           </h2>
           <p className="mt-2">
@@ -173,7 +173,7 @@ const Terms: NextPage = () => {
             meet your expectations, or that any errors in the Service will be
             corrected.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 6 - ACCURACY OF REGISTRATION AND ACCOUNT INFORMATION
           </h2>
           <p className="mt-2">
@@ -198,7 +198,7 @@ const Terms: NextPage = () => {
             information, including your email address and payment information,
             so that we can complete your transactions and contact you as needed.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 7 - OPTIONAL TOOLS
           </h2>
           <p className="mt-2">
@@ -228,7 +228,7 @@ const Terms: NextPage = () => {
           <p className="mt-2">
             For more detail, please review our Privacy Policy.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 8 - THIRD-PARTY LINKS
           </h2>
           <p className="mt-2">
@@ -254,7 +254,7 @@ const Terms: NextPage = () => {
             transaction. Complaints, claims, concerns, or questions regarding
             third-party products should be directed to the third-party.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 9 - USER COMMENTS, FEEDBACK, AND OTHER SUBMISSIONS
           </h2>
           <p className="mt-2">
@@ -293,7 +293,7 @@ const Terms: NextPage = () => {
             staff, take no responsibility and assume no liability for any
             comments posted by you or any third-party related to Incridea 2024.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 10 - PERSONAL INFORMATION
           </h2>
           <p className="mt-2">
@@ -304,7 +304,7 @@ const Terms: NextPage = () => {
             information. Please carefully review our Privacy Policy before
             submitting any personal information.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 11 - ERRORS, INACCURACIES AND OMISSIONS
           </h2>
           <p className="mt-2">
@@ -322,7 +322,7 @@ const Terms: NextPage = () => {
             related website, should be taken to indicate that all information in
             the Service or on any related website has been modified or updated.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 12 - PROHIBITED USES
           </h2>
           <p className="mt-2">
@@ -351,7 +351,7 @@ const Terms: NextPage = () => {
             access to any related website, for violating any of the prohibited
             uses.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 13 - DISCLAIMER OF WARRANTIES; LIMITATION OF LIABILITY
           </h2>
           <p className="mt-2">
@@ -401,7 +401,7 @@ const Terms: NextPage = () => {
             jurisdictions, our liability shall be limited to the maximum extent
             permitted by law.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 14 - INDEMNIFICATION
           </h2>
           <p className="my-6">
@@ -416,7 +416,7 @@ const Terms: NextPage = () => {
             violation of any law or the rights of a third-party in relation to
             your participation in Incridea 2024.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 15 - SEVERABILITY
           </h2>
           <p className="my-6">
@@ -429,7 +429,7 @@ const Terms: NextPage = () => {
             affect the validity and enforceability of any other remaining
             provisions that remain relevant to Incridea 2024.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 16 - TERMINATION
           </h2>
           <p className="mt-2">
@@ -456,7 +456,7 @@ const Terms: NextPage = () => {
             terminating the agreement may also deny the other party access to
             their services or any part thereof.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 17 - ENTIRE AGREEMENT
           </h2>
           <p className="mt-2">
@@ -480,7 +480,7 @@ const Terms: NextPage = () => {
             shall not be construed against either the student organizers or the
             college staff as the drafting party.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 18 - GOVERNING LAW
           </h2>
           <p className="mt-2">
@@ -490,7 +490,7 @@ const Terms: NextPage = () => {
             be governed by and construed in accordance with the laws of India
             and the jurisdiction of Karkala, Karnataka.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 19 - CHANGES TO TERMS OF SERVICE
           </h2>
           <p className="mt-2">
@@ -507,7 +507,7 @@ const Terms: NextPage = () => {
             party following the posting of any changes to these Terms of Service
             constitutes acceptance of those changes.
           </p>
-          <h2 className="text-2xl my-6 font-semibold">
+          <h2 className="my-6 text-2xl font-semibold">
             SECTION 20 - CONTACT INFORMATION
           </h2>
           <p className="mt-2">

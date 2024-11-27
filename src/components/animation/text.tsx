@@ -1,5 +1,5 @@
-import React, { FC, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView } from "framer-motion";
+import React, { FC, useRef } from "react";
 
 const TextAnimation: FC<{
   text: string;
@@ -8,8 +8,8 @@ const TextAnimation: FC<{
   marginRight?: string;
 }> = ({ text, className, textStyle, marginRight }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true })
-  const words = text.split(' ');
+  const isInView = useInView(ref, { once: true });
+  const words = text.split(" ");
 
   const container = {
     hidden: { opacity: 0 },
@@ -24,7 +24,7 @@ const TextAnimation: FC<{
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: "spring",
         damping: 12,
         stiffness: 100,
       },
@@ -33,7 +33,7 @@ const TextAnimation: FC<{
       opacity: 0,
       y: 20,
       transition: {
-        type: 'spring',
+        type: "spring",
         damping: 12,
         stiffness: 100,
       },
@@ -44,15 +44,15 @@ const TextAnimation: FC<{
     <motion.div
       ref={ref}
       className={className}
-      style={{ overflow: 'hidden', display: 'flex', fontSize: '2rem' }}
+      style={{ overflow: "hidden", display: "flex", fontSize: "2rem" }}
       variants={container}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      animate={isInView ? "visible" : "hidden"}
     >
       {words.map((word, index) => (
         <motion.span
           variants={child}
-          style={{ marginRight: marginRight || '5px' }}
+          style={{ marginRight: marginRight || "5px" }}
           key={index}
           className={textStyle}
         >

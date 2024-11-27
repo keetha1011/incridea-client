@@ -1,9 +1,10 @@
-import { AddXpDocument, GetUserXpDocument } from "@/src/generated/generated";
-import { baseImageUrl } from "@/src/utils/url";
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+
+import { env } from "~/env";
+import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
 
 const FinalComponent = () => {
   const [calledXp, setCalledXp] = useState(false);
@@ -31,22 +32,22 @@ const FinalComponent = () => {
               backgroundColor: "#7628D0",
               color: "white",
             },
-          }
+          },
         );
       }
     });
   };
   return (
     <div
-      className="w-full text-white flex flex-col items-center gap-y-4"
+      className="flex w-full flex-col items-center gap-y-4 text-white"
       id="animation"
     >
-      <h1 className="font-extrabold text-5xl md:text-6xl">Incridea &apos;24</h1>
-      <p className="text-sm md:text-xl tracking-wider">
+      <h1 className="text-5xl font-extrabold md:text-6xl">Incridea &apos;24</h1>
+      <p className="text-sm tracking-wider md:text-xl">
         Its your time to create great memories
       </p>
       <Image
-        src={`${baseImageUrl}/assets/png/dice.png`}
+        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/dice.png`}
         alt="dice"
         width={50}
         height={50}

@@ -1,19 +1,20 @@
-import { useAuth } from "@/src/hooks/useAuth";
-import { NextPage } from "next";
-import "locomotive-scroll/dist/locomotive-scroll.css";
-import { useRef, useState } from "react";
-import ProfileInfo from "@/src/components/pages/profile/profileInfo";
-import UserEvents from "@/src/components/pages/profile/registeredEvents";
-import toast from "react-hot-toast";
-import Link from "next/link";
-import Button from "@/src/components/button";
-import Image from "next/image";
-import Loader from "@/src/components/Loader";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { useMutation } from "@apollo/client";
-import { AddXpDocument, GetUserXpDocument } from "@/src/generated/generated";
-import { baseImageUrl } from "@/src/utils/url";
+import "locomotive-scroll/dist/locomotive-scroll.css";
+import { NextPage } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
+import Button from "~/components/button";
+import ProfileInfo from "~/components/general/profile/profileInfo";
+import UserEvents from "~/components/general/profile/registeredEvents";
+import Loader from "~/components/loader";
+import { env } from "~/env";
+import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 const Profile: NextPage = () => {
   const { error, user, loading } = useAuth();
@@ -46,7 +47,7 @@ const Profile: NextPage = () => {
                 backgroundColor: "#7628D0",
                 color: "white",
               },
-            }
+            },
           );
           localStorage.removeItem("easterBombClicked");
         }
@@ -58,17 +59,17 @@ const Profile: NextPage = () => {
 
   if (!user)
     return (
-      <div className="flex flex-col text-center space-y-3 items-center justify-center h-screen bg-gradient-to-b from-primary-300 to-primary-500">
+      <div className="flex h-screen flex-col items-center justify-center space-y-3 bg-gradient-to-b from-primary-300 to-primary-500 text-center">
         {/* Todo: Any graphic to fill space */}
-        <div className="flex z-10 justify-center items-center h-96 mt-8">
+        <div className="z-10 mt-8 flex h-96 items-center justify-center">
           <Image
-            src={`${baseImageUrl}/assets/png/gamer.png`}
+            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/gamer.png`}
             alt="404"
             width={400}
             height={400}
           />
         </div>
-        <h1 className="bodyFont lg:text-xl text-lg text-white -translate-y-10">
+        <h1 className="bodyFont -translate-y-10 text-lg text-white lg:text-xl">
           Hey there! You need to login to view your profile page.
         </h1>
         <Link href="/login" className="-translate-y-5">
@@ -79,7 +80,7 @@ const Profile: NextPage = () => {
 
   if (error)
     return (
-      <div className="flex items-center justify-center h-screen bg-gradient-to-b from-primary-300 to-primary-500">
+      <div className="flex h-screen items-center justify-center bg-gradient-to-b from-primary-300 to-primary-500">
         <h1 className="text-2xl font-bold text-white">
           Something went wrong. Please try again later.
         </h1>
@@ -87,9 +88,9 @@ const Profile: NextPage = () => {
     ); // Error page here
 
   return (
-    <main ref={containerRef} className="bodyFont w-[98vw] mx-auto">
-      <div className="lg:grid lg:grid-cols-3 flex flex-col-reverse gap-5 py-[5rem]">
-        <div className="w-full h-full overflow-auto col-span-2">
+    <main ref={containerRef} className="bodyFont mx-auto w-[98vw]">
+      <div className="flex flex-col-reverse gap-5 py-[5rem] lg:grid lg:grid-cols-3">
+        <div className="col-span-2 h-full w-full overflow-auto">
           <UserEvents userId={user?.id!} />
         </div>
 

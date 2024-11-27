@@ -1,8 +1,3 @@
-import { FooterBody } from "@/src/components/footer";
-import GallerySlide from "@/src/components/galleryslide";
-import ProgressBar from "@/src/components/galleryslide/progressBar/progress-bar";
-import styles from "@/src/components/galleryslide/styles/shadow.module.css";
-import { baseImageUrl } from "@/src/utils/url";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import gsap from "gsap";
 import { NextPage } from "next";
@@ -15,16 +10,22 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { FooterBody } from "~/components/footer";
+import GallerySlide from "~/components/galleryslide";
+import ProgressBar from "~/components/galleryslide/progressBar/progress-bar";
+import styles from "~/components/galleryslide/styles/shadow.module.css";
+import { env } from "~/env";
+
 const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
   const swiperRef = useRef<SwiperType>();
-  const years = [2019, 2020, 2022, 2023, 2024];
-  const imageCounts = [29, 12, 26, 26, 0];
+  const years = [2019, 2020, 2022, 2023, 2024] as const;
+  const imageCounts = [29, 12, 26, 26, 0] as const;
 
   const generateImagePaths = (
     year: number,
     count: number,
-    extension: string
+    extension: string,
   ) => {
     const imagePaths = [];
     for (let i = 1; i <= count; i++) {
@@ -45,7 +46,7 @@ const Gallery: NextPage = () => {
             backgroundColor: "#7628D0",
             color: "white",
           },
-        }
+        },
       );
     }
   }, []);
@@ -85,12 +86,12 @@ const Gallery: NextPage = () => {
   const rotateX = useTransform(
     mouseYSpring,
     [-1.8, 1.8],
-    ["150deg", "-150deg"]
+    ["150deg", "-150deg"],
   );
   const rotateY = useTransform(
     mouseXSpring,
     [-1.8, 1.8],
-    ["-150deg", "150deg"]
+    ["-150deg", "150deg"],
   );
   const tiltStars = (e: any) => {
     const xPct = (e.clientX / window.innerWidth - 0.5) * 0.4;
@@ -102,18 +103,18 @@ const Gallery: NextPage = () => {
   return (
     <>
       <section
-        className="flex flex-col w-full h-screen bg-[url('/assets/png/galleryBg.png')] bg-cover bg-center relative overflow-hidden"
+        className="relative flex h-screen w-full flex-col overflow-hidden bg-[url('/assets/png/galleryBg.png')] bg-cover bg-center"
         onMouseMove={tiltStars}
       >
         <motion.div
           className={
-            "absolute w-full h-full bg-[url('/assets/png/galleryBgStars.png')] bg-cover bg-center"
+            "absolute h-full w-full bg-[url('/assets/png/galleryBgStars.png')] bg-cover bg-center"
           }
           id="stars"
           style={{ rotateY, rotateX }}
         ></motion.div>
         {/* Pc Section */}
-        <div className="min-h-screen overflow-y-auto z-0">
+        <div className="z-0 min-h-screen overflow-y-auto">
           {years.map((year, index) => {
             if (index === 4) return;
             return (
@@ -122,7 +123,7 @@ const Gallery: NextPage = () => {
                 id="animation"
                 className={
                   styles["text-shadow"] +
-                  ` absolute top-28 text-center w-full font-extrabold sm:text-6xl text-4xl z-50 border-black text-white ${
+                  ` absolute top-28 z-50 w-full border-black text-center text-4xl font-extrabold text-white sm:text-6xl ${
                     activeYear === index ? "block" : "hidden"
                   }`
                 }
@@ -135,22 +136,22 @@ const Gallery: NextPage = () => {
           {/* Slide Section */}
           <Swiper
             autoplay={false}
-            onBeforeInit={(swiper) => {
+            onBeforeInit={(swiper: SwiperType) => {
               swiperRef.current = swiper;
             }}
             speed={900}
             spaceBetween={200}
             noSwiping={true}
             allowTouchMove={false}
-            className="sm:w-full h-full relative flex"
+            className="relative flex h-full sm:w-full"
           >
-            <SwiperSlide className="flex justify-center items-center text-center">
-              <div className="relative w-full h-full flex justify-center items-center">
+            <SwiperSlide className="flex items-center justify-center text-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <GallerySlide title={2019} imgArr={img2019} emulator="gba" />
               </div>
             </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center">
-              <div className="relative w-full h-full flex justify-center items-center">
+            <SwiperSlide className="flex items-center justify-center text-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <GallerySlide
                   title={2020}
                   imgArr={img2020}
@@ -158,8 +159,8 @@ const Gallery: NextPage = () => {
                 />
               </div>
             </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center">
-              <div className="relative w-full h-full flex justify-center items-center">
+            <SwiperSlide className="flex items-center justify-center text-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <GallerySlide
                   title={2022}
                   imgArr={img2022}
@@ -167,8 +168,8 @@ const Gallery: NextPage = () => {
                 />
               </div>
             </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center">
-              <div className="relative w-full h-full flex justify-center items-center">
+            <SwiperSlide className="flex items-center justify-center text-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <GallerySlide
                   title={2023}
                   imgArr={img2023}
@@ -176,12 +177,12 @@ const Gallery: NextPage = () => {
                 />
               </div>
             </SwiperSlide>
-            <SwiperSlide className="flex justify-center items-center text-center">
-              <div className="relative w-full h-full flex justify-center items-center">
+            <SwiperSlide className="flex items-center justify-center text-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <GallerySlide title={2024} imgArr={img2024} emulator="final" />
               </div>
             </SwiperSlide>
-            <div className="mx-auto z-20 flex gap-4 absolute sm:bottom-[16%] bottom-32 justify-between px-20 w-full">
+            <div className="absolute bottom-32 z-20 mx-auto flex w-full justify-between gap-4 px-20 sm:bottom-[16%]">
               <button
                 id="float"
                 onClick={async () => {
@@ -200,14 +201,14 @@ const Gallery: NextPage = () => {
                   });
                   return swiperRef.current?.slidePrev();
                 }}
-                className={`h-6 w-auto duration-75 transition-all ease-in-out z-20`}
+                className={`z-20 h-6 w-auto transition-all duration-75 ease-in-out`}
               >
                 <Image
-                  src={`${baseImageUrl}/assets/svg/8bitArrow.svg`}
+                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/8bitArrow.svg`}
                   alt="arrow-previous"
                   width={50}
                   height={50}
-                  className="rotate-180 z-20 w-12 h-12 md:w-20 md:h-20"
+                  className="z-20 h-12 w-12 rotate-180 md:h-20 md:w-20"
                   style={{
                     filter:
                       "drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)",
@@ -234,15 +235,15 @@ const Gallery: NextPage = () => {
                   });
                   return swiperRef.current?.slideNext();
                 }}
-                className="z-[500] h-6 w-auto duration-75 transition-all ease-in-out"
+                className="z-[500] h-6 w-auto transition-all duration-75 ease-in-out"
               >
                 <Image
-                  src={`${baseImageUrl}/assets/svg/8bitArrow.svg`}
+                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/8bitArrow.svg`}
                   alt="arrow-next"
                   width={50}
                   height={50}
                   //  -webkit-filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black);filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black);
-                  className="w-12 z-[500] h-12 md:w-20 md:h-20"
+                  className="z-[500] h-12 w-12 md:h-20 md:w-20"
                   style={{
                     filter:
                       "drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)",

@@ -1,27 +1,21 @@
-import Spinner from "@/src/components/spinner";
-import { useAuth } from "@/src/hooks/useAuth";
+import { useQuery } from "@apollo/client";
+import { Menu } from "@headlessui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Dashboard from "@/src/components/layout/dashboard";
 import { Toaster } from "react-hot-toast";
-import { useQuery } from "@apollo/client";
+import { AiOutlineSearch } from "react-icons/ai";
+import { BiDownload } from "react-icons/bi";
+import { IoPeopleOutline } from "react-icons/io5";
+
+import Dashboard from "~/components/layout/dashboard";
+import Spinner from "~/components/spinner";
 import {
-  Criteria,
-  Judge,
-  Maybe,
   PublishedEventsDocument,
   PublishedEventsQuery,
-  Round,
-  Scalars,
-  WinnersByEventDocument,
-} from "@/src/generated/generated";
-import Events from "../../events";
-import Link from "next/link";
-import { Menu } from "@headlessui/react";
-import { AiOutlineSearch } from "react-icons/ai";
-import { IoPeopleOutline } from "react-icons/io5";
-import { GetAllWinnersDocument } from "@/src/generated/generated";
-import { BiDownload } from "react-icons/bi";
+} from "~/generated/generated";
+import { GetAllWinnersDocument } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 function Jury() {
   const { user, loading, error } = useAuth();
@@ -38,7 +32,7 @@ function Jury() {
   //   return winners;
   // }
   const { data: allWinners, loading: allWinnersLoading } = useQuery(
-    GetAllWinnersDocument
+    GetAllWinnersDocument,
   );
   console.log(allWinners);
   const router = useRouter();
@@ -86,7 +80,7 @@ function Jury() {
     let tempFilteredEvents = Events?.publishedEvents;
     if (currentBranchFilter !== "ALL")
       tempFilteredEvents = tempFilteredEvents?.filter(
-        (event) => event.branch.name === currentBranchFilter
+        (event) => event.branch.name === currentBranchFilter,
       );
     // if (currentDayFilter !== "ALL") {
     //   let filteredDay = new Date(
@@ -103,18 +97,18 @@ function Jury() {
         currentDayFilter === "DAY 1"
           ? "2024-02-22"
           : currentDayFilter === "DAY 2"
-          ? "2024-02-23"
-          : "2024-02-24"
+            ? "2024-02-23"
+            : "2024-02-24",
       ).getDate();
       tempFilteredEvents = tempFilteredEvents?.filter((event) =>
         event.rounds.some(
-          (round) => new Date(round.date).getDate() === filteredDay
-        )
+          (round) => new Date(round.date).getDate() === filteredDay,
+        ),
       );
     }
     if (currentCategoryFilter !== "ALL") {
       tempFilteredEvents = tempFilteredEvents?.filter(
-        (event) => event.category === currentCategoryFilter
+        (event) => event.category === currentCategoryFilter,
       );
     }
     setFilteredEvents(tempFilteredEvents);
@@ -130,8 +124,8 @@ function Jury() {
     } else {
       setFilteredEvents(
         Events?.publishedEvents.filter((event) =>
-          event.name.toLowerCase().includes(e.target.value.toLowerCase())
-        )
+          event.name.toLowerCase().includes(e.target.value.toLowerCase()),
+        ),
       );
     }
   };
@@ -160,11 +154,11 @@ function Jury() {
                   currentDayFilter === "DAY 1"
                     ? "2024-02-22"
                     : currentDayFilter === "DAY 2"
-                    ? "2024-02-23"
-                    : "2024-02-24"
+                      ? "2024-02-23"
+                      : "2024-02-24",
                 ).getDate() ===
                 new Date(
-                  winner.event.rounds[winner.event.rounds.length - 1].date
+                  winner.event.rounds[winner.event.rounds.length - 1]!.date,
                 ).getDate()
               ) {
                 if (winner.event.branch.name === "CORE") {
@@ -207,11 +201,11 @@ function Jury() {
                   currentDayFilter === "DAY 1"
                     ? "2024-02-22"
                     : currentDayFilter === "DAY 2"
-                    ? "2024-02-23"
-                    : "2024-02-24"
+                      ? "2024-02-23"
+                      : "2024-02-24",
                 ).getDate() ===
                 new Date(
-                  winner.event.rounds[winner.event.rounds.length - 1].date
+                  winner.event.rounds[winner.event.rounds.length - 1]!.date,
                 ).getDate()
               ) {
                 if (winner.event.branch.name !== "CORE") {
@@ -264,7 +258,7 @@ function Jury() {
 
   if (loading || EventLoading)
     return (
-      <div className="h-screen w-screen flex justify-center">
+      <div className="flex h-screen w-screen justify-center">
         <Spinner />
       </div>
     );
@@ -280,20 +274,20 @@ function Jury() {
   return (
     <Dashboard>
       <Toaster />
-      <div className="relative top-14 md:top-0 flex justify-between items-center mb-3">
-        <h1 className="text-3xl -translate-y-12 lg:translate-y-0 px-5">
+      <div className="relative top-14 mb-3 flex items-center justify-between md:top-0">
+        <h1 className="-translate-y-12 px-5 text-3xl lg:translate-y-0">
           Hello <span className="font-semibold">{user?.name}</span>!
         </h1>
       </div>
       {/* --------------------- */}
-      <div className="flex flex-wrap items-center gap-2 px-4 lg:justify-between lg:flex-col lg:mx-auto mt-8 mb-7">
-        <div className="flex flex-col lg:flex-nowrap lg:w-[800px] w-full items-center gap-2">
+      <div className="mb-7 mt-8 flex flex-wrap items-center gap-2 px-4 lg:mx-auto lg:flex-col lg:justify-between">
+        <div className="flex w-full flex-col items-center gap-2 lg:w-[800px] lg:flex-nowrap">
           <div className="flex w-full items-center justify-between gap-3">
-            <div className="relative lg:basis-[75%] basis-full w-full lg:w-auto ">
+            <div className="relative w-full basis-full lg:w-auto lg:basis-[75%]">
               <input
                 value={query}
                 onChange={handleSearch}
-                className="w-full pr-14 bg-black/30 placeholder:text-gray-200/70 focus:outline-none text-white rounded-sm  pl-3 p-2"
+                className="w-full rounded-sm bg-black/30 p-2 pl-3 pr-14 text-white placeholder:text-gray-200/70 focus:outline-none"
                 placeholder="Search away!"
                 type="text"
               />
@@ -302,18 +296,18 @@ function Jury() {
                 className="absolute right-3 top-2.5 text-gray-300/70"
               />
             </div>
-            <div className="lg:flex hidden justify-center basis-[12.5%] py-2">
-              <Menu as={"div"} className={"relative w-full inline-block"}>
+            <div className="hidden basis-[12.5%] justify-center py-2 lg:flex">
+              <Menu as={"div"} className={"relative inline-block w-full"}>
                 <Menu.Button
                   className={
-                    "inline-flex bg-black/30 leading-6 w-full justify-center rounded-sm px-4 py-2 h-[40px] text-sm font-medium text-white"
+                    "inline-flex h-[40px] w-full justify-center rounded-sm bg-black/30 px-4 py-2 text-sm font-medium leading-6 text-white"
                   }
                 >
                   {currentBranchFilter !== "ALL"
                     ? currentBranchFilter
                     : "Branch"}
                 </Menu.Button>
-                <Menu.Items className=" overflow-hidden pb-1.5 mt-1 bg-[#286D8C] absolute z-10 text-center rounded-sm shadow-black/80 shadow-2xl">
+                <Menu.Items className="absolute z-10 mt-1 overflow-hidden rounded-sm bg-[#286D8C] pb-1.5 text-center shadow-2xl shadow-black/80">
                   {branchFilters.map((filter) => (
                     <Menu.Item key={filter}>
                       {({ active }) => (
@@ -322,7 +316,7 @@ function Jury() {
                             currentBranchFilter === filter
                               ? "bg-black/50"
                               : "bg-black/20"
-                          } text-white rounded-sm m-1.5 mb-0 w-32 px-3 py-2 text-sm`}
+                          } m-1.5 mb-0 w-32 rounded-sm px-3 py-2 text-sm text-white`}
                           onClick={() => setCurrentBranchFilter(filter)}
                         >
                           {filter}
@@ -333,16 +327,16 @@ function Jury() {
                 </Menu.Items>
               </Menu>
             </div>
-            <div className="lg:flex hidden justify-center basis-[12.5%] py-2">
-              <Menu as={"div"} className={"relative w-full inline-block"}>
+            <div className="hidden basis-[12.5%] justify-center py-2 lg:flex">
+              <Menu as={"div"} className={"relative inline-block w-full"}>
                 <Menu.Button
                   className={
-                    "inline-flex shrink-0 whitespace-nowrap bg-black/30 leading-6 w-full justify-center rounded-sm px-4 py-2 h-[40px] text-sm font-medium text-white"
+                    "inline-flex h-[40px] w-full shrink-0 justify-center whitespace-nowrap rounded-sm bg-black/30 px-4 py-2 text-sm font-medium leading-6 text-white"
                   }
                 >
                   {currentDayFilter !== "ALL" ? currentDayFilter : "Day"}
                 </Menu.Button>
-                <Menu.Items className="overflow-hidden right-0 pb-1.5 mt-1 bg-[#286D8C]  absolute z-[1] text-center rounded-sm shadow-black/80 shadow-2xl">
+                <Menu.Items className="absolute right-0 z-[1] mt-1 overflow-hidden rounded-sm bg-[#286D8C] pb-1.5 text-center shadow-2xl shadow-black/80">
                   {dayFilters.map((filter) => (
                     <Menu.Item key={filter}>
                       {({ active }) => (
@@ -351,7 +345,7 @@ function Jury() {
                             currentDayFilter === filter
                               ? "bg-black/50"
                               : "bg-black/20"
-                          } text-white rounded-sm m-1.5 mb-0 w-36 px-3 py-2 text-sm`}
+                          } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                           onClick={() => setCurrentDayFilter(filter)}
                         >
                           {filter}
@@ -364,21 +358,21 @@ function Jury() {
             </div>
             <button
               onClick={DownloadWinnersCSV}
-              className="border border-white py-2 px-4 rounded-xl flex gap-x-2 items-center"
+              className="flex items-center gap-x-2 rounded-xl border border-white px-4 py-2"
             >
               <BiDownload />
               Winners
             </button>
           </div>
-          <div className="lg:flex lg:w-[800px] gap-3 mx-auto  hidden  font-semibold">
+          <div className="mx-auto hidden gap-3 font-semibold lg:flex lg:w-[800px]">
             {categoryFilters.map((filter) => (
               <span
                 key={filter}
                 className={`${
                   filter === currentCategoryFilter
-                    ? "border-b-4  bg-black/10 "
+                    ? "border-b-4 bg-black/10"
                     : "hover:bg-black/10"
-                } text-white cursor-pointer grow border-black/30 text-center rounded-sm px-3 py-1`}
+                } grow cursor-pointer rounded-sm border-black/30 px-3 py-1 text-center text-white`}
                 onClick={() => setCurrentCategoryFilter(filter)}
               >
                 {filter.replace("_", " ")}
@@ -388,17 +382,17 @@ function Jury() {
         </div>
 
         {/* Mobile Filters */}
-        <div className="flex  justify-between gap-3 basis-full">
-          <div className="lg:hidden flex basis-1/3 justify-between  py-2">
-            <Menu as={"div"} className={"relative grow inline-block"}>
+        <div className="flex basis-full justify-between gap-3">
+          <div className="flex basis-1/3 justify-between py-2 lg:hidden">
+            <Menu as={"div"} className={"relative inline-block grow"}>
               <Menu.Button
                 className={
-                  "inline-flex bg-black/30 leading-6 w-full justify-center rounded-sm px-4 py-2 h-[40px] text-sm font-medium text-white"
+                  "inline-flex h-[40px] w-full justify-center rounded-sm bg-black/30 px-4 py-2 text-sm font-medium leading-6 text-white"
                 }
               >
                 {currentBranchFilter !== "ALL" ? currentBranchFilter : "Branch"}
               </Menu.Button>
-              <Menu.Items className="overflow-hidden pb-1.5 mt-1 bg-[#2e768a] absolute z-50 text-center rounded-sm shadow-black/80 shadow-2xl">
+              <Menu.Items className="absolute z-50 mt-1 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
                 {branchFilters.map((filter) => (
                   <Menu.Item key={filter}>
                     {({ active }) => (
@@ -407,7 +401,7 @@ function Jury() {
                           currentBranchFilter === filter
                             ? "bg-black/50"
                             : "bg-black/20"
-                        } text-white rounded-sm m-1.5 mb-0 w-36 px-3 py-2 text-sm`}
+                        } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                         onClick={() => setCurrentBranchFilter(filter)}
                       >
                         {filter}
@@ -418,18 +412,18 @@ function Jury() {
               </Menu.Items>
             </Menu>
           </div>
-          <div className="lg:hidden flex justify-center shrink grow-0 basis-1/3 py-2">
-            <Menu as={"div"} className={"relative grow inline-block"}>
+          <div className="flex shrink grow-0 basis-1/3 justify-center py-2 lg:hidden">
+            <Menu as={"div"} className={"relative inline-block grow"}>
               <Menu.Button
                 className={
-                  "inline-flex whitespace-nowrap overflow-hidden  bg-black/30 leading-6 w-full justify-center rounded-sm px-4 py-2 h-[40px] text-sm font-medium text-white"
+                  "inline-flex h-[40px] w-full justify-center overflow-hidden whitespace-nowrap rounded-sm bg-black/30 px-4 py-2 text-sm font-medium leading-6 text-white"
                 }
               >
                 {currentCategoryFilter !== "ALL"
                   ? currentCategoryFilter.replace("_", " ")
                   : "Category"}
               </Menu.Button>
-              <Menu.Items className="overflow-hidden right-1/2 translate-x-1/2 pb-1.5 mt-1 bg-[#2e768a]  absolute z-50 text-center rounded-sm shadow-black/80 shadow-2xl">
+              <Menu.Items className="absolute right-1/2 z-50 mt-1 translate-x-1/2 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
                 {categoryFilters.map((filter) => (
                   <Menu.Item key={filter}>
                     {({ active }) => (
@@ -438,7 +432,7 @@ function Jury() {
                           currentCategoryFilter === filter
                             ? "bg-black/50"
                             : "bg-black/20"
-                        } text-white rounded-sm m-1.5 mb-0 w-36 px-3 py-2 text-sm`}
+                        } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                         onClick={() => setCurrentCategoryFilter(filter)}
                       >
                         {filter.replace("_", " ")}
@@ -449,16 +443,16 @@ function Jury() {
               </Menu.Items>
             </Menu>
           </div>
-          <div className="lg:hidden flex justify-center basis-1/3  py-2">
-            <Menu as={"div"} className={"relative grow inline-block"}>
+          <div className="flex basis-1/3 justify-center py-2 lg:hidden">
+            <Menu as={"div"} className={"relative inline-block grow"}>
               <Menu.Button
                 className={
-                  "inline-flex whitespace-nowrap bg-black/30 leading-6 w-full justify-center rounded-sm px-4 py-2 h-[40px] text-sm font-medium text-white"
+                  "inline-flex h-[40px] w-full justify-center whitespace-nowrap rounded-sm bg-black/30 px-4 py-2 text-sm font-medium leading-6 text-white"
                 }
               >
                 {currentDayFilter !== "ALL" ? currentDayFilter : "Day"}
               </Menu.Button>
-              <Menu.Items className="overflow-hidden right-0 pb-1.5 mt-1 bg-[#2e768a]  absolute z-50 text-center rounded-sm shadow-black/80 shadow-2xl">
+              <Menu.Items className="absolute right-0 z-50 mt-1 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
                 {dayFilters.map((filter) => (
                   <Menu.Item key={filter}>
                     {({ active }) => (
@@ -467,7 +461,7 @@ function Jury() {
                           currentDayFilter === filter
                             ? "bg-black/50"
                             : "bg-black/20"
-                        } text-white rounded-sm m-1.5 mb-0 w-36 px-3 py-2 text-sm`}
+                        } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                         onClick={() => setCurrentDayFilter(filter)}
                       >
                         {filter.replace("_", " ")}
@@ -483,11 +477,11 @@ function Jury() {
       {/* -------------------- */}
 
       {filteredEvents?.length === 0 ? (
-        <div className="bodyFont flex italic items-center justify-center min-h-[20rem] text-xl w-full text-center text-gray-200/70">
+        <div className="bodyFont flex min-h-[20rem] w-full items-center justify-center text-center text-xl italic text-gray-200/70">
           <span>No events found</span>
         </div>
       ) : (
-        <div className="grid  grid-cols-1 mx-auto gap-10 md:grid-cols-2 max-w-7xl xl:grid-cols-3 px-5">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 md:grid-cols-2 xl:grid-cols-3">
           {filteredEvents?.map((Event) => (
             <EventCard key={Event.id} event={Event} />
           ))}
@@ -527,13 +521,13 @@ const EventCard = ({
         .toLowerCase()
         .replaceAll(" ", "-")}-${event.id}`}
       key={event.id + event.name}
-      className="bg-black/20 backdrop-blur-sm flex flex-col cursor-pointer rounded-md  max-w-xl w-full p-8 hover:scale-[1.03] transition-transform duration-300"
+      className="flex w-full max-w-xl cursor-pointer flex-col rounded-md bg-black/20 p-8 backdrop-blur-sm transition-transform duration-300 hover:scale-[1.03]"
     >
       <div>
-        <div className="flex justify-between px-2 mb-2">
+        <div className="mb-2 flex justify-between px-2">
           <div className="flex flex-col">
             <h1>{event.name}</h1>
-            <span className="flex text-sm items-center">
+            <span className="flex items-center text-sm">
               <IoPeopleOutline className="mr-2 text-base" />
               {event.maxTeamSize !== 1
                 ? `${event.minTeamSize} - ${event.maxTeamSize} members`
@@ -542,8 +536,8 @@ const EventCard = ({
           </div>
           <h2>Venue:{" " + event.venue}</h2>
         </div>
-        <div className="py-2 flex justify-between">
-          <div className="p-2 bg-white/20 rounded-md">
+        <div className="flex justify-between py-2">
+          <div className="rounded-md bg-white/20 p-2">
             <div className="flex items-center justify-center">
               <span className="text-md pr-2">Rounds</span>
               <span className="text-xl font-semibold">
@@ -560,7 +554,7 @@ const EventCard = ({
             return (
               <div
                 key={idx}
-                className="bg-white/20 rounded-sm grid grid-rows-2 p-2 text-sm"
+                className="grid grid-rows-2 rounded-sm bg-white/20 p-2 text-sm"
               >
                 <span>Round :{" " + round?.roundNo}</span>
                 <span>Date: {" " + round?.date?.substring(0, 10)}</span>
@@ -576,19 +570,19 @@ const EventCard = ({
 export const StatusBadge = ({ status }: { status: string }) => {
   if (status === "COMPLETED")
     return (
-      <div className="border-2 h-fit rounded-full text-green-400 border-green-400 px-2 py-1 text-xs">
+      <div className="h-fit rounded-full border-2 border-green-400 px-2 py-1 text-xs text-green-400">
         Completed
       </div>
     );
   if (status === "ONGOING")
     return (
-      <div className="border-2 h-fit rounded-full text-yellow-400 border-yellow-400 px-2 py-1 text-xs">
+      <div className="h-fit rounded-full border-2 border-yellow-400 px-2 py-1 text-xs text-yellow-400">
         OnGoing
       </div>
     );
   if (status === "YET_TO_START")
     return (
-      <div className="border-2 h-fit rounded-full text-red-500 border-red-500 px-2 py-1 text-xs">
+      <div className="h-fit rounded-full border-2 border-red-500 px-2 py-1 text-xs text-red-500">
         yet to start
       </div>
     );

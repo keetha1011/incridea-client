@@ -1,12 +1,13 @@
-import LoginCard from "../components/login/card";
-import LoginPortal from "@/src/components/login/portal";
 import { NextPage } from "next";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Image from "next/image";
-import FallingItem from "../components/login/fallingItem";
-import EasterBomb from "../components/login/easterBomb";
-import { baseImageUrl } from "../utils/url";
+
+import LoginCard from "~/components/login/card";
+import EasterBomb from "~/components/login/easterBomb";
+import FallingItem from "~/components/login/fallingItem";
+import LoginPortal from "~/components/login/portal";
+import { env } from "~/env";
 
 type CardStyle = {
   top: string;
@@ -66,7 +67,7 @@ const SignIn: NextPage = () => {
   });
 
   const changeCard: (
-    newForm: "signIn" | "resetPassword" | "signUp" | "resendEmail"
+    newForm: "signIn" | "resetPassword" | "signUp" | "resendEmail",
   ) => void = (newForm) => {
     if (whichForm === newForm) return;
 
@@ -91,19 +92,19 @@ const SignIn: NextPage = () => {
       <div className="h-16 bg-[#6a5fd7]"></div>
       <Image
         fill={true}
-        className="object-cover mt-16"
-        src={`${baseImageUrl}/assets/svg/loginBG.svg`}
+        className="mt-16 object-cover"
+        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/loginBG.svg`}
         alt={"loginBG"}
         quality={100}
         priority
       />
       <div
-        className={`relative min-h-[93vh] flex flex-col justify-between [transform-style:preserve-3d] [perspective:500px] overflow-hidden`}
+        className={`relative flex min-h-[93vh] flex-col justify-between overflow-hidden [perspective:500px] [transform-style:preserve-3d]`}
       >
         <LoginPortal isTop={true} />
 
         {/* TODO: Change the time delay here according to time delay set for free-fall animation in tailwind.config.js */}
-        <div className="absolute left-2/4 -translate-x-2/4 -top-[10vh] -z-40 h-0 w-[65vw] md:w-[440px]">
+        <div className="absolute -top-[10vh] left-2/4 -z-40 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
           <FallingItem delay={0} />
           <FallingItem delay={2000} />
           <FallingItem delay={4000} />
@@ -111,7 +112,7 @@ const SignIn: NextPage = () => {
           <FallingItem delay={8000} />
         </div>
 
-        <div className="absolute left-2/4 -translate-x-2/4 -top-[10vh] z-30 h-0 w-[65vw] md:w-[440px]">
+        <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
           <EasterBomb />
         </div>
 

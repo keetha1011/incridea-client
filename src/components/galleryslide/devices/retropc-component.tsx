@@ -1,15 +1,16 @@
-import retroPCSVG from "@/public/assets/svg/retro-pc.svg";
-import { baseImageUrl } from "@/src/utils/url";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { Swiper as SwiperType } from "swiper";
 import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import BlurImage from "../../blurImage";
-import Modal from "../gallery-modal";
-import PreviewComponent from "../previewComponent/preview-component";
-import styles from "../styles/shadow.module.css";
+
+import BlurImage from "~/components/blurImage";
+import Modal from "~/components/galleryslide/gallery-modal";
+import PreviewComponent from "~/components/galleryslide/previewComponent/preview-component";
+import styles from "~/components/galleryslide/styles/shadow.module.css";
+import { env } from "~/env";
+
 import ToolTip from "./tool-tip";
 
 interface RippleState {
@@ -70,7 +71,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
 
   const handleImageLoad = (
     index: number,
-    event: React.SyntheticEvent<HTMLImageElement>
+    event: React.SyntheticEvent<HTMLImageElement>,
   ) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
     const isPortrait = naturalHeight > naturalWidth;
@@ -88,7 +89,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
     setActiveModal(true);
   };
   return (
-    <div className="flex flex-col relative">
+    <div className="relative flex flex-col">
       {/* <h1
       id="animation"
         className={
@@ -100,7 +101,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
       </h1> */}
       <div
         id="animation"
-        className="relative rounded-[85px] flex justify-center items-center w-[40svw] h-[60svw] mx-auto md:scale-[95%] scale-[200%] top-0 sm:top-20"
+        className="relative top-0 mx-auto flex h-[60svw] w-[40svw] scale-[200%] items-center justify-center rounded-[85px] sm:top-20 md:scale-[95%]"
       >
         {/* <h1
         className={
@@ -110,22 +111,28 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
       >
         INCRIDEA <span className="tracking-tight">20</span>
       </h1> */}
-        <Image fill priority src={retroPCSVG} alt="svg" id="image"></Image>
-        <div className="absolute w-[50svw] h-[23.6svw] right-[5svw] top-[19svw] z-10">
+        <Image
+          fill
+          priority
+          src="assets/svg/retro-pc.svg"
+          alt="svg"
+          id="image"
+        ></Image>
+        <div className="absolute right-[5svw] top-[19svw] z-10 h-[23.6svw] w-[50svw]">
           <Swiper
-            onBeforeInit={(swiper) => {
+            onBeforeInit={(swiper: SwiperType) => {
               swiperRef.current = swiper;
             }}
             mousewheel={true}
             modules={[Navigation, Autoplay, Mousewheel]}
             autoplay={true}
-            className="w-[32.2svw] h-[25.3svw] -top-[7.3svw] left-[10svw] z-50 relative"
+            className="relative -top-[7.3svw] left-[10svw] z-50 h-[25.3svw] w-[32.2svw]"
           >
             {imgArr.map((img, index) => {
               return (
                 <SwiperSlide
                   key={index}
-                  className="flex justify-center items-center bg-white text-center cursor-pointer"
+                  className="flex cursor-pointer items-center justify-center bg-white text-center"
                   onClick={() => {
                     setActiveModal(true);
                     setActiveIndex(index);
@@ -138,18 +145,18 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
                     ></ToolTip>
                   )}
 
-                  <div className="relative w-full h-full flex justify-center items-center">
+                  <div className="relative flex h-full w-full items-center justify-center">
                     <BlurImage
                       fill
                       alt="Blurred Image"
-                      src={baseImageUrl + img}
+                      src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                       className="object-cover blur-xl"
                     />
                     <Image
                       fill
-                      src={baseImageUrl + img}
+                      src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                       alt="incridea"
-                      className={`object-cover z-10 ${
+                      className={`z-10 object-cover ${
                         portraitImages[index] ? "object-scale-down" : ""
                       }`}
                       priority
@@ -160,7 +167,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
               );
             })}
             <SwiperSlide
-              className="flex justify-center items-center bg-white text-center cursor-pointer"
+              className="flex cursor-pointer items-center justify-center bg-white text-center"
               onClick={() => {
                 setActiveIndex(imgArr.length);
                 setActiveModal(true);
@@ -170,7 +177,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
                 classValue="top-[0] text-center bg-black/60 sm:right-[12vw] right-0 text-xs border sm:text-lg"
                 text="click to watch aftermovie"
               ></ToolTip> */}
-              <div className="relative w-full h-full flex justify-center items-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <BlurImage
                   fill
                   alt="Blurred Image"
@@ -181,7 +188,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
                   fill
                   src={thumbnailSrc}
                   alt="incridea"
-                  className={`object-cover z-10`}
+                  className={`z-10 object-cover`}
                   priority
                 />
               </div>
@@ -192,7 +199,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
                 }}
                 className={
                   styles["text-shadow"] +
-                  ` text-base p-2 h-full md:text-lg md:font-extrabold bg-transparent text-white absolute z-50 top-0 left-0 text-center w-full`
+                  ` absolute left-0 top-0 z-50 h-full w-full bg-transparent p-2 text-center text-base text-white md:text-lg md:font-extrabold`
                 }
               >
                 Click to Watch After Movie
@@ -202,8 +209,8 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
 
           <button
             onClick={() => handleButtonClickPrev()}
-            className={`absolute top-[19.2svw] left-[svw] w-[4.2svw] h-[1.3svw] rounded-lg duration-300 transition-all ease-in-out border-white ${
-              isAnimatingLeft ? " sm:border-4 border-2 animate-ping" : ""
+            className={`absolute left-[svw] top-[19.2svw] h-[1.3svw] w-[4.2svw] rounded-lg border-white transition-all duration-300 ease-in-out ${
+              isAnimatingLeft ? "animate-ping border-2 sm:border-4" : ""
             }`}
           >
             <ToolTip
@@ -213,8 +220,8 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
           </button>
           <button
             onClick={() => handleButtonClickNext()}
-            className={`absolute top-[19.2svw] left-[40.7svw] w-[4.2svw] h-[1.3svw] rounded-lg duration-300 transition-all ease-in-out border-white ${
-              isAnimatingRight ? " sm:border-4 border-2 animate-ping" : ""
+            className={`absolute left-[40.7svw] top-[19.2svw] h-[1.3svw] w-[4.2svw] rounded-lg border-white transition-all duration-300 ease-in-out ${
+              isAnimatingRight ? "animate-ping border-2 sm:border-4" : ""
             }`}
           >
             <ToolTip

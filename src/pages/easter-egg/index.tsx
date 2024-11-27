@@ -1,17 +1,18 @@
-import ImageUpload from "@/src/components/easter-egg/imageUpload";
-import Spinner from "@/src/components/spinner";
-import {
-  CreateSubmissionDocument,
-  DayType,
-  GetCardsDocument,
-  MySubmissionsDocument,
-} from "@/src/generated/generated";
-import { useAuth } from "@/src/hooks/useAuth";
 import { useMutation, useQuery } from "@apollo/client";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+
+import ImageUpload from "~/components/easter-egg/imageUpload";
+import Spinner from "~/components/spinner";
+import {
+  CreateSubmissionDocument,
+  DayType,
+  GetCardsDocument,
+  MySubmissionsDocument,
+} from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 type Props = {};
 
@@ -53,7 +54,7 @@ const EasterEgg: NextPage = (props: Props) => {
   console.log(submissions);
 
   const [submissionMutation, { data, loading, error }] = useMutation(
-    CreateSubmissionDocument
+    CreateSubmissionDocument,
   );
 
   useEffect(() => {
@@ -64,16 +65,16 @@ const EasterEgg: NextPage = (props: Props) => {
 
   if (authLoading)
     return (
-      <div className="bg-gradient-to-b pt-28 from-[#41acc9]  via-[#075985] to-[#2d6aa6] min-h-screen relative">
-        <div className="text-center text-xl mt-10 text-white/90">
+      <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6] pt-28">
+        <div className="mt-10 text-center text-xl text-white/90">
           <Spinner intent={"white"} size={"large"} />
         </div>
       </div>
     );
   if (status !== "authenticated")
     return (
-      <div className="bg-gradient-to-b pt-28 from-[#41acc9]  via-[#075985] to-[#2d6aa6] min-h-screen relative">
-        <div className="text-center flex flex-col justify-center items-center gap-3 text-xl mt-10 text-white/90">
+      <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6] pt-28">
+        <div className="mt-10 flex flex-col items-center justify-center gap-3 text-center text-xl text-white/90">
           <span className="text-3xl font-semibold">Uh-oh! </span>
           <span>
             You need to{" "}
@@ -87,33 +88,33 @@ const EasterEgg: NextPage = (props: Props) => {
     );
 
   return (
-    <div className="bg-gradient-to-b  from-[#41acc9]  via-[#075985] to-[#2d6aa6] min-h-screen relative">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6]">
       <Toaster />
-      <div className="pt-28 pb-12 md:px-12 px-6 flex justify-center items-center flex-col">
-        <h2 className="titleFont text-center text-white text-4xl mb-8">
+      <div className="flex flex-col items-center justify-center px-6 pb-12 pt-28 md:px-12">
+        <h2 className="titleFont mb-8 text-center text-4xl text-white">
           Upload your images!
         </h2>
-        <h2 className="bodyFont text-center text-white text-xl mb-3">
+        <h2 className="bodyFont mb-3 text-center text-xl text-white">
           Find clues across the campus and upload them here
         </h2>
-        <h2 className="bodyFont font-semibold text-center text-white text-xl mb-8">
+        <h2 className="bodyFont mb-8 text-center text-xl font-semibold text-white">
           Note: Your submissions are autosaved after uploading
         </h2>
         {cardsLoading ? (
           <Spinner />
         ) : cards?.getCards.__typename === "QueryGetCardsSuccess" ? (
           <>
-            <div className="max-w-6xl flex flex-wrap gap-8 justify-center text-white/90 ">
+            <div className="flex max-w-6xl flex-wrap justify-center gap-8 text-white/90">
               {cards.getCards.data.map((card, index) => (
                 <div
                   key={index}
-                  className="md:basis-[45%] min-w-[300px] basis-full bg-black/20  flex flex-col shadow-sm rounded-md"
+                  className="flex min-w-[300px] basis-full flex-col rounded-md bg-black/20 shadow-sm md:basis-[45%]"
                 >
-                  <h2 className="mb-2 text-xl titleFont md:px-6 md:pt-6 px-4 pt-4">
+                  <h2 className="titleFont mb-2 px-4 pt-4 text-xl md:px-6 md:pt-6">
                     Clue {index + 1}
                   </h2>
-                  <h2 className="mb-3 bodyFont md:px-6  px-4 ">{card.clue}</h2>
-                  <div className="md:px-6 md:pb-4 flex flex-col grow">
+                  <h2 className="bodyFont mb-3 px-4 md:px-6">{card.clue}</h2>
+                  <div className="flex grow flex-col md:px-6 md:pb-4">
                     <ImageUpload
                       cardId={card.id}
                       loading={submissionsLoading}
@@ -121,7 +122,7 @@ const EasterEgg: NextPage = (props: Props) => {
                         submissions?.submissionsByUser.__typename ===
                         "QuerySubmissionsByUserSuccess"
                           ? submissions?.submissionsByUser.data.filter(
-                              (submission) => submission.cardId === card.id
+                              (submission) => submission.cardId === card.id,
                             )[0]?.image
                           : null
                       }

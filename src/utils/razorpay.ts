@@ -1,9 +1,11 @@
 import Router from "next/router";
+
+import { env } from "~/env";
 import {
   EventPaymentOrderDocument,
   FestRegPaymentOrderDocument,
-} from "../generated/generated";
-import { client } from "../lib/apollo";
+} from "~/generated/generated";
+import { client } from "~/lib/apollo";
 
 export const initializeRazorpay = () => {
   return new Promise((resolve) => {
@@ -34,7 +36,7 @@ export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
     data?.createPaymentOrder.__typename === "MutationCreatePaymentOrderSuccess"
   ) {
     const options = {
-      key: process.env.RAZORPAY_KEY,
+      key: env.RAZORPAY_KEY,
       name: "Incridea 2024",
       currency: "INR",
       amount: data.createPaymentOrder.data.amount,
@@ -65,7 +67,7 @@ export const makeTeamPayment = async (
   teamId: string,
   name: string,
   email: string,
-  setSDKLoading?: (arg1: any) => void
+  setSDKLoading?: (arg1: any) => void,
 ) => {
   console.log("here...");
   setSDKLoading && setSDKLoading(true);
@@ -84,7 +86,7 @@ export const makeTeamPayment = async (
     data?.eventPaymentOrder.__typename === "MutationEventPaymentOrderSuccess"
   ) {
     const options = {
-      key: process.env.RAZORPAY_KEY,
+      key: env.RAZORPAY_KEY,
       name: "Incridea 2024",
       currency: "INR",
       amount: data.eventPaymentOrder.data.amount,

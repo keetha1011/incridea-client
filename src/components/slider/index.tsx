@@ -1,13 +1,15 @@
 // Carousel.tsx
+import Image from "next/image";
+import Link from "next/link";
 import React, { useState } from "react";
+import { GoChevronRight, GoChevronLeft } from "react-icons/go";
 import SwiperCore from "swiper";
 import { Navigation, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Image from "next/image";
+
+import { generateEventUrl } from "~/utils/url";
+
 import styles from "./styles.module.css";
-import { GoChevronRight, GoChevronLeft } from "react-icons/go";
-import Link from "next/link";
-import { generateEventUrl } from "@/src/utils/url";
 
 interface CarouselProps {
   events?: Array<{ id: string; name: string; image: string }>;
@@ -24,7 +26,7 @@ const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {
   };
 
   return (
-    <div className="w-[300%] flex justify-center items-center relative z-10">
+    <div className="relative z-10 flex w-[300%] items-center justify-center">
       <div className={styles.carousel_container}>
         <Swiper
           navigation={{
@@ -53,26 +55,26 @@ const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {
                       alt={"Image"}
                       width={300}
                       height={300}
-                      className="object-scale-down rounded-xl h-full w-full z-0"
+                      className="z-0 h-full w-full rounded-xl object-scale-down"
                     />
                   )}
                 </Link>
               ) : (
-                <div className="h-full w-full bg-gray-300 flex items-center justify-center">
+                <div className="flex h-full w-full items-center justify-center bg-gray-300">
                   No Image
                 </div>
               )}
             </SwiperSlide>
           ))}
         </Swiper>
-        <div className="flex flex-between items-center">
+        <div className="flex-between flex items-center">
           <div
-            className={`${styles.swiper_button_next} lg:right-0 md:right-[10%] sm:right-[20%]  right-[30%]  z-[1001] rounded-full opacity-90`}
+            className={`${styles.swiper_button_next} right-[30%] z-[1001] rounded-full opacity-90 sm:right-[20%] md:right-[10%] lg:right-0`}
           >
             <GoChevronRight size={30} />
           </div>
           <div
-            className={`${styles.swiper_button_prev} lg:left-0 md:left-[10%] sm:left-[20%] left-[30%] z-[1001] rounded-full opacity-90`}
+            className={`${styles.swiper_button_prev} left-[30%] z-[1001] rounded-full opacity-90 sm:left-[20%] md:left-[10%] lg:left-0`}
           >
             <GoChevronLeft size={30} />
           </div>

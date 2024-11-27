@@ -1,8 +1,9 @@
 import { Html, Plane, useScroll } from "@react-three/drei";
-import styles from "./eventAnnotation.module.css";
-import { useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import Link from "next/link";
+import { useRef, useState } from "react";
+
+import styles from "./eventAnnotation.module.css";
 
 const Level3 = () => {
   const scroll = useScroll();

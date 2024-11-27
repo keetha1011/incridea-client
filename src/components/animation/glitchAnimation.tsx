@@ -1,5 +1,5 @@
 import styles from "./glitch.module.css";
-import { pressStart } from "@/src/pages/_app";
+
 interface glitchProps {
   text: string;
 }
@@ -7,7 +7,7 @@ export default function GlitchAnimation({ text }: glitchProps) {
   return (
     <>
       <p
-        className={`${styles.glitch} lg:text-3xl md:text-2xl sm:text-lg text-md`}
+        className={`${styles.glitch} text-md sm:text-lg md:text-2xl lg:text-3xl`}
       >
         <span aria-hidden="true">{text}</span>
         {text}

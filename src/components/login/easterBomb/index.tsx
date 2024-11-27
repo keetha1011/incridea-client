@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { baseImageUrl } from "@/src/utils/url";
+import React, { FunctionComponent, useEffect, useRef, useState } from "react";
 
-const bombSrc: string = `${baseImageUrl}/assets/png/bomb.png`;
-const explodeGIFSrc: string = `${baseImageUrl}/assets/gif/explodeGIF.gif`;
+import { env } from "~/env";
+
+const bombSrc: string = `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/bomb.png`;
+const explodeGIFSrc: string = `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/gif/explodeGIF.gif`;
 
 const getPosition: () => number = () => {
   return Math.floor(Math.random() * 80) + 10;
@@ -70,7 +71,7 @@ const EasterBomb: FunctionComponent = () => {
         onClick={handleOnClick}
         ref={parentRef}
         className={
-          "absolute animate-[sun-gravity_15s_cubic-bezier(0.33333,0,0.66667,0.33333)_15s_infinite] pointer-events-auto"
+          "pointer-events-auto absolute animate-[sun-gravity_15s_cubic-bezier(0.33333,0,0.66667,0.33333)_15s_infinite]"
         }
         style={{
           top: "0px",

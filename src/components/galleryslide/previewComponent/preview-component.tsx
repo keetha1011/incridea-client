@@ -1,7 +1,10 @@
-import { baseImageUrl } from "@/src/utils/url";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import "swiper/css";
+import "swiper/css/free-mode";
+import "swiper/css/navigation";
+import "swiper/css/thumbs";
 import {
   Autoplay,
   FreeMode,
@@ -9,12 +12,10 @@ import {
   Navigation,
   Thumbs,
 } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
 import { Swiper, SwiperSlide } from "swiper/react";
-import BlurImage from "../../blurImage";
+
+import BlurImage from "~/components/blurImage";
+import { env } from "~/env";
 
 const PreviewComponent = ({
   imgArr,
@@ -35,7 +36,7 @@ const PreviewComponent = ({
 
   const handleImageLoad = (
     index: number,
-    event: React.SyntheticEvent<HTMLImageElement>
+    event: React.SyntheticEvent<HTMLImageElement>,
   ) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
     const isPortrait = naturalHeight > naturalWidth;
@@ -62,26 +63,26 @@ const PreviewComponent = ({
           //@ts-ignore
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
-        className="md:w-[80%] md:h-[80vh] h-[30vh] w-[90%] md:z-50 md:border-none md:mt-[2vh]"
+        className="h-[30vh] w-[90%] md:z-50 md:mt-[2vh] md:h-[80vh] md:w-[80%] md:border-none"
       >
         {imgArr.map((img, index) => {
           return (
             <SwiperSlide
               key={index}
-              className="flex justify-center items-center bg-white text-center"
+              className="flex items-center justify-center bg-white text-center"
             >
-              <div className="w-full h-full flex justify-center items-center">
+              <div className="flex h-full w-full items-center justify-center">
                 <BlurImage
                   fill
                   alt="Blurred Image"
-                  src={baseImageUrl + img}
+                  src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                   className="object-cover blur-xl"
                 />
                 <Image
                   fill
-                  src={baseImageUrl + img}
+                  src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                   alt="incridea"
-                  className={`object-cover z-10 ${
+                  className={`z-10 object-cover ${
                     portraitImages[index] ? "object-scale-down" : ""
                   }`}
                   priority
@@ -93,11 +94,11 @@ const PreviewComponent = ({
         })}
         <SwiperSlide
           key={imgArr.length}
-          className="flex justify-center w-full h-full items-center bg-white text-center cursor-pointer z-50"
+          className="z-50 flex h-full w-full cursor-pointer items-center justify-center bg-white text-center"
         >
-          <div className="relative w-full h-full flex justify-center items-center z-50">
+          <div className="relative z-50 flex h-full w-full items-center justify-center">
             <iframe
-              className="w-full h-full"
+              className="h-full w-full"
               title="Youtube player"
               allowFullScreen={true}
               sandbox="allow-same-origin allow-forms allow-popups allow-scripts allow-presentation"
@@ -116,26 +117,26 @@ const PreviewComponent = ({
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         autoplay={true}
-        className="w-full h-[12vh] md:z-50 absolute md:mb-[2vh]"
+        className="absolute h-[12vh] w-full md:z-50 md:mb-[2vh]"
       >
         {imgArr.map((img, index) => {
           return (
             <SwiperSlide
               key={index}
-              className="flex justify-center items-center bg-black text-center opacity-50 scale-90 transition-all duration-500"
+              className="flex scale-90 items-center justify-center bg-black text-center opacity-50 transition-all duration-500"
             >
-              <div className="h-full flex justify-center items-center">
+              <div className="flex h-full items-center justify-center">
                 {/* <BlurImage
                     fill
                     alt="Blurred Image"
-                    src={baseImageUrl+img}
+                    src={env.NEXT_PUBLIC_BASE_IMAGE_URL+img}
                     className="object-cover blur-xl"
                   /> */}
                 <Image
                   fill
-                  src={baseImageUrl + img}
+                  src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                   alt="incridea"
-                  className={`object-cover z-10`}
+                  className={`z-10 object-cover`}
                   priority
                 />
               </div>
@@ -144,20 +145,20 @@ const PreviewComponent = ({
         })}
         <SwiperSlide
           key={index}
-          className="flex justify-center items-center bg-black text-center opacity-50 scale-90 transition-all duration-500"
+          className="flex scale-90 items-center justify-center bg-black text-center opacity-50 transition-all duration-500"
         >
-          <div className="h-full flex justify-center items-center">
+          <div className="flex h-full items-center justify-center">
             {/* <BlurImage
                     fill
                     alt="Blurred Image"
-                    src={baseImageUrl+img}
+                    src={env.NEXT_PUBLIC_BASE_IMAGE_URL+img}
                     className="object-cover blur-xl"
                   /> */}
             <Image
               fill
               src={thumbnailSrc}
               alt="incridea"
-              className={`object-cover z-10`}
+              className={`z-10 object-cover`}
               priority
             />
           </div>

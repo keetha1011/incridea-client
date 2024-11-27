@@ -1,8 +1,9 @@
-import * as THREE from "three";
-import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
 import { GLTF } from "three-stdlib";
-import { baseImageUrl } from "@/src/utils/url";
+
+import { env } from "~/env";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -28,7 +29,7 @@ type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 export default function Dhvani(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
   const { nodes, materials, animations } = useGLTF(
-    `${baseImageUrl}/assets/3d/dhvaniAnimated.glb`
+    `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/dhvaniAnimated.glb`,
   ) as GLTFResult;
   const { actions } = useAnimations(animations, group);
 
@@ -77,4 +78,6 @@ export default function Dhvani(props: JSX.IntrinsicElements["group"]) {
   );
 }
 
-useGLTF.preload(`${baseImageUrl}/assets/3d/dhvaniAnimated.glb`);
+useGLTF.preload(
+  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/dhvaniAnimated.glb`,
+);

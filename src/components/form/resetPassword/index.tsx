@@ -1,12 +1,13 @@
-import { FormEventHandler, FunctionComponent, useState } from "react";
-import { ResetPasswordDocument } from "@/src/generated/generated";
 import { useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import Spinner from "../../spinner";
-import Button from "../../button";
-import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { FormEventHandler, FunctionComponent, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
+
+import Button from "~/components/button";
+import Spinner from "~/components/spinner";
+import { ResetPasswordDocument } from "~/generated/generated";
 
 const ResetPassword: FunctionComponent = () => {
   const [error, setError] = useState<string | null>(null);
@@ -22,7 +23,7 @@ const ResetPassword: FunctionComponent = () => {
   const token = useRouter().query.token as string | undefined;
 
   const [resetMutation, { data, loading, error: MutationError }] = useMutation(
-    ResetPasswordDocument
+    ResetPasswordDocument,
   );
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -58,17 +59,17 @@ const ResetPassword: FunctionComponent = () => {
   return (
     <>
       {data?.resetPassword.__typename === "MutationResetPasswordSuccess" ? (
-        <div className="flex relative justify-center flex-col gap-4 min-h-full">
-          <div className="flex flex-col gap-2 text-center items-center text-[#d7037f] bg-secondary-300 font-semibold p-4 pb-2 rounded-md">
+        <div className="relative flex min-h-full flex-col justify-center gap-4">
+          <div className="flex flex-col items-center gap-2 rounded-md bg-secondary-300 p-4 pb-2 text-center font-semibold text-[#d7037f]">
             <BiCheckCircle size={"2rem"} />
-            <div className="bg-secondary-300 flex flex-col text-center mb-5 items-center gap-3 rounded-md font-semibold">
+            <div className="mb-5 flex flex-col items-center gap-3 rounded-md bg-secondary-300 text-center font-semibold">
               Password was reset successfully.
               <br />
               <div>
                 Please{" "}
                 <Link
                   href="/login"
-                  className="underline text-secondary-800 hover:text-[#ee007d]"
+                  className="text-secondary-800 underline hover:text-[#ee007d]"
                 >
                   login.
                 </Link>
@@ -78,12 +79,12 @@ const ResetPassword: FunctionComponent = () => {
         </div>
       ) : (
         <form
-          className={`flex relative py-3 px-3 justify-center flex-col gap-4 min-h-full  ${
-            loading && "cursor-not-allowed pointer-events-none"
+          className={`relative flex min-h-full flex-col justify-center gap-4 px-3 py-3 ${
+            loading && "pointer-events-none cursor-not-allowed"
           }`}
           onSubmit={handleSubmit}
         >
-          <h2 className="text-3xl text-center font-semibold mb-5">
+          <h2 className="mb-5 text-center text-3xl font-semibold">
             Enter New Password
           </h2>
 
@@ -96,11 +97,11 @@ const ResetPassword: FunctionComponent = () => {
               }
               type={showPassword ? "text" : "password"}
               placeholder="Enter New Password"
-              className=" py-2 px-1 border-b w-full text-sm md:text-base bg-transparent transition-all border-gray-400 placeholder:text-slate-400 md:focus:border-[#dd5c6e] outline-none"
+              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
             />
             <button
               type="button"
-              className="absolute top-0 mt-2 right-0 hover:bg-orange-500 hover:bg-opacity-10 rounded-sm w-fit p-2"
+              className="absolute right-0 top-0 mt-2 w-fit rounded-sm p-2 hover:bg-orange-500 hover:bg-opacity-10"
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
@@ -116,29 +117,29 @@ const ResetPassword: FunctionComponent = () => {
               }
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm New Password"
-              className=" py-2 px-1 w-full border-b text-sm md:text-base bg-transparent transition-all border-gray-400 placeholder:text-slate-400 md:focus:border-[#dd5c6e] outline-none mb-3"
+              className="mb-3 w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
             />
             <button
               type="button"
-              className="absolute top-0 mt-2 right-0 hover:bg-orange-500 hover:bg-opacity-10 rounded-sm w-fit p-2"
+              className="absolute right-0 top-0 mt-2 w-fit rounded-sm p-2 hover:bg-orange-500 hover:bg-opacity-10"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
             >
               {showConfirmPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
             </button>
           </div>
 
-          <Button intent={`primary`} type="submit" className="mt-1 mx-1">
+          <Button intent={`primary`} type="submit" className="mx-1 mt-1">
             Reset Password
           </Button>
 
           {loading && (
-            <div className="absolute h-full w-full bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60 inset-0 cursor-not-allowed z-10 rounded-lg">
+            <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
               <Spinner className="text-[#dd5c6e]" intent={"white"} />
             </div>
           )}
 
           {(error || MutationError) && (
-            <div className="bg-red-100 p-2 flex items-center gap-3 px-4 rounded-md font-semibold text-red-500">
+            <div className="flex items-center gap-3 rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
               <BiErrorCircle className="shrink-0" />
               <div>{error || MutationError?.message}</div>
             </div>

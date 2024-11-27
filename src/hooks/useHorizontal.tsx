@@ -33,12 +33,12 @@ export function useHorizontalTouch(elRef: RefObject<HTMLDivElement>) {
       let touchStart: Touch | null = null;
 
       const onTouchStart = (e: TouchEvent) => {
-        touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        touchStart = { x: e.touches[0]!.clientX, y: e.touches[0]!.clientY };
       };
 
       const onTouchMove = (e: TouchEvent) => {
         if (!touchStart) return;
-        const touchEnd = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        const touchEnd = { x: e.touches[0]!.clientX, y: e.touches[0]!.clientY };
         const dy = touchEnd.y - touchStart.y;
         const dx = touchEnd.x - touchStart.x;
 

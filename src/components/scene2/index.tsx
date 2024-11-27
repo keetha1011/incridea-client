@@ -10,9 +10,10 @@ import { useFrame } from "@react-three/fiber";
 import React, { Dispatch, useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTF } from "three-stdlib";
+
+import { env } from "~/env";
+
 import ProniteAnnotation from "./proniteAnnotation";
-import Timer from "./timer";
-import { baseAudioUrl, baseImageUrl } from "@/src/utils/url";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -118,7 +119,7 @@ const Scene2: React.FC<Scene2Props> = ({
   const fbx = useFBX(`/assets/3d/ryokoAnimation.fbx`) as THREE.Object3D;
   const fbxAnimation = fbx.animations;
   const { nodes, materials, animations } = useGLTF(
-    `${baseImageUrl}/assets/3d/level3.glb`
+    `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/level3.glb`,
   ) as GLTFResult;
   const { actions, names } = useAnimations(animations, group);
   const fbxAnimationClips = useAnimations(fbxAnimation, group);
@@ -129,7 +130,7 @@ const Scene2: React.FC<Scene2Props> = ({
   const playSecondAudio = () => {
     if (!isMuted) {
       netherSound.current = new Audio(
-        `${baseAudioUrl}/audio/level3/nether.mp3`
+        `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level3/nether.mp3`,
       );
       netherSound.current.volume = 0.5;
       netherSound.current.play();
@@ -542,6 +543,6 @@ const Scene2: React.FC<Scene2Props> = ({
   );
 };
 
-useGLTF.preload(`${baseImageUrl}/assets/3d/level3.glb`);
+useGLTF.preload(`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/3d/level3.glb`);
 
 export default Scene2;

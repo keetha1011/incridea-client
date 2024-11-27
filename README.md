@@ -90,7 +90,7 @@ npm run codegen
 ```typescript
 import { useQuery } from "@apollo/client";
 import { NextPage } from "next";
-import { GetAllUsersDocument } from "../generated/generated";
+import { GetAllUsersDocument } from "~/generated/generated";
 
 const CSR: NextPage = () => {
   const { data, loading, error } = useQuery(GetAllUsersDocument);
@@ -117,8 +117,8 @@ export default CSR;
 
 ```typescript
 import { NextPage } from "next";
-import { GetAllUsersDocument } from "../generated/generated";
-import { initializeApollo } from "../lib/apollo";
+import { GetAllUsersDocument } from "~/generated/generated";
+import { client } from "~/lib/apollo";
 
 const SSG: NextPage<{
   users: {
@@ -136,8 +136,7 @@ const SSG: NextPage<{
 };
 
 export const getStaticProps = async () => {
-  const apolloClient = initializeApollo();
-  const res = await apolloClient.query({
+  const res = await client.query({
     query: GetAllUsersDocument,
   });
   return {
@@ -151,33 +150,35 @@ export default SSG;
 ```
 
 </details>
-  
+
 <details>
       <summary>3. SSR</summary>
-  
+
 Replace `getStaticProps` to `getServerSideProps`.
+
 </details>
-  
+
 <details>
       <summary>4. ISR</summary>
 
 Add an invalidate option to SSG.
 
 </details>
-  
+
  <details>
       <summary>5. On-demand ISR</summary>
 
 [Read about it here.](https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration#on-demand-revalidation)
 
 </details>
-  
+
 ### Mutation example
+
 <details>
   <summary>Example</summary>
-  
-  ```typescript
-import { SignUpDocument } from '@/src/generated/generated';
+
+```typescript
+import { SignUpDocument } from '~/generated/generated';
 import { useMutation } from '@apollo/client';
 
 signUpMutation({
@@ -196,7 +197,8 @@ router.push('/auth/verify-email');
 return err;
 });
 
-````
+```
+
 </details>
 
 > **Note**
@@ -208,7 +210,7 @@ return err;
 
 ```bash
 git checkout -b ＜branch_name＞
-````
+```
 
 2. Make the required changes according to your task.
 
@@ -231,8 +233,7 @@ git push origin <branch_name>
 
 <details>
 <summary>Semantic commits</summary>
-  
-    
+
 ```
 <type>[optional scope]: <description>
 
@@ -254,4 +255,7 @@ git push origin <branch_name>
 - build – changes that affect the build system or external dependencies
 - revert – reverts a previous commit
 </details>
+
+```
+
 ```

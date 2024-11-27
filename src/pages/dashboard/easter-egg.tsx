@@ -1,19 +1,3 @@
-import Button from "@/src/components/button";
-import Dashboard from "@/src/components/layout/dashboard";
-import CreateCardModal from "@/src/components/pages/dashboard/easter-egg/CreateCardModal";
-import Cards from "@/src/components/pages/dashboard/easter-egg/cards";
-import SearchBox from "@/src/components/searchbox";
-import Spinner from "@/src/components/spinner";
-import {
-  DayType,
-  DeleteCardDocument,
-  GetAllSubmissionsDocument,
-  GetAllSubmissionsQuery,
-  GetCardsDocument,
-  Submission,
-} from "@/src/generated/generated";
-import { useAuth } from "@/src/hooks/useAuth";
-import { idToPid } from "@/src/utils/id";
 import { useMutation, useQuery } from "@apollo/client";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
@@ -21,6 +5,23 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect, Fragment } from "react";
 import { Toaster } from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
+
+import Button from "~/components/button";
+import Cards from "~/components/general/dashboard/easter-egg/cards";
+import CreateCardModal from "~/components/general/dashboard/easter-egg/CreateCardModal";
+import Dashboard from "~/components/layout/dashboard";
+import SearchBox from "~/components/searchbox";
+import Spinner from "~/components/spinner";
+import {
+  DayType,
+  DeleteCardDocument,
+  GetAllSubmissionsDocument,
+  GetAllSubmissionsQuery,
+  GetCardsDocument,
+  Submission,
+} from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
+import { idToPid } from "~/utils/id";
 
 type Props = {};
 
@@ -109,7 +110,7 @@ const EasterEggDashboard = (props: Props) => {
 
   if (loading)
     return (
-      <div className="h-screen w-screen flex justify-center">
+      <div className="flex h-screen w-screen justify-center">
         <Spinner />
       </div>
     );
@@ -146,7 +147,7 @@ const EasterEggDashboard = (props: Props) => {
         <Dialog
           onClick={() => setHighlightedImage(null)}
           as="div"
-          className="relative z-[900] "
+          className="relative z-[900]"
           onClose={() => setHighlightedImage(null)}
         >
           <Transition.Child
@@ -161,8 +162,8 @@ const EasterEggDashboard = (props: Props) => {
             <div className="fixed inset-0 bg-black/25 backdrop-blur-sm" />
           </Transition.Child>
 
-          <div className={`fixed inset-0 z-10  p-4 md:p-8 overflow-y-auto`}>
-            <div className="flex min-h-[full] items-center justify-center text-center py-5 md:py-7">
+          <div className={`fixed inset-0 z-10 overflow-y-auto p-4 md:p-8`}>
+            <div className="flex min-h-[full] items-center justify-center py-5 text-center md:py-7">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -176,7 +177,7 @@ const EasterEggDashboard = (props: Props) => {
                   src={highlightedImage || ""}
                   width={1000}
                   height={1000}
-                  className="object-contain rounded-md h-[85vh] w-[85vw]"
+                  className="h-[85vh] w-[85vw] rounded-md object-contain"
                   alt="submission"
                 />
               </Transition.Child>
@@ -186,8 +187,8 @@ const EasterEggDashboard = (props: Props) => {
       </Transition>
 
       <Toaster />
-      <div className="max-w-6xl mx-auto px-3 mb-5 flex flex-col items-center justify-center">
-        <div className="w-full flex flex-col md:flex-row gap-3 mx-auto mb-3">
+      <div className="mx-auto mb-5 flex max-w-6xl flex-col items-center justify-center px-3">
+        <div className="mx-auto mb-3 flex w-full flex-col gap-3 md:flex-row">
           <SearchBox
             className="grow"
             value={query}
@@ -195,7 +196,7 @@ const EasterEggDashboard = (props: Props) => {
           />
           <CreateCardModal cardsRefetch={cardsRefetch} />
         </div>
-        <div className="flex gap-4 w-full mb-3 justify-between">
+        <div className="mb-3 flex w-full justify-between gap-4">
           <Button
             noScaleOnHover
             onClick={() => setSelected("Day1")}
@@ -229,7 +230,7 @@ const EasterEggDashboard = (props: Props) => {
             Day 4
           </Button>
         </div>
-        <div className="flex gap-4 w-full justify-between">
+        <div className="flex w-full justify-between gap-4">
           <Button
             onClick={() => setShowSubmissions(true)}
             noScaleOnHover
@@ -252,7 +253,7 @@ const EasterEggDashboard = (props: Props) => {
             submissionsLoading ? (
               <Spinner intent={"secondary"} className="mt-10" />
             ) : (
-              <div className="flex gap-3 justify-between flex-wrap">
+              <div className="flex flex-wrap justify-between gap-3">
                 {data?.getAllSubmissions.__typename ===
                 "QueryGetAllSubmissionsSuccess" ? (
                   sortedSubmissions.length === 0 ? (
@@ -261,10 +262,10 @@ const EasterEggDashboard = (props: Props) => {
                     sortedSubmissions.map(
                       (submission: Submission, index: number) => (
                         <div
-                          className="flex md:flex-row flex-col rounded-sm overflow-hidden justify-between md:grow md:shrink-0 bg-white/20"
+                          className="flex flex-col justify-between overflow-hidden rounded-sm bg-white/20 md:shrink-0 md:grow md:flex-row"
                           key={index}
                         >
-                          <div className="flex flex-col gap-1.5 p-3 max-w-sm">
+                          <div className="flex max-w-sm flex-col gap-1.5 p-3">
                             <span>
                               <span className="font-semibold">Name:</span>{" "}
                               {submission.user.name}
@@ -286,18 +287,18 @@ const EasterEggDashboard = (props: Props) => {
                             onClick={() =>
                               setHighlightedImage(submission.image)
                             }
-                            className="cursor-pointer md:max-w-[250px] max-w-full md:ml-auto md:object-right object-center max-h-[200px] object-contain"
+                            className="max-h-[200px] max-w-full cursor-pointer object-contain object-center md:ml-auto md:max-w-[250px] md:object-right"
                             alt="submission"
                             src={submission.image}
                             width={500}
                             height={500}
                           />
                         </div>
-                      )
+                      ),
                     )
                   )
                 ) : (
-                  <span className="text-white/70 mt-10">
+                  <span className="mt-10 text-white/70">
                     Error: Could not fetch submissions
                   </span>
                 )}
@@ -309,17 +310,17 @@ const EasterEggDashboard = (props: Props) => {
                 <Spinner intent={"secondary"} className="mt-10" />
               ) : cards?.getCards.__typename === "QueryGetCardsSuccess" ? (
                 <>
-                  <div className="max-w-6xl flex flex-wrap gap-8 justify-center text-white/90 ">
+                  <div className="flex max-w-6xl flex-wrap justify-center gap-8 text-white/90">
                     {cards.getCards.data.length > 0 ? (
                       cards.getCards.data.map((card, index) => (
                         <div
                           key={index}
                           className={`${
                             (deleteCardLoading || cardsLoading) &&
-                            "opacity-80 pointer-events-none"
-                          } md:basis-[45%] min-w-[300px] basis-full bg-white/20  flex flex-col shadow-sm rounded-md`}
+                            "pointer-events-none opacity-80"
+                          } flex min-w-[300px] basis-full flex-col rounded-md bg-white/20 shadow-sm md:basis-[45%]`}
                         >
-                          <div className="mb-2 gap-2 items-center text-xl titleFont md:px-4 md:pt-4 px-4 pt-4 flex">
+                          <div className="titleFont mb-2 flex items-center gap-2 px-4 pt-4 text-xl md:px-4 md:pt-4">
                             <h2>Clue ID: {card.id}</h2>
                             <MdDelete
                               onClick={() =>
@@ -335,10 +336,10 @@ const EasterEggDashboard = (props: Props) => {
                                     cardsRefetch();
                                 })
                               }
-                              className="justify-self-end ml-auto hover:text-red-700 cursor-pointer text-red-500"
+                              className="ml-auto cursor-pointer justify-self-end text-red-500 hover:text-red-700"
                             />
                           </div>
-                          <h2 className="mb-4 bodyFont md:px-4  px-4 ">
+                          <h2 className="bodyFont mb-4 px-4 md:px-4">
                             {card.clue}
                           </h2>
                         </div>

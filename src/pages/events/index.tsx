@@ -1,26 +1,48 @@
-"use client";
-import Event from "@/src/components/event";
-import { NextPage } from "next";
+import { Menu, Transition } from "@headlessui/react";
+import "locomotive-scroll/dist/locomotive-scroll.css";
+import { GetStaticProps } from "next";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { AiOutlineSearch } from "react-icons/ai";
+import { BiCategory } from "react-icons/bi";
+import { CiWarning } from "react-icons/ci";
+import { IoTodayOutline } from "react-icons/io5";
+
+import Event from "~/components/event";
 import {
   PublishedEventsDocument,
   PublishedEventsQuery,
-} from "@/src/generated/generated";
-import { client } from "@/src/lib/apollo";
-import { Menu, Transition } from "@headlessui/react";
-import { AiOutlineSearch } from "react-icons/ai";
-import "locomotive-scroll/dist/locomotive-scroll.css";
-import Image from "next/image";
-import styles from "./styles.module.css";
-import { IoTodayOutline } from "react-icons/io5";
-import { BiCategory } from "react-icons/bi";
-import { FaUniversity } from "react-icons/fa";
-import { CiWarning } from "react-icons/ci";
-import { AnimatePresence, motion } from "framer-motion";
+} from "~/generated/generated";
+import { client } from "~/lib/apollo";
 
-const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
-  data,
-}) => {
+import styles from "./styles.module.css";
+
+type Props = { data: PublishedEventsQuery["publishedEvents"] };
+
+const getStaticProps: GetStaticProps<Props> = async () => {
+  try {
+    const { data: events } = await client.query({
+      query: PublishedEventsDocument,
+      fetchPolicy: "no-cache",
+    });
+    return {
+      props: {
+        data: events.publishedEvents,
+      },
+      revalidate: 60,
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {
+        data: [],
+      },
+      revalidate: 60,
+    };
+  }
+};
+
+const Page = ({ data }: Props) => {
   const containerRef = useRef(null);
 
   // TODO: add new branchs
@@ -76,25 +98,25 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
     let tempFilteredEvents = data;
     if (currentBranchFilter !== "All")
       tempFilteredEvents = tempFilteredEvents.filter(
-        (event) => event.branch.name === currentBranchFilter
+        (event) => event.branch.name === currentBranchFilter,
       );
     if (currentDayFilter !== "All") {
       let filteredDay = new Date(
         currentDayFilter === "DAY 1"
           ? "2024-02-22"
           : currentDayFilter === "DAY 2"
-          ? "2024-02-23"
-          : "2024-02-24"
+            ? "2024-02-23"
+            : "2024-02-24",
       ).getDate();
       tempFilteredEvents = tempFilteredEvents.filter((event) =>
         event.rounds.some(
-          (round) => new Date(round.date).getDate() === filteredDay
-        )
+          (round) => new Date(round.date).getDate() === filteredDay,
+        ),
       );
     }
     if (currentCategoryFilter !== "All") {
       tempFilteredEvents = tempFilteredEvents.filter(
-        (event) => event.category === currentCategoryFilter
+        (event) => event.category === currentCategoryFilter,
       );
     }
     setFilteredEvents(tempFilteredEvents);
@@ -110,8 +132,8 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
     } else {
       setFilteredEvents(
         data.filter((event) =>
-          event.name.toLowerCase().includes(e.target.value.toLowerCase())
-        )
+          event.name.toLowerCase().includes(e.target.value.toLowerCase()),
+        ),
       );
     }
   };
@@ -164,7 +186,7 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
   return (
     <div
       style={{ willChange: "transform" }}
-      className="min-h-screen flex justify-center bg-gradient-to-b from-primary-300 to-primary-400 relative overflow-hidden"
+      className="relative flex min-h-screen justify-center overflow-hidden bg-gradient-to-b from-primary-300 to-primary-400"
     >
       <div className={styles.area}>
         <ul className={styles.circles}>
@@ -175,14 +197,14 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                 alt={`${image}`}
                 width={image === "sonic.png" ? 50 : 100}
                 height={100}
-                className="text-white bodyFont"
+                className="bodyFont text-white"
               />
             </li>
           ))}
         </ul>
       </div>
-      <div className="flex flex-col justify-center items-center mx-auto px-5 sm:px-7 lg:px-10">
-        <div className="overflow-y-auto no-scrollbar">
+      <div className="mx-auto flex flex-col items-center justify-center px-5 sm:px-7 lg:px-10">
+        <div className="no-scrollbar overflow-y-auto">
           <div
             data-scroll-container
             ref={containerRef}
@@ -192,28 +214,28 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
           >
             <div
               data-scroll-section
-              className="flex flex-col mb-2 justify-center"
+              className="mb-2 flex flex-col justify-center"
             >
               <h1
                 data-scroll
-                className={`text-7xl md:text-8xl tracking-wide text-center text-white font-VikingHell`}
+                className={`text-center font-VikingHell text-7xl tracking-wide text-white md:text-8xl`}
               >
                 Events
               </h1>
 
               <h2
                 data-scroll
-                className={`text-md md:text-xl tracking-wide text-center mt-2 md:mt-4 mb-6 mx-2 text-white`}
+                className={`text-md mx-2 mb-6 mt-2 text-center tracking-wide text-white md:mt-4 md:text-xl`}
               >
                 Navigate Your Digital Playground with Our Ultimate Event
                 Collection!
               </h2>
 
-              <div className="relative lg:basis-[75%] basis-full w-full lg:w-auto">
+              <div className="relative w-full basis-full lg:w-auto lg:basis-[75%]">
                 <input
                   value={query}
                   onChange={handleSearch}
-                  className="w-full pr-14 border border-primary-200/80 bg-black/30 placeholder:text-gray-200 focus:outline-none text-white rounded-full pl-6 p-3"
+                  className="w-full rounded-full border border-primary-200/80 bg-black/30 p-3 pl-6 pr-14 text-white placeholder:text-gray-200 focus:outline-none"
                   placeholder="Search epic quests here..."
                   type="text"
                 />
@@ -225,16 +247,16 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
 
               <div
                 data-scroll
-                className="flex flex-row justify-between md:justify-evenly items-center py-4 w-full text-lg md:text-xl"
+                className="flex w-full flex-row items-center justify-between py-4 text-lg md:justify-evenly md:text-xl"
               >
-                <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
                   <Menu
                     as={"div"}
-                    className={"relative w-full flex justify-start"}
+                    className={"relative flex w-full justify-start"}
                   >
                     <Menu.Button
                       className={
-                        "inline-flex shrink-0 gap-2 text-sm md:text-lg whitespace-nowrap bg-black/30 border border-primary-200/80 items-center w-full justify-center rounded-full px-4 py-2 h-[40px] text-white"
+                        "inline-flex h-[40px] w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary-200/80 bg-black/30 px-4 py-2 text-sm text-white md:text-lg"
                       }
                     >
                       <IoTodayOutline size="16" />
@@ -253,7 +275,7 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Menu.Items className="overflow-hidden bg-primary-300 border border-primary-200/80 top-11 p-2 absolute z-[100] text-center rounded-3xl shadow-black/80 shadow-2xl flex flex-col gap-2 mt-1">
+                      <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
                             {({ active }) => (
@@ -262,14 +284,14 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                                   currentDayFilter === filter
                                     ? "bg-white/20"
                                     : "bg-black/10"
-                                } text-white rounded-full w-36 px-3 py-1.5 text-sm hover:bg-white/10 border border-primary-200/80 transition-all duration-300`}
+                                } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                 onClick={() => setCurrentDayFilter(filter)}
                               >
                                 {
                                   filter
                                     .toLowerCase()
                                     .replace(/\b\w/g, (char) =>
-                                      char.toUpperCase()
+                                      char.toUpperCase(),
                                     )
                                     .split(" ")[0]
                                 }{" "}
@@ -288,7 +310,7 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                     href="https://drive.google.com/file/d/1H43LJXI4E-HELku71b9NLOBRoDpmxuHk/view?usp=drive_link"
                     download
                   >
-                    <button className="inline-flex shrink-0 gap-2 text-sm md:text-lg whitespace-nowrap bg-black/30 border border-primary-200/80 items-center w-full justify-center rounded-full px-4 py-2 h-[40px] text-white">
+                    <button className="inline-flex h-[40px] w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary-200/80 bg-black/30 px-4 py-2 text-sm text-white md:text-lg">
                       Rule Book
                     </button>
                   </a>
@@ -298,19 +320,19 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                     href="https://drive.google.com/file/d/1oqBkgCtTzA3asYb1UUKmUE092fRiobJG/view?usp=sharing"
                     download
                   >
-                    <button className="inline-flex shrink-0 gap-2 text-sm md:text-lg whitespace-nowrap bg-black/30 border border-primary-200/80 items-center w-full justify-center rounded-full px-4 py-2 h-[40px] text-white">
+                    <button className="inline-flex h-[40px] w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary-200/80 bg-black/30 px-4 py-2 text-sm text-white md:text-lg">
                       Schedule
                     </button>
                   </a>
                 </div>
-                <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+                <div className="flex flex-col items-center justify-center gap-4 md:flex-row">
                   <Menu
                     as={"div"}
-                    className={"relative w-full flex justify-end"}
+                    className={"relative flex w-full justify-end"}
                   >
                     <Menu.Button
                       className={
-                        "inline-flex shrink-0 gap-2 text-sm md:text-lg whitespace-nowrap bg-black/30 border border-primary-200/80 items-center w-full justify-center rounded-full px-4 py-2 h-[40px] text-white"
+                        "inline-flex h-[40px] w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary-200/80 bg-black/30 px-4 py-2 text-sm text-white md:text-lg"
                       }
                     >
                       <BiCategory size="16" />
@@ -329,7 +351,7 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Menu.Items className=" overflow-hidden bg-primary-300 border border-primary-200/80 top-11 p-2 mt-1 absolute z-[100] text-center rounded-3xl shadow-black/80 shadow-2xl flex flex-col gap-2">
+                      <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {categoryFilters.map((filter) => (
                           <Menu.Item key={filter}>
                             {({ active }) => (
@@ -339,14 +361,14 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
                                   filter.replace("_", " ")
                                     ? "bg-white/20"
                                     : "bg-black/10"
-                                } text-white rounded-full w-36 px-3 py-1.5 text-sm hover:bg-white/10 border border-primary-200/80 transition-all duration-300`}
+                                } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                 onClick={() => setCurrentCategoryFilter(filter)}
                               >
                                 {filter
                                   .replace("_", " ")
                                   .toLowerCase()
                                   .replace(/\b\w/g, (char) =>
-                                    char.toUpperCase()
+                                    char.toUpperCase(),
                                   )}
                               </button>
                             )}
@@ -364,8 +386,8 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
               data-scroll-speed="0.7"
               className={
                 filteredEvents.length > 0
-                  ? `max-w-7xl w-full h-full mx-auto grid justify-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 mb-20`
-                  : "flex justify-center items-center w-full h-full"
+                  ? `mx-auto mb-20 grid h-full w-full max-w-7xl grid-cols-1 justify-center gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4`
+                  : "flex h-full w-full items-center justify-center"
               }
             >
               {filteredEvents.length > 0 ? (
@@ -375,7 +397,7 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
               ) : (
                 <div
                   data-scroll
-                  className={`w-full flex flex-col bg-black/30 p-10 rounded-xl gap-5 justify-center items-center text-center text-white text-xl border border-primary-200/80`}
+                  className={`flex w-full flex-col items-center justify-center gap-5 rounded-xl border border-primary-200/80 bg-black/30 p-10 text-center text-xl text-white`}
                 >
                   <CiWarning size={50} />
                   No events found
@@ -389,26 +411,5 @@ const Events: NextPage<{ data: PublishedEventsQuery["publishedEvents"] }> = ({
   );
 };
 
-export async function getStaticProps() {
-  try {
-    const { data: events } = await client.query({
-      query: PublishedEventsDocument,
-      fetchPolicy: "no-cache",
-    });
-    return {
-      props: {
-        data: events.publishedEvents,
-      },
-      revalidate: 60,
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {
-        data: [],
-      },
-      revalidate: 60,
-    };
-  }
-}
-export default Events;
+export { getStaticProps };
+export default Page;

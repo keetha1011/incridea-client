@@ -1,10 +1,12 @@
 import { Html, Plane, RoundedBox, useScroll } from "@react-three/drei";
 import { HtmlProps } from "@react-three/drei/web/Html";
 import { extend, useFrame } from "@react-three/fiber";
-import { ReactNode, useEffect, useRef, useState } from "react";
 import { geometry } from "maath";
+import { ReactNode, useEffect, useRef, useState } from "react";
+
+import useStore from "~/components/store/store";
+
 import styles from "./eventAnnotation.module.css";
-import useStore from "../store/store";
 
 extend(geometry);
 

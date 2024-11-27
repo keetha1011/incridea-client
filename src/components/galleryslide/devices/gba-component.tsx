@@ -1,17 +1,17 @@
-import { baseImageUrl } from "@/src/utils/url";
 import gsap from "gsap";
 import Image from "next/image";
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { BiPlay } from "react-icons/bi";
 import YouTube, { YouTubeProps } from "react-youtube";
 import { Swiper as SwiperType } from "swiper";
 import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import BlurImage from "../../blurImage";
-import Button from "../../button";
-import Modal from "../gallery-modal";
-import PreviewComponent from "../previewComponent/preview-component";
-import styles from "../styles/shadow.module.css";
+
+import BlurImage from "~/components/blurImage";
+import Modal from "~/components/galleryslide/gallery-modal";
+import PreviewComponent from "~/components/galleryslide/previewComponent/preview-component";
+import styles from "~/components/galleryslide/styles/shadow.module.css";
+import { env } from "~/env";
+
 import ToolTip from "./tool-tip";
 
 const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
@@ -42,7 +42,7 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
 
   const handleImageLoad = (
     index: number,
-    event: React.SyntheticEvent<HTMLImageElement>
+    event: React.SyntheticEvent<HTMLImageElement>,
   ) => {
     const { naturalWidth, naturalHeight } = event.currentTarget;
     const isPortrait = naturalHeight > naturalWidth;
@@ -104,39 +104,39 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
       </h1> */}
       <div
         id="animation"
-        className="relative rounded-[85px] flex justify-center items-center w-[85vw] h-[119vw] sm:w-[63.5vw] sm:h-[30vw] mx-auto sm:top-16"
+        className="relative mx-auto flex h-[119vw] w-[85vw] items-center justify-center rounded-[85px] sm:top-16 sm:h-[30vw] sm:w-[63.5vw]"
       >
         <Image
           fill
-          src={`${baseImageUrl}/assets/svg/gba-vertical.svg`}
+          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/gba-vertical.svg`}
           alt="incridea"
-          className="sm:hidden object-center scale-110"
+          className="scale-110 object-center sm:hidden"
           priority
         />
         <Image
           fill
-          src={`${baseImageUrl}/assets/svg/gba-horizontal.svg`}
+          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/gba-horizontal.svg`}
           alt="incridea"
-          className="hidden sm:block scale-[120%]"
+          className="hidden scale-[120%] sm:block"
           priority
         />
 
-        <div className="absolute w-[50vw] h-[23.6vw] sm:top-[5.5vw] sm:h-[31vw] sm:w-[64vw] sm:right-[-.35vw] top-[19vw] z-10 scale-[105%]">
+        <div className="absolute top-[19vw] z-10 h-[23.6vw] w-[50vw] scale-[105%] sm:right-[-.35vw] sm:top-[5.5vw] sm:h-[31vw] sm:w-[64vw]">
           <Swiper
-            onBeforeInit={(swiper) => {
+            onBeforeInit={(swiper: SwiperType) => {
               swiperRef.current = swiper;
             }}
             mousewheel={true}
             modules={[Navigation, Autoplay, Mousewheel]}
             autoplay={{ delay: 5000 }}
             speed={500}
-            className="sm:w-[35.7vw] sm:h-[18vw] sm:-top-[.9vw] w-[58vw] h-[54vw] sm:left-[0] -top-[7vw] left-[-4vw] sm:z-50 sm:border-none relative sm:scale-125"
+            className="relative -top-[7vw] left-[-4vw] h-[54vw] w-[58vw] sm:-top-[.9vw] sm:left-[0] sm:z-50 sm:h-[18vw] sm:w-[35.7vw] sm:scale-125 sm:border-none"
           >
             {imgArr.map((img, index) => {
               return (
                 <SwiperSlide
                   key={index}
-                  className="flex justify-center items-center bg-white text-center cursor-pointer"
+                  className="flex cursor-pointer items-center justify-center bg-white text-center"
                   onClick={() => {
                     setActiveModal(true);
                     setActiveIndex(index);
@@ -149,18 +149,18 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
                     ></ToolTip>
                   )}
 
-                  <div className="relative w-full h-full flex justify-center items-center">
+                  <div className="relative flex h-full w-full items-center justify-center">
                     <BlurImage
                       fill
                       alt="Blurred Image"
-                      src={baseImageUrl + img}
+                      src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                       className="object-cover blur-xl"
                     />
                     <Image
                       fill
-                      src={baseImageUrl + img}
+                      src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
                       alt="incridea"
-                      className={`object-cover z-10 ${
+                      className={`z-10 object-cover ${
                         portraitImages[index] ? "object-scale-down" : ""
                       }`}
                       priority
@@ -172,7 +172,7 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
             })}
 
             <SwiperSlide
-              className="flex justify-center items-center bg-white text-center cursor-pointer"
+              className="flex cursor-pointer items-center justify-center bg-white text-center"
               onClick={() => {
                 setActiveIndex(imgArr.length);
                 setActiveModal(true);
@@ -182,7 +182,7 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
                 classValue="top-[0] text-center bg-black/60 sm:right-[12vw] right-0 text-xs border sm:text-lg"
                 text="click to watch aftermovie"
               ></ToolTip> */}
-              <div className="relative w-full h-full flex justify-center items-center">
+              <div className="relative flex h-full w-full items-center justify-center">
                 <BlurImage
                   fill
                   alt="Blurred Image"
@@ -193,7 +193,7 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
                   fill
                   src={thumbnailSrc}
                   alt="incridea"
-                  className={`object-cover z-10`}
+                  className={`z-10 object-cover`}
                   priority
                 />
               </div>
@@ -204,7 +204,7 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
                 }}
                 className={
                   styles["text-shadow"] +
-                  ` text-base p-2 h-full md:text-lg md:font-extrabold bg-transparent text-white absolute z-50 top-0 left-0 text-center w-full`
+                  ` absolute left-0 top-0 z-50 h-full w-full bg-transparent p-2 text-center text-base text-white md:text-lg md:font-extrabold`
                 }
               >
                 Click to Watch After Movie
@@ -214,8 +214,8 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
 
           <button
             onClick={handleButtonClickPrev}
-            className={`absolute top-[67vw] left-[-9.6vw] sm:-top-[2.2vw] sm:-left-[1.4vw] w-[8vw] h-[6vw] sm:h-[9vw] sm:w-[9vw] rounded-lg sm:rounded-full duration-300 transition-all ease-in-out border-gray-100 ${
-              isAnimatingLeft ? " sm:border-8 border-2 animate-ping" : ""
+            className={`absolute left-[-9.6vw] top-[67vw] h-[6vw] w-[8vw] rounded-lg border-gray-100 transition-all duration-300 ease-in-out sm:-left-[1.4vw] sm:-top-[2.2vw] sm:h-[9vw] sm:w-[9vw] sm:rounded-full ${
+              isAnimatingLeft ? "animate-ping border-2 sm:border-8" : ""
             }`}
           >
             <ToolTip
@@ -225,8 +225,8 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
           </button>
           <button
             onClick={handleButtonClickNext}
-            className={`absolute top-[67vw] left-[2vw] sm:-top-[2.2vw] sm:left-[56vw] w-[8vw] h-[6vw] sm:h-[9vw] sm:w-[9vw] rounded-lg sm:rounded-full duration-300 transition-all ease-in-out border-gray-100 ${
-              isAnimatingRight ? " sm:border-8 border-2 animate-ping" : ""
+            className={`absolute left-[2vw] top-[67vw] h-[6vw] w-[8vw] rounded-lg border-gray-100 transition-all duration-300 ease-in-out sm:-top-[2.2vw] sm:left-[56vw] sm:h-[9vw] sm:w-[9vw] sm:rounded-full ${
+              isAnimatingRight ? "animate-ping border-2 sm:border-8" : ""
             }`}
           >
             <ToolTip

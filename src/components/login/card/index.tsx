@@ -1,16 +1,18 @@
-import { CardStyle } from "@/src/pages/login";
-import React, { FunctionComponent, useEffect, useState } from "react";
-import SignInForm from "../../form/login/signInForm";
-import ResetPasswordForm from "../../form/login/resetPasswordForm";
-import SignUpForm from "../../form/signUp";
-import ResendEmail from "../../form/login/resendEmailForm";
 import { useRouter } from "next/router";
+import React, { FunctionComponent, useEffect, useState } from "react";
+
+import { CardStyle } from "~/pages/login";
+
+import ResendEmail from "~/components/form/login/resendEmailForm";
+import ResetPasswordForm from "~/components/form/login/resetPasswordForm";
+import SignInForm from "~/components/form/login/signInForm";
+import SignUpForm from "~/components/form/signUp";
 
 type LoginCardProps = {
   whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail";
   cardStyle: CardStyle;
   setWhichForm: (
-    whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail"
+    whichForm: "signIn" | "resetPassword" | "signUp" | "resendEmail",
   ) => void;
   redirectUrl?: string;
 };
@@ -45,7 +47,7 @@ const LoginCard: FunctionComponent<LoginCardProps> = ({
   return (
     // HACK: Please update anything here or in children also in auth/reset-password.tsx
     <div
-      className="absolute px-3 py-3 overflow-y-auto min-w-[80vw] max-w-[80vw] sm:min-w-[350px] sm:max-w-[350px] max-h-[75vh] lg:max-h-[76vh] bg-gradient-to-b from-[#1f2e97] to-[#090d4b] rounded-md top-2/4 left-2/4 origin-bottom transition-all ease-suck-in shadow-[0_0_18px_1px_#141e73] md:shadow-[0_0_20px_2px_#141e73] text-accent-200"
+      className="absolute left-2/4 top-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] origin-bottom overflow-y-auto rounded-md bg-gradient-to-b from-[#1f2e97] to-[#090d4b] px-3 py-3 text-accent-200 shadow-[0_0_18px_1px_#141e73] transition-all ease-suck-in sm:min-w-[350px] sm:max-w-[350px] md:shadow-[0_0_20px_2px_#141e73] lg:max-h-[76vh]"
       style={cardStyle}
     >
       {whichForm === "signIn" ? (

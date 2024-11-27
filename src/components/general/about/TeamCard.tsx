@@ -1,0 +1,102 @@
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { FC } from "react";
+import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
+import { RiLinkedinFill } from "react-icons/ri";
+
+import { env } from "~/env";
+
+const TeamCard: FC<{
+  name: string;
+  role: string;
+  image: string;
+  linkedin: string;
+  instagram: string;
+  github: string;
+  quote: string;
+  avatar: string;
+}> = ({ name, role, linkedin, github, quote, instagram, image, avatar }) => {
+  return (
+    <div className="flex w-[20rem] gap-4 rounded-xl border border-primary-200/70 bg-primary-500 px-5 pt-5 duration-200 hover:scale-[1.02]">
+      <div className="flex h-full w-full flex-col gap-4">
+        <Image
+          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/` + image}
+          alt={name}
+          height={300}
+          width={300}
+          className="top-0 aspect-square w-[18rem] rounded-xl object-cover"
+        />
+        <div>
+          <h3 className="text-center font-VikingHell text-3xl tracking-wide text-white">
+            {name}
+          </h3>
+          <h1 className="text-center text-xl font-semibold text-white">
+            {role}
+          </h1>
+        </div>
+
+        <div className="flex w-full justify-evenly">
+          <a
+            href={github}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full bg-primary-300 p-2 duration-300 hover:scale-105"
+          >
+            <AiFillGithub className="text-white" size={20} />
+          </a>
+          <a
+            href={instagram}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full bg-primary-300 p-2 duration-300 hover:scale-105"
+          >
+            <AiFillInstagram className="text-white" size={20} />
+          </a>
+          <a
+            href={linkedin}
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-full bg-primary-300 p-2 duration-300 hover:scale-105"
+          >
+            <RiLinkedinFill className="text-white" size={20} />
+          </a>
+        </div>
+
+        <div className="relative">
+          <svg
+            aria-hidden="true"
+            className="mb-3 h-12 w-12 text-white opacity-30"
+            viewBox="0 0 24 27"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z"
+              fill="currentColor"
+            />
+          </svg>
+          <div className="bodyFont text-center font-bold italic text-white">
+            {quote}
+          </div>
+
+          <div className="flex justify-end">
+            <svg
+              aria-hidden="true"
+              className="mb-3 h-12 w-12 rotate-180 text-white opacity-30"
+              viewBox="0 0 24 27"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.017 18L14.017 10.609C14.017 4.905 17.748 1.039 23 0L23.995 2.151C21.563 3.068 20 5.789 20 8H24V18H14.017ZM0 18V10.609C0 4.905 3.748 1.038 9 0L9.996 2.151C7.563 3.068 6 5.789 6 8H9.983L9.983 18L0 18Z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TeamCard;

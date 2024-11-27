@@ -1,5 +1,5 @@
-import React, { FC, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView } from "framer-motion";
+import React, { FC, useRef } from "react";
 
 const CharacterAnimation: FC<{
   text: string;
@@ -23,7 +23,7 @@ const CharacterAnimation: FC<{
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: "spring",
         damping: 12,
         stiffness: 100,
       },
@@ -32,7 +32,7 @@ const CharacterAnimation: FC<{
       opacity: 0,
       y: 20,
       transition: {
-        type: 'spring',
+        type: "spring",
         damping: 12,
         stiffness: 100,
       },
@@ -43,14 +43,19 @@ const CharacterAnimation: FC<{
     <motion.div
       ref={ref}
       className={className}
-      style={{ overflow: 'hidden', display: 'flex', fontSize: '2rem', paddingInline:'4px' }}
+      style={{
+        overflow: "hidden",
+        display: "flex",
+        fontSize: "2rem",
+        paddingInline: "4px",
+      }}
       variants={container}
       initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
+      animate={isInView ? "visible" : "hidden"}
     >
       {letters.map((letter, index) => (
         <motion.span className={textStyle} variants={child} key={index}>
-          {letter === ' ' ? '\u00A0' : letter}
+          {letter === " " ? "\u00A0" : letter}
         </motion.span>
       ))}
     </motion.div>

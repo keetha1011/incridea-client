@@ -1,7 +1,8 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { baseImageUrl } from "../utils/url";
+
+import { env } from "~/env";
 
 function Theme() {
   // redirect to youtube
@@ -11,9 +12,9 @@ function Theme() {
   }, [router]);
 
   return (
-    <div className="h-screen w-screen bg-black flex justify-center items-center">
+    <div className="flex h-screen w-screen items-center justify-center bg-black">
       <Image
-        src={`${baseImageUrl}/assets/png/logo.png`}
+        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo.png`}
         className="animate-pulse"
         alt="logo"
         width={300}

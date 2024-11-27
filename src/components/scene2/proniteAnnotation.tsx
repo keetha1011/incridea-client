@@ -1,8 +1,9 @@
 import { Html, Plane, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
-import styles from "./annotation.module.css";
 import Link from "next/link";
+import { useRef, useState } from "react";
+
+import styles from "./annotation.module.css";
 
 export default function ProniteAnnotation() {
   const scroll = useScroll();

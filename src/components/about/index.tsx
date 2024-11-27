@@ -1,9 +1,11 @@
-import { FC } from "react";
-import TextAnimation from "../animation/text";
 import Image from "next/image";
+import { FC } from "react";
 import { BiDownload } from "react-icons/bi";
-import { VikingHell } from "@/src/pages/_app";
-import { baseImageUrl } from "@/src/utils/url";
+
+// import { VikingHell } from "~/pages/_app";
+import TextAnimation from "~/components/animation/text";
+import { env } from "~/env";
+import { cn } from "~/lib/utils";
 
 const About: FC = () => {
   const handleDownload = (path: string, name: string) => {
@@ -25,16 +27,16 @@ const About: FC = () => {
     <section
       data-scroll
       data-scroll-speed="5"
-      className="group text-white mx-auto max-w-screen-xl px-4 py-8 sm:py-12 sm:px-6 lg:py-16 lg:px-8 mb-36 lg:mb-48"
+      className="group mx-auto mb-36 max-w-screen-xl px-4 py-8 text-white sm:px-6 sm:py-12 lg:mb-48 lg:px-8 lg:py-16"
     >
-      <div className="grid  grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
-        <div className="max-w-2xl mt-12">
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-16">
+        <div className="mt-12 max-w-2xl">
           <TextAnimation
             text="About Incridea"
-            className={`${VikingHell.className}`}
+            // className={VikingHell.className}
             textStyle="text-xl font-semibold lg:text-3xl"
           />
-          <div className="text-sm lg:text-lg mt-4 space-y-2 bodyFont">
+          <div className="bodyFont mt-4 space-y-2 text-sm lg:text-lg">
             <p>
               Incridea, a four-day National-Level extravaganza will play host to
               over 60 events, spanning the technical, non-technical, and
@@ -51,31 +53,38 @@ const About: FC = () => {
         </div>
 
         <div className="mx-auto">
-          <div className="text-center w-fit relative">
+          <div className="relative w-fit text-center">
             <Image
-              src={`${baseImageUrl}/assets/png/emblem.png`}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/emblem.png`}
               width={300}
               height={300}
               className={
-                "group-hover:scale-110 group-hover:-translate-y-2 transform transition-all duration-500"
+                "transform transition-all duration-500 group-hover:-translate-y-2 group-hover:scale-110"
               }
               alt="Incridea Emblem"
             />
             <Image
-              src={`${baseImageUrl}/assets/png/ryoko.png`}              width={300}
+              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/ryoko.png`}
+              width={300}
               height={300}
-              className="absolute w-auto bottom-0 group-hover:scale-105 group-hover:-translate-y-2 transform transition-all duration-500"
+              className="absolute bottom-0 w-auto transform transition-all duration-500 group-hover:-translate-y-2 group-hover:scale-105"
               alt="Incridea Ryoko"
             />
           </div>
           <div
-            className={`mt-2 text-lg flex justify-center space-x-2 items-center ${VikingHell.className}`}
+            className={cn(
+              "mt-2 flex items-center justify-center space-x-2 text-lg",
+              // VikingHell.className,
+            )}
           >
             <a
               onClick={() =>
-                handleDownload(`${baseImageUrl}/assets/pdf/rulebook.pdf`, `${baseImageUrl}/Rulebook.pdf`)
+                handleDownload(
+                  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/pdf/rulebook.pdf`,
+                  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/Rulebook.pdf`,
+                )
               }
-              className="cursor-pointer px-3 flex items-center gap-2 py-2 text-md md:text-lg lg:text-xl font-semibold text-center text-white transition duration-300 rounded-bl-xl rounded-tr-xl bg-white/30 hover:bg-white/40"
+              className="text-md flex cursor-pointer items-center gap-2 rounded-bl-xl rounded-tr-xl bg-white/30 px-3 py-2 text-center font-semibold text-white transition duration-300 hover:bg-white/40 md:text-lg lg:text-xl"
             >
               <BiDownload /> Rule book
             </a>
@@ -83,10 +92,10 @@ const About: FC = () => {
               onClick={() =>
                 handleDownload(
                   "https://drive.google.com/file/d/1mglh-NsLE_AOjY969olQNppZcQyr5p4F/view?usp=sharing",
-                  `${baseImageUrl}/schedule.pdf`
+                  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/schedule.pdf`,
                 )
               }
-              className="cursor-pointer px-3 flex items-center gap-2 py-2 text-md md:text-lg lg:text-xl font-semibold text-center text-white transition duration-300 rounded-bl-xl rounded-tr-xl bg-white/30 hover:bg-white/40"
+              className="text-md flex cursor-pointer items-center gap-2 rounded-bl-xl rounded-tr-xl bg-white/30 px-3 py-2 text-center font-semibold text-white transition duration-300 hover:bg-white/40 md:text-lg lg:text-xl"
             >
               <BiDownload /> Schedule
             </a>
