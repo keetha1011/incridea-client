@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-import Banner from "~/components/AboutUs/Banner";
+import Banner from "~/components/aboutUs/banner";
 import { env } from "~/env";
 
 const About = () => {

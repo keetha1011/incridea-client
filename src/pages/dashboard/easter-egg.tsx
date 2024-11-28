@@ -8,7 +8,7 @@ import { MdDelete } from "react-icons/md";
 
 import Button from "~/components/button";
 import Cards from "~/components/general/dashboard/easter-egg/cards";
-import CreateCardModal from "~/components/general/dashboard/easter-egg/CreateCardModal";
+import CreateCardModal from "~/components/general/dashboard/easter-egg/createCardModal";
 import Dashboard from "~/components/layout/dashboard";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";

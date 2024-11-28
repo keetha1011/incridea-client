@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
-import AdminTab from "~/components/general/dashboard/admin/AdminTab";
+import AdminTab from "~/components/general/dashboard/admin/adminTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import { useAuth } from "~/hooks/useAuth";

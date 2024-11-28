@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
-import EventList from "~/components/general/dashboard/branchrep/EventList";
+import EventList from "~/components/general/dashboard/branchrep/eventList";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import { useAuth } from "~/hooks/useAuth";

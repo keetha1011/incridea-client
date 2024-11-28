@@ -6,16 +6,16 @@ import toast from "react-hot-toast";
 import { MdArrowRightAlt } from "react-icons/md";
 import Typewriter from "typewriter-effect";
 
-import AudioPlayer from "~/components/explore/AudioPlayer";
+import AudioPlayer from "~/components/explore/audioPlayer";
 import ExploreNav from "~/components/explore/exploreNav";
 import { env } from "~/env";
-import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
+import { AddXpDocument } from "~/generated/generated";
 
 import {
   SpriteDimensions,
   platformDimensions,
   platformSpriteDimensions,
-} from "./gameConstants";
+} from "~/constants/exploreRound1";
 
 const fps: number = 60;
 const actionKeys: string[] = [];

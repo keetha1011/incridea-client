@@ -10,7 +10,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
 
-import ViewTeamModal from "~/components/general/dashboard/jury/ViewTeamModal";
+import ViewTeamModal from "~/components/general/dashboard/jury/viewTeamModal";
 import ViewWinners from "~/components/general/dashboard/jury/viewWinners";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";

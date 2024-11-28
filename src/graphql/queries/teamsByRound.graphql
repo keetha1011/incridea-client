@@ -17,8 +17,8 @@ query TeamsByRound(
         attended
         id
         name
-        members{
-          user{
+        members {
+          user {
             id
             name
             phoneNumber

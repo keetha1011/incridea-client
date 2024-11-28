@@ -7,7 +7,9 @@
 }
 
 .swiper_slide {
-  transition: transform 0.3s, filter 0.3s;
+  transition:
+    transform 0.3s,
+    filter 0.3s;
   width: 80%;
 }
 
@@ -37,7 +39,7 @@
   bottom: 70px; /* Adjust the distance from the bottom */
   width: 70px;
   height: 70px;
-  background-color: #D6007D; /* Button background color */
+  background-color: #d6007d; /* Button background color */
   color: #fff; /* Button text color */
   display: flex;
   align-items: center;

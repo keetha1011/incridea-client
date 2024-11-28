@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
-import AccommodateTab from "~/components/general/dashboard/accommodate/AccomodateTab";
+import AccommodateTab from "~/components/general/dashboard/accommodate/accomodateTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import { AccommodationRequestsDocument } from "~/generated/generated";

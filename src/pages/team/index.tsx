@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 
-import TeamCard from "~/components/general/about/TeamCard";
+import TeamCard from "~/components/general/about/teamCard";
 
 const Team: NextPage = () => {
   return (

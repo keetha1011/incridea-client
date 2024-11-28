@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { WinnersByEventDocument } from "~/generated/generated";
 import { idToTeamId, teamIdToId } from "~/utils/id";
 
-import ViewTeamModal from "./ViewTeamModal";
+import ViewTeamModal from "./viewTeamModal";
 
 const ViewWinners = ({ eventId }: { eventId: string }) => {
   const { data: winners, loading: winnersLoading } = useQuery(

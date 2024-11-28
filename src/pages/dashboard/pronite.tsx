@@ -1,6 +1,6 @@
 import React from "react";
 
-import { QRCodeScanner } from "~/components/general/dashboard/organizer/QRCodeScanner";
+import { QRCodeScanner } from "~/components/general/dashboard/organizer/qRCodeScanner";
 
 function Pronite() {
   return (

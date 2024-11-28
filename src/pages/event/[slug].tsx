@@ -14,8 +14,8 @@ import {
 } from "react-icons/io5";
 import { MdOutlineMailOutline } from "react-icons/md";
 
-import EventDetails from "~/components/general/event/EventDetails";
-import EventRegistration from "~/components/general/event/EventRegistration";
+import EventDetails from "~/components/general/event/eventDetails";
+import EventRegistration from "~/components/general/event/eventRegistration";
 import {
   EventByIdDocument,
   EventByIdQuery,

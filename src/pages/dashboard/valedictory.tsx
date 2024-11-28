@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
-import ValedictoryTab from "~/components/general/dashboard/valedictory/ValedictoryTab";
+import ValedictoryTab from "~/components/general/dashboard/valedictory/valedictoryTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import { useAuth } from "~/hooks/useAuth";

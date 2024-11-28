@@ -6,7 +6,7 @@ import { getOperationAST } from "graphql";
 import { getSession } from "next-auth/react";
 
 import { env } from "~/env";
-import { logLink } from "~/lib/apollo/links/log";
+import { LogLink } from "~/lib/apollo/links/log";
 import { SSELink } from "~/lib/apollo/links/sse";
 
 const URI = `${env.NEXT_PUBLIC_SERVER_URL}/graphql`;
@@ -15,7 +15,11 @@ const sseLink = new SSELink({
   uri: URI,
 });
 
+const logLink = new LogLink();
+
 const authLink = setContext(async (_, { headers }) => {
+  if (typeof window === "undefined") return { headers };
+
   const session = await getSession();
   const token = session?.accessToken;
 
@@ -44,9 +48,11 @@ const splitLink = split(
   authLink.concat(httpLink),
 );
 
-export default function createApolloClient() {
+const createApolloClient = () => {
   return new ApolloClient({
     link: from([logLink, splitLink]),
     cache: new InMemoryCache(),
   });
-}
+};
+
+export { createApolloClient };

@@ -7,8 +7,8 @@ import dynamic from "next/dynamic";
 import scene1 from "public/assets/3d/state4.json";
 import React, { Suspense, useRef, useState } from "react";
 
-import AudioPlayer from "~/components/explore/AudioPlayer";
-import BookModal from "~/components/explore/BookModal";
+import AudioPlayer from "~/components/explore/audioPlayer";
+import BookModal from "~/components/explore/bookModal";
 import ExploreNav from "~/components/explore/exploreNav";
 import Pokedex from "~/components/pokedex";
 import useStore from "~/components/store/store";

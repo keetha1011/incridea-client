@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 
-import Criterias from "~/components/general/dashboard/judge/Criterias";
-import SelectedTeamList from "~/components/general/dashboard/judge/SelectedTeamList";
-import TeamList from "~/components/general/dashboard/judge/TeamList";
+import Criterias from "~/components/general/dashboard/judge/criterias";
+import SelectedTeamList from "~/components/general/dashboard/judge/selectedTeamList";
+import TeamList from "~/components/general/dashboard/judge/teamList";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import {

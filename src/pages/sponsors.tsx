@@ -5,8 +5,8 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { NextPage } from "next";
 import React, { useRef, useState } from "react";
 
-import SponsorCard from "~/components/sponsors/sponsorCard";
-import sponsors, { Sponsor } from "~/components/sponsors/sponsorDetails";
+import SponsorCard from "~/components/sponsorsCard";
+import sponsors, { Sponsor } from "~/constants/sponsors";
 
 const sponsorDetails: Sponsor[] = sponsors;
 
