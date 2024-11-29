@@ -35,12 +35,12 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
   useEffect(() => {
     dataRef.current = {
       name:
-        userdetails?.accommodationRequestsByUser[0]?.hotel?.name ||
+        userdetails?.accommodationRequestsByUser[0]?.hotel?.name ??
         "Unavailable",
       price:
-        userdetails?.accommodationRequestsByUser[0]?.hotel?.price ||
+        userdetails?.accommodationRequestsByUser[0]?.hotel?.price ??
         "Unavailable",
-      room: userdetails?.accommodationRequestsByUser[0]?.room || "Unavailable",
+      room: userdetails?.accommodationRequestsByUser[0]?.room ?? "Unavailable",
       checkIn: new Date(
         userdetails?.accommodationRequestsByUser[0]?.checkIn,
       ).toLocaleString("en-GB", {
@@ -62,7 +62,7 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
         hour12: true,
       }),
       status:
-        userdetails?.accommodationRequestsByUser[0]?.status || "Unavailable",
+        userdetails?.accommodationRequestsByUser[0]?.status ?? "Unavailable",
     };
   });
 

@@ -110,7 +110,7 @@ function Jury() {
     setCurrentDayFilter("ALL");
     setCurrentCategoryFilter("ALL");
     if (e.target.value === "") {
-      setFilteredEvents(Events?.publishedEvents || []);
+      setFilteredEvents(Events?.publishedEvents ?? []);
     } else {
       setFilteredEvents(
         Events?.publishedEvents.filter((event) =>
@@ -125,7 +125,7 @@ function Jury() {
     setCurrentBranchFilter("ALL");
     setCurrentDayFilter("ALL");
     setCurrentCategoryFilter("ALL");
-    setFilteredEvents(Events?.publishedEvents || []);
+    setFilteredEvents(Events?.publishedEvents ?? []);
   };
 
   function DownloadWinnersCSV() {

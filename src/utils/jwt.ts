@@ -7,7 +7,7 @@ export const isJwtExpired = (token: string) => {
   if (decoded && typeof decoded === "object") {
     const decodedToken: jwt.JwtPayload = decoded;
     if (decodedToken?.exp) {
-      const adjustedExpiry = decoded["exp"] || 0;
+      const adjustedExpiry = decoded.exp ?? 0;
       const remaining = adjustedExpiry - currentTime;
       if (adjustedExpiry < currentTime) {
         return true;
@@ -25,7 +25,7 @@ export const getRefreshTokenExpiry = (token: string) => {
   if (decoded && typeof decoded === "object") {
     const decodedToken: jwt.JwtPayload = decoded;
     if (decodedToken?.exp) {
-      const adjustedExpiry = decoded["exp"] || 0;
+      const adjustedExpiry = decoded.exp ?? 0;
       // console.log("Refresh :", (adjustedExpiry - currentTime).toLocaleString());
       return adjustedExpiry;
     }

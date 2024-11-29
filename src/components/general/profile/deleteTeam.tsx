@@ -49,7 +49,7 @@ const DeleteTeamModal: FC<{
             setShowModal(true);
           }}
           disabled={deleteTeamLoading}
-          size={(solo && "small") || "medium"}
+          size={solo ? "small" : "medium"}
           className="bodyFont !skew-x-0 justify-center rounded-full !tracking-normal"
         >
           {!solo && "Delete Team"}

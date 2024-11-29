@@ -30,7 +30,7 @@ type Props =
     }
   | {
       event?: never;
-      error: String;
+      error: string;
     };
 
 const getStaticPaths: GetStaticPaths = async () => {

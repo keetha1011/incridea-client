@@ -51,7 +51,7 @@ const SignIn: NextPage = () => {
 
   const [whichForm, setWhichForm] = useState<
     "signIn" | "resetPassword" | "signUp" | "resendEmail"
-  >(query.whichForm || "signUp");
+  >(query.whichForm ?? "signUp");
 
   const [cardStyle, setCardStyle] = useState<{
     signIn: CardStyle;

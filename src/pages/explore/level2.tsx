@@ -38,12 +38,12 @@ const App = () => {
     (event) => event.category === "CORE",
   );
 
-  const events: Array<{ id: string; name: string; image: string }> =
+  const events: { id: string; name: string; image: string }[] =
     tempFilteredEvents?.map((event) => ({
       id: event.id,
-      name: event.name || "",
-      image: event.image || "",
-    })) || [];
+      name: event.name,
+      image: event.image ?? "",
+    })) ?? [];
 
   const modalRef = useRef(null);
   const sponsorBookRef = useRef(null);

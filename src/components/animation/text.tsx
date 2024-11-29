@@ -52,7 +52,7 @@ const TextAnimation: FC<{
       {words.map((word, index) => (
         <motion.span
           variants={child}
-          style={{ marginRight: marginRight || "5px" }}
+          style={{ marginRight: marginRight ?? "5px" }}
           key={index}
           className={textStyle}
         >

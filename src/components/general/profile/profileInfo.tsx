@@ -73,11 +73,12 @@ const ProfileInfo: FC<{
       let level = 0;
       let totalPoints = 0;
       let levelPoints = 0;
-      for (let i = 0; i < newLevelThresholds.length; i++) {
-        if (totalXp >= totalPoints) {
+
+      for (const threshold of newLevelThresholds) {
+        if (totalXp >= threshold) {
           level++;
-          totalPoints += newLevelThresholds[i]!;
-          levelPoints = newLevelThresholds[i]!;
+          totalPoints += threshold;
+          levelPoints = threshold;
         } else {
           break;
         }
@@ -191,7 +192,7 @@ const ProfileInfo: FC<{
           </div>
           <div className="group relative">
             <Image
-              src={user?.profileImage || ""}
+              src={user?.profileImage ?? ""}
               width={180}
               height={180}
               alt="avatar"
@@ -204,7 +205,7 @@ const ProfileInfo: FC<{
         </div>
         <div className="flex h-full flex-col items-center justify-center space-y-1 text-center">
           <span className="text-2xl font-bold lg:text-3xl">{user?.name}</span>
-          <span className="bodyFont">{user?.college?.name || "-"}</span>
+          <span className="bodyFont">{user?.college?.name ?? "-"}</span>
         </div>
         <div className="relative mb-5 pt-1">
           <div className="mb-4 flex h-3 rounded-full bg-gray-100 text-xs">

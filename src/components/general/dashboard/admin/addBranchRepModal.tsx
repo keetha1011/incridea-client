@@ -32,7 +32,7 @@ const AddBranchRep: FC<{
 
   /* Infinite Scroll Logic */
   // Get pageInfo for infinite scroll
-  const { endCursor, hasNextPage } = searchUsersData?.users.pageInfo || {};
+  const { endCursor, hasNextPage } = searchUsersData?.users.pageInfo ?? {};
 
   // Create a ref for the last item in the list
   const lastItemRef = useRef<HTMLDivElement>(null);

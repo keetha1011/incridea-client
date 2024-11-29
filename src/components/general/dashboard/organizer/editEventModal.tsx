@@ -109,7 +109,7 @@ export default function EditEventModal({
 
   useEffect(() => {
     try {
-      const editorState = JSON.parse(event.description || "");
+      const editorState = JSON.parse(event.description ?? "");
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );
@@ -193,7 +193,7 @@ export default function EditEventModal({
                   id="Venue"
                   required
                   onChange={(e) => setVenue(e.target.value)}
-                  value={venue || ""}
+                  value={venue ?? ""}
                   className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
                   placeholder="LC01"
                 />

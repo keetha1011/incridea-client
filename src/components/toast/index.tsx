@@ -9,9 +9,9 @@ const createToast = (
   return toast.promise(
     promise,
     {
-      loading: loadingText || "Loading...",
+      loading: loadingText ?? "Loading...",
       success: "All done!",
-      error: errorMessage || `Error ${errorText} 🫤`,
+      error: errorMessage ?? `Error ${errorText} 🫤`,
     },
     {
       position: "bottom-center",

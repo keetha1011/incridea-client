@@ -70,7 +70,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     const other = collegeData?.colleges.find(
       (college) => college.name === "Other",
     );
-    const sortedColleges = [...(collegeData?.colleges || [])]
+    const sortedColleges = [...(collegeData?.colleges ?? [])]
       .filter((college) => {
         return (
           college.name !== "N.M.A.M. Institute of Technology" &&
@@ -201,9 +201,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           setGotDialogBox(true);
         }
       })
-      .catch((err) => {
-        return err;
-      });
+      .catch(console.log);
   };
 
   // NOTE: change handler for all fields except college
@@ -423,7 +421,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         </>
       )}
 
-      {(error || mutationError || emailVerificationError) && (
+      {(error ?? mutationError ?? emailVerificationError) && (
         <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
           <BiErrorCircle className="shrink-0" />
           <div>

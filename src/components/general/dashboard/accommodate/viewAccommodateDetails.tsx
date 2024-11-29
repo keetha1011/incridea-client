@@ -3,27 +3,19 @@ import Image from "next/image";
 import React from "react";
 import { FC, useState } from "react";
 import { IoEye } from "react-icons/io5";
-import { MdModeEditOutline } from "react-icons/md";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import Spinner from "~/components/spinner";
 import { AccommodationRequestsByUserIdDocument } from "~/generated/generated";
 
 const ViewAccommodateDetails: FC<{
-  accId: String;
+  accId: string;
 }> = ({ accId }) => {
   const [showModal, setShowModal] = useState(false);
-  const [hotelDetails, setHotelDetails] = useState("");
-  const [userId, setUserDetails] = useState(""); //subject to change
 
-  const {
-    data: user,
-    loading: userLoading,
-    refetch: userRefetch,
-  } = useQuery(AccommodationRequestsByUserIdDocument, {
+  const { data: user } = useQuery(AccommodationRequestsByUserIdDocument, {
     variables: {
-      userId: accId as string,
+      userId: accId,
     },
   });
 
@@ -66,7 +58,7 @@ const ViewAccommodateDetails: FC<{
               <div>{user?.accommodationRequestsByUserId[0]?.gender}</div>
               <div>{user?.accommodationRequestsByUserId[0]?.hotel?.name}</div>
               <div>
-                {user?.accommodationRequestsByUserId[0]?.room || "Pending"}
+                {user?.accommodationRequestsByUserId[0]?.room ?? "Pending"}
               </div>
               <div>
                 {user?.accommodationRequestsByUserId[0]!.checkIn
@@ -93,7 +85,7 @@ const ViewAccommodateDetails: FC<{
             </div>
             <div className="text-center">
               <Image
-                src={user?.accommodationRequestsByUserId[0]?.IdCard || ""}
+                src={user?.accommodationRequestsByUserId[0]?.IdCard ?? ""}
                 alt="ID card"
                 width={200}
                 height={200}

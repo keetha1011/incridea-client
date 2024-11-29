@@ -121,9 +121,9 @@ const EasterEgg: NextPage = (props: Props) => {
                       existingImage={
                         submissions?.submissionsByUser.__typename ===
                         "QuerySubmissionsByUserSuccess"
-                          ? submissions?.submissionsByUser.data.filter(
+                          ? submissions?.submissionsByUser.data.find(
                               (submission) => submission.cardId === card.id,
-                            )[0]?.image
+                            )?.image
                           : null
                       }
                       setImage={(file) => {

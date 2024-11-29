@@ -12,7 +12,7 @@ import {
   Navigation,
   Thumbs,
 } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, SwiperClass } from "swiper/react";
 
 import BlurImage from "~/components/blurImage";
 import { env } from "~/env";
@@ -29,7 +29,7 @@ const PreviewComponent = ({
   thumbnailSrc: string;
 }) => {
   const isMediumScreen = useMediaQuery({ query: "(min-width: 800px)" });
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
   const [portraitImages, setPortraitImages] = useState<{
     [key: number]: boolean;
   }>({});
@@ -50,7 +50,7 @@ const PreviewComponent = ({
     <>
       <Swiper
         style={{
-          //@ts-ignore
+          //@ts-expect-error swiper css variables
           "--swiper-navigation-color": "#fff",
           "--swiper-pagination-color": "#fff",
         }}
@@ -60,7 +60,6 @@ const PreviewComponent = ({
         spaceBetween={10}
         navigation={true}
         thumbs={{
-          //@ts-ignore
           swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
         }}
         className="h-[30vh] w-[90%] md:z-50 md:mt-[2vh] md:h-[80vh] md:w-[80%] md:border-none"
@@ -109,8 +108,7 @@ const PreviewComponent = ({
       </Swiper>
       <Swiper
         mousewheel={true}
-        //@ts-ignore
-        onSwiper={setThumbsSwiper}
+        onSwiper={(swiper) => setThumbsSwiper(swiper)}
         slidesPerView={!isMediumScreen ? 5 : 10}
         speed={500}
         freeMode={true}

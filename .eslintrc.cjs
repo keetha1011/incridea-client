@@ -2,6 +2,7 @@
 
 /** @type {import("eslint").Linter.Config} */
 const config = {
+  ignorePatterns: ["**/generated/generated.ts"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: true,
@@ -16,10 +17,7 @@ const config = {
     "@typescript-eslint/array-ty": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-enum-comparison": "off",
-    "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-non-null-asserted-optional-chain": "off",
-    "@typescript-eslint/dot-notation": "off",
-    "@typescript-eslint/prefer-nullish-coalescing": "off",
     "@typescript-eslint/no-misused-promises": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-unused-expressions": "off",
@@ -33,21 +31,14 @@ const config = {
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-redundant-type-constituents": "off",
-    "@typescript-eslint/array-type": "off",
     "@typescript-eslint/prefer-optional-chain": "off",
     "@typescript-eslint/prefer-includes": "off",
-    "@next/next/no-img-element": "off",
-    "@typescript-eslint/no-unsafe-return": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/prefer-promise-reject-errors": "off",
-    "@typescript-eslint/prefer-for-of": "off",
     "@typescript-eslint/require-await": "off",
     "@typescript-eslint/no-empty-object-type": "off",
-    "@typescript-eslint/prefer-find": "off",
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/non-nullable-type-assertion-style": "off",
     "react-hooks/exhaustive-deps": "off",
-    "@typescript-eslint/no-wrapper-object-types": "off",
   },
 };
 module.exports = config;

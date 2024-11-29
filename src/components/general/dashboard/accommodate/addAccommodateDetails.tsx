@@ -18,7 +18,7 @@ enum AccommodationStatus {
   cancelled = "CANCELLED",
 }
 const AddAccommodateDetails: FC<{
-  accId: String;
+  accId: string;
 }> = ({ accId }) => {
   const [showModal, setShowModal] = useState(false);
   const [hotelDetails, setHotelDetails] = useState("");
@@ -39,7 +39,7 @@ const AddAccommodateDetails: FC<{
       variables: {
         hotelId: hotelDetails,
         room: roomNo,
-        bookingId: accId as string,
+        bookingId: accId,
         status,
       },
     }).then((res) => {

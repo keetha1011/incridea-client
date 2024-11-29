@@ -20,7 +20,7 @@ const Profile: NextPage = () => {
   const { error, user, loading } = useAuth();
   const containerRef = useRef(null);
   const router = useRouter();
-  const [bombXp, setBombXp] = useState<Boolean>(false);
+  const [bombXp, setBombXp] = useState<boolean>(false);
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
       levelId: "2",

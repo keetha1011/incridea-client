@@ -71,18 +71,18 @@ export const QRCodeScanner: React.FC<{
               {intent === "attendance" && (
                 <MarkAttendance
                   eventId={eventId}
-                  eventType={eventType || ""}
+                  eventType={eventType ?? ""}
                   result={result}
                 />
               )}
               {intent === "addToEvent" && (
                 <AddParticipantToEvent
-                  eventId={eventId || ""}
+                  eventId={eventId ?? ""}
                   userId={result}
                 />
               )}
               {intent === "addToTeam" && (
-                <ScanParticipantToTeam teamId={teamId || ""} userId={result} />
+                <ScanParticipantToTeam teamId={teamId ?? ""} userId={result} />
               )}
               {intent === "pronite" && (
                 <Pronite

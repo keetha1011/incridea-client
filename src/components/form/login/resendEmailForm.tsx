@@ -97,10 +97,10 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
               placeholder="Email"
             />
 
-            {(error || emailVerificationError) && (
+            {(error ?? emailVerificationError) && (
               <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
                 <BiErrorCircle size={"1.3rem"} />
-                {error || emailVerificationError?.message}
+                {error ?? emailVerificationError?.message}
               </div>
             )}
 

@@ -58,9 +58,9 @@ const AccommodationForm: FunctionComponent = () => {
   const filteredHotels =
     hotelQuery === ""
       ? hotels
-      : hotels?.filter((hotel) => {
+      : (hotels?.filter((hotel) => {
           return hotel.name.toLowerCase().includes(hotelQuery.toLowerCase());
-        }) || [];
+        }) ?? []);
 
   // FIXME: No AC rooms??
   // const [AC, setAC] = useState<boolean>(false);

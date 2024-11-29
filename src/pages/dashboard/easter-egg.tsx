@@ -174,7 +174,7 @@ const EasterEggDashboard = (props: Props) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Image
-                  src={highlightedImage || ""}
+                  src={highlightedImage ?? ""}
                   width={1000}
                   height={1000}
                   className="h-[85vh] w-[85vw] rounded-md object-contain"

@@ -73,11 +73,7 @@ const Register: NextPage = () => {
             </Link>{" "}
             about the guidelines and regulations
           </div>
-          <Button
-            onClick={() => {}}
-            disabled
-            className="disabled mb-4 mt-8 flex gap-2"
-          >
+          <Button disabled className="disabled mb-4 mt-8 flex gap-2">
             Register Now
             {loading && (
               <Spinner className="w-fit" size={"small"} intent={"white"} />

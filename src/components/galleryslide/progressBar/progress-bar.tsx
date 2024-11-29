@@ -87,7 +87,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
         alt="Character"
         width={50}
         height={50}
-        className={styles["character"]}
+        className={styles.character}
         ref={characterRef}
       />
     </div>

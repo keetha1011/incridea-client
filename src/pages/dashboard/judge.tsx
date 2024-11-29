@@ -70,7 +70,7 @@ const Judge: NextPage = (props: Props) => {
     (data?.roundByJudge.__typename === "QueryRoundByJudgeSuccess" &&
       data.roundByJudge.data.event.rounds.find(
         (round) => roundNo === round.roundNo,
-      )?.completed) ||
+      )?.completed) ??
     false;
 
   if (loading)

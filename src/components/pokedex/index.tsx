@@ -13,11 +13,11 @@ import { env } from "~/env";
 import { AddXpDocument } from "~/generated/generated";
 
 interface DexProps {
-  data?: Array<{ id: string; name: string; image: string }>;
+  data?: { id: string; name: string; image: string }[];
 }
 
 interface DexProps {
-  data?: Array<{ id: string; name: string; image: string }>;
+  data?: { id: string; name: string; image: string }[];
   isMuted: boolean;
   mainThemeAudioRef: React.MutableRefObject<HTMLAudioElement | null>;
 }

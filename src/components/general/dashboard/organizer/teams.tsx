@@ -30,7 +30,7 @@ function Teams({
     },
   });
 
-  const { endCursor, hasNextPage } = data?.teamsByRound.pageInfo || {};
+  const { endCursor, hasNextPage } = data?.teamsByRound.pageInfo ?? {};
   const lastItemRef = useRef<HTMLDivElement>(null);
   const [isFetching, setIsFetching] = useState(false);
   const handleObserver = useCallback(

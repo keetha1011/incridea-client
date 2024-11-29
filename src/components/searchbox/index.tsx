@@ -18,7 +18,7 @@ const SearchBox = ({ className, value, onChange, placeholder }: Props) => {
         value={value}
         onChange={onChange}
         additionalclasses="p-2 pr-10 w-full"
-        placeholder={placeholder || "Search by name or PID"}
+        placeholder={placeholder ?? "Search by name or PID"}
       />
       <AiOutlineSearch
         size={"1.4rem"}

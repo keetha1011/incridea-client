@@ -172,7 +172,7 @@ const RoundTable = ({
 
   if (roundLoading) return <Spinner />;
   if (!round) return <div>Something went wrong</div>;
-  if (roundError || round.getScoreSheetJuryView["__typename"] === "Error")
+  if (roundError || round.getScoreSheetJuryView.__typename === "Error")
     return <div>Something went wrong</div>;
   if (round.getScoreSheetJuryView.data.length === 0)
     return <div>Nothing to show</div>;
@@ -210,12 +210,12 @@ const JudgeTable = ({
         [key: string]: any;
       } = {};
       let sum = 0;
-      obj["teamNames"] = team;
+      obj.teamNames = team;
       judgesData[index][0]?.criteria?.map((data: any) => {
         obj[data.criteriaName] = data.score;
         sum += data.score;
       });
-      obj["judgeTotal"] = sum;
+      obj.judgeTotal = sum;
       data.push(obj);
     });
     return data;

@@ -9,19 +9,16 @@ import { AddBranchDocument } from "~/generated/generated";
 
 const AddBranchModal = () => {
   const [showModal, setShowModal] = useState(false);
-  const [branchName, setBranchName] = useState<String>("");
+  const [branchName, setBranchName] = useState<string>("");
 
   //mutation to add branch
-  const [addBranchMutation, { loading: addBranchLoading }] = useMutation(
-    AddBranchDocument,
-    {
-      variables: {
-        name: branchName as string,
-      },
-      refetchQueries: ["Branches"],
-      awaitRefetchQueries: true,
+  const [addBranchMutation] = useMutation(AddBranchDocument, {
+    variables: {
+      name: branchName,
     },
-  );
+    refetchQueries: ["Branches"],
+    awaitRefetchQueries: true,
+  });
 
   const handleBranchAdded = () => {
     if (branchName === "") {

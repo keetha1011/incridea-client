@@ -26,7 +26,7 @@ type Props =
     }
   | {
       event?: never;
-      error: String;
+      error: string;
     };
 
 const getServerSideProps = async ({ params }: { params: { slug: string } }) => {
