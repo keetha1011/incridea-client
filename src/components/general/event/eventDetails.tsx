@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./eventDetails.module.css";
 
 function EventDetails({ details }: { details: string }) {
-  const data = JSON.parse(details as string);
+  const data = JSON.parse(details);
   const markup = draftToHtml(data);
 
   return (

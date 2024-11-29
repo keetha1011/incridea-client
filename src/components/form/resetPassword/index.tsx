@@ -47,7 +47,7 @@ const ResetPassword: FunctionComponent = () => {
     resetMutation({
       variables: {
         password: password.newPassword,
-        token: token as string,
+        token: token,
       },
     }).then((res) => {
       if (res.data?.resetPassword.__typename === "Error") {

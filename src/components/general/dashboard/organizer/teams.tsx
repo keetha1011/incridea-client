@@ -101,26 +101,26 @@ function Teams({
           }
         >
           <h2 className="flex flex-col items-center justify-center gap-2 text-base font-semibold md:flex-row md:text-xl">
-            <Badge color={"info"}>{idToTeamId(team?.node.id!)}</Badge>
+            <Badge color={"info"}>{idToTeamId(team?.node.id)}</Badge>
             {team?.node.name}
           </h2>
           <div className="flex gap-2 md:flex-row">
             {/* Mark Attendance */}
             <MarkAttendanceButton
-              attended={team?.node.attended as boolean}
-              teamId={team?.node.id as string}
+              attended={team?.node.attended}
+              teamId={team?.node.id}
             />
 
             {/* View Team */}
             <ViewTeamModal
-              teamId={team?.node.id as string}
+              teamId={team?.node.id}
               teamName={team?.node.name || ""}
             />
 
             {/* Delete Team or Participant */}
             <DeleteTeamModal
-              attended={team?.node.attended as boolean}
-              teamId={team?.node.id as string}
+              attended={team?.node.attended}
+              teamId={team?.node.id}
               teamOrParticipant={teamOrParticipant}
             />
           </div>

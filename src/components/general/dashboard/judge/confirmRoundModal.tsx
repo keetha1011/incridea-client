@@ -65,8 +65,8 @@ const ConfirmRoundModal = ({
     GetTotalScoresDocument,
     {
       variables: {
-        eventId: eventId!,
-        roundNo: roundNo!,
+        eventId: eventId,
+        roundNo: roundNo,
       },
       skip: !eventId || !roundNo,
     },

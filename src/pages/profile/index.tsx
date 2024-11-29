@@ -91,7 +91,7 @@ const Profile: NextPage = () => {
     <main ref={containerRef} className="bodyFont mx-auto w-[98vw]">
       <div className="flex flex-col-reverse gap-5 py-[5rem] lg:grid lg:grid-cols-3">
         <div className="col-span-2 h-full w-full overflow-auto">
-          <UserEvents userId={user?.id!} />
+          <UserEvents userId={user?.id} />
         </div>
 
         <div className="w-full rounded-xl">

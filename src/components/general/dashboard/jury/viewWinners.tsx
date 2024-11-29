@@ -10,7 +10,7 @@ const ViewWinners = ({ eventId }: { eventId: string }) => {
     WinnersByEventDocument,
     {
       variables: {
-        eventId: eventId!,
+        eventId: eventId,
       },
       skip: !eventId,
     },

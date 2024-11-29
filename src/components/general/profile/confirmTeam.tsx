@@ -74,7 +74,7 @@ const ConfirmTeamModal: FC<{
               e.preventDefault();
               e.stopPropagation();
               canConfirm
-                ? handleConfirm(teamId as string)
+                ? handleConfirm(teamId)
                 : toast.error(
                     `You need ${needMore} more members to confirm your team.`,
                     {

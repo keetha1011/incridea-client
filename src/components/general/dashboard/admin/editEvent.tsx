@@ -55,7 +55,7 @@ const EditEvent: FC<{
     setShowModal(false);
     let promise = updateEvent({
       variables: {
-        id: event?.id as string,
+        id: event?.id,
         maxTeams,
         name,
         maxTeamSize,
@@ -79,7 +79,7 @@ const EditEvent: FC<{
   useEffect(() => {
     const description = event?.description;
     try {
-      const editorState = JSON.parse(description as string) as any;
+      const editorState = JSON.parse(description as string);
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );

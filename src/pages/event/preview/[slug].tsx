@@ -131,7 +131,7 @@ const Page = ({
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
-                    src={event.image as string}
+                    src={event.image}
                     // src="https://res.cloudinary.com/dg1941jdi/image/upload/v1706863440/Events/Usaravalli_1706863437635.png"
                     className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}

@@ -20,7 +20,7 @@ const EventList: FC<{
     refetch: eventsRefetch,
   } = useQuery(EventsByBranchRepDocument, {
     variables: {
-      branchRepId: branchRepId as string,
+      branchRepId: branchRepId,
     },
   });
 

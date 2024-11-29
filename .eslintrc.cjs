@@ -13,7 +13,6 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked",
   ],
   rules: {
-    "@typescript-eslint/no-unnecessary-type-assertion": "off",
     "@typescript-eslint/array-ty": "off",
     "@typescript-eslint/no-unsafe-argument": "off",
     "@typescript-eslint/no-unsafe-enum-comparison": "off",

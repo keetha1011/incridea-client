@@ -73,7 +73,7 @@ const DeleteTeamModal: FC<{
           <Button
             size={"small"}
             onClick={() => {
-              handleDelete(teamId as string);
+              handleDelete(teamId);
             }}
             disabled={deleteTeamLoading}
           >

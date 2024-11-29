@@ -144,12 +144,12 @@ const SelectedTeamList = ({
                   <div className="basis-1/3 text-white/60">
                     {teamOrParticipant === "Participant"
                       ? idToPid(team?.leaderId?.toString()!)
-                      : idToTeamId(team?.id!)}
+                      : idToTeamId(team?.id)}
                   </div>
                   <div className="basis-1/3">
                     <Button
                       onClick={() => {
-                        handlePromote(team?.id!);
+                        handlePromote(team?.id);
                       }}
                       disabled={promoteLoading}
                     >
@@ -182,8 +182,8 @@ const SelectedTeamList = ({
                 </div>
                 <div className="basis-1/4 text-white/60">
                   {teamOrParticipant === "Participant"
-                    ? idToPid(winner?.team.leaderId?.toString()!)
-                    : idToTeamId(winner?.team.id!)}
+                    ? idToPid(winner.team.leaderId?.toString()!)
+                    : idToTeamId(winner.team.id)}
                 </div>
                 <div className="basis-1/4 text-white/60">
                   {winner.type

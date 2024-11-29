@@ -68,7 +68,7 @@ const DeleteTeamModal = ({ teamId, attended, teamOrParticipant }: Props) => {
           <Button
             intent={"danger"}
             onClick={() => {
-              handleDelete(teamId as string);
+              handleDelete(teamId);
             }}
             disabled={attended || deleteTeamLoading}
           >

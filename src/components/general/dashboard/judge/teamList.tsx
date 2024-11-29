@@ -88,8 +88,8 @@ const TeamList = ({
     GetTotalScoresDocument,
     {
       variables: {
-        eventId: eventId!,
-        roundNo: roundNo!,
+        eventId: eventId,
+        roundNo: roundNo,
       },
       skip: !eventId || !roundNo,
     },
@@ -303,7 +303,7 @@ const TeamList = ({
             <div
               key={team?.id}
               onClick={() => {
-                setSelectedTeam(team?.id!);
+                setSelectedTeam(team?.id);
               }}
               className={`flex cursor-pointer items-center rounded-lg bg-white/10 p-2 px-5 ${
                 selectedTeam === team?.id
@@ -330,7 +330,7 @@ const TeamList = ({
                   }`}
                 >
                   {teamOrParticipant === "Team"
-                    ? idToTeamId(team?.id!)
+                    ? idToTeamId(team.id)
                     : idToPid(team.leaderId?.toString()!)}
                 </div>
 
@@ -376,7 +376,7 @@ const TeamList = ({
                       disabled={promoteLoading}
                       type="checkbox"
                       className="h-5 w-5 text-white/80"
-                      onChange={() => handlePromote(team?.id!)}
+                      onChange={() => handlePromote(team?.id)}
                     />
                   )}
                   {!selectionMode && teamOrParticipant === "Team" && (
@@ -393,7 +393,7 @@ const TeamList = ({
                         let promise = selectWinner({
                           variables: {
                             eventId,
-                            teamId: team?.id!,
+                            teamId: team?.id,
                             type: winnerType as WinnerType,
                           },
                         }).then((data) => {

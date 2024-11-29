@@ -125,8 +125,8 @@ const AddBranchRep: FC<{
                 </div>
                 <div className="flex items-center justify-center">
                   <RemoveBranchRepButton
-                    branchId={branchId as string}
-                    userId={branchRep.userId as string}
+                    branchId={branchId}
+                    userId={branchRep.userId}
                   />
                 </div>
               </div>
@@ -158,10 +158,7 @@ const AddBranchRep: FC<{
                 <h1 className="text-lg md:text-xl">{user?.node.name}</h1>
                 <h1 className="text-sm font-thin">{user?.node.email}</h1>
               </div>
-              <AddBranchRepButton
-                branchId={branchId as string}
-                userId={user?.node.id as string}
-              />
+              <AddBranchRepButton branchId={branchId} userId={user?.node.id} />
             </div>
           ))}
           {isFetching && <Spinner size={"small"} />}

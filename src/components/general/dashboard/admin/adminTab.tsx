@@ -30,7 +30,7 @@ const AdminTab: FC<{
     refetch: eventsRefetch,
   } = useQuery(EventsDocument, {
     variables: {
-      first: first as number,
+      first: first,
     },
   });
 
@@ -81,7 +81,7 @@ const AdminTab: FC<{
                     )}
                   </h1>
                   <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-lg">
-                    <RoundsDone eventId={event?.node?.id as string} />
+                    <RoundsDone eventId={event?.node?.id} />
                   </h1>
                   <h1
                     className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${
@@ -94,9 +94,9 @@ const AdminTab: FC<{
                   </h1>
                   <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-lg">
                     <PublishEventModal
-                      eventId={event?.node?.id as string}
-                      eventName={event?.node?.name as string}
-                      published={event?.node?.published as boolean}
+                      eventId={event?.node?.id}
+                      eventName={event?.node?.name}
+                      published={event?.node?.published}
                     />
                   </h1>
                   <h1 className="mt-2 flex basis-1/6 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">

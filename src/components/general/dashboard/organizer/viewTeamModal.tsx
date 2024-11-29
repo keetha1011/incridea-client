@@ -56,8 +56,8 @@ const ViewTeamModal: FC<{
   const removeMember = (id: string) => {
     let promise = deleteMember({
       variables: {
-        teamId: teamId as string,
-        userId: id as string,
+        teamId: teamId,
+        userId: id,
       },
     }).then((res) => {
       if (

@@ -79,7 +79,7 @@ const Remarks = ({
 
     // Cleanup function to clear the timeout
     return () => {
-      clearTimeout(timeoutId!);
+      clearTimeout(timeoutId);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remarks]);

@@ -109,7 +109,7 @@ export default function EditEventModal({
 
   useEffect(() => {
     try {
-      const editorState = JSON.parse(event.description || "") as any;
+      const editorState = JSON.parse(event.description || "");
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );

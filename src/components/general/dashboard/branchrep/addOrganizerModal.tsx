@@ -176,7 +176,7 @@ const AddOrganizerModal: FC<{
                   </div>
                   <AddOrganizerButton
                     eventId={eventId}
-                    userId={user?.node.id as string}
+                    userId={user?.node.id}
                   />
                 </div>
               ))}
