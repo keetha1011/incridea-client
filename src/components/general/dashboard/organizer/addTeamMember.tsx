@@ -46,13 +46,13 @@ const AddTeamMember: FC<{
       refetchQueries: ["TeamDetails"],
     },
   );
-  const removeHandler = (userId: string) => {
+  const removeHandler = async (userId: string) => {
     const promise = organizerDeleteTeamMember({
       variables: {
         teamId,
         userId,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       if (
         res.data?.organizerDeleteTeamMember.__typename ===
         "MutationOrganizerDeleteTeamMemberSuccess"
@@ -60,18 +60,19 @@ const AddTeamMember: FC<{
         setUserId("");
       } else {
         if (res.data) {
-          createToast(
-            Promise.reject(promise),
+          await createToast(
+            promise,
             res.data.organizerDeleteTeamMember.message,
           );
+          return Promise.reject(new Error("Error removing member from team"));
         } else {
           throw new Error("Error removing member from team");
         }
       }
     });
-    createToast(promise, "Removing Participant...");
+    await createToast(promise, "Removing Participant...");
   };
-  const addHandler = () => {
+  const addHandler = async () => {
     if (!userId) return;
     const promise = organizerAddParticipantToTeam({
       variables: {
@@ -79,7 +80,7 @@ const AddTeamMember: FC<{
         userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         if (
           res.data?.organizerAddTeamMember.__typename ===
           "MutationOrganizerAddTeamMemberSuccess"
@@ -88,18 +89,15 @@ const AddTeamMember: FC<{
         } else {
           if (res.data) {
             console.log(res.data);
-            createToast(
-              Promise.reject(promise),
-              res.data.organizerAddTeamMember.message,
-            );
-            throw new Error("Error adding member to team");
+            await createToast(promise, res.data.organizerAddTeamMember.message);
+            return Promise.reject(new Error("Error adding member to team"));
           }
         }
       })
       .catch((error) => {
         throw new Error(`Error: ${error.message}`);
       });
-    createToast(promise, "Adding Participant...");
+    await createToast(promise, "Adding Participant...");
   };
 
   return (
@@ -204,7 +202,9 @@ const AddTeamMember: FC<{
                       </div>
                       <Button
                         intent={"danger"}
-                        onClick={() => removeHandler(member.user.id)}
+                        onClick={async () =>
+                          await removeHandler(member.user.id)
+                        }
                         outline
                         className="text-xl"
                       >

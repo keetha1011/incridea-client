@@ -5,7 +5,6 @@ import { toast } from "react-hot-toast";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import { AddScoreDocument, GetScoreDocument } from "~/generated/generated";
-import { formatTime, parseTime } from "~/utils/time";
 
 const Score = ({
   teamId,
@@ -51,7 +50,8 @@ const Score = ({
       },
     });
   console.log(error, updateError);
-  const handleUpdateScore = () => {
+
+  const handleUpdateScore = async () => {
     // check if score is really changed before updating
     if (
       data?.getScore.__typename === "QueryGetScoreSuccess" &&
@@ -66,7 +66,7 @@ const Score = ({
         });
       }
     });
-    createToast(promise, "Updating score...");
+    await createToast(promise, "Updating score...");
   };
 
   // Auto save score after 500ms
@@ -80,8 +80,8 @@ const Score = ({
     }
 
     // Set a new timeout
-    timeoutId = setTimeout(() => {
-      handleUpdateScore();
+    timeoutId = setTimeout(async () => {
+      await handleUpdateScore();
     }, 500);
 
     // Cleanup function to clear the timeout

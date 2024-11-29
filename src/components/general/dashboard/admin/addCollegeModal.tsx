@@ -17,7 +17,7 @@ const AddCollegeModal: FC = () => {
     awaitRefetchQueries: true,
   });
 
-  function handleAddCollege() {
+  async function handleAddCollege() {
     const promise = removeCollege({
       variables: {
         name: name,
@@ -27,9 +27,9 @@ const AddCollegeModal: FC = () => {
       if (
         res?.data?.createCollege.__typename !== "MutationCreateCollegeSuccess"
       )
-        return Promise.reject("Error could not add college");
+        return Promise.reject(new Error("Error could not add college"));
     });
-    createToast(promise, "Adding College...");
+    await createToast(promise, "Adding College...");
     setName("");
     setCollegeDescription("");
     setShowModal(false);
@@ -88,7 +88,7 @@ const AddCollegeModal: FC = () => {
               intent="success"
               size="large"
               className="flex items-center gap-1 disabled:cursor-not-allowed disabled:opacity-50"
-              onClick={() => handleAddCollege()}
+              onClick={handleAddCollege}
             >
               Create
             </Button>

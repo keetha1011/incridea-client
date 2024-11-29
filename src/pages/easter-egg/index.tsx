@@ -14,9 +14,7 @@ import {
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
-type Props = {};
-
-const EasterEgg: NextPage = (props: Props) => {
+const EasterEgg: NextPage = () => {
   const [imageFiles, setImageFiles] = useState<(File | null)[] | []>([]);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);

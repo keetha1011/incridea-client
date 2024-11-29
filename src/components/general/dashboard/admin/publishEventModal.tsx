@@ -19,10 +19,9 @@ const PublishEventModal: FC<{
     awaitRefetchQueries: true,
   });
 
-  function handlePublishEvent() {
-    let promise;
+  async function handlePublishEvent() {
     if (!published) {
-      promise = publishEvent({
+      const promise = publishEvent({
         variables: {
           id: eventId,
           published: true,
@@ -31,12 +30,12 @@ const PublishEventModal: FC<{
         if (
           res.data?.publishEvent.__typename !== "MutationPublishEventSuccess"
         ) {
-          return Promise.reject("Error could not publish event");
+          return Promise.reject(new Error("Error could not publish event"));
         }
       });
-      createToast(promise, "Publishing Event...");
+      await createToast(promise, "Publishing Event...");
     } else {
-      promise = publishEvent({
+      const promise = publishEvent({
         variables: {
           id: eventId,
           published: false,
@@ -45,10 +44,10 @@ const PublishEventModal: FC<{
         if (
           res.data?.publishEvent.__typename !== "MutationPublishEventSuccess"
         ) {
-          return Promise.reject("Error could not unpublish event");
+          return Promise.reject(new Error("Error could not unpublish event"));
         }
       });
-      createToast(promise, "Unpublishing Event...");
+      await createToast(promise, "Unpublishing Event...");
     }
     setShowModal(false);
   }
@@ -105,9 +104,7 @@ const PublishEventModal: FC<{
                   intent="danger"
                   className="ml-auto"
                   disabled={false}
-                  onClick={() => {
-                    handlePublishEvent();
-                  }}
+                  onClick={handlePublishEvent}
                 >
                   Unpublish
                 </Button>
@@ -144,9 +141,7 @@ const PublishEventModal: FC<{
                   intent="success"
                   className="ml-auto"
                   disabled={false}
-                  onClick={() => {
-                    handlePublishEvent();
-                  }}
+                  onClick={handlePublishEvent}
                 >
                   Publish
                 </Button>

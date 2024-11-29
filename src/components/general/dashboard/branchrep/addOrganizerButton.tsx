@@ -21,7 +21,7 @@ const AddOrganizerButton = ({ userId, eventId }: Props) => {
     },
   );
 
-  const handleAddOrganizer = (userId: string) => {
+  const handleAddOrganizer = async (userId: string) => {
     const promise = addOrganizerMutation({
       variables: {
         eventId: eventId,
@@ -29,10 +29,10 @@ const AddOrganizerButton = ({ userId, eventId }: Props) => {
       },
     }).then((res) => {
       if (res.data?.addOrganizer.__typename !== "MutationAddOrganizerSuccess") {
-        return Promise.reject("Error adding organizer");
+        return Promise.reject(new Error("Error adding organizer"));
       }
     });
-    createToast(promise, "Adding organizer...");
+    await createToast(promise, "Adding organizer...");
   };
 
   return (
@@ -40,7 +40,7 @@ const AddOrganizerButton = ({ userId, eventId }: Props) => {
       intent={"secondary"}
       size="small"
       className="flex items-center gap-1 disabled:cursor-not-allowed disabled:opacity-50"
-      onClick={() => handleAddOrganizer(userId)}
+      onClick={async () => await handleAddOrganizer(userId)}
       disabled={addOrganizerLoading}
     >
       Add

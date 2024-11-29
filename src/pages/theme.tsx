@@ -7,8 +7,9 @@ import { env } from "~/env";
 function Theme() {
   // redirect to youtube
   const router = useRouter();
+
   useEffect(() => {
-    router.push("https://youtu.be/GdmrDe-VIlo?feature=shared");
+    void router.push("https://youtu.be/GdmrDe-VIlo?feature=shared");
   }, [router]);
 
   return (

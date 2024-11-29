@@ -22,10 +22,10 @@ const LeaveTeamModal: FC<{
     setShowModal(false);
   };
 
-  const handleLeave = (teamId: string) => {
+  const handleLeave = async (teamId: string) => {
     setShowModal(false);
     const loadingToast = toast.loading("Leaving team...");
-    leaveTeam({
+    await leaveTeam({
       variables: {
         teamId,
       },
@@ -65,9 +65,7 @@ const LeaveTeamModal: FC<{
         <div className="my-5 flex justify-center gap-3">
           <Button
             size={"small"}
-            onClick={() => {
-              handleLeave(teamId);
-            }}
+            onClick={async () => await handleLeave(teamId)}
             disabled={loading}
             className="bodyFont !skew-x-0 justify-center rounded-full !tracking-normal"
           >

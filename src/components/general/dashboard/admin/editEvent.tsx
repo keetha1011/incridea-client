@@ -51,7 +51,8 @@ const EditEvent: FC<{
       refetchQueries: ["Events"],
     },
   );
-  function saveHandler() {
+
+  async function saveHandler() {
     setShowModal(false);
     const promise = updateEvent({
       variables: {
@@ -73,13 +74,13 @@ const EditEvent: FC<{
         throw new Error(res.data.updateEvent.message);
       }
     });
-    createToast(promise, "Updating event...");
+    await createToast(promise, "Updating event...");
   }
 
   useEffect(() => {
     const description = event?.description;
     try {
-      const editorState = JSON.parse(description as string);
+      const editorState = JSON.parse(description ?? "");
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );
@@ -95,7 +96,7 @@ const EditEvent: FC<{
     document.head.appendChild(style);
   }, [event]);
 
-  const handleUpload = (file: File) => {
+  const handleUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
     const url = `${env.NEXT_PUBLIC_SERVER_URL}/cloudinary/upload/${event?.name}`;
@@ -117,7 +118,7 @@ const EditEvent: FC<{
         setUploading(false);
         console.log(err);
       });
-    createToast(promise, "Uploading image...");
+    await createToast(promise, "Uploading image...");
   };
 
   return (
@@ -277,7 +278,9 @@ const EditEvent: FC<{
                   id="image"
                   className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-gray-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
                   placeholder="Banner..."
-                  onChange={(e) => handleUpload(e.target.files![0]!)}
+                  onChange={async (e) =>
+                    await handleUpload(e.target.files![0]!)
+                  }
                 />
               </div>
               <div className="grow basis-full md:basis-1/3">

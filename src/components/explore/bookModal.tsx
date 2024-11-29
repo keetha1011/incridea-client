@@ -26,11 +26,11 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
       return;
     } else if (!isMuted && sponsorFlag) {
       mainRef?.current?.pause();
-      audio.play();
+      void audio.play();
     }
     return () => {
       audio.pause();
-      mainRef?.current?.play();
+      void mainRef?.current?.play();
     };
   }, [sponsorFlag, isMuted, mainThemeAudioRef]);
 

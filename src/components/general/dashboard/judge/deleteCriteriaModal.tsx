@@ -30,7 +30,7 @@ const DeleteCriteriaModal = ({
     },
   );
 
-  const handleDeleteCriteria = (id: string) => {
+  const handleDeleteCriteria = async (id: string) => {
     const promise = deleteCriteria({
       variables: {
         eventId: eventId,
@@ -38,7 +38,7 @@ const DeleteCriteriaModal = ({
         criteriaId: id,
       },
     });
-    createToast(promise, "Deleting criteria...");
+    await createToast(promise, "Deleting criteria...");
   };
 
   return (
@@ -71,7 +71,7 @@ const DeleteCriteriaModal = ({
                   {criteria.name}
                 </p>
                 <Button
-                  onClick={() => handleDeleteCriteria(criteria.id)}
+                  onClick={async () => await handleDeleteCriteria(criteria.id)}
                   disabled={deleteCriteriaLoading}
                   title="Delete Criteria"
                   intent={"ghost"}

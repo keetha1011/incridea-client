@@ -79,7 +79,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
 
   useEffect(() => {
     if (mainThemeAudioRef.current && hasInteracted) {
-      mainThemeAudioRef.current.play();
+      void mainThemeAudioRef.current.play();
       mainThemeAudioRef.current.volume = volume / 100;
     }
   }, [hasInteracted, mainThemeAudioRef, volume]);

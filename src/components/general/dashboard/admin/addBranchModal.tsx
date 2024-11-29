@@ -20,16 +20,15 @@ const AddBranchModal = () => {
     awaitRefetchQueries: true,
   });
 
-  const handleBranchAdded = () => {
-    if (branchName === "") {
-      return setShowModal(false);
-    }
+  const handleBranchAdded = async () => {
+    if (branchName === "") return setShowModal(false);
+
     const promise = addBranchMutation().then((res) => {
       if (res.data?.addBranch.__typename !== "MutationAddBranchSuccess") {
-        return Promise.reject("Error could not add branch");
+        return Promise.reject(new Error("Error could not add branch"));
       }
     });
-    createToast(promise, "Adding Branch...");
+    await createToast(promise, "Adding Branch...");
     setShowModal(false);
   };
 
@@ -65,7 +64,7 @@ const AddBranchModal = () => {
               intent="danger"
               className="ml-auto justify-center"
               disabled={false}
-              onClick={() => handleBranchAdded()}
+              onClick={handleBranchAdded}
             >
               <IoAdd /> Add Branch
             </Button>

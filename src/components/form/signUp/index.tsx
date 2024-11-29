@@ -105,9 +105,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             .includes(query.toLowerCase().replace(/\s+/g, ""));
         });
 
-  const resendEmail = () => {
+  const resendEmail = async () => {
     setEmailSuccess(false);
-    emailVerificationMutation({
+    await emailVerificationMutation({
       variables: {
         email: userInfo.email,
       },
@@ -158,7 +158,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       return;
     }
 
-    signUpMutation({
+    await signUpMutation({
       variables: {
         name: userInfo.name,
         email:
@@ -170,9 +170,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         collegeId: Number(userInfo.college),
       },
     })
-      .then((res) => {
+      .then(async (res) => {
         if (res.data?.signUp.__typename === "MutationSignUpSuccess") {
-          emailVerificationMutation({
+          await emailVerificationMutation({
             variables: {
               email:
                 selectedCollege?.name === "N.M.A.M. Institute of Technology"

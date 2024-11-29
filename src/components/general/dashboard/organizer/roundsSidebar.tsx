@@ -51,12 +51,12 @@ const RoundsSidebar: FC<{
 
   const [selectedRound, setSelectedRound] = useState(1);
 
-  const handleDeleteRound = () => {
+  const handleDeleteRound = async () => {
     const promise = deleteRound();
-    createToast(promise, "Deleting round...");
+    await createToast(promise, "Deleting round...");
   };
 
-  const handleDeleteJudge = (id: string) => {
+  const handleDeleteJudge = async (id: string) => {
     const promise = deleteJudge({
       variables: {
         eventId: eventId,
@@ -64,10 +64,10 @@ const RoundsSidebar: FC<{
         userId: id,
       },
     });
-    createToast(promise, "Deleting judge...");
+    await createToast(promise, "Deleting judge...");
   };
 
-  const handleDeleteCriteria = (id: string) => {
+  const handleDeleteCriteria = async (id: string) => {
     const promise = deleteCriteria({
       variables: {
         eventId: eventId,
@@ -75,7 +75,7 @@ const RoundsSidebar: FC<{
         criteriaId: id,
       },
     });
-    createToast(promise, "Deleting criteria...");
+    await createToast(promise, "Deleting criteria...");
   };
 
   return (
@@ -155,7 +155,9 @@ const RoundsSidebar: FC<{
                             size="small"
                             outline
                             className="h-8 w-8"
-                            onClick={() => handleDeleteJudge(judge.user.id)}
+                            onClick={async () =>
+                              await handleDeleteJudge(judge.user.id)
+                            }
                             disabled={deleteJudgeLoading}
                           >
                             <BiTrash />
@@ -199,7 +201,9 @@ const RoundsSidebar: FC<{
                             size="small"
                             outline
                             className="h-8 w-8"
-                            onClick={() => handleDeleteCriteria(criteria.id)}
+                            onClick={async () =>
+                              await handleDeleteCriteria(criteria.id)
+                            }
                             disabled={deleteCriteriaLoading}
                           >
                             <BiTrash />

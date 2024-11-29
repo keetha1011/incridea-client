@@ -116,7 +116,7 @@ const TeamList = ({
       ? "Participant"
       : "Team";
 
-  const handlePromote = (teamId: string) => {
+  const handlePromote = async (teamId: string) => {
     const promise = promote({
       variables: {
         teamId,
@@ -124,7 +124,7 @@ const TeamList = ({
         selected: true,
       },
     });
-    createToast(promise, "Promoting team to next round...");
+    await createToast(promise, "Promoting team to next round...");
   };
 
   const sorter = sortField === "Total Score" ? "totalScore" : "judgeScore";
@@ -218,8 +218,8 @@ const TeamList = ({
         )}
 
         <Button
-          onClick={() => {
-            changeStatus({
+          onClick={async () => {
+            await changeStatus({
               variables: {
                 eventId,
                 roundNo,
@@ -376,7 +376,7 @@ const TeamList = ({
                       disabled={promoteLoading}
                       type="checkbox"
                       className="h-5 w-5 text-white/80"
-                      onChange={() => handlePromote(team?.id)}
+                      onChange={async () => await handlePromote(team?.id)}
                     />
                   )}
                   {!selectionMode && teamOrParticipant === "Team" && (
@@ -389,7 +389,7 @@ const TeamList = ({
                     <Button
                       disabled={winnerLoading}
                       size={"small"}
-                      onClick={() => {
+                      onClick={async () => {
                         const promise = selectWinner({
                           variables: {
                             eventId,
@@ -403,7 +403,10 @@ const TeamList = ({
                             });
                           }
                         });
-                        createToast(promise, `Selecting ${winnerType}...`);
+                        await createToast(
+                          promise,
+                          `Selecting ${winnerType}...`,
+                        );
                       }}
                     >
                       +

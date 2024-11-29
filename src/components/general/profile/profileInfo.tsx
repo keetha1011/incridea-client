@@ -34,9 +34,7 @@ const ProfileInfo: FC<{
   const [showModal, setShowModal] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
 
-  if (user && user.role === "USER") {
-    router.push("/register");
-  }
+  if (user && user.role === "USER") void router.push("/register");
 
   const [level, setLevel] = useState(0);
   const [xp, setXp] = useState(0);

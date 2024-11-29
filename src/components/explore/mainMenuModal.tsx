@@ -51,12 +51,13 @@ const MainMenuModal: React.FunctionComponent<Props> = ({
 export default MainMenuModal;
 
 const HomeUi: React.FunctionComponent = () => {
-  useLayoutEffect(() => {
-    const scene = document.getElementById("scene") as HTMLElement;
+  const sceneRef = useRef<HTMLElement>(null);
 
-    new Parallax(scene, {
-      relativeInput: true,
-    });
+  useLayoutEffect(() => {
+    if (sceneRef.current)
+      new Parallax(sceneRef.current, {
+        relativeInput: true,
+      });
   });
 
   const Logo = useRef(null);
@@ -82,7 +83,7 @@ const HomeUi: React.FunctionComponent = () => {
   return (
     <>
       <section
-        id="scene"
+        ref={sceneRef}
         className="relative min-h-full bg-gradient-to-b from-[#00002a] via-[#1c23bb] to-pink-800/50"
       >
         <div className="absolute h-full w-full">

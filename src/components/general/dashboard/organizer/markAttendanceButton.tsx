@@ -20,7 +20,7 @@ const MarkAttendanceButton = ({ teamId, attended }: Props) => {
     },
   );
 
-  const handleMarkAttendance = () => {
+  const handleMarkAttendance = async () => {
     const promise = markAttendance({
       variables: {
         teamId: teamId,
@@ -31,7 +31,7 @@ const MarkAttendanceButton = ({ teamId, attended }: Props) => {
         throw new Error(res.data.organizerMarkAttendance.message);
       }
     });
-    createToast(promise, "Updating attendance...");
+    await createToast(promise, "Updating attendance...");
   };
 
   return (

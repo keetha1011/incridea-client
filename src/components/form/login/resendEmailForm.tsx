@@ -28,7 +28,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
     e.preventDefault();
     if (email === "") return;
 
-    emailVerificationMutation({
+    await emailVerificationMutation({
       variables: {
         email: email,
       },

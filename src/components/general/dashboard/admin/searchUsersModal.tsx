@@ -41,11 +41,11 @@ const SearchUsers = () => {
  (memoize the handleObserver to avoid triggering unnecessary re-renders,
  function will only be recreated if any of its dependencies change, and not on every render) */
   const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
+    async (entries: IntersectionObserverEntry[]) => {
       const target = entries[0]!;
       if (target.isIntersecting && hasNextPage) {
         setIsFetching(true);
-        searchUsersFetchMore({
+        await searchUsersFetchMore({
           variables: { after: endCursor },
           updateQuery: (prevResult, { fetchMoreResult }) => {
             fetchMoreResult.users.edges = [

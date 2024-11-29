@@ -123,12 +123,12 @@ export const Menu: FC<{
           intent={"primary"}
           className="h-fit w-52 px-4 sm:px-12"
           size={"xlarge"}
-          onClick={() => {
+          onClick={async () => {
             loading
               ? null
               : user
-                ? router.push("/profile")
-                : router.push("/login");
+                ? await router.push("/profile")
+                : await router.push("/login");
           }}
         >
           {loading ? (
@@ -143,9 +143,7 @@ export const Menu: FC<{
           intent={"ghost"}
           className="h-fit w-52 px-4 sm:px-12"
           size={"xlarge"}
-          onClick={() => {
-            router.push("/explore");
-          }}
+          onClick={async () => await router.push("/explore")}
         >
           Explore
         </Button>
@@ -165,12 +163,12 @@ export const Menu: FC<{
               intent={"ghost"}
               className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
               size={"xlarge"}
-              onClick={() => {
+              onClick={async () => {
                 loading
                   ? null
                   : user
-                    ? router.push("/profile")
-                    : router.push("/login");
+                    ? await router.push("/profile")
+                    : await router.push("/login");
               }}
             >
               {loading ? (
@@ -185,9 +183,7 @@ export const Menu: FC<{
               intent={"ghost"}
               className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
               size={"xlarge"}
-              onClick={() => {
-                router.push("/explore");
-              }}
+              onClick={async () => await router.push("/explore")}
             >
               Explore
             </Button>
@@ -211,12 +207,13 @@ export const Menu: FC<{
 export const HomeUi: FC<{
   xp?: number;
 }> = ({ xp }) => {
-  useLayoutEffect(() => {
-    const scene = document.getElementById("scene") as HTMLElement;
+  const sceneRef = useRef<HTMLElement>(null);
 
-    new Parallax(scene, {
-      relativeInput: true,
-    });
+  useLayoutEffect(() => {
+    if (sceneRef.current)
+      new Parallax(sceneRef.current, {
+        relativeInput: true,
+      });
   });
 
   const Logo = useRef(null);
@@ -243,7 +240,7 @@ export const HomeUi: FC<{
     <>
       {/* <CountDown /> */}
       <section
-        id="scene"
+        ref={sceneRef}
         className="relative min-h-screen bg-gradient-to-b from-[#00002a] via-[#1c23bb] to-pink-800/50"
       >
         <div className="absolute h-screen w-screen">

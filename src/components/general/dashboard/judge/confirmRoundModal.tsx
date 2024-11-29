@@ -45,7 +45,7 @@ const ConfirmRoundModal = ({
     },
   );
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
     const promise = completeRound({
       variables: {
         roundNo,
@@ -58,7 +58,7 @@ const ConfirmRoundModal = ({
         setShowModal(false);
       }
     });
-    createToast(promise, "Confirming winners...");
+    await createToast(promise, "Confirming winners...");
   };
 
   const { data: scores, loading: scoresLoading } = useQuery(
@@ -217,9 +217,7 @@ const ConfirmRoundModal = ({
               (team) => team.roundNo > roundNo,
             ).length !== 0 && (
               <Button
-                onClick={() => {
-                  handleComplete();
-                }}
+                onClick={handleComplete}
                 disabled={completeLoading}
                 intent={"success"}
                 noScaleOnHover
@@ -287,9 +285,7 @@ const ConfirmRoundModal = ({
             winners?.winnersByEvent.__typename ===
               "QueryWinnersByEventSuccess" && (
               <Button
-                onClick={() => {
-                  handleComplete();
-                }}
+                onClick={handleComplete}
                 disabled={completeLoading}
                 intent={"success"}
                 noScaleOnHover

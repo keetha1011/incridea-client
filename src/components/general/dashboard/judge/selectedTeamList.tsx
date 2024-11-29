@@ -44,7 +44,7 @@ const SelectedTeamList = ({
     },
   );
 
-  const handlePromote = (teamId: string) => {
+  const handlePromote = async (teamId: string) => {
     const promise = promote({
       variables: {
         teamId,
@@ -54,7 +54,7 @@ const SelectedTeamList = ({
       refetchQueries: ["GetTotalScores"],
       awaitRefetchQueries: true,
     });
-    createToast(promise, "Removing team...");
+    await createToast(promise, "Removing team...");
   };
 
   const teamOrParticipant =
@@ -148,9 +148,7 @@ const SelectedTeamList = ({
                   </div>
                   <div className="basis-1/3">
                     <Button
-                      onClick={() => {
-                        handlePromote(team?.id);
-                      }}
+                      onClick={async () => await handlePromote(team?.id)}
                       disabled={promoteLoading}
                     >
                       <AiOutlineClose />
@@ -197,7 +195,7 @@ const SelectedTeamList = ({
                 </div>
                 <div className="basis-1/4">
                   <Button
-                    onClick={() => {
+                    onClick={async () => {
                       const promise = deleteWinner({
                         variables: {
                           id: winner?.id,
@@ -211,7 +209,7 @@ const SelectedTeamList = ({
                           });
                         }
                       });
-                      createToast(promise, "Removing winner...");
+                      await createToast(promise, "Removing winner...");
                     }}
                     disabled={deleteLoading}
                   >

@@ -29,12 +29,18 @@ type Props =
       error: string;
     };
 
-const getServerSideProps = async ({ params }: { params: { slug: string } }) => {
+const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
   try {
+    if (!params?.slug || params?.slug instanceof Array)
+      throw new Error("Invalid event slug");
+
+    const id = params.slug.split("-").pop();
+    if (!id) throw new Error("Invalid event slug");
+
     const { data: event } = await client.query({
       query: EventByIdDocument,
       variables: {
-        id: params.slug.split("-").pop() as string,
+        id: id,
       },
       fetchPolicy: "no-cache",
     });
@@ -145,7 +151,7 @@ const Page = ({
                   {event.name}
                 </h1>
                 <div className={`px-4 pb-4 sm:p-0`}>
-                  <EventDetails details={event.description as string} />
+                  <EventDetails details={event.description ?? ""} />
                 </div>
               </div>
             </div>

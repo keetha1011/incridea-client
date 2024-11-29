@@ -19,24 +19,24 @@ const AddBranchRepButton: FC<{
     },
   );
 
-  const handleAddBranchRep = (userId: string) => {
+  const handleAddBranchRep = async () => {
     const promise = addBranchRepMutation({
       variables: {
         branchId: branchId,
         userId: userId,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.data?.addBranchRep.__typename !== "MutationAddBranchRepSuccess") {
         if (res.data?.addBranchRep.message !== undefined) {
-          createToast(
-            Promise.reject(res.data?.addBranchRep.message),
+          await createToast(
+            Promise.reject(new Error(res.data?.addBranchRep.message)),
             res.data?.addBranchRep.message,
           );
         }
-        return Promise.reject("Error could not add branch rep");
+        return Promise.reject(new Error("Error could not add branch rep"));
       }
     });
-    createToast(promise, "Adding BranchRep...");
+    await createToast(promise, "Adding BranchRep...");
   };
 
   return (
@@ -44,7 +44,7 @@ const AddBranchRepButton: FC<{
       intent="success"
       size="medium"
       className="flex items-center gap-1 disabled:cursor-not-allowed disabled:opacity-50"
-      onClick={() => handleAddBranchRep(userId)}
+      onClick={handleAddBranchRep}
       disabled={addBranchRepLoading}
     >
       <IoAdd />

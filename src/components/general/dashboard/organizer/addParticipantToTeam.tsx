@@ -48,7 +48,7 @@ export default function AddParticipantToTeam({
     },
   );
   const [userId, setUserId] = useState<string>("");
-  const removeHandler = (userId: string) => {
+  const removeHandler = async (userId: string) => {
     const promise = organizerDeleteTeamMember({
       variables: {
         teamId,
@@ -68,9 +68,9 @@ export default function AddParticipantToTeam({
         }
       }
     });
-    createToast(promise, "Removing Participant...");
+    await createToast(promise, "Removing Participant...");
   };
-  const addHandler = () => {
+  const addHandler = async () => {
     if (!userId) return;
     const promise = organizerAddParticipantToTeam({
       variables: {
@@ -91,7 +91,7 @@ export default function AddParticipantToTeam({
         }
       }
     });
-    createToast(promise, "Adding Participant...");
+    await createToast(promise, "Adding Participant...");
   };
 
   const [scanModalOpen, setScanModalOpen] = useState<boolean>(false);
@@ -184,7 +184,7 @@ export default function AddParticipantToTeam({
                     </div>
                     <Button
                       intent={"danger"}
-                      onClick={() => removeHandler(member.user.id)}
+                      onClick={async () => await removeHandler(member.user.id)}
                       outline
                       className="text-xl"
                     >

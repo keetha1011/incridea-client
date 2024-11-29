@@ -19,8 +19,8 @@ const AddParticipantToEvent: FC<{
     <div>
       <Toaster />
       <Button
-        onClick={() => {
-          register({
+        onClick={async () => {
+          await register({
             variables: {
               eventId,
               userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,

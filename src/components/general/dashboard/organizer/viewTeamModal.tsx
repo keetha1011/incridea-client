@@ -53,7 +53,7 @@ const ViewTeamModal: FC<{
     awaitRefetchQueries: true,
   });
 
-  const removeMember = (id: string) => {
+  const removeMember = async (id: string) => {
     const promise = deleteMember({
       variables: {
         teamId: teamId,
@@ -64,10 +64,10 @@ const ViewTeamModal: FC<{
         res.data?.organizerDeleteTeamMember.__typename !==
         "MutationOrganizerDeleteTeamMemberSuccess"
       ) {
-        return Promise.reject("Error could not remove team member");
+        return Promise.reject(new Error("Error could not remove team member"));
       }
     });
-    createToast(promise, "Removing Team member...");
+    await createToast(promise, "Removing Team member...");
   };
 
   return (
@@ -159,9 +159,7 @@ const ViewTeamModal: FC<{
                         intent="danger"
                         size={"medium"}
                         outline
-                        onClick={() => {
-                          removeMember(member.user.id);
-                        }}
+                        onClick={async () => await removeMember(member.user.id)}
                         className="w-full"
                       >
                         <BiTrashAlt className="text-white" />

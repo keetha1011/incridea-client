@@ -18,7 +18,7 @@ export default function AddParticipantModal({ eventId }: { eventId: string }) {
   );
   const [userId, setUserId] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
-  const addHandler = () => {
+  const addHandler = async () => {
     if (!userId) return;
     const promise = organizerRegisterSolo({
       variables: {
@@ -39,7 +39,7 @@ export default function AddParticipantModal({ eventId }: { eventId: string }) {
         }
       }
     });
-    createToast(promise, "Adding Participant...");
+    await createToast(promise, "Adding Participant...");
   };
 
   return (

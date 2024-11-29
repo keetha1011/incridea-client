@@ -24,22 +24,20 @@ const RemoveBranchRepButton: FC<{
     },
   });
 
-  function handleRemoveBranchRep() {
+  async function handleRemoveBranchRep() {
     setShowModal(false);
-    const promise = removeBranchRep().then((res) => {
+    const promise = removeBranchRep().then(async (res) => {
       if (
         res.data?.removeBranchRep.__typename !==
         "MutationRemoveBranchRepSuccess"
       ) {
-        if (res.data?.removeBranchRep.message !== undefined)
-          createToast(
-            Promise.reject(res.data?.removeBranchRep.message),
-            res.data?.removeBranchRep.message,
-          );
-        return Promise.reject("Error could not remove branch rep");
+        if (res.data?.removeBranchRep.message)
+          await createToast(promise, res.data?.removeBranchRep.message);
+        else
+          return Promise.reject(new Error("Error could not remove branch rep"));
       }
     });
-    createToast(promise, "Removing BranchRep...");
+    await createToast(promise, "Removing BranchRep...");
   }
 
   return (
@@ -66,7 +64,7 @@ const RemoveBranchRepButton: FC<{
             <Button
               intent="danger"
               size="medium"
-              onClick={() => handleRemoveBranchRep()}
+              onClick={handleRemoveBranchRep}
             >
               Delete
             </Button>

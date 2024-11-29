@@ -18,7 +18,7 @@ const DeleteCollege: FC<{
     awaitRefetchQueries: true,
   });
 
-  function handleDeleteCollege() {
+  async function handleDeleteCollege() {
     const promise = removeCollege({
       variables: {
         id: collegeId.collegeId,
@@ -27,10 +27,10 @@ const DeleteCollege: FC<{
       if (
         res.data?.removeCollege.__typename !== "MutationRemoveCollegeSuccess"
       ) {
-        return Promise.reject("Error could not delete college");
+        return Promise.reject(new Error("Error could not delete college"));
       }
     });
-    createToast(promise, "Removing College...");
+    await createToast(promise, "Removing College...");
     setShowModal(false);
   }
 
@@ -61,7 +61,7 @@ const DeleteCollege: FC<{
               <Button
                 intent="danger"
                 size="medium"
-                onClick={() => handleDeleteCollege()}
+                onClick={handleDeleteCollege}
               >
                 Delete
               </Button>

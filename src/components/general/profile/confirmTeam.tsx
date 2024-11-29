@@ -28,7 +28,7 @@ const ConfirmTeamModal: FC<{
     setShowModal(false);
   };
 
-  const handleConfirm = (teamId: string) => {
+  const handleConfirm = async (teamId: string) => {
     setShowModal(false);
     const promise = confirmTeam({
       variables: {
@@ -36,10 +36,10 @@ const ConfirmTeamModal: FC<{
       },
     }).then((res) => {
       if (res?.data?.confirmTeam.__typename !== "MutationConfirmTeamSuccess") {
-        return Promise.reject("Error confirming team");
+        return Promise.reject(new Error("Error confirming team"));
       }
     });
-    createToast(promise, "Confirming");
+    await createToast(promise, "Confirming");
   };
 
   return (
@@ -70,11 +70,13 @@ const ConfirmTeamModal: FC<{
         <div className="my-5 flex justify-center gap-3">
           <Button
             size={"small"}
-            onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            onClick={async (
+              e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+            ) => {
               e.preventDefault();
               e.stopPropagation();
               canConfirm
-                ? handleConfirm(teamId)
+                ? await handleConfirm(teamId)
                 : toast.error(
                     `You need ${needMore} more members to confirm your team.`,
                     {

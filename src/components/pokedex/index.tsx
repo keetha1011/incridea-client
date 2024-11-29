@@ -75,11 +75,11 @@ const Pokedex: React.FC<DexProps> = ({
       return;
     } else if (!isMuted && eventDex) {
       mainRef?.current?.pause();
-      audio.play();
+      void audio.play();
     }
     return () => {
       audio.pause();
-      mainRef?.current?.play();
+      void mainRef?.current?.play();
     };
   }, [eventDex, isMuted, mainThemeAudioRef]);
 

@@ -37,7 +37,7 @@ const Profile: NextPage = () => {
 
   useEffect(() => {
     if (bombXp) {
-      addXp().then((res) => {
+      void addXp().then((res) => {
         if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
           toast.success(
             `Congratulations!! Added ${res.data?.addXP.data.level.point} Easter Bomb XP`,

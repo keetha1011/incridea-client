@@ -18,17 +18,17 @@ const DeleteHotel: FC<{
     awaitRefetchQueries: true,
   });
 
-  function handleDeleteHotel() {
+  async function handleDeleteHotel() {
     const promise = deleteHotel({
       variables: {
         id: hotelID.hotelID,
       },
     }).then((res) => {
       if (res.data?.deleteHotel.__typename !== "MutationDeleteHotelSuccess") {
-        return Promise.reject("Error could not delete hotel");
+        return Promise.reject(new Error("Error could not delete hotel"));
       }
     });
-    createToast(promise, "Removing Hotel...");
+    await createToast(promise, "Removing Hotel...");
     setShowModal(false);
   }
 
@@ -56,11 +56,7 @@ const DeleteHotel: FC<{
               Are you sure you want to delete this hotel?
             </p>
             <div className="mt-4 flex gap-2">
-              <Button
-                intent="danger"
-                size="medium"
-                onClick={() => handleDeleteHotel()}
-              >
+              <Button intent="danger" size="medium" onClick={handleDeleteHotel}>
                 Delete
               </Button>
               <Button

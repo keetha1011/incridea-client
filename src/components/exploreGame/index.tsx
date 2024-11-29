@@ -55,7 +55,7 @@ const ExploreGame = () => {
 
     if (elapsedTime >= delay) {
       const audio = new Audio(path);
-      audio.play();
+      void audio.play();
 
       lastExecutionTimeRef.current = currentTime;
     }
@@ -234,19 +234,19 @@ const ExploreGame = () => {
       case "ArrowLeft":
         e.preventDefault();
         isRightDirection = false;
-        actionKeys.indexOf("ArrowLeft") === -1 && actionKeys.push(e.key);
+        !actionKeys.includes("ArrowLeft") && actionKeys.push(e.key);
         break;
       case "ArrowRight":
         e.preventDefault();
-        actionKeys.indexOf("ArrowRight") === -1 && actionKeys.push(e.key);
+        !actionKeys.includes("ArrowRight") && actionKeys.push(e.key);
         break;
       case "ArrowUp":
         e.preventDefault();
-        actionKeys.indexOf("ArrowUp") === -1 && actionKeys.push(e.key);
+        !actionKeys.includes("ArrowUp") && actionKeys.push(e.key);
         break;
       case " ":
         e.preventDefault();
-        actionKeys.indexOf("ArrowUp") === -1 && actionKeys.push("ArrowUp");
+        !actionKeys.includes("ArrowUp") && actionKeys.push("ArrowUp");
         break;
     }
   };
@@ -645,7 +645,7 @@ const ExploreGame = () => {
     showScheduleFlag = true;
   };
 
-  const animate = () => {
+  const animate = async () => {
     ctx.current?.clearRect(0, 0, window.innerWidth, window.innerHeight * 2);
 
     actionKeys.map((key) => {
@@ -675,6 +675,7 @@ const ExploreGame = () => {
 
     if (actionKeys.includes("ArrowLeft") && actionKeys.includes("ArrowRight")) {
       isRightDirection =
+        // eslint-disable-next-line @typescript-eslint/prefer-includes
         actionKeys.indexOf("ArrowLeft") > actionKeys.indexOf("ArrowRight")
           ? false
           : true;
@@ -684,13 +685,12 @@ const ExploreGame = () => {
       isRightDirection = true;
     }
 
-    if (player.current.x > boundary.right) {
-      router.push("/explore/level2");
-    }
+    if (player.current.x > boundary.right) await router.push("/explore/level2");
 
-    drawBackground(ctx.current, background.current as HTMLImageElement);
-    drawGround(ctx.current, platformSprite.current as HTMLImageElement);
-    drawPlatform(ctx.current, platformSprite.current as HTMLImageElement);
+    if (background.current) drawBackground(ctx.current, background.current);
+    if (platformSprite.current) drawGround(ctx.current, platformSprite.current);
+    if (platformSprite.current)
+      drawPlatform(ctx.current, platformSprite.current);
 
     const currentSpriteState =
       spriteState === "idle"
@@ -701,15 +701,12 @@ const ExploreGame = () => {
 
     player.current.y += velocity.current.y;
     collisionDetection(ctx.current);
-    if (!isGrounded) {
-      velocity.current.y += gravity;
-    } else {
-      velocity.current.y = 0;
-    }
+    if (!isGrounded) velocity.current.y += gravity;
+    else velocity.current.y = 0;
 
-    if (ctx) {
+    if (ctx && ryokoSprite.current) {
       ctx.current?.drawImage(
-        ryokoSprite.current as HTMLImageElement,
+        ryokoSprite.current,
         currentSpriteState!.x,
         currentSpriteState!.y,
         currentSpriteState!.width,
@@ -740,7 +737,7 @@ const ExploreGame = () => {
     // window.addEventListener("scroll", () => {
     //   setScrollY(window.scrollY);
     // });
-    animate();
+    void animate();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);

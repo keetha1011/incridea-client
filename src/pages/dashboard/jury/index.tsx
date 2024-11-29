@@ -17,7 +17,7 @@ import {
 import { GetAllWinnersDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
-function Jury() {
+const Jury = () => {
   const { user, loading, error } = useAuth();
   // function fetchWinners(eventId: string) {
   //   const { data: winners, loading: winnersLoading } = useQuery(
@@ -253,11 +253,11 @@ function Jury() {
       </div>
     );
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
   if (user.role !== "JURY") {
-    router.push("/profile");
+    void router.push("/profile");
     return <div>Redirecting...</div>;
   }
 
@@ -479,7 +479,7 @@ function Jury() {
       )}
     </Dashboard>
   );
-}
+};
 
 export default Jury;
 

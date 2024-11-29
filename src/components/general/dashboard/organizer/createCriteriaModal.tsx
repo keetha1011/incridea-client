@@ -22,7 +22,7 @@ const CreateCriteriaModal: FC<{
 
   const [createCriteria, { loading }] = useMutation(CreateCriteriaDocument);
 
-  const handleCreateCriteria = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateCriteria = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const promise = createCriteria({
@@ -46,7 +46,7 @@ const CreateCriteriaModal: FC<{
         throw new Error("Error creating criteria");
       }
     });
-    createToast(promise, `Adding criteria...`);
+    await createToast(promise, `Adding criteria...`);
   };
 
   return (
@@ -69,12 +69,7 @@ const CreateCriteriaModal: FC<{
             loading && "pointer-events-none cursor-not-allowed opacity-50"
           }`}
         >
-          <form
-            className="flex flex-col gap-5"
-            onSubmit={(e) => {
-              handleCreateCriteria(e);
-            }}
-          >
+          <form className="flex flex-col gap-5" onSubmit={handleCreateCriteria}>
             <div className="flex flex-col gap-2">
               <label htmlFor="name">Criteria Name</label>
               <TextInput

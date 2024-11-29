@@ -25,7 +25,7 @@ const VieweventModal: FC<{
   const event = Event?.Event?.node;
 
   const [showModal, setShowModal] = useState(false);
-  const markup = draftToHtml(JSON.parse(event?.description as string));
+  const markup = draftToHtml(JSON.parse(event?.description ?? ""));
 
   const getEventAttributes = () => {
     let teamSizeText = "";

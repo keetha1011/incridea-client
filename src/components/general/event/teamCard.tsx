@@ -157,9 +157,14 @@ const TeamCard = ({
                   intent="success"
                   className="mt-2 items-center justify-center !font-sans font-bold"
                   disabled={sdkLoading}
-                  onClick={() => {
+                  onClick={async () => {
                     team.members.length >= team.event.minTeamSize
-                      ? makeTeamPayment(team.id, name, email, setSdkLoading)
+                      ? await makeTeamPayment(
+                          team.id,
+                          name,
+                          email,
+                          setSdkLoading,
+                        )
                       : toast.error(
                           `You need ${
                             team.event.minTeamSize - team.members.length
@@ -310,7 +315,7 @@ const EventButtons = ({
     //     }
     //   }
     // });
-    createToast(promise, "Registering...");
+    await createToast(promise, "Registering...");
   };
 
   if (type === "INDIVIDUAL" || type === "INDIVIDUAL_MULTIPLE_ENTRY") {

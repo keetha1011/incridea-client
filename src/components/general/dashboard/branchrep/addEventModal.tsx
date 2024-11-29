@@ -20,7 +20,7 @@ const AddEventModal: FC<{
   const [createEventMutation, { loading: createEventLoading }] =
     useMutation(CreateEventDocument);
 
-  const handleAddEvent = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddEvent = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleCloseModal();
 
@@ -35,7 +35,7 @@ const AddEventModal: FC<{
       }
     });
 
-    createToast(promise, "Adding event...");
+    await createToast(promise, "Adding event...");
   };
 
   //Controlled Inputs
@@ -59,9 +59,7 @@ const AddEventModal: FC<{
         showModal={showModal}
       >
         <form
-          onSubmit={(e) => {
-            handleAddEvent(e);
-          }}
+          onSubmit={handleAddEvent}
           className={`flex flex-col gap-5 p-4 md:p-6 ${
             createEventLoading &&
             "pointer-events-none cursor-not-allowed opacity-50"

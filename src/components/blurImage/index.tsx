@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { type FunctionComponent, useState } from "react";
+import { cn } from "~/lib/utils";
 
 interface BlurImageProps {
   alt: string;
@@ -17,11 +18,13 @@ const BlurImage: FunctionComponent<BlurImageProps> = (props) => {
     <Image
       {...props}
       alt={props.alt}
-      className={`${props.className as string} duration-700 ease-in-out ${
+      className={cn(
+        "duration-700 ease-in-out",
+        props.className,
         isLoading
           ? "scale-110 blur-lg grayscale"
-          : "scale-100 blur-0 grayscale-0"
-      }`}
+          : "scale-100 blur-0 grayscale-0",
+      )}
       onLoadingComplete={() => setLoading(false)}
     />
   );

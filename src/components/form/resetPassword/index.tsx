@@ -44,7 +44,7 @@ const ResetPassword: FunctionComponent = () => {
       return;
     }
 
-    resetMutation({
+    await resetMutation({
       variables: {
         password: password.newPassword,
         token: token,

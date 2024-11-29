@@ -21,7 +21,7 @@ const AddHotelModal: FC = () => {
     awaitRefetchQueries: true,
   });
 
-  function handleHotelModel() {
+  async function handleHotelModel() {
     const promise = addHotel({
       variables: {
         name: name,
@@ -30,9 +30,9 @@ const AddHotelModal: FC = () => {
       },
     }).then((res) => {
       if (res?.data?.createHotel.__typename !== "MutationCreateHotelSuccess")
-        return Promise.reject("Error could not add hotel");
+        return Promise.reject(new Error("Error could not add hotel"));
     });
-    createToast(promise, "Adding Hotel...");
+    await createToast(promise, "Adding Hotel...");
     setName("");
     setHotelDescription("");
     setPrice(0);
@@ -106,7 +106,7 @@ const AddHotelModal: FC = () => {
               intent="success"
               size="large"
               className="flex items-center gap-1 disabled:cursor-not-allowed disabled:opacity-50"
-              onClick={() => handleHotelModel()}
+              onClick={handleHotelModel}
             >
               Create
             </Button>

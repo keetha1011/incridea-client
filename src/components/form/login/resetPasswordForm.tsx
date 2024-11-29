@@ -31,7 +31,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
     e.preventDefault();
     if (email === "") return;
 
-    resetMutation({
+    await resetMutation({
       variables: {
         email: email,
       },

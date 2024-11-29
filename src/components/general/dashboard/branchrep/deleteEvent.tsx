@@ -27,7 +27,7 @@ const DeleteEvent: FC<{
   }
 
   // Delete Event Handler
-  const handleDeleteEvent = () => {
+  const handleDeleteEvent = async () => {
     handleCloseModal();
     const promise = deleteEventMutation({
       variables: {
@@ -35,10 +35,10 @@ const DeleteEvent: FC<{
       },
     }).then((res) => {
       if (res.data?.deleteEvent.__typename !== "MutationDeleteEventSuccess") {
-        return Promise.reject("Error deleting event");
+        return Promise.reject(new Error("Error deleting event"));
       }
     });
-    createToast(promise, "Deleting event...");
+    await createToast(promise, "Deleting event...");
   };
 
   return (

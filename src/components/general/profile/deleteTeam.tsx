@@ -27,7 +27,7 @@ const DeleteTeamModal: FC<{
     setShowModal(false);
   };
 
-  const handleDelete = (teamId: string) => {
+  const handleDelete = async (teamId: string) => {
     setShowModal(false);
     const promise = deleteTeam({
       variables: {
@@ -35,10 +35,13 @@ const DeleteTeamModal: FC<{
       },
     }).then((res) => {
       if (res?.data?.deleteTeam.__typename !== "MutationDeleteTeamSuccess") {
-        return Promise.reject("Error, something went wrong!");
+        return Promise.reject(new Error("Error, something went wrong!"));
       }
     });
-    createToast(promise, solo ? "Unregistering from event" : "Deleting team");
+    await createToast(
+      promise,
+      solo ? "Unregistering from event" : "Deleting team",
+    );
   };
 
   return (
@@ -72,9 +75,7 @@ const DeleteTeamModal: FC<{
         <div className="my-5 flex justify-center gap-3">
           <Button
             size={"small"}
-            onClick={() => {
-              handleDelete(teamId);
-            }}
+            onClick={async () => await handleDelete(teamId)}
             disabled={deleteTeamLoading}
           >
             {deleteTeamLoading ? (

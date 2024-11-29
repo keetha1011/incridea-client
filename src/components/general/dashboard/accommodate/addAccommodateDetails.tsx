@@ -34,7 +34,7 @@ const AddAccommodateDetails: FC<{
   const [updateStatus, { data: updateStatusResult }] = useMutation(
     UpdateAccommodationStatusDocument,
   );
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const promise = updateStatus({
       variables: {
         hotelId: hotelDetails,
@@ -42,18 +42,18 @@ const AddAccommodateDetails: FC<{
         bookingId: accId,
         status,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       if (res.data?.updateStatus.__typename !== "MutationUpdateStatusSuccess") {
         if (res.data?.updateStatus.message !== undefined) {
-          createToast(
-            Promise.reject(res.data?.updateStatus.message),
+          await createToast(
+            Promise.reject(new Error(res.data?.updateStatus.message)),
             res.data?.updateStatus.message,
           );
         }
-        return Promise.reject("Error could update status");
+        return Promise.reject(new Error("Error could update status"));
       }
     });
-    createToast(promise, "Updating Status...");
+    await createToast(promise, "Updating Status...");
   };
   return (
     <>
@@ -129,7 +129,7 @@ const AddAccommodateDetails: FC<{
               intent={"info"}
               className="mt-4 flex items-center justify-center gap-2"
               size={"medium"}
-              onClick={() => handleUpdate()}
+              onClick={handleUpdate}
             >
               <MdModeEditOutline />
               submit

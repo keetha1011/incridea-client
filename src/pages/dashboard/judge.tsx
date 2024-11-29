@@ -16,9 +16,7 @@ import {
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
-type Props = {};
-
-const Judge: NextPage = (props: Props) => {
+const Judge: NextPage = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -81,12 +79,12 @@ const Judge: NextPage = (props: Props) => {
     );
 
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
 
   if (user.role !== "JUDGE") {
-    router.push("/profile");
+    void router.push("/profile");
     return <div>Redirecting...</div>;
   }
 

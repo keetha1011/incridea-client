@@ -29,7 +29,7 @@ const DeleteTeamModal = ({ teamId, attended, teamOrParticipant }: Props) => {
     setShowModal(false);
   };
 
-  const handleDelete = (teamId: string) => {
+  const handleDelete = async (teamId: string) => {
     setShowModal(false);
     const promise = deleteTeam({
       variables: {
@@ -40,10 +40,10 @@ const DeleteTeamModal = ({ teamId, attended, teamOrParticipant }: Props) => {
         res?.data?.organizerDeleteTeam.__typename !==
         "MutationOrganizerDeleteTeamSuccess"
       ) {
-        return Promise.reject("Error deleting team");
+        return Promise.reject(new Error("Error deleting team"));
       }
     });
-    createToast(promise, "Deleting");
+    await createToast(promise, "Deleting");
   };
 
   return (
@@ -67,9 +67,7 @@ const DeleteTeamModal = ({ teamId, attended, teamOrParticipant }: Props) => {
         <div className="my-5 flex justify-center gap-3">
           <Button
             intent={"danger"}
-            onClick={() => {
-              handleDelete(teamId);
-            }}
+            onClick={async () => await handleDelete(teamId)}
             disabled={attended || deleteTeamLoading}
           >
             {deleteTeamLoading ? (

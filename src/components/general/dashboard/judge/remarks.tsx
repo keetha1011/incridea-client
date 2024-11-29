@@ -39,7 +39,7 @@ const Remarks = ({
     }
   }, [data?.getComment]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     if (data?.getComment.__typename === "QueryGetCommentSuccess") {
       if (data.getComment.data.comment === remarks) {
         return;
@@ -54,7 +54,7 @@ const Remarks = ({
           comment: remarks,
         },
       });
-      createToast(promise, "Adding remarks...");
+      await createToast(promise, "Adding remarks...");
       if (
         addRemarkData?.addComment.__typename === "MutationAddCommentSuccess"
       ) {
@@ -73,9 +73,7 @@ const Remarks = ({
     }
 
     // Set a new timeout
-    timeoutId = setTimeout(() => {
-      handleUpdate();
-    }, 500);
+    timeoutId = setTimeout(async () => await handleUpdate(), 500);
 
     // Cleanup function to clear the timeout
     return () => {

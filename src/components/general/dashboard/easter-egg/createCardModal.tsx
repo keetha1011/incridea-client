@@ -25,7 +25,7 @@ const CreateCardModal: FC<{
   const [createCardMutation, { loading: createCardLoading }] =
     useMutation(CreateCardDocument);
 
-  const handleAddCard = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleAddCard = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleCloseModal();
 
@@ -40,7 +40,7 @@ const CreateCardModal: FC<{
       }
     });
 
-    createToast(promise, "Adding card...");
+    await createToast(promise, "Adding card...");
   };
 
   //Controlled Inputs
@@ -64,9 +64,7 @@ const CreateCardModal: FC<{
         showModal={showModal}
       >
         <form
-          onSubmit={(e) => {
-            handleAddCard(e);
-          }}
+          onSubmit={handleAddCard}
           className={`flex flex-col gap-5 p-4 md:p-6 ${
             createCardLoading &&
             "pointer-events-none cursor-not-allowed opacity-50"

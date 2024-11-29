@@ -54,7 +54,9 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
       setError("");
       setGotDialogBox(false);
       setUserInfo({ email: "", password: "" });
-      router.push(redirectUrl ? decodeURIComponent(redirectUrl) : "/profile");
+      await router.push(
+        redirectUrl ? decodeURIComponent(redirectUrl) : "/profile",
+      );
     }
   };
 

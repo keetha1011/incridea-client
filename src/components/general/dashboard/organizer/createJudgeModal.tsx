@@ -22,7 +22,7 @@ const CreateJudgeModal: FC<{
   const [createJudgeMutation, { loading: createJudgeLoading, error }] =
     useMutation(CreateJudgeDocument);
 
-  const handleCreateJudge = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateJudge = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
@@ -44,7 +44,7 @@ const CreateJudgeModal: FC<{
         handleCloseModal();
       } else throw new Error("Error creating judge");
     });
-    createToast(promise, `Adding Judge '${name}'...`);
+    await createToast(promise, `Adding Judge '${name}'...`);
   };
 
   return (
@@ -69,12 +69,7 @@ const CreateJudgeModal: FC<{
           }`}
         >
           {/* Name, Email, Password */}
-          <form
-            className="flex flex-col gap-5"
-            onSubmit={(e) => {
-              handleCreateJudge(e);
-            }}
-          >
+          <form className="flex flex-col gap-5" onSubmit={handleCreateJudge}>
             <div className="flex flex-col gap-2">
               <label htmlFor="name">Name</label>
               <TextInput name="name" placeholder="John Doe" />

@@ -39,7 +39,7 @@ const MarkAttendance: FC<{
       promise = markAttendanceSolo({
         variables: {
           userId: pidToId(result),
-          eventId: eventId as string,
+          eventId: eventId ?? "",
           attended: true,
         },
       }).then((res) => {

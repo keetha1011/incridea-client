@@ -65,9 +65,7 @@ function Pronite({
           <Button
             intent={"success"}
             className="mx-auto rounded bg-blue-500 px-7 py-2.5 font-bold text-white hover:bg-blue-700"
-            onClick={() => {
-              registerPronite();
-            }}
+            onClick={async () => await registerPronite()}
           >
             Register
           </Button>

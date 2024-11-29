@@ -34,11 +34,11 @@ function Teams({
   const lastItemRef = useRef<HTMLDivElement>(null);
   const [isFetching, setIsFetching] = useState(false);
   const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
+    async (entries: IntersectionObserverEntry[]) => {
       const target = entries[0]!;
       if (target.isIntersecting && hasNextPage) {
         setIsFetching(true);
-        fetchMore({
+        await fetchMore({
           variables: { after: endCursor },
           updateQuery: (prevResult, { fetchMoreResult }) => {
             fetchMoreResult.teamsByRound.edges = [

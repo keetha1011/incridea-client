@@ -18,7 +18,7 @@ const RemoveOrganizer: FC<{
     });
 
   // Remove Organizer Handler
-  const handleRemoveOrganizer = () => {
+  const handleRemoveOrganizer = async () => {
     const promise = removeOrganizerMutation({
       variables: {
         eventId: eventId,
@@ -29,10 +29,10 @@ const RemoveOrganizer: FC<{
         res.data?.removeOrganizer.__typename !==
         "MutationRemoveOrganizerSuccess"
       ) {
-        return Promise.reject("Error removing organizer");
+        return Promise.reject(new Error("Error removing organizer"));
       }
     });
-    createToast(promise, "Removing organizer...");
+    await createToast(promise, "Removing organizer...");
   };
 
   return (
@@ -41,7 +41,7 @@ const RemoveOrganizer: FC<{
       size="small"
       outline
       className="mr-1 px-1"
-      onClick={() => handleRemoveOrganizer()}
+      onClick={handleRemoveOrganizer}
       disabled={removeOrganizerLoading}
     >
       <BiTrash />

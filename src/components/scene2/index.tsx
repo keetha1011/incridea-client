@@ -127,27 +127,24 @@ const Scene2: React.FC<Scene2Props> = ({
   const playedSecondAudioRef = useRef(false);
   const netherSound = useRef<HTMLAudioElement | null>(null);
 
-  const playSecondAudio = () => {
+  const playSecondAudio = async () => {
     if (!isMuted) {
       netherSound.current = new Audio(
         `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level3/nether.mp3`,
       );
       netherSound.current.volume = 0.5;
-      netherSound.current.play();
+      await netherSound.current.play();
       playedSecondAudioRef.current = true;
     }
   };
 
   useFrame(() => {
     const normalizedScroll = scroll.offset;
-    if (normalizedScroll > 0.7 && !playedSecondAudioRef.current) {
-      playSecondAudio();
-    }
-    if (scroll.offset > 0.01) {
-      setInstruction(false);
-    } else {
-      setInstruction(true);
-    }
+    if (normalizedScroll > 0.7 && !playedSecondAudioRef.current)
+      void playSecondAudio();
+
+    if (scroll.offset > 0.01) setInstruction(false);
+    else setInstruction(true);
   });
 
   useEffect(() => {

@@ -18,8 +18,8 @@ const ScanParticipantToTeam: FC<{
     <div>
       <Toaster />
       <Button
-        onClick={() => {
-          add({
+        onClick={async () => {
+          await add({
             variables: {
               teamId,
               userId: pidToId(userId),

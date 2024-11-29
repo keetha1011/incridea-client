@@ -24,11 +24,14 @@ export default function AddTeamModal({ eventId }: { eventId: string }) {
   }
 
   const [teamName, setTeamName] = useState("");
-  const createHandler = () => {
+
+  const createHandler = async () => {
     if (teamName.length !== 0) {
       if (!validateAlphaNumeric(teamName)) {
-        createToast(
-          Promise.reject("Team name can only contain alphanumeric characters"),
+        await createToast(
+          Promise.reject(
+            new Error("Team name can only contain alphanumeric characters"),
+          ),
           "Team name can only contain alphanumeric characters",
         );
         return;
@@ -39,7 +42,7 @@ export default function AddTeamModal({ eventId }: { eventId: string }) {
           name: teamName,
         },
       })
-        .then((res) => {
+        .then(async (res) => {
           if (
             res.data?.organizerCreateTeam.__typename ===
             "MutationOrganizerCreateTeamSuccess"
@@ -52,17 +55,17 @@ export default function AddTeamModal({ eventId }: { eventId: string }) {
             if (res.data) {
               errorMessage = res.data.organizerCreateTeam.message;
             }
-            createToast(Promise.reject(promise), errorMessage);
-            throw new Error(errorMessage);
+            await createToast(promise, errorMessage);
+            return Promise.reject(new Error(errorMessage));
           }
         })
         .catch((error) => {
           throw new Error(`Error: ${error.message}`);
         });
-      createToast(promise, "Creating Team...");
+      await createToast(promise, "Creating Team...");
     } else {
-      createToast(
-        Promise.reject("Team name cannot be empty"),
+      await createToast(
+        Promise.reject(new Error("Team name cannot be empty")),
         "Team name cannot be empty",
       );
     }

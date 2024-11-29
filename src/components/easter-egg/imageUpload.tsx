@@ -25,7 +25,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
-    if (!files || !files[0]) {
+    if (!files?.[0]) {
       setMediaPreview(null);
       setImage(null);
       return;

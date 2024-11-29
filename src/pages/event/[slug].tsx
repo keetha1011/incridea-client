@@ -57,10 +57,13 @@ const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     if (!params?.slug || params.slug instanceof Array)
       throw new Error("Invalid event slug");
 
+    const id = params.slug.split("-").pop();
+    if (!id) throw new Error("Invalid event slug");
+
     const { data: event } = await client.query({
       query: EventByIdDocument,
       variables: {
-        id: params.slug.split("-").pop() as string,
+        id: id,
       },
       fetchPolicy: "no-cache",
     });
@@ -197,7 +200,7 @@ const Page = ({ event, error }: Props) => {
                   {event.name}
                 </h1>
                 <div className={`px-4 pb-4 sm:p-0`}>
-                  <EventDetails details={event.description as string} />
+                  <EventDetails details={event.description ?? ""} />
                 </div>
               </div>
             </div>

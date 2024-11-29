@@ -123,13 +123,13 @@ function EventRegistrationButton({
       variables: {
         eventId: eventId,
       },
-    }).then((res) => {
+    }).then(async (res) => {
       if (
         res.data?.registerSoloEvent.__typename ===
         "MutationRegisterSoloEventSuccess"
       ) {
         if (fees !== 0) {
-          makeTeamPayment(
+          await makeTeamPayment(
             res.data?.registerSoloEvent.data.id,
             name,
             email,
@@ -138,7 +138,7 @@ function EventRegistrationButton({
         }
       }
     });
-    createToast(promise, "Registering...");
+    await createToast(promise, "Registering...");
   };
 
   if (loading)

@@ -20,12 +20,12 @@ const Valedictory: NextPage = () => {
 
   // 1. Redirect to login if user is not logged in
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
 
   // 2. Redirect to profile if user is not a admin
-  if (user && user.role !== "JURY") router.push("/profile");
+  if (user && user.role !== "JURY") void router.push("/profile");
 
   return (
     <Dashboard>
