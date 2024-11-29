@@ -290,7 +290,7 @@ const EventButtons = ({
     });
 
   const handleSoloRegister = async () => {
-    let promise = registerSoloEvent({
+    const promise = registerSoloEvent({
       variables: {
         eventId: eventId,
       },

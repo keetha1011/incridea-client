@@ -59,7 +59,7 @@ const Score = ({
     ) {
       return;
     }
-    let promise = updateScore().then((res) => {
+    const promise = updateScore().then((res) => {
       if (res.data?.addScore.__typename === "Error") {
         toast.error(res.data.addScore.message, {
           position: "bottom-center",

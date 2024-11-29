@@ -20,7 +20,7 @@ const AddBranchRepButton: FC<{
   );
 
   const handleAddBranchRep = (userId: string) => {
-    let promise = addBranchRepMutation({
+    const promise = addBranchRepMutation({
       variables: {
         branchId: branchId,
         userId: userId,

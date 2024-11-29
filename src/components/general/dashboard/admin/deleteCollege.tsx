@@ -19,7 +19,7 @@ const DeleteCollege: FC<{
   });
 
   function handleDeleteCollege() {
-    let promise = removeCollege({
+    const promise = removeCollege({
       variables: {
         id: collegeId.collegeId,
       },

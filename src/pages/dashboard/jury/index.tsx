@@ -82,18 +82,8 @@ function Jury() {
       tempFilteredEvents = tempFilteredEvents?.filter(
         (event) => event.branch.name === currentBranchFilter,
       );
-    // if (currentDayFilter !== "ALL") {
-    //   let filteredDay = new Date(
-    //     currentDayFilter === "DAY 1"
-    //       ? "2023-04-26"
-    //       : currentDayFilter === "DAY 2"
-    //       ? "2023-04-27"
-    //       : currentDayFilter === "DAY 3"
-    //       ? "2023-04-28"
-    //       : "2023-04-29"
-    //   ).getDate();
     if (currentDayFilter !== "All") {
-      let filteredDay = new Date(
+      const filteredDay = new Date(
         currentDayFilter === "DAY 1"
           ? "2024-02-22"
           : currentDayFilter === "DAY 2"

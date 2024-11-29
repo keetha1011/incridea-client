@@ -19,7 +19,7 @@ const RemoveOrganizer: FC<{
 
   // Remove Organizer Handler
   const handleRemoveOrganizer = () => {
-    let promise = removeOrganizerMutation({
+    const promise = removeOrganizerMutation({
       variables: {
         eventId: eventId,
         userId: organizerId,

@@ -70,7 +70,7 @@ const Pokedex: React.FC<DexProps> = ({
       `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level2/pokemon.mp3`,
     );
     audio.volume = 0.3;
-    let mainRef = mainThemeAudioRef;
+    const mainRef = mainThemeAudioRef;
     if (isMuted) {
       return;
     } else if (!isMuted && eventDex) {

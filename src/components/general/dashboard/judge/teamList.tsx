@@ -390,7 +390,7 @@ const TeamList = ({
                       disabled={winnerLoading}
                       size={"small"}
                       onClick={() => {
-                        let promise = selectWinner({
+                        const promise = selectWinner({
                           variables: {
                             eventId,
                             teamId: team?.id,

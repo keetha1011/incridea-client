@@ -30,7 +30,7 @@ const CreateJudgeModal: FC<{
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
-    let promise = createJudgeMutation({
+    const promise = createJudgeMutation({
       variables: {
         name,
         email,

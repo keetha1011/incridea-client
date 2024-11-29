@@ -35,7 +35,7 @@ const AddAccommodateDetails: FC<{
     UpdateAccommodationStatusDocument,
   );
   const handleUpdate = () => {
-    let promise = updateStatus({
+    const promise = updateStatus({
       variables: {
         hotelId: hotelDetails,
         room: roomNo,

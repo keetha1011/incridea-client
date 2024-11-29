@@ -29,7 +29,7 @@ const DeleteTeamModal: FC<{
 
   const handleDelete = (teamId: string) => {
     setShowModal(false);
-    let promise = deleteTeam({
+    const promise = deleteTeam({
       variables: {
         teamId: teamId,
       },

@@ -196,17 +196,17 @@ const JudgeTable = ({
   const process = (judgeId: any) => {
     const judgesData: any = [];
     const teamData: any = [];
-    let data = [];
+    const data = [];
     teams.map((team) => {
-      let judges: any = team.judges;
+      const judges: any = team.judges;
       teamData.push(team?.teamName);
-      let temp = judges?.filter((judge: any) => judge?.judgeId === judgeId);
+      const temp = judges?.filter((judge: any) => judge?.judgeId === judgeId);
       judgesData.push(temp);
     });
     data.push({ JudgeName: judgesData[0][0]?.judgeName });
 
     teamData.map((team: any, index: any) => {
-      let obj: {
+      const obj: {
         [key: string]: any;
       } = {};
       let sum = 0;

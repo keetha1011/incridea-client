@@ -83,7 +83,7 @@ export default function EditEventModal({
 
   function saveHandler() {
     setShowModal(false);
-    let promise = updateEvent({
+    const promise = updateEvent({
       variables: {
         id: event.id,
         maxTeams,

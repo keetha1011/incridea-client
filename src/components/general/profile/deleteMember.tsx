@@ -30,7 +30,7 @@ const DeleteTeamMember: FC<{
 
   const handleDelete = (teamId: string) => {
     setShowModal(false);
-    let promise = deleteTeamMember({
+    const promise = deleteTeamMember({
       variables: {
         teamId,
         userId,

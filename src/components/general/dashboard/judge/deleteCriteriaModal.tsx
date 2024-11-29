@@ -31,7 +31,7 @@ const DeleteCriteriaModal = ({
   );
 
   const handleDeleteCriteria = (id: string) => {
-    let promise = deleteCriteria({
+    const promise = deleteCriteria({
       variables: {
         eventId: eventId,
         roundNo: roundNo,

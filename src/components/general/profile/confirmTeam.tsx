@@ -30,7 +30,7 @@ const ConfirmTeamModal: FC<{
 
   const handleConfirm = (teamId: string) => {
     setShowModal(false);
-    let promise = confirmTeam({
+    const promise = confirmTeam({
       variables: {
         teamId,
       },

@@ -46,7 +46,7 @@ const RoundAddModal: FC<{
   };
 
   const handleCreateRound = async () => {
-    let promise = createRound();
+    const promise = createRound();
     await createToast(promise, "Adding round...");
   };
 

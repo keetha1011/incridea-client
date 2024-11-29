@@ -26,7 +26,7 @@ const RemoveBranchRepButton: FC<{
 
   function handleRemoveBranchRep() {
     setShowModal(false);
-    let promise = removeBranchRep().then((res) => {
+    const promise = removeBranchRep().then((res) => {
       if (
         res.data?.removeBranchRep.__typename !==
         "MutationRemoveBranchRepSuccess"

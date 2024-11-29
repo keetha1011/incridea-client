@@ -20,7 +20,7 @@ export default function AddParticipantModal({ eventId }: { eventId: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const addHandler = () => {
     if (!userId) return;
-    let promise = organizerRegisterSolo({
+    const promise = organizerRegisterSolo({
       variables: {
         eventId,
         userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,

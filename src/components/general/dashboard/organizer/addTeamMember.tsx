@@ -47,7 +47,7 @@ const AddTeamMember: FC<{
     },
   );
   const removeHandler = (userId: string) => {
-    let promise = organizerDeleteTeamMember({
+    const promise = organizerDeleteTeamMember({
       variables: {
         teamId,
         userId,
@@ -73,7 +73,7 @@ const AddTeamMember: FC<{
   };
   const addHandler = () => {
     if (!userId) return;
-    let promise = organizerAddParticipantToTeam({
+    const promise = organizerAddParticipantToTeam({
       variables: {
         teamId,
         userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,

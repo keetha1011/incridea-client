@@ -17,7 +17,7 @@ import ToolTip from "./tool-tip";
 const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
-  let thumbnailSrc = "/thumbnails/incridea19.jpg";
+  const thumbnailSrc = "/thumbnails/incridea19.jpg";
 
   const [isAnimatingRight, setAnimatingRight] = useState(false);
   const [isAnimatingLeft, setAnimatingLeft] = useState(false);

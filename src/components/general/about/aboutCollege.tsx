@@ -5,8 +5,8 @@ import { FC } from "react";
 import { env } from "~/env";
 
 const AboutCollege: FC = () => {
-  let { scrollYProgress } = useScroll();
-  let y = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]);
   return (
     <>
       <div className="relative h-96 w-full overflow-hidden">

@@ -22,7 +22,7 @@ const AddOrganizerButton = ({ userId, eventId }: Props) => {
   );
 
   const handleAddOrganizer = (userId: string) => {
-    let promise = addOrganizerMutation({
+    const promise = addOrganizerMutation({
       variables: {
         eventId: eventId,
         userId: userId,

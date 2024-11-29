@@ -29,7 +29,7 @@ const DeleteEvent: FC<{
   // Delete Event Handler
   const handleDeleteEvent = () => {
     handleCloseModal();
-    let promise = deleteEventMutation({
+    const promise = deleteEventMutation({
       variables: {
         id: parseInt(eventId),
       },

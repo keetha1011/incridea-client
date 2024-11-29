@@ -15,7 +15,7 @@ import ToolTip from "./tool-tip";
 const Console = ({ imgArr }: { imgArr: string[] }) => {
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState(0);
-  let thumbnailSrc = "/thumbnails/incridea23.jpg";
+  const thumbnailSrc = "/thumbnails/incridea23.jpg";
   const swiperRef = useRef<SwiperType>();
 
   const [portraitImages, setPortraitImages] = useState<{

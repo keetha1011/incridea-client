@@ -9,7 +9,7 @@ import { OrganizerCreateTeamDocument } from "~/generated/generated";
 import AddParticipantToTeam from "./addParticipantToTeam";
 
 export default function AddTeamModal({ eventId }: { eventId: string }) {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [isOpenParticipantModal, setIsOpenParticipantModal] = useState(false);
   const [organizerCreateTeam, { data, loading, error }] = useMutation(
     OrganizerCreateTeamDocument,
@@ -33,7 +33,7 @@ export default function AddTeamModal({ eventId }: { eventId: string }) {
         );
         return;
       }
-      let promise = organizerCreateTeam({
+      const promise = organizerCreateTeam({
         variables: {
           eventId,
           name: teamName,

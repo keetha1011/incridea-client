@@ -49,7 +49,7 @@ export default function AddParticipantToTeam({
   );
   const [userId, setUserId] = useState<string>("");
   const removeHandler = (userId: string) => {
-    let promise = organizerDeleteTeamMember({
+    const promise = organizerDeleteTeamMember({
       variables: {
         teamId,
         userId,
@@ -72,7 +72,7 @@ export default function AddParticipantToTeam({
   };
   const addHandler = () => {
     if (!userId) return;
-    let promise = organizerAddParticipantToTeam({
+    const promise = organizerAddParticipantToTeam({
       variables: {
         teamId,
         userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,

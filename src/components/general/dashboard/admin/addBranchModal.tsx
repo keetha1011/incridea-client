@@ -27,7 +27,7 @@ const AddBranchModal = () => {
     if (branchName === "") {
       return setShowModal(false);
     }
-    let promise = addBranchMutation().then((res) => {
+    const promise = addBranchMutation().then((res) => {
       if (res.data?.addBranch.__typename !== "MutationAddBranchSuccess") {
         return Promise.reject("Error could not add branch");
       }

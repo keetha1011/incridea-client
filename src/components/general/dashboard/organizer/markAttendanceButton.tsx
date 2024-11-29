@@ -21,7 +21,7 @@ const MarkAttendanceButton = ({ teamId, attended }: Props) => {
   );
 
   const handleMarkAttendance = () => {
-    let promise = markAttendance({
+    const promise = markAttendance({
       variables: {
         teamId: teamId,
         attended: !attended,

@@ -18,7 +18,7 @@ const AddCollegeModal: FC = () => {
   });
 
   function handleAddCollege() {
-    let promise = removeCollege({
+    const promise = removeCollege({
       variables: {
         name: name,
         details: collegeDescription,

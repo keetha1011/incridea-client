@@ -21,7 +21,7 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
       `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level2/pirates.mp3`,
     );
     audio.volume = 0.3;
-    let mainRef = mainThemeAudioRef;
+    const mainRef = mainThemeAudioRef;
     if (isMuted) {
       return;
     } else if (!isMuted && sponsorFlag) {

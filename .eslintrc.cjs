@@ -46,7 +46,6 @@ const config = {
     "@typescript-eslint/prefer-find": "off",
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/non-nullable-type-assertion-style": "off",
-    "prefer-const": "off",
     "react-hooks/exhaustive-deps": "off",
     "@typescript-eslint/no-wrapper-object-types": "off",
   },

@@ -19,7 +19,7 @@ const DeleteHotel: FC<{
   });
 
   function handleDeleteHotel() {
-    let promise = deleteHotel({
+    const promise = deleteHotel({
       variables: {
         id: hotelID.hotelID,
       },

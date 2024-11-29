@@ -5,8 +5,8 @@ import { FC } from "react";
 import { env } from "~/env";
 
 const AboutIncridea: FC = () => {
-  let { scrollYProgress } = useScroll();
-  let y = useTransform(scrollYProgress, [0, 1], ["40%", "0%"]);
+  const { scrollYProgress } = useScroll();
+  const y = useTransform(scrollYProgress, [0, 1], ["40%", "0%"]);
   return (
     <>
       <div className="relative h-96 w-full overflow-hidden">

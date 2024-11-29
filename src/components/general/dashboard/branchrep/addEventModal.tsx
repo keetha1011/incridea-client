@@ -24,7 +24,7 @@ const AddEventModal: FC<{
     e.preventDefault();
     handleCloseModal();
 
-    let promise = createEventMutation({
+    const promise = createEventMutation({
       variables: {
         eventType: eventType,
         name: eventName,

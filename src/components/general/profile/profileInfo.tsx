@@ -27,11 +27,9 @@ const ProfileInfo: FC<{
   user: User | null | undefined;
 }> = ({ user }) => {
   const router = useRouter();
-  let {
-    data: dataAccommodation,
-    loading: loadingAccommodation,
-    error: errorAccommodation,
-  } = useQuery(AccommodationRequestsByUserDocument);
+  const { data: dataAccommodation, loading: loadingAccommodation } = useQuery(
+    AccommodationRequestsByUserDocument,
+  );
 
   const [showModal, setShowModal] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
@@ -56,7 +54,7 @@ const ProfileInfo: FC<{
       userXp?.data &&
       userXp.data.getUserXp.__typename === "QueryGetUserXpSuccess"
     ) {
-      let totalXp = userXp.data.getUserXp?.data?.reduce((acc, curr) => {
+      const totalXp = userXp.data.getUserXp?.data?.reduce((acc, curr) => {
         if (
           techTeamPid.includes(parseInt(curr.user.id)) &&
           parseInt(curr.level.id) <= 6

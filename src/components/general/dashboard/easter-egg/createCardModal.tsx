@@ -29,7 +29,7 @@ const CreateCardModal: FC<{
     e.preventDefault();
     handleCloseModal();
 
-    let promise = createCardMutation({
+    const promise = createCardMutation({
       variables: {
         clue: clue,
         day: day,

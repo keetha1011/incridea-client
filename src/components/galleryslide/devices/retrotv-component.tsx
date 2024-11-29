@@ -48,7 +48,7 @@ const RetroTV = ({ imgArr }: { imgArr: string[] }) => {
     }, 400);
   };
   const swiperRef = useRef<SwiperType>();
-  let thumbnailSrc = "/thumbnails/incridea22.jpg";
+  const thumbnailSrc = "/thumbnails/incridea22.jpg";
   // sm:top-20 lg:top-64 md:top-16 -top-6
   return (
     <div

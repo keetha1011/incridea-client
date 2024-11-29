@@ -198,7 +198,7 @@ const SelectedTeamList = ({
                 <div className="basis-1/4">
                   <Button
                     onClick={() => {
-                      let promise = deleteWinner({
+                      const promise = deleteWinner({
                         variables: {
                           id: winner?.id,
                         },

@@ -22,7 +22,7 @@ const AddHotelModal: FC = () => {
   });
 
   function handleHotelModel() {
-    let promise = addHotel({
+    const promise = addHotel({
       variables: {
         name: name,
         details: hotelDescription,

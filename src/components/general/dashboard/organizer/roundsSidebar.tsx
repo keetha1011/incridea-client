@@ -52,12 +52,12 @@ const RoundsSidebar: FC<{
   const [selectedRound, setSelectedRound] = useState(1);
 
   const handleDeleteRound = () => {
-    let promise = deleteRound();
+    const promise = deleteRound();
     createToast(promise, "Deleting round...");
   };
 
   const handleDeleteJudge = (id: string) => {
-    let promise = deleteJudge({
+    const promise = deleteJudge({
       variables: {
         eventId: eventId,
         roundNo: selectedRound,
@@ -68,7 +68,7 @@ const RoundsSidebar: FC<{
   };
 
   const handleDeleteCriteria = (id: string) => {
-    let promise = deleteCriteria({
+    const promise = deleteCriteria({
       variables: {
         eventId: eventId,
         roundNo: selectedRound,

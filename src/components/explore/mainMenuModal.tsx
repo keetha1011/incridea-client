@@ -54,7 +54,7 @@ const HomeUi: React.FunctionComponent = () => {
   useLayoutEffect(() => {
     const scene = document.getElementById("scene") as HTMLElement;
 
-    let parallaxInstance = new Parallax(scene, {
+    new Parallax(scene, {
       relativeInput: true,
     });
   });

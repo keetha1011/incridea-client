@@ -25,7 +25,7 @@ const CreateCriteriaModal: FC<{
   const handleCreateCriteria = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let promise = createCriteria({
+    const promise = createCriteria({
       variables: {
         name,
         type,

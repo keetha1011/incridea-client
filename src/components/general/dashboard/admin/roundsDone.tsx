@@ -13,8 +13,8 @@ const RoundsDone: FC<{
     },
   });
 
-  let total = data?.roundsByEvent.length,
-    done = 0;
+  const total = data?.roundsByEvent.length;
+  let done = 0;
 
   {
     !loading &&
