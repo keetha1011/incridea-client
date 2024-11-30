@@ -66,7 +66,7 @@ export default function App() {
       audioRef.current &&
         (audioRef.current.src = artists[isArtist1 ? 0 : 1]!.audioSrc);
       audioRef.current && (audioRef.current.currentTime = 0);
-      audioRef.current?.play();
+      void audioRef.current?.play();
 
       if (timeRef.current) {
         clearTimeout(timeRef.current);

@@ -8,7 +8,7 @@ import { MdDelete } from "react-icons/md";
 
 import Button from "~/components/button";
 import Cards from "~/components/general/dashboard/easter-egg/cards";
-import CreateCardModal from "~/components/general/dashboard/easter-egg/CreateCardModal";
+import CreateCardModal from "~/components/general/dashboard/easter-egg/createCardModal";
 import Dashboard from "~/components/layout/dashboard";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
@@ -23,9 +23,7 @@ import {
 import { useAuth } from "~/hooks/useAuth";
 import { idToPid } from "~/utils/id";
 
-type Props = {};
-
-const EasterEggDashboard = (props: Props) => {
+const EasterEggDashboard = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
 
@@ -101,8 +99,8 @@ const EasterEggDashboard = (props: Props) => {
   });
 
   useEffect(() => {
-    if (showSubmissions) submissionsRefetch();
-    else cardsRefetch();
+    if (showSubmissions) void submissionsRefetch();
+    else void cardsRefetch();
   }, [selected, showSubmissions, cardsRefetch, submissionsRefetch]);
 
   const [deleteCardMutation, { loading: deleteCardLoading }] =
@@ -117,12 +115,13 @@ const EasterEggDashboard = (props: Props) => {
 
   // 1. Redirect to login if user is not logged in
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
 
   // 2. Redirect to profile if user is not a branch rep
-  if (data?.getAllSubmissions.__typename === "Error") router.push("/profile");
+  if (data?.getAllSubmissions.__typename === "Error")
+    void router.push("/profile");
 
   return (
     // <>{highlightedImage && (
@@ -174,7 +173,7 @@ const EasterEggDashboard = (props: Props) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Image
-                  src={highlightedImage || ""}
+                  src={highlightedImage ?? ""}
                   width={1000}
                   height={1000}
                   className="h-[85vh] w-[85vw] rounded-md object-contain"
@@ -323,17 +322,17 @@ const EasterEggDashboard = (props: Props) => {
                           <div className="titleFont mb-2 flex items-center gap-2 px-4 pt-4 text-xl md:px-4 md:pt-4">
                             <h2>Clue ID: {card.id}</h2>
                             <MdDelete
-                              onClick={() =>
-                                deleteCardMutation({
+                              onClick={async () =>
+                                await deleteCardMutation({
                                   variables: {
                                     id: card.id,
                                   },
-                                }).then((res) => {
+                                }).then(async (res) => {
                                   if (
                                     res.data?.deleteCard.__typename ===
                                     "MutationDeleteCardSuccess"
                                   )
-                                    cardsRefetch();
+                                    await cardsRefetch();
                                 })
                               }
                               className="ml-auto cursor-pointer justify-self-end text-red-500 hover:text-red-700"

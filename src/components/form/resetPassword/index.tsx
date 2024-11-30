@@ -44,10 +44,10 @@ const ResetPassword: FunctionComponent = () => {
       return;
     }
 
-    resetMutation({
+    await resetMutation({
       variables: {
         password: password.newPassword,
-        token: token as string,
+        token: token,
       },
     }).then((res) => {
       if (res.data?.resetPassword.__typename === "Error") {
@@ -138,10 +138,10 @@ const ResetPassword: FunctionComponent = () => {
             </div>
           )}
 
-          {(error || MutationError) && (
+          {(error ?? MutationError) && (
             <div className="flex items-center gap-3 rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
               <BiErrorCircle className="shrink-0" />
-              <div>{error || MutationError?.message}</div>
+              <div>{error ?? MutationError?.message}</div>
             </div>
           )}
         </form>

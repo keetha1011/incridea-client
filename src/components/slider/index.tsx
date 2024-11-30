@@ -12,7 +12,7 @@ import { generateEventUrl } from "~/utils/url";
 import styles from "./styles.module.css";
 
 interface CarouselProps {
-  events?: Array<{ id: string; name: string; image: string }>;
+  events?: { id: string; name: string; image: string }[];
 }
 
 const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {

@@ -30,4 +30,3 @@ query GetCards($day: DayType!) {
     }
   }
 }
-

@@ -54,7 +54,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
     setTimeout(() => setRipple({ x: 0, y: 0, active: false }), 800);
   };
   const [activeIndex, setActiveIndex] = useState(0);
-  let thumbnailSrc = "/thumbnails/incridea20.jpg";
+  const thumbnailSrc = "/thumbnails/incridea20.jpg";
   const opts: YouTubeProps["opts"] = {
     height: "100%",
     width: "100%",

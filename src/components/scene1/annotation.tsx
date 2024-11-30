@@ -13,7 +13,7 @@ extend(geometry);
 const Annotation = () => {
   const scroll = useScroll();
   const [scrollData, setScrollData] = useState(false);
-  let scrollChangeFlag = useRef(false);
+  const scrollChangeFlag = useRef(false);
   const setEventDexFlag = useStore((state) => state.setEventDex);
 
   useFrame(() => {

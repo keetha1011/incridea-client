@@ -1,16 +1,11 @@
 import { useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-  NextPageContext,
-} from "next";
+import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
 
-import ViewTeamModal from "~/components/general/dashboard/jury/ViewTeamModal";
+import ViewTeamModal from "~/components/general/dashboard/jury/viewTeamModal";
 import ViewWinners from "~/components/general/dashboard/jury/viewWinners";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
@@ -21,10 +16,13 @@ import {
   QueryGetScoreSheetJuryViewSuccess,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
+import { StatusBadge } from "~/pages/dashboard/jury";
 
-import { StatusBadge } from "..";
+type Props = {
+  slug: string;
+};
 
-const getServerSideProps = async (context: NextPageContext) => {
+const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const query = context.query;
   const slug = query.slug as string;
   return { props: { slug: slug } };
@@ -36,14 +34,13 @@ const Page = ({
   const { user, loading, error } = useAuth();
   const router = useRouter();
 
-  const {
-    data: event,
-    loading: eventLoading,
-    error: eventError,
-  } = useQuery(EventByIdDocument, {
+  const id = slug.split("-").pop();
+
+  const { data: event, loading: eventLoading } = useQuery(EventByIdDocument, {
     variables: {
-      id: slug.split("-").pop() as string,
+      id: id!,
     },
+    skip: !id,
   });
 
   if (loading || eventLoading)
@@ -53,11 +50,11 @@ const Page = ({
       </div>
     );
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
   if (user.role !== "JURY") {
-    router.push("/profile");
+    void router.push("/profile");
     return <div>Redirecting...</div>;
   }
   if (!event) return <div>Event not found</div>;
@@ -75,15 +72,6 @@ const RoundTabs = ({
   rounds: EventByIdQuery["eventById"]["rounds"];
   eventId: string;
 }) => {
-  const getCompletedRounds = (
-    rounds: EventByIdQuery["eventById"]["rounds"],
-  ) => {
-    let completedRounds = 0;
-    rounds.forEach((round) => {
-      if (round.completed === true) completedRounds++;
-    });
-    return completedRounds;
-  };
   const getRoundStatus = (
     round: EventByIdQuery["eventById"]["rounds"][0],
     totalRounds: number,
@@ -172,7 +160,7 @@ const RoundTable = ({
 
   if (roundLoading) return <Spinner />;
   if (!round) return <div>Something went wrong</div>;
-  if (roundError || round.getScoreSheetJuryView["__typename"] === "Error")
+  if (roundError || round.getScoreSheetJuryView.__typename === "Error")
     return <div>Something went wrong</div>;
   if (round.getScoreSheetJuryView.data.length === 0)
     return <div>Nothing to show</div>;
@@ -191,37 +179,39 @@ const JudgeTable = ({
   judges: QueryGetScoreSheetJuryViewSuccess["data"][0]["judges"];
   teams: QueryGetScoreSheetJuryViewSuccess["data"];
 }) => {
-  const [csvData, setCsvData] = useState<{}[]>([]);
+  const [csvData, setCsvData] = useState<
+    {
+      JudgeName: string;
+    }[]
+  >([]);
   const [judgeName, setJudgeName] = useState<string | null>(null);
   const process = (judgeId: any) => {
     const judgesData: any = [];
     const teamData: any = [];
-    let data = [];
+    const data = [];
     teams.map((team) => {
-      let judges: any = team.judges;
+      const judges: any = team.judges;
       teamData.push(team?.teamName);
-      let temp = judges?.filter((judge: any) => judge?.judgeId === judgeId);
+      const temp = judges?.filter((judge: any) => judge?.judgeId === judgeId);
       judgesData.push(temp);
     });
     data.push({ JudgeName: judgesData[0][0]?.judgeName });
 
     teamData.map((team: any, index: any) => {
-      let obj: {
+      const obj: {
         [key: string]: any;
       } = {};
       let sum = 0;
-      obj["teamNames"] = team;
+      obj.teamNames = team;
       judgesData[index][0]?.criteria?.map((data: any) => {
         obj[data.criteriaName] = data.score;
         sum += data.score;
       });
-      obj["judgeTotal"] = sum;
+      obj.judgeTotal = sum;
       data.push(obj);
     });
     return data;
   };
-
-  const [modal, setModal] = useState(false);
 
   return (
     <Tab.Group>
@@ -284,10 +274,7 @@ const JudgeTable = ({
                 key={team.teamId}
                 className="mb-3 flex w-full flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-evenly md:rounded-none md:p-4 md:text-center"
               >
-                <div
-                  onClick={() => setModal(true)}
-                  className="basis-1/3 py-0.5 text-center text-lg"
-                >
+                <div className="basis-1/3 py-0.5 text-center text-lg">
                   {team.teamName}
                 </div>
                 <ViewTeamModal

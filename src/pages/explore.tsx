@@ -32,16 +32,16 @@ const Explore = () => {
     e.target.playVideo();
   };
 
-  const onEnd: YouTubeProps["onEnd"] = (e) => {
+  const onEnd: YouTubeProps["onEnd"] = async (e) => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
-    router.push("/explore/level1");
+    await router.push("/explore/level1");
   };
 
-  const onError: YouTubeProps["onError"] = (e) => {
+  const onError: YouTubeProps["onError"] = async (e) => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
-    router.push("/explore/level1");
+    await router.push("/explore/level1");
   };
 
   useEffect(() => {
@@ -93,9 +93,7 @@ const Explore = () => {
         className="absolute -right-1 bottom-[10vh] z-50 translate-x-[110%] transition-all duration-500 ease-in hover:scale-110"
       >
         <Button
-          onClick={() => {
-            router.push("/explore/level1");
-          }}
+          onClick={async () => await router.push("/explore/level1")}
           size={"large"}
         >
           Skip <IoIosSkipForward />

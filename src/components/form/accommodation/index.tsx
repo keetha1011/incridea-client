@@ -58,9 +58,9 @@ const AccommodationForm: FunctionComponent = () => {
   const filteredHotels =
     hotelQuery === ""
       ? hotels
-      : hotels?.filter((hotel) => {
+      : (hotels?.filter((hotel) => {
           return hotel.name.toLowerCase().includes(hotelQuery.toLowerCase());
-        }) || [];
+        }) ?? []);
 
   // FIXME: No AC rooms??
   // const [AC, setAC] = useState<boolean>(false);
@@ -97,7 +97,7 @@ const AccommodationForm: FunctionComponent = () => {
     id: "",
   });
 
-  const handleUpload = (file: File) => {
+  const handleUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("image", file);
     const url = `https://incridea-pai3.onrender.com/id/upload`;
@@ -120,12 +120,12 @@ const AccommodationForm: FunctionComponent = () => {
       .catch((err) => {
         setUploading(false);
       });
-    createToast(promise, "Uploading image...");
+    await createToast(promise, "Uploading image...");
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    addAccommodation({
+    await addAccommodation({
       variables: AccommodationInfo,
     });
     setFormSubmitted(true);
@@ -400,7 +400,7 @@ const AccommodationForm: FunctionComponent = () => {
                 type="file"
                 id="image"
                 className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-slate-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
-                onChange={(e) => handleUpload(e.target.files![0]!)}
+                onChange={async (e) => await handleUpload(e.target.files![0]!)}
               />
             </div>
             <Button

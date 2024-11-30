@@ -8,7 +8,7 @@ import styles from "./annotation.module.css";
 export default function ProniteAnnotation() {
   const scroll = useScroll();
   const [scrollData, setScrollData] = useState(false);
-  let scrollChangeFlag = useRef(false);
+  const scrollChangeFlag = useRef(false);
 
   useFrame(() => {
     if (scrollChangeFlag.current !== scroll.visible(0.22, 0.435)) {

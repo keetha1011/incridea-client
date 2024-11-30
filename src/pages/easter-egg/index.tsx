@@ -14,9 +14,7 @@ import {
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
-type Props = {};
-
-const EasterEgg: NextPage = (props: Props) => {
+const EasterEgg: NextPage = () => {
   const [imageFiles, setImageFiles] = useState<(File | null)[] | []>([]);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -121,9 +119,9 @@ const EasterEgg: NextPage = (props: Props) => {
                       existingImage={
                         submissions?.submissionsByUser.__typename ===
                         "QuerySubmissionsByUserSuccess"
-                          ? submissions?.submissionsByUser.data.filter(
+                          ? submissions?.submissionsByUser.data.find(
                               (submission) => submission.cardId === card.id,
-                            )[0]?.image
+                            )?.image
                           : null
                       }
                       setImage={(file) => {

@@ -67,9 +67,9 @@ const Gallery: NextPage = () => {
       });
     });
     window?.addEventListener("deviceorientation", (evt) => {
-      let xAng = evt.gamma;
+      const xAng = evt.gamma;
       xAng ? x.set(xAng / 100) : null;
-      let yAng = evt.beta;
+      const yAng = evt.beta;
       yAng ? y.set(yAng / 100) : null;
     });
   }, [activeYear, x, y]);

@@ -101,7 +101,7 @@ const Page = ({ data }: Props) => {
         (event) => event.branch.name === currentBranchFilter,
       );
     if (currentDayFilter !== "All") {
-      let filteredDay = new Date(
+      const filteredDay = new Date(
         currentDayFilter === "DAY 1"
           ? "2024-02-22"
           : currentDayFilter === "DAY 2"

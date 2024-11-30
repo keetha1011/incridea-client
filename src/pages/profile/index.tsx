@@ -20,7 +20,7 @@ const Profile: NextPage = () => {
   const { error, user, loading } = useAuth();
   const containerRef = useRef(null);
   const router = useRouter();
-  const [bombXp, setBombXp] = useState<Boolean>(false);
+  const [bombXp, setBombXp] = useState<boolean>(false);
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
       levelId: "2",
@@ -37,7 +37,7 @@ const Profile: NextPage = () => {
 
   useEffect(() => {
     if (bombXp) {
-      addXp().then((res) => {
+      void addXp().then((res) => {
         if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
           toast.success(
             `Congratulations!! Added ${res.data?.addXP.data.level.point} Easter Bomb XP`,
@@ -91,7 +91,7 @@ const Profile: NextPage = () => {
     <main ref={containerRef} className="bodyFont mx-auto w-[98vw]">
       <div className="flex flex-col-reverse gap-5 py-[5rem] lg:grid lg:grid-cols-3">
         <div className="col-span-2 h-full w-full overflow-auto">
-          <UserEvents userId={user?.id!} />
+          <UserEvents userId={user?.id} />
         </div>
 
         <div className="w-full rounded-xl">

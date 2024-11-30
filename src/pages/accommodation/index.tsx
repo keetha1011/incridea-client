@@ -14,8 +14,8 @@ const Accommodation: NextPage = () => {
   const { error, user, loading } = useAuth();
 
   if (loading) return <Loader />;
-  if (!user) router.push("/login");
-  if (user?.college?.id == "1") router.push("/profile");
+  if (!user) void router.push("/login");
+  if (user?.college?.id == "1") void router.push("/profile");
   return (
     <>
       <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pb-10 pt-32 text-white md:px-6">

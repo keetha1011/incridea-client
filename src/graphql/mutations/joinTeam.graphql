@@ -1,4 +1,4 @@
-mutation JoinTeam($teamId : ID!) {
+mutation JoinTeam($teamId: ID!) {
   joinTeam(teamId: $teamId) {
     ... on Error {
       __typename

@@ -13,11 +13,11 @@ import { env } from "~/env";
 import { AddXpDocument } from "~/generated/generated";
 
 interface DexProps {
-  data?: Array<{ id: string; name: string; image: string }>;
+  data?: { id: string; name: string; image: string }[];
 }
 
 interface DexProps {
-  data?: Array<{ id: string; name: string; image: string }>;
+  data?: { id: string; name: string; image: string }[];
   isMuted: boolean;
   mainThemeAudioRef: React.MutableRefObject<HTMLAudioElement | null>;
 }
@@ -70,16 +70,16 @@ const Pokedex: React.FC<DexProps> = ({
       `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level2/pokemon.mp3`,
     );
     audio.volume = 0.3;
-    let mainRef = mainThemeAudioRef;
+    const mainRef = mainThemeAudioRef;
     if (isMuted) {
       return;
     } else if (!isMuted && eventDex) {
       mainRef?.current?.pause();
-      audio.play();
+      void audio.play();
     }
     return () => {
       audio.pause();
-      mainRef?.current?.play();
+      void mainRef?.current?.play();
     };
   }, [eventDex, isMuted, mainThemeAudioRef]);
 

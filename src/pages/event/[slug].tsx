@@ -14,8 +14,8 @@ import {
 } from "react-icons/io5";
 import { MdOutlineMailOutline } from "react-icons/md";
 
-import EventDetails from "~/components/general/event/EventDetails";
-import EventRegistration from "~/components/general/event/EventRegistration";
+import EventDetails from "~/components/general/event/eventDetails";
+import EventRegistration from "~/components/general/event/eventRegistration";
 import {
   EventByIdDocument,
   EventByIdQuery,
@@ -30,7 +30,7 @@ type Props =
     }
   | {
       event?: never;
-      error: String;
+      error: string;
     };
 
 const getStaticPaths: GetStaticPaths = async () => {
@@ -57,10 +57,13 @@ const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     if (!params?.slug || params.slug instanceof Array)
       throw new Error("Invalid event slug");
 
+    const id = params.slug.split("-").pop();
+    if (!id) throw new Error("Invalid event slug");
+
     const { data: event } = await client.query({
       query: EventByIdDocument,
       variables: {
-        id: params.slug.split("-").pop() as string,
+        id: id,
       },
       fetchPolicy: "no-cache",
     });
@@ -183,7 +186,7 @@ const Page = ({ event, error }: Props) => {
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
-                    src={event.image as string}
+                    src={event.image}
                     // src="https://res.cloudinary.com/dg1941jdi/image/upload/v1706863440/Events/Usaravalli_1706863437635.png"
                     className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
@@ -197,7 +200,7 @@ const Page = ({ event, error }: Props) => {
                   {event.name}
                 </h1>
                 <div className={`px-4 pb-4 sm:p-0`}>
-                  <EventDetails details={event.description as string} />
+                  <EventDetails details={event.description ?? ""} />
                 </div>
               </div>
             </div>

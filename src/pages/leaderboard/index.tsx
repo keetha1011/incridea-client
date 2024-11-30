@@ -110,7 +110,9 @@ const LeaderBoard: NextPage = () => {
       return "bg-gradient-to-r from-slate-900 to-slate-700";
     }
   };
-  let isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <div
       className={``}

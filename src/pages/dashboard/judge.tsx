@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
 
-import Criterias from "~/components/general/dashboard/judge/Criterias";
-import SelectedTeamList from "~/components/general/dashboard/judge/SelectedTeamList";
-import TeamList from "~/components/general/dashboard/judge/TeamList";
+import Criterias from "~/components/general/dashboard/judge/criterias";
+import SelectedTeamList from "~/components/general/dashboard/judge/selectedTeamList";
+import TeamList from "~/components/general/dashboard/judge/teamList";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import {
@@ -16,9 +16,7 @@ import {
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
-type Props = {};
-
-const Judge: NextPage = (props: Props) => {
+const Judge: NextPage = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
@@ -70,7 +68,7 @@ const Judge: NextPage = (props: Props) => {
     (data?.roundByJudge.__typename === "QueryRoundByJudgeSuccess" &&
       data.roundByJudge.data.event.rounds.find(
         (round) => roundNo === round.roundNo,
-      )?.completed) ||
+      )?.completed) ??
     false;
 
   if (loading)
@@ -81,12 +79,12 @@ const Judge: NextPage = (props: Props) => {
     );
 
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
 
   if (user.role !== "JUDGE") {
-    router.push("/profile");
+    void router.push("/profile");
     return <div>Redirecting...</div>;
   }
 

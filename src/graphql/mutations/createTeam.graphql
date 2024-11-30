@@ -1,5 +1,5 @@
-mutation CreateTeam($eventId : ID!,$name : String!) {
-  createTeam(eventId:$eventId, name:$name) {
+mutation CreateTeam($eventId: ID!, $name: String!) {
+  createTeam(eventId: $eventId, name: $name) {
     ... on Error {
       __typename
       message
@@ -14,7 +14,7 @@ mutation CreateTeam($eventId : ID!,$name : String!) {
           id
           name
         }
-         members {
+        members {
           user {
             id
             name

@@ -14,7 +14,7 @@ const Sponsor = () => {
   const setSponsorFlag = useStore((state) => state.setSponsor);
   const [scrollData, setScrollData] = useState(false);
   const [calledXp, setCalledXp] = useState(false);
-  let scrollChangeFlag = useRef(false);
+  const scrollChangeFlag = useRef(false);
 
   const [addXp] = useMutation(AddXpDocument, {
     variables: {

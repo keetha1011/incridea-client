@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
-import OrganizerTab from "~/components/general/dashboard/organizer/OrganizerTab";
+import OrganizerTab from "~/components/general/dashboard/organizer/organizerTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import { useAuth } from "~/hooks/useAuth";
@@ -17,10 +17,11 @@ const Organizer: NextPage = () => {
       </div>
     );
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
-  if (user && user.role !== "ORGANIZER") router.push("/profile");
+  if (user && user.role !== "ORGANIZER") void router.push("/profile");
+
   return (
     <Dashboard>
       <Toaster />

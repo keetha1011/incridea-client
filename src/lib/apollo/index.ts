@@ -1,7 +1,6 @@
 import { type ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import { useMemo } from "react";
-
-import createApolloClient from "./apollo-client";
+import { createApolloClient } from "~/lib/apollo/apollo-client";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 

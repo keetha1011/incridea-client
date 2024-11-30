@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 
-import AudioPlayer from "~/components/explore/AudioPlayer";
+import AudioPlayer from "~/components/explore/audioPlayer";
 import ExploreNav from "~/components/explore/exploreNav";
 import { env } from "~/env";
 import { AddXpDocument } from "~/generated/generated";

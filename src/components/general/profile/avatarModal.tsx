@@ -44,8 +44,8 @@ const AvatarModal: React.FunctionComponent<Props> = ({
             <div
               className="flex h-full items-center justify-center rounded-xl border border-primary-200/30 p-2 transition-colors duration-300 hover:bg-primary-200/20"
               key={index}
-              onClick={() => {
-                updateAvatarMutation({
+              onClick={async () => {
+                await updateAvatarMutation({
                   variables: {
                     imageURL: avatar.url,
                   },

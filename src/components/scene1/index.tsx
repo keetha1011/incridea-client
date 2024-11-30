@@ -73,13 +73,11 @@ export default function Scene1({
   const scroll = useScroll();
 
   useFrame(() => {
-    const sequenceLength = val((sheet as ISheet).sequence.pointer.length);
-    sheet && (sheet.sequence.position = scroll.offset * sequenceLength);
-    if (scroll.offset > 0.01) {
-      setInstruction(false);
-    } else {
-      setInstruction(true);
-    }
+    if (!sheet) return;
+    const sequenceLength = val(sheet.sequence.pointer.length);
+    sheet.sequence.position = scroll.offset * sequenceLength;
+    if (scroll.offset > 0.01) setInstruction(false);
+    else setInstruction(true);
   });
   return (
     <>

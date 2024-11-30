@@ -1,4 +1,3 @@
-import { useQuery } from "@apollo/client";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,25 +6,16 @@ import React, { useState } from "react";
 import Button from "~/components/button";
 import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
 import Loader from "~/components/loader";
-import Spinner from "~/components/spinner";
-import { AccommodationRequestsByUserDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 const Register: NextPage = () => {
-  const { error, user, loading: userLoading } = useAuth();
+  const { user, loading: userLoading } = useAuth();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
 
-  const {
-    data: userDetails,
-    loading: loadingAccommodation,
-    error: errorAccommodation,
-  } = useQuery(AccommodationRequestsByUserDocument);
-
   if (userLoading) return <Loader />;
-  if (!user) router.push("/login");
-  if (user && user?.role !== "USER") router.push("/profile");
+  if (!user) void router.push("/login");
+  if (user && user?.role !== "USER") void router.push("/profile");
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pb-10 pt-32 text-white md:px-6">
@@ -73,15 +63,8 @@ const Register: NextPage = () => {
             </Link>{" "}
             about the guidelines and regulations
           </div>
-          <Button
-            onClick={() => {}}
-            disabled
-            className="disabled mb-4 mt-8 flex gap-2"
-          >
+          <Button disabled className="disabled mb-4 mt-8 flex gap-2">
             Register Now
-            {loading && (
-              <Spinner className="w-fit" size={"small"} intent={"white"} />
-            )}{" "}
           </Button>
           <h2 className="mt-2 text-xs text-gray-100 md:text-sm">
             Registration are closed.

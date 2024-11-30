@@ -1,5 +1,4 @@
 import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/core";
-
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -1787,59 +1786,6 @@ export type Xp = {
   user: User;
 };
 
-export type DeleteRoundMutationVariables = Exact<{
-  eventId: Scalars["ID"]["input"];
-}>;
-
-export type DeleteRoundMutation = {
-  __typename?: "Mutation";
-  deleteRound:
-    | { __typename: "Error"; message: string }
-    | {
-        __typename: "MutationDeleteRoundSuccess";
-        data: { __typename?: "Round"; eventId: string; roundNo: number };
-      };
-};
-
-export type OrganizerMarkAttendanceSoloMutationVariables = Exact<{
-  eventId: Scalars["ID"]["input"];
-  userId: Scalars["ID"]["input"];
-  attended: Scalars["Boolean"]["input"];
-}>;
-
-export type OrganizerMarkAttendanceSoloMutation = {
-  __typename?: "Mutation";
-  organizerMarkAttendanceSolo:
-    | { __typename: "Error"; message: string }
-    | {
-        __typename: "MutationOrganizerMarkAttendanceSoloSuccess";
-        data: number;
-      };
-};
-
-export type UpdateAccommodationStatusMutationVariables = Exact<{
-  bookingId: Scalars["String"]["input"];
-  status: Scalars["String"]["input"];
-  hotelId: Scalars["String"]["input"];
-  room: Scalars["String"]["input"];
-}>;
-
-export type UpdateAccommodationStatusMutation = {
-  __typename?: "Mutation";
-  updateStatus:
-    | { __typename: "Error"; message: string }
-    | {
-        __typename: "MutationUpdateStatusSuccess";
-        data: {
-          __typename?: "UserInHotel";
-          status: AccommodationBookingStatus;
-          room?: string | null;
-          user: { __typename?: "User"; name: string };
-          hotel: { __typename?: "Hotel"; name: string };
-        };
-      };
-};
-
 export type AddAccommodationRequestMutationVariables = Exact<{
   checkInTime: Scalars["String"]["input"];
   checkOutTime: Scalars["String"]["input"];
@@ -2218,6 +2164,20 @@ export type DeleteJudgeMutation = {
     | { __typename: "MutationDeleteJudgeSuccess" };
 };
 
+export type DeleteRoundMutationVariables = Exact<{
+  eventId: Scalars["ID"]["input"];
+}>;
+
+export type DeleteRoundMutation = {
+  __typename?: "Mutation";
+  deleteRound:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "MutationDeleteRoundSuccess";
+        data: { __typename?: "Round"; eventId: string; roundNo: number };
+      };
+};
+
 export type DeleteTeamMutationVariables = Exact<{
   teamId: Scalars["ID"]["input"];
 }>;
@@ -2426,6 +2386,22 @@ export type OrganizerMarkAttendanceMutation = {
     | {
         __typename: "MutationOrganizerMarkAttendanceSuccess";
         data: { __typename?: "Team"; id: string; name: string };
+      };
+};
+
+export type OrganizerMarkAttendanceSoloMutationVariables = Exact<{
+  eventId: Scalars["ID"]["input"];
+  userId: Scalars["ID"]["input"];
+  attended: Scalars["Boolean"]["input"];
+}>;
+
+export type OrganizerMarkAttendanceSoloMutation = {
+  __typename?: "Mutation";
+  organizerMarkAttendanceSolo:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "MutationOrganizerMarkAttendanceSoloSuccess";
+        data: number;
       };
 };
 
@@ -2649,6 +2625,29 @@ export type SignUpMutation = {
   signUp:
     | { __typename: "Error"; message: string }
     | { __typename: "MutationSignUpSuccess" };
+};
+
+export type UpdateAccommodationStatusMutationVariables = Exact<{
+  bookingId: Scalars["String"]["input"];
+  status: Scalars["String"]["input"];
+  hotelId: Scalars["String"]["input"];
+  room: Scalars["String"]["input"];
+}>;
+
+export type UpdateAccommodationStatusMutation = {
+  __typename?: "Mutation";
+  updateStatus:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "MutationUpdateStatusSuccess";
+        data: {
+          __typename?: "UserInHotel";
+          status: AccommodationBookingStatus;
+          room?: string | null;
+          user: { __typename?: "User"; name: string };
+          hotel: { __typename?: "Hotel"; name: string };
+        };
+      };
 };
 
 export type UpdateEventMutationVariables = Exact<{
@@ -3766,435 +3765,6 @@ export type JudgeGetTeamsByRoundSubscription = {
   }>;
 };
 
-export const DeleteRoundDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "DeleteRound" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "eventId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "deleteRound" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "eventId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "eventId" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: { kind: "Name", value: "Error" },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: { kind: "Name", value: "MutationDeleteRoundSuccess" },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "data" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "eventId" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "roundNo" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<DeleteRoundMutation, DeleteRoundMutationVariables>;
-export const OrganizerMarkAttendanceSoloDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "OrganizerMarkAttendanceSolo" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "eventId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "userId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "attended" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "Boolean" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "organizerMarkAttendanceSolo" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "eventId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "eventId" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "userId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "userId" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "attended" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "attended" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: { kind: "Name", value: "Error" },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: {
-                      kind: "Name",
-                      value: "MutationOrganizerMarkAttendanceSoloSuccess",
-                    },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "data" } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  OrganizerMarkAttendanceSoloMutation,
-  OrganizerMarkAttendanceSoloMutationVariables
->;
-export const UpdateAccommodationStatusDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "UpdateAccommodationStatus" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "bookingId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "status" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "hotelId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "room" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "updateStatus" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "bookingId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "bookingId" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "status" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "status" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "room" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "room" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "hotelId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "hotelId" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: { kind: "Name", value: "Error" },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: {
-                      kind: "Name",
-                      value: "MutationUpdateStatusSuccess",
-                    },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "data" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "status" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "room" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "user" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "name" },
-                                  },
-                                ],
-                              },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "hotel" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "name" },
-                                  },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  UpdateAccommodationStatusMutation,
-  UpdateAccommodationStatusMutationVariables
->;
 export const AddAccommodationRequestDocument = {
   kind: "Document",
   definitions: [
@@ -7292,6 +6862,106 @@ export const DeleteJudgeDocument = {
     },
   ],
 } as unknown as DocumentNode<DeleteJudgeMutation, DeleteJudgeMutationVariables>;
+export const DeleteRoundDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteRound" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteRound" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "MutationDeleteRoundSuccess" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "eventId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "roundNo" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<DeleteRoundMutation, DeleteRoundMutationVariables>;
 export const DeleteTeamDocument = {
   kind: "Document",
   definitions: [
@@ -8730,6 +8400,137 @@ export const OrganizerMarkAttendanceDocument = {
 } as unknown as DocumentNode<
   OrganizerMarkAttendanceMutation,
   OrganizerMarkAttendanceMutationVariables
+>;
+export const OrganizerMarkAttendanceSoloDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "OrganizerMarkAttendanceSolo" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "userId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "attended" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "Boolean" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "organizerMarkAttendanceSolo" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "userId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "userId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "attended" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "attended" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationOrganizerMarkAttendanceSoloSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "data" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  OrganizerMarkAttendanceSoloMutation,
+  OrganizerMarkAttendanceSoloMutationVariables
 >;
 export const OrganizerRegisterSoloDocument = {
   kind: "Document",
@@ -10448,6 +10249,204 @@ export const SignUpDocument = {
     },
   ],
 } as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
+export const UpdateAccommodationStatusDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateAccommodationStatus" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "bookingId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "status" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "hotelId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "room" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateStatus" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "bookingId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "bookingId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "status" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "status" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "room" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "room" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "hotelId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "hotelId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationUpdateStatusSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "room" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "user" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "hotel" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateAccommodationStatusMutation,
+  UpdateAccommodationStatusMutationVariables
+>;
 export const UpdateEventDocument = {
   kind: "Document",
   definitions: [

@@ -18,12 +18,12 @@ const VerifyEmailComponent: FunctionComponent = () => {
 
   useEffect(() => {
     if (token && !isMutationExecuted) {
-      verifyMutation({ variables: { token } }).then((res) => {
+      setIsMutationExecuted(true);
+      void verifyMutation({ variables: { token } }).then((res) => {
         if (res.data?.verifyEmail.__typename === "Error") {
           setError(res.data.verifyEmail.message);
         }
       });
-      setIsMutationExecuted(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token, isMutationExecuted]);

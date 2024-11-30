@@ -28,9 +28,9 @@ const DeleteTeamMember: FC<{
     setShowModal(false);
   };
 
-  const handleDelete = (teamId: string) => {
+  const handleDelete = async (teamId: string) => {
     setShowModal(false);
-    let promise = deleteTeamMember({
+    const promise = deleteTeamMember({
       variables: {
         teamId,
         userId,
@@ -40,10 +40,10 @@ const DeleteTeamMember: FC<{
         res?.data?.removeTeamMember.__typename !==
         "MutationRemoveTeamMemberSuccess"
       ) {
-        return Promise.reject("Error removing member");
+        return Promise.reject(new Error("Error removing member"));
       }
     });
-    createToast(promise, "Removing");
+    await createToast(promise, "Removing");
   };
 
   return (
@@ -72,9 +72,7 @@ const DeleteTeamMember: FC<{
         <div className="my-5 flex justify-center gap-3">
           <Button
             size={"small"}
-            onClick={() => {
-              handleDelete(teamId as string);
-            }}
+            onClick={async () => await handleDelete(teamId)}
             disabled={deleteMemberLoading}
           >
             {deleteMemberLoading ? (

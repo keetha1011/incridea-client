@@ -1,4 +1,4 @@
-mutation CreateHotel($details: String! $name: String!, $price: Float!) {
+mutation CreateHotel($details: String!, $name: String!, $price: Float!) {
   createHotel(details: $details, name: $name, price: $price) {
     ... on Error {
       __typename

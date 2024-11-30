@@ -17,7 +17,7 @@ import {
 import { GetAllWinnersDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
-function Jury() {
+const Jury = () => {
   const { user, loading, error } = useAuth();
   // function fetchWinners(eventId: string) {
   //   const { data: winners, loading: winnersLoading } = useQuery(
@@ -82,18 +82,8 @@ function Jury() {
       tempFilteredEvents = tempFilteredEvents?.filter(
         (event) => event.branch.name === currentBranchFilter,
       );
-    // if (currentDayFilter !== "ALL") {
-    //   let filteredDay = new Date(
-    //     currentDayFilter === "DAY 1"
-    //       ? "2023-04-26"
-    //       : currentDayFilter === "DAY 2"
-    //       ? "2023-04-27"
-    //       : currentDayFilter === "DAY 3"
-    //       ? "2023-04-28"
-    //       : "2023-04-29"
-    //   ).getDate();
     if (currentDayFilter !== "All") {
-      let filteredDay = new Date(
+      const filteredDay = new Date(
         currentDayFilter === "DAY 1"
           ? "2024-02-22"
           : currentDayFilter === "DAY 2"
@@ -120,7 +110,7 @@ function Jury() {
     setCurrentDayFilter("ALL");
     setCurrentCategoryFilter("ALL");
     if (e.target.value === "") {
-      setFilteredEvents(Events?.publishedEvents || []);
+      setFilteredEvents(Events?.publishedEvents ?? []);
     } else {
       setFilteredEvents(
         Events?.publishedEvents.filter((event) =>
@@ -135,7 +125,7 @@ function Jury() {
     setCurrentBranchFilter("ALL");
     setCurrentDayFilter("ALL");
     setCurrentCategoryFilter("ALL");
-    setFilteredEvents(Events?.publishedEvents || []);
+    setFilteredEvents(Events?.publishedEvents ?? []);
   };
 
   function DownloadWinnersCSV() {
@@ -263,11 +253,11 @@ function Jury() {
       </div>
     );
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
   if (user.role !== "JURY") {
-    router.push("/profile");
+    void router.push("/profile");
     return <div>Redirecting...</div>;
   }
 
@@ -489,7 +479,7 @@ function Jury() {
       )}
     </Dashboard>
   );
-}
+};
 
 export default Jury;
 

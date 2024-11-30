@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
-import AccommodateTab from "~/components/general/dashboard/accommodate/AccomodateTab";
+import AccommodateTab from "~/components/general/dashboard/accommodate/accomodateTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import { AccommodationRequestsDocument } from "~/generated/generated";
@@ -29,7 +29,7 @@ const Accommodate: NextPage = () => {
 
   // 1. Redirect to login if user is not logged in
   if (!user) {
-    router.push("/login");
+    void router.push("/login");
     return <div>Redirecting...</div>;
   }
 
@@ -37,7 +37,8 @@ const Accommodate: NextPage = () => {
   // if (user && user.role !== 'ADMIN') router.push('/profile');
   // 2. Redirect to profile if user is not a accommodation committee member
   if (data?.accommodationRequests.__typename === "Error")
-    router.push("/profile");
+    void router.push("/profile");
+
   return (
     <Dashboard>
       <Toaster />

@@ -24,7 +24,7 @@ const getElement: () => number = () => {
 };
 
 const getSize: () => { width: number; height: number } = () => {
-  let size = Math.floor(Math.random() * 20) + 40;
+  const size = Math.floor(Math.random() * 20) + 40;
   return { width: size, height: size };
 };
 

@@ -282,7 +282,7 @@ import { makeTeamPayment } from "~/utils/razorpay";
 import ConfirmTeamModal from "./confirmTeam";
 import DeleteTeamModal from "./deleteTeam";
 import EditTeamModal from "./editTeam";
-import LeaveTeamModal from "./LeaveTeamModal";
+import LeaveTeamModal from "./leaveTeamModal";
 
 // For both Team and Solo Teams
 const TeamCard = ({
