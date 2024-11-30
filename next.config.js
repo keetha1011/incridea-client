@@ -23,7 +23,7 @@ const config = {
       },
       {
         protocol: "https",
-        hostname: "incridemo.web.app",
+        hostname: "incridea.in",
       },
     ],
   },
