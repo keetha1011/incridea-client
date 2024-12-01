@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Combobox, Transition, Switch } from "@headlessui/react";
+import { getSession } from "next-auth/react";
 import Link from "next/link";
 import {
   useState,
@@ -7,6 +8,7 @@ import {
   FormEventHandler,
   Fragment,
   useRef,
+  useEffect,
 } from "react";
 import { BsChevronExpand } from "react-icons/bs";
 import { IoEye } from "react-icons/io5";
@@ -22,6 +24,7 @@ import {
   GetAllHotelsDocument,
   AccommodationRequestsByUserDocument,
 } from "~/generated/generated";
+import { UploadButton } from "~/components/uploadThingButton";
 
 const AccommodationForm: FunctionComponent = () => {
   const [
@@ -41,10 +44,20 @@ const AccommodationForm: FunctionComponent = () => {
   const [uploading, setUploading] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
 
   const genders = ["Male", "Female", "Other"];
   const [gender, setGender] = useState("");
   const [genderQuery, setGenderQuery] = useState("");
+  useEffect(() => {
+    const fetchToken = async () => {
+      const session = await getSession();
+      const authToken = session ? `Bearer ${session.accessToken}` : null;
+      setToken(authToken);
+    };
+
+    void fetchToken();
+  }, []);
   const filteredGenders =
     genderQuery === ""
       ? genders
@@ -96,32 +109,6 @@ const AccommodationForm: FunctionComponent = () => {
     checkOutTime: new Date(2024, 2, 24, 22, 30).toString(),
     id: "",
   });
-
-  const handleUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    const url = `https://incridea-pai3.onrender.com/id/upload`;
-    setUploading(true);
-    const promise = fetch(url, {
-      method: "POST",
-      body: formData,
-      mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setAccommodationInfo((prevValue) => {
-          return { ...prevValue, id: res.url };
-        });
-        setUploading(false);
-      })
-      .catch((err) => {
-        setUploading(false);
-      });
-    await createToast(promise, "Uploading image...");
-  };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -395,12 +382,31 @@ const AccommodationForm: FunctionComponent = () => {
             </div> */}
             <div>
               <label className="mb-2 block text-sm text-white">Upload ID</label>
-              <input
+              {/* <input
                 required
                 type="file"
                 id="image"
                 className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-slate-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
                 onChange={async (e) => await handleUpload(e.target.files![0]!)}
+              /> */}
+              <UploadButton
+                endpoint="idUploader"
+                headers={{
+                  Authorization: token ?? "",
+                }}
+                onUploadBegin={() => {
+                  setUploading(true);
+                }}
+                onClientUploadComplete={async (res) => {
+                  console.log("Files: ", res[0]?.url);
+                  setAccommodationInfo((prevValue) => {
+                    return { ...prevValue, id: res[0]?.url! };
+                  });
+                  setUploading(false);
+                }}
+                onUploadError={(error: Error) => {
+                  alert(`ERROR! ${error.message}`);
+                }}
               />
             </div>
             <Button
