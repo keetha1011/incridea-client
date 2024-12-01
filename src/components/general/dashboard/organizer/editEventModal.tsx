@@ -11,7 +11,7 @@ import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
 import { UploadButton } from "~/components/uploadThingButton";
-import { env } from "~/env";
+
 import {
   EventByOrganizerQuery,
   EventCategory,
@@ -58,31 +58,6 @@ export default function EditEventModal({
       refetchQueries: ["EventByOrganizer"],
     },
   );
-
-  // const handleUpload = async (file: File) => {
-  //   // const formData = new FormData();
-  //   // formData.append("image", file);
-  //   // const url = `${env.NEXT_PUBLIC_SERVER_URL}/cloudinary/upload/${event.name}`;
-  //   // setUploading(true);
-  //   // const promise = fetch(url, {
-  //   //   method: "POST",
-  //   //   body: formData,
-  //   //   mode: "cors",
-  //   //   headers: {
-  //   //     "Access-Control-Allow-Origin": "*",
-  //   //   },
-  //   // })
-  //     // .then((res) => res.json())
-  //     // .then((res) => {
-  //     //   setBanner(res.url);
-  //     //   setUploading(false);
-  //     // })
-  //     // .catch((err) => {
-  //     //   setUploading(false);
-  //     //   console.log(err);
-  //     // });
-  //   // await createToast(promise, "Uploading image...");
-  // };
 
   async function saveHandler() {
     setShowModal(false);
