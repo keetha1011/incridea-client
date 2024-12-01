@@ -18,7 +18,7 @@ export default function Home() {
       setToken(authToken);
     };
 
-    fetchToken();
+    void fetchToken();
   }, []);
 
   return (
@@ -37,6 +37,12 @@ export default function Home() {
         endpoint="eventUploader"
         headers={{
           Authorization: token ?? "wewq",
+        }}
+        onBeforeUploadBegin={(files) => {
+          // Preprocess files before uploading (e.g. rename them)
+          return files.map(
+            (f) => new File([f], "renamed-" + f.name, { type: f.type }),
+          );
         }}
         onClientUploadComplete={(res) => {
           console.log("Files: ", res[0]?.url);

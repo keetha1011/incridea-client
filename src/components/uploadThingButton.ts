@@ -1,4 +1,8 @@
-import { generateUploadButton } from "@uploadthing/react";
+import {
+  generateUploadButton,
+  generateUploadDropzone,
+  generateUploader,
+} from "@uploadthing/react";
 
 import { env } from "~/env";
 
