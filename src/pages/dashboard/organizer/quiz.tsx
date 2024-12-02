@@ -8,11 +8,13 @@ import { generateUUID } from "three/src/math/MathUtils.js";
 import Button from "~/components/button";
 import Dashboard from "~/components/layout/dashboard";
 import { options } from "prettier-plugin-tailwindcss";
+import toast from "react-hot-toast";
 
 interface Question {
   id: string;
   questionText: string;
   options: string[];
+  ansIndex: number;
   answer: string;
 }
 
@@ -20,13 +22,33 @@ const Quiz = () => {
   // const [countOptions, setCountOptions] = useState(2);
   // const [countQuestions, setCountQuestions] = useState(1);
   const [questions, setQuestions] = useState<Question[]>([
-    { id: generateUUID(), questionText: "", options: ["", ""], answer: "" },
+    {
+      id: generateUUID(),
+      questionText: "",
+      options: ["", ""],
+      ansIndex: 0,
+      answer: "",
+    },
   ]);
+
+  const [quizTitle, setQuizTitle] = useState<string>("");
+
+  const [errors, setErrors] = useState<string>("");
+
+  const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuizTitle(e.target.value);
+  };
 
   const handleAddQuestions = () => {
     setQuestions((prev) => [
       ...prev,
-      { id: generateUUID(), questionText: "", options: ["", ""], answer: "" },
+      {
+        id: generateUUID(),
+        questionText: "",
+        options: ["", ""],
+        ansIndex: 0,
+        answer: "",
+      },
     ]);
   };
 
@@ -55,16 +77,28 @@ const Quiz = () => {
               options: q.options.map((opt, i) =>
                 i === optionIndex ? value : opt,
               ),
+              answer: q.ansIndex === optionIndex ? value : q.answer,
             }
           : q,
       ),
     );
   };
 
-  const handleAnswerChange = (id: string, value: string) => {
+  const handleAnswerChange = (
+    id: string,
+    optIndex: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    console.log("Answer Changed: ", e.target.name);
+    console.log("Answer Id: ", e.target.id);
     setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, answer: value } : q)),
+      prev.map((q) =>
+        q.id === id
+          ? { ...q, ansIndex: optIndex, answer: q.options[optIndex] ?? "" }
+          : q,
+      ),
     );
+    console.log("Answer Changed: ", questions);
   };
 
   const handleNewOption = (id: string) => {
@@ -85,8 +119,43 @@ const Quiz = () => {
     );
   };
 
+  const validateQuiz = () => {
+    if (quizTitle === "") {
+      return "Quiz Title cannot be empty";
+    } else if (questions.length === 0) {
+      return "Quiz must have at least one question";
+    } else {
+      for (let i = 0; i < questions.length; i++) {
+        if (questions[i]?.questionText === "") {
+          return `Question ${i + 1} cannot be empty`;
+        } else if ((questions[i]?.options?.length ?? 0) < 2) {
+          return `Question ${i + 1} must have at least 2 options`;
+        } else if (questions[i]?.answer === "") {
+          return `Question ${i + 1} must have an answer`;
+        } else {
+          for (let j = 0; j < (questions[i]?.options?.length ?? 0); j++) {
+            if (questions[i]?.options[j] === "") {
+              return `Question ${i + 1} option ${j + 1} cannot be empty`;
+            }
+          }
+        }
+      }
+    }
+  };
+
   const handlePrint = () => {
-    console.log(questions);
+    const errors = validateQuiz();
+    if (!errors) {
+      console.log("Quiz Submitted:", { quizTitle, questions });
+      console.log("success");
+      toast.success("Quiz Submitted Successfully");
+    } else {
+      setErrors(errors);
+      console.log(questions, quizTitle);
+      toast.error(errors);
+    }
+
+    // toast.error("Not implemented yet");
   };
 
   return (
@@ -99,6 +168,8 @@ const Quiz = () => {
           className=" self-center w-60 rounded-2xl bg-gray-900/80 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
           placeholder="Enter quiz title"
           id="quizTitle"
+          value={quizTitle}
+          onChange={(e) => handleQuizTitleChange(e)}
         />
       </div>
       <div className="flex flex-col min-h-fit">
@@ -151,9 +222,10 @@ const Quiz = () => {
                       id={`answer-${q.id}-${index2 + 1}`}
                       type="radio"
                       value={opt}
-                      name={`bordered-radio-${q.id}`}
+                      name={`ans-${q.id}`}
                       className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                      onChange={(e) => handleAnswerChange(q.id, opt)}
+                      checked={q.ansIndex === index2}
+                      onChange={(e) => handleAnswerChange(q.id, index2, e)}
                     />
                     <label
                       htmlFor={`answer-${q.id}-${index2 + 1}`}
