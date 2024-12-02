@@ -4,6 +4,7 @@ import { getSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import toast from "react-hot-toast";
 import { AiOutlineEdit } from "react-icons/ai";
 
 import Button from "~/components/button";
@@ -289,9 +290,11 @@ export default function EditEventModal({
                     setUploading(true);
                   }}
                   onClientUploadComplete={(res) => {
-                    console.log("Files: ", res[0]?.url);
                     setUploading(false);
                     setBanner(res[0]?.url);
+                    toast.success("Image uploaded", {
+                      position: "bottom-right",
+                    });
                   }}
                   onUploadError={(error: Error) => {
                     alert(`ERROR! ${error.message}`);

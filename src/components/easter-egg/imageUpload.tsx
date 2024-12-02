@@ -3,10 +3,10 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import Spinner from "~/components/spinner";
-import { env } from "~/env";
 import { CreateSubmissionDocument } from "~/generated/generated";
 import { UploadButton, UploadDropZone } from "../uploadThingButton";
 import { getSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 type Props = {
   existingImage?: string | null;
@@ -97,6 +97,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
       </div>
       <UploadButton
         endpoint="easterEggUploader"
+        className="mt-6"
         headers={{
           Authorization: token ?? "",
         }}
@@ -124,6 +125,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
               ) {
                 throw new Error("Error uploading submission");
               }
+              toast.success("Image uploaded", { position: "bottom-right" });
             })
             .catch((err) => {
               alert(err);

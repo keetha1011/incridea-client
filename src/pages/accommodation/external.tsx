@@ -14,7 +14,7 @@ const Accommodation: NextPage = () => {
 
   if (loading) return <Loader />;
   if (!user) void void router.push("/login");
-  // if (user?.college?.id == "1") void void router.push("/profile");
+  if (user?.college?.id == "1") void void router.push("/profile");
 
   return (
     <>

@@ -25,6 +25,7 @@ import {
   AccommodationRequestsByUserDocument,
 } from "~/generated/generated";
 import { UploadButton } from "~/components/uploadThingButton";
+import toast from "react-hot-toast";
 
 const AccommodationForm: FunctionComponent = () => {
   const [
@@ -382,13 +383,6 @@ const AccommodationForm: FunctionComponent = () => {
             </div> */}
             <div>
               <label className="mb-2 block text-sm text-white">Upload ID</label>
-              {/* <input
-                required
-                type="file"
-                id="image"
-                className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-slate-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
-                onChange={async (e) => await handleUpload(e.target.files![0]!)}
-              /> */}
               <UploadButton
                 endpoint="idUploader"
                 headers={{
@@ -397,8 +391,8 @@ const AccommodationForm: FunctionComponent = () => {
                 onUploadBegin={() => {
                   setUploading(true);
                 }}
-                onClientUploadComplete={async (res) => {
-                  console.log("Files: ", res[0]?.url);
+                onClientUploadComplete={async (res: { url: string }[]) => {
+                  toast.success("Image uploaded", { position: "bottom-right" });
                   setAccommodationInfo((prevValue) => {
                     return { ...prevValue, id: res[0]?.url! };
                   });

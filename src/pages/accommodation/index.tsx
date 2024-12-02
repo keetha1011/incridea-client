@@ -15,7 +15,7 @@ const Accommodation: NextPage = () => {
 
   if (loading) return <Loader />;
   if (!user) void router.push("/login");
-  // if (user?.college?.id == "1") void router.push("/profile");
+  if (user?.college?.id == "1") void router.push("/profile");
   return (
     <>
       <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pb-10 pt-32 text-white md:px-6">
