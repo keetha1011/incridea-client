@@ -9,10 +9,10 @@ import { idToTeamId } from "~/utils/id";
 import AddMemberModal from "./addMember";
 import DeleteTeamMember from "./deleteMember";
 import DeleteTeamModal from "./deleteTeam";
-import { Team } from "./userTeams";
+import { QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 const EditTeamModal: FC<{
-  team: Team;
+  team: QueryRegisteredEventsSuccess["data"][number]["teams"][number];
   userId: string;
 }> = ({ team, userId }) => {
   const [showModal, setShowModal] = useState(false);
@@ -52,7 +52,7 @@ const EditTeamModal: FC<{
             <h1 className="w-full py-1 text-center">Remove</h1>
           </div>
 
-          {team?.members?.map((member: any) => (
+          {team?.members?.map((member) => (
             <div
               className="my-2 flex items-center justify-between gap-2 rounded-sm bg-white bg-opacity-20 p-2 backdrop-blur-lg backdrop-filter"
               key={member.user.id}
@@ -60,12 +60,18 @@ const EditTeamModal: FC<{
               <h1 className="w-full text-center">{member.user.name}</h1>{" "}
               <div className="w-full text-center">
                 <Badge
-                  color={member.user.id == team.leaderId ? "success" : "info"}
+                  color={
+                    member.user.id == team.leaderId?.toString()
+                      ? "success"
+                      : "info"
+                  }
                 >
-                  {member.user.id == team.leaderId ? "Leader" : "Member"}
+                  {member.user.id == team.leaderId?.toString()
+                    ? "Leader"
+                    : "Member"}
                 </Badge>
               </div>
-              {!team.confirmed && team.leaderId == userId && (
+              {!team.confirmed && team.leaderId?.toString() == userId && (
                 <DeleteTeamMember
                   teamId={team.id}
                   userId={member.user.id}
@@ -83,7 +89,7 @@ const EditTeamModal: FC<{
           </div>
         </div>
         <div className="p-5">
-          {!team.confirmed && team.leaderId == userId && (
+          {!team.confirmed && team.leaderId?.toString() == userId && (
             <DeleteTeamModal teamId={team.id} />
           )}
         </div>

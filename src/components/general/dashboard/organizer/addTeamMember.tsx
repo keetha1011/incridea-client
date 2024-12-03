@@ -91,7 +91,9 @@ const AddTeamMember: FC<{
         }
       })
       .catch((error) => {
-        throw new Error(`Error: ${error.message}`);
+        throw new Error(
+          `Error: ${error instanceof Error ? error.message : error}`,
+        );
       });
     await createToast(promise, "Adding Participant...");
   };

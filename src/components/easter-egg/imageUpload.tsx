@@ -50,7 +50,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
       },
     })
       .then((res) => res.json())
-      .then(async (data) => {
+      .then(async (data: { message: string; url: string }) => {
         await submissionMutation({
           variables: {
             cardId: Number(cardId),

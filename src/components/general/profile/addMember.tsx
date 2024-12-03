@@ -9,10 +9,10 @@ import Modal from "~/components/modal";
 import { idToTeamId } from "~/utils/id";
 import { generateEventUrl } from "~/utils/url";
 
-import { Team } from "./userTeams";
+import { QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 const AddMemberModal: FC<{
-  team: Team;
+  team: QueryRegisteredEventsSuccess["data"][number]["teams"][number];
 }> = ({ team }) => {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {

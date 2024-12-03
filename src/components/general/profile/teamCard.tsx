@@ -4,6 +4,7 @@ import { idToPid, idToTeamId } from "~/utils/id";
 
 import DeleteTeamModal from "./deleteTeam";
 import EditTeamModal from "./editTeam";
+import { QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 // For both Team and Solo Teams
 const TeamCard = ({
@@ -11,7 +12,7 @@ const TeamCard = ({
   userId,
   solo,
 }: {
-  team: any;
+  team: QueryRegisteredEventsSuccess["data"][number]["teams"][number];
   userId: string;
   name: string;
   email: string;
@@ -25,7 +26,7 @@ const TeamCard = ({
       <div>
         <div className="titleFont flex items-center justify-center text-center text-3xl font-bold text-gray-200">
           <div>{solo ? idToPid(userId) : team.name}</div>
-          {!team.confirmed && !solo && team.leaderId == userId && (
+          {!team.confirmed && !solo && team.leaderId?.toString() == userId && (
             <EditTeamModal userId={userId} team={team} />
           )}
           {!team.confirmed && solo && (

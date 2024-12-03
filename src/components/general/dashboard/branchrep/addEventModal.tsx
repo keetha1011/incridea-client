@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { QueryResult, useMutation } from "@apollo/client";
 import { FC, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
@@ -6,10 +6,18 @@ import Button from "~/components/button";
 import TextInput from "~/components/input";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
-import { CreateEventDocument, EventType } from "~/generated/generated";
+import {
+  CreateEventDocument,
+  EventsByBranchRepQuery,
+  EventsByBranchRepQueryVariables,
+  EventType,
+} from "~/generated/generated";
 
 const AddEventModal: FC<{
-  eventsRefetch: () => Promise<any>;
+  eventsRefetch: QueryResult<
+    EventsByBranchRepQuery,
+    EventsByBranchRepQueryVariables
+  >["refetch"];
 }> = ({ eventsRefetch }) => {
   const [showModal, setShowModal] = useState(false);
 

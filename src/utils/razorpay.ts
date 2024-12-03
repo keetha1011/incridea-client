@@ -16,7 +16,7 @@ export const initializeRazorpay = () =>
     document.body.appendChild(script);
   });
 
-export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
+export const makePayment = async (setSDKLoading?: (_: boolean) => void) => {
   if (setSDKLoading) setSDKLoading(true);
 
   const res = await initializeRazorpay();
@@ -29,7 +29,7 @@ export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
   if (
     data?.createPaymentOrder.__typename === "MutationCreatePaymentOrderSuccess"
   ) {
-    const options = {
+    const options: RazorpayOptions = {
       key: env.RAZORPAY_KEY,
       name: "Incridea 2024",
       currency: "INR",
@@ -48,7 +48,7 @@ export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
         name: data.createPaymentOrder.data.user.name,
       },
     };
-    const paymentObject = new (window as any).Razorpay(options);
+    const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   } else {
     alert("Something went wrong");
@@ -62,7 +62,7 @@ export const makeTeamPayment = async (
   teamId: string,
   name: string,
   email: string,
-  setSDKLoading?: (arg1: any) => void,
+  setSDKLoading?: (_: boolean) => void,
 ) => {
   if (setSDKLoading) setSDKLoading(true);
 
@@ -96,7 +96,7 @@ export const makeTeamPayment = async (
         name: name,
       },
     };
-    const paymentObject = new (window as any).Razorpay(options);
+    const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   } else {
     alert("Something went wrong");

@@ -9,9 +9,10 @@ import { BiMenuAltLeft as MenuIcon } from "react-icons/bi";
 import CharacterAnimation from "~/components/animation/character";
 import Button from "~/components/button";
 import { env } from "~/env";
-import { useAuth } from "~/hooks/useAuth";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 
 import AuthenticatedButtons from "./authenticatedButtons";
+import { Role } from "~/generated/generated";
 
 const Navbar = () => {
   const links = [
@@ -136,8 +137,10 @@ const AuthButtons: FC<{
   const { status, user } = useAuth();
   return (
     <div className={`flex space-x-2 px-2 lg:px-0 ${className}`}>
-      {status === "authenticated" && <AuthenticatedButtons user={user} />}
-      {status === "unauthenticated" && (
+      {status === AuthStatus.AUTHENTICATED && (
+        <AuthenticatedButtons user={user} />
+      )}
+      {status === AuthStatus.NOT_AUTHENTICATED && (
         <>
           <Link href={"/login"} as="/login">
             <Button intent={"primary"}>Login</Button>
@@ -158,10 +161,10 @@ const MobileButtons: FC<{
   const router = useRouter();
   return (
     <div className={`flex space-x-2 lg:px-0 ${className}`}>
-      {status === "authenticated" &&
+      {status === AuthStatus.AUTHENTICATED &&
         (router.pathname === "/profile" &&
-        user?.role !== "USER" &&
-        user?.role !== "PARTICIPANT" ? (
+        user?.role !== Role.User &&
+        user?.role !== Role.Participant ? (
           <Link
             href={`/dashboard/${user?.role.replace("_", "").toLowerCase()}`}
           >
@@ -172,7 +175,7 @@ const MobileButtons: FC<{
             <Button>Profile</Button>
           </Link>
         ))}
-      {status === "unauthenticated" && (
+      {status === AuthStatus.NOT_AUTHENTICATED && (
         <>
           <Link href={"/login"} as="/login">
             <Button intent={"primary"}>Login</Button>

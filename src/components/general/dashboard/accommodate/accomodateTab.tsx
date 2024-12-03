@@ -2,7 +2,10 @@ import { useQuery } from "@apollo/client";
 import { FC } from "react";
 
 import Spinner from "~/components/spinner";
-import { AccommodationRequestsDocument } from "~/generated/generated";
+import {
+  AccommodationBookingStatus,
+  AccommodationRequestsDocument,
+} from "~/generated/generated";
 
 import AddAccommodateDetails from "./addAccommodateDetails";
 import HotelModal from "./hotelModal";
@@ -86,7 +89,7 @@ const AccommodateTab: FC = () => {
                       </h1>
                       <h1
                         className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${
-                          acc?.status == "CONFIRMED"
+                          acc?.status == AccommodationBookingStatus.Confirmed
                             ? "border-green-500 text-green-500"
                             : "border-red-500 text-red-500"
                         }`}

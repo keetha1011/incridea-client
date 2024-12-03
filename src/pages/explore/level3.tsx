@@ -14,13 +14,14 @@ const Scene2 = dynamic(() => import("~/components/scene2"), {
   ssr: false,
 });
 
+const stack = ["4", "f", "r", "f", "h"];
+
 export default function Level3() {
   const mainThemeAudioRef = useRef<HTMLAudioElement>(null);
   const [muted, setIsMuted] = useState(true);
   const [calledXp, setCalledXp] = useState(false);
 
   const [instruction, setInstruction] = useState<boolean>(true);
-  const stack = ["4", "f", "r", "f", "h"];
 
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
@@ -30,27 +31,27 @@ export default function Level3() {
     awaitRefetchQueries: true,
   });
 
-  const handleAddXp = async () => {
-    if (calledXp) return;
-
-    setCalledXp(true);
-    await addXp().then((res) => {
-      if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
-        toast.success(
-          `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
-          {
-            position: "bottom-center",
-            style: {
-              backgroundColor: "#7628D0",
-              color: "white",
-            },
-          },
-        );
-      }
-    });
-  };
-
   useEffect(() => {
+    const handleAddXp = async () => {
+      if (calledXp) return;
+
+      setCalledXp(true);
+      await addXp().then((res) => {
+        if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
+          toast.success(
+            `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
+            {
+              position: "bottom-center",
+              style: {
+                backgroundColor: "#7628D0",
+                color: "white",
+              },
+            },
+          );
+        }
+      });
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
       //check if the key 4,f,r,f,h is pressed
       if (event.key === stack[0]) {
@@ -63,7 +64,7 @@ export default function Level3() {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [addXp, calledXp]);
 
   return (
     <div className="h-screen w-full overflow-y-scroll">

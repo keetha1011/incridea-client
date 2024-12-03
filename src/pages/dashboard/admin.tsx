@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import AdminTab from "~/components/general/dashboard/admin/adminTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
+import { Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 const Admin: NextPage = () => {
@@ -25,7 +26,7 @@ const Admin: NextPage = () => {
   }
 
   // 2. Redirect to profile if user is not a admin
-  if (user && user.role !== "ADMIN") void router.push("/profile");
+  if (user && user.role !== Role.Admin) void router.push("/profile");
 
   return (
     <Dashboard>

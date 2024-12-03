@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import EventList from "~/components/general/dashboard/branchrep/eventList";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
+import { Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 const BranchRep: NextPage = () => {
@@ -25,7 +26,7 @@ const BranchRep: NextPage = () => {
   }
 
   // 2. Redirect to profile if user is not a branch rep
-  if (user && user.role !== "BRANCH_REP") void router.push("/profile");
+  if (user && user.role !== Role.BranchRep) void router.push("/profile");
 
   return (
     <Dashboard>

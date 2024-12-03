@@ -11,11 +11,17 @@ import { IoPeopleOutline } from "react-icons/io5";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import {
+  EventCategory,
   PublishedEventsDocument,
   PublishedEventsQuery,
+  Role,
 } from "~/generated/generated";
 import { GetAllWinnersDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
+
+enum AllCategory {
+  ALL = "ALL",
+}
 
 const Jury = () => {
   const { user, loading } = useAuth();
@@ -54,20 +60,14 @@ const Jury = () => {
   ];
 
   const dayFilters = ["ALL", "DAY 1", "DAY 2", "DAY 3"];
-  const categoryFilters = [
-    "ALL",
-    "TECHNICAL",
-    "NON_TECHNICAL",
-    "CORE",
-    "SPECIAL",
-  ];
 
   const [currentBranchFilter, setCurrentBranchFilter] =
     useState<(typeof branchFilters)[number]>("ALL");
   const [currentDayFilter, setCurrentDayFilter] =
     useState<(typeof dayFilters)[number]>("ALL");
-  const [currentCategoryFilter, setCurrentCategoryFilter] =
-    useState<(typeof branchFilters)[number]>("ALL");
+  const [currentCategoryFilter, setCurrentCategoryFilter] = useState<
+    EventCategory | AllCategory
+  >(AllCategory.ALL);
   const [query, setQuery] = useState("");
 
   const [filteredEvents, setFilteredEvents] = useState(Events?.publishedEvents);
@@ -92,7 +92,7 @@ const Jury = () => {
         ),
       );
     }
-    if (currentCategoryFilter !== "ALL") {
+    if (currentCategoryFilter !== AllCategory.ALL) {
       tempFilteredEvents = tempFilteredEvents?.filter(
         (event) => event.category === currentCategoryFilter,
       );
@@ -104,7 +104,7 @@ const Jury = () => {
     setQuery(e.target.value);
     setCurrentBranchFilter("ALL");
     setCurrentDayFilter("ALL");
-    setCurrentCategoryFilter("ALL");
+    setCurrentCategoryFilter(AllCategory.ALL);
     if (e.target.value === "") {
       setFilteredEvents(Events?.publishedEvents ?? []);
     } else {
@@ -243,7 +243,7 @@ const Jury = () => {
     void router.push("/login");
     return <div>Redirecting...</div>;
   }
-  if (user.role !== "JURY") {
+  if (user.role !== Role.Jury) {
     void router.push("/profile");
     return <div>Redirecting...</div>;
   }
@@ -342,19 +342,25 @@ const Jury = () => {
             </button>
           </div>
           <div className="mx-auto hidden gap-3 font-semibold lg:flex lg:w-[800px]">
-            {categoryFilters.map((filter) => (
-              <span
-                key={filter}
-                className={`${
-                  filter === currentCategoryFilter
-                    ? "border-b-4 bg-black/10"
-                    : "hover:bg-black/10"
-                } grow cursor-pointer rounded-sm border-black/30 px-3 py-1 text-center text-white`}
-                onClick={() => setCurrentCategoryFilter(filter)}
-              >
-                {filter.replace("_", " ")}
-              </span>
-            ))}
+            {[Object.keys(EventCategory), Object.keys(AllCategory)].map((e) =>
+              e.map((filter) => (
+                <span
+                  key={filter}
+                  className={`${
+                    filter === currentCategoryFilter
+                      ? "border-b-4 bg-black/10"
+                      : "hover:bg-black/10"
+                  } grow cursor-pointer rounded-sm border-black/30 px-3 py-1 text-center text-white`}
+                  onClick={() =>
+                    setCurrentCategoryFilter(
+                      filter as EventCategory | AllCategory,
+                    )
+                  }
+                >
+                  {filter.replace("_", " ")}
+                </span>
+              )),
+            )}
           </div>
         </div>
 
@@ -396,27 +402,34 @@ const Jury = () => {
                   "inline-flex h-[40px] w-full justify-center overflow-hidden whitespace-nowrap rounded-sm bg-black/30 px-4 py-2 text-sm font-medium leading-6 text-white"
                 }
               >
-                {currentCategoryFilter !== "ALL"
+                {currentCategoryFilter !== AllCategory.ALL
                   ? currentCategoryFilter.replace("_", " ")
                   : "Category"}
               </Menu.Button>
               <Menu.Items className="absolute right-1/2 z-50 mt-1 translate-x-1/2 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
-                {categoryFilters.map((filter) => (
-                  <Menu.Item key={filter}>
-                    {() => (
-                      <button
-                        className={`${
-                          currentCategoryFilter === filter
-                            ? "bg-black/50"
-                            : "bg-black/20"
-                        } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
-                        onClick={() => setCurrentCategoryFilter(filter)}
-                      >
-                        {filter.replace("_", " ")}
-                      </button>
-                    )}
-                  </Menu.Item>
-                ))}
+                {[Object.keys(EventCategory), Object.keys(AllCategory)].map(
+                  (e) =>
+                    e.map((filter) => (
+                      <Menu.Item key={filter}>
+                        {() => (
+                          <button
+                            className={`${
+                              currentCategoryFilter === filter
+                                ? "bg-black/50"
+                                : "bg-black/20"
+                            } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
+                            onClick={() =>
+                              setCurrentCategoryFilter(
+                                filter as EventCategory | AllCategory,
+                              )
+                            }
+                          >
+                            {filter.replace("_", " ")}
+                          </button>
+                        )}
+                      </Menu.Item>
+                    )),
+                )}
               </Menu.Items>
             </Menu>
           </div>

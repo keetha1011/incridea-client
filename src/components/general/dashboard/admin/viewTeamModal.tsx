@@ -3,21 +3,10 @@ import { AiOutlineEye } from "react-icons/ai";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
+import { EventsQuery } from "~/generated/generated";
 
 const VieweventModal: FC<{
-  members: {
-    __typename?: "TeamMember" | undefined;
-    user: {
-      __typename?: "User" | undefined;
-      id: string;
-      name: string;
-      phoneNumber?: string | null | undefined;
-      role: string;
-      email: string;
-      isVerified: boolean;
-      createdAt: any;
-    };
-  }[];
+  members: EventsQuery["events"]["edges"][number]["node"]["teams"][number]["members"];
 }> = ({ members }) => {
   const [showModal, setShowModal] = useState(false);
 

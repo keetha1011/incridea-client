@@ -16,12 +16,15 @@ import {
   AccommodationRequestsByUserDocument,
   GetUserXpDocument,
   GetXpLeaderboardDocument,
+  Role,
   User,
 } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
 import AvatarModal from "./avatarModal";
 import ViewUserAccommodation from "./viewUserAccommodation";
+
+const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
 
 const ProfileInfo: FC<{
   user: User | null | undefined;
@@ -34,7 +37,7 @@ const ProfileInfo: FC<{
   const [showModal, setShowModal] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
 
-  if (user && user.role === "USER") void router.push("/register");
+  if (user && user.role === Role.User) void router.push("/register");
 
   const [level, setLevel] = useState(0);
   const [xp, setXp] = useState(0);
@@ -44,8 +47,6 @@ const ProfileInfo: FC<{
   const [needMore, setNeedMore] = useState(0);
 
   const userXp = useQuery(GetUserXpDocument, {});
-
-  const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
 
   useEffect(() => {
     if (

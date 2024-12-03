@@ -49,10 +49,10 @@ const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
         event: event.eventById,
       },
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       props: {
-        error: error?.message || "Could not find event",
+        error: error instanceof Error ? error.message : "Could not find event",
       },
     };
   }

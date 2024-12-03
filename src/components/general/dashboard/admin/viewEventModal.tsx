@@ -18,6 +18,7 @@ import { EventsQuery } from "~/generated/generated";
 
 import EditEventModal from "./editEvent";
 import TeamModal from "./teamModal";
+import { RawDraftContentState } from "draft-js";
 
 const VieweventModal: FC<{
   Event: EventsQuery["events"]["edges"][0];
@@ -25,7 +26,9 @@ const VieweventModal: FC<{
   const event = Event?.Event?.node;
 
   const [showModal, setShowModal] = useState(false);
-  const markup = draftToHtml(JSON.parse(event?.description ?? ""));
+  const markup = draftToHtml(
+    JSON.parse(event?.description ?? "") as RawDraftContentState,
+  );
 
   const getEventAttributes = () => {
     let teamSizeText = "";

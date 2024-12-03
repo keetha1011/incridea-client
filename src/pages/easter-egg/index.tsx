@@ -9,7 +9,7 @@ import {
   GetCardsDocument,
   MySubmissionsDocument,
 } from "~/generated/generated";
-import { useAuth } from "~/hooks/useAuth";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 
 const EasterEgg: NextPage = () => {
   const { status, loading: authLoading } = useAuth();
@@ -44,7 +44,7 @@ const EasterEgg: NextPage = () => {
         </div>
       </div>
     );
-  if (status !== "authenticated")
+  if (status !== AuthStatus.AUTHENTICATED)
     return (
       <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6] pt-28">
         <div className="mt-10 flex flex-col items-center justify-center gap-3 text-center text-xl text-white/90">

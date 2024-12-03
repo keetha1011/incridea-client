@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { EventsQuery } from "~/generated/generated";
+import { EventsQuery, EventType } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";
@@ -25,8 +25,8 @@ const TeamModal: FC<{
       >
         <div className="m-3 flex flex-col justify-center">
           <div className="mb-2 hidden flex-row justify-center rounded-lg bg-gray-600 p-2 md:flex">
-            {Team?.Team?.node.eventType === "INDIVIDUAL" ||
-            Team?.Team?.node.eventType === "INDIVIDUAL_MULTIPLE_ENTRY" ? (
+            {Team?.Team?.node.eventType === EventType.Individual ||
+            Team?.Team?.node.eventType === EventType.IndividualMultipleEntry ? (
               <span className="flex basis-1/4 justify-center text-center text-lg font-bold">
                 PID
               </span>
@@ -51,8 +51,9 @@ const TeamModal: FC<{
                 key={team.id}
                 className="mb-2 flex flex-col justify-start rounded-lg border border-gray-600 p-2 text-base md:flex-row md:justify-center md:text-lg"
               >
-                {Team?.Team?.node.eventType === "INDIVIDUAL" ||
-                Team?.Team?.node.eventType === "INDIVIDUAL_MULTIPLE_ENTRY" ? (
+                {Team?.Team?.node.eventType === EventType.Individual ||
+                Team?.Team?.node.eventType ===
+                  EventType.IndividualMultipleEntry ? (
                   <span className="mb-2 w-full justify-center text-center font-bold md:mb-0 md:w-1/4 md:text-lg">
                     {idToPid(team.members.map((member) => member.user.id)[0]!)}
                   </span>

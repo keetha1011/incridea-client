@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import OrganizerTab from "~/components/general/dashboard/organizer/organizerTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
+import { Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 const Organizer: NextPage = () => {
@@ -20,7 +21,7 @@ const Organizer: NextPage = () => {
     void router.push("/login");
     return <div>Redirecting...</div>;
   }
-  if (user && user.role !== "ORGANIZER") void router.push("/profile");
+  if (user && user.role !== Role.Organizer) void router.push("/profile");
 
   return (
     <Dashboard>

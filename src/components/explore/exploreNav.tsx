@@ -17,26 +17,25 @@ export default function ExploreNav() {
   );
   const [xp, setXp] = useState<number>(0);
 
-  const handleOnEscapeDown = (e: KeyboardEvent) => {
-    if (e.code === "Escape") setShowModal(!showModal);
-  };
-
   useEffect(() => {
+    const handleOnEscapeDown = (e: KeyboardEvent) => {
+      if (e.code === "Escape") setShowModal(!showModal);
+    };
+
     window.addEventListener("keydown", handleOnEscapeDown);
+
     return () => {
       window.removeEventListener("keydown", handleOnEscapeDown);
     };
   }, [showModal]);
 
   useEffect(() => {
-    if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess") {
+    if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess")
       setXp(
         userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0),
       );
-    } else {
-      setXp(0);
-    }
-  }, [userXpLoading]);
+    else setXp(0);
+  }, [userXpLoading, userXp]);
 
   return (
     <>

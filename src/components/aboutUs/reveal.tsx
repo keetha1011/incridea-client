@@ -14,7 +14,7 @@ const Reveal = ({
 
   useEffect(() => {
     if (isInView) control.start("visible").catch((err) => console.log(err));
-  }, [isInView]);
+  }, [control, isInView]);
 
   return (
     <div ref={ref} style={{ position: "relative" }} className={`${classes}`}>

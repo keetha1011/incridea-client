@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 
 import GlitchAnimation from "~/components/animation/glitchAnimation";
 import { env } from "~/env";
-import { GetUserXpDocument } from "~/generated/generated";
+import { GetUserXpDocument, Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 export default function CountDown() {
@@ -17,20 +17,20 @@ export default function CountDown() {
   );
 
   useEffect(() => {
-    if (user && user.role !== "USER") setUserAuthStatus(true);
+    if (user && user.role !== Role.User) setUserAuthStatus(true);
     else setUserAuthStatus(false);
   }, [user]);
 
   const [xp, setXp] = useState<number>(0);
+
   useEffect(() => {
-    if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess") {
+    if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess")
       setXp(
         userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0),
       );
-    } else {
-      setXp(0);
-    }
-  }, [userXpLoading]);
+    else setXp(0);
+  }, [userXpLoading, userXp]);
+
   const [time, setTime] = useState<{
     days: number;
     hours: number;

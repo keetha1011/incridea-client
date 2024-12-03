@@ -24,7 +24,7 @@ class SSELink extends ApolloLink {
     return new Observable((sink) => {
       const eventsource = new EventSource(url.toString(), this.options);
       eventsource.onmessage = function (event) {
-        const data = JSON.parse(event.data);
+        const data = JSON.parse(event.data as string) as FetchResult;
         sink.next(data);
         if (eventsource.readyState === 2) sink.complete();
       };

@@ -48,7 +48,7 @@ const EditTeamModal: FC<{
             <h1 className="w-full py-1 text-center">Remove</h1>
           </div>
 
-          {team?.members?.map((member: any, index) => (
+          {team?.members?.map((member, index) => (
             <div
               className={`bodyFont mt-0.5 flex items-center justify-between gap-2 rounded-sm bg-white/20 p-2 backdrop-blur-lg backdrop-filter ${
                 index === team.members.length - 1 ? "rounded-b-lg" : ""
@@ -58,9 +58,15 @@ const EditTeamModal: FC<{
               <h1 className="w-full text-center">{member.user.name}</h1>{" "}
               <div className="w-full text-center">
                 <Badge
-                  color={member.user.id == team.leaderId ? "success" : "info"}
+                  color={
+                    member.user.id === team.leaderId?.toString()
+                      ? "success"
+                      : "info"
+                  }
                 >
-                  {member.user.id == team.leaderId ? "Leader" : "Member"}
+                  {member.user.id === team.leaderId?.toString()
+                    ? "Leader"
+                    : "Member"}
                 </Badge>
               </div>
               {!team.confirmed && team.leaderId?.toString() == userId && (

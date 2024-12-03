@@ -41,7 +41,7 @@ const Loader: FC = () => {
       setIsLoading(false);
       setOpen(false);
     };
-  }, []);
+  }, [router.events]);
 
   return (
     <div className="relative h-full w-full">

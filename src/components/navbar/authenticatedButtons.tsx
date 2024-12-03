@@ -4,14 +4,14 @@ import { FC } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 
 import Button from "~/components/button";
-import { User } from "~/generated/generated";
+import { Role, User } from "~/generated/generated";
 
 const AuthenticatedButtons: FC<{
   user: User | undefined | null;
 }> = ({ user }) => {
   return (
     <>
-      {user?.role === "USER" ? (
+      {user?.role === Role.User ? (
         <div className="flex space-x-2">
           <Link href="/register">
             <Button>Register </Button>
@@ -27,7 +27,7 @@ const AuthenticatedButtons: FC<{
         </Link>
       )}
 
-      {user?.role !== "USER" && user?.role !== "PARTICIPANT" && (
+      {user?.role !== Role.User && user?.role !== Role.Participant && (
         <Link href={`/dashboard/${user?.role.replace("_", "").toLowerCase()}`}>
           <Button intent="ghost">Dashboard</Button>
         </Link>

@@ -4,7 +4,7 @@ import { createApolloClient } from "~/lib/apollo/apollo-client";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
-const initializeApollo = (initialState: any = null) => {
+const initializeApollo = (initialState?: NormalizedCacheObject) => {
   const _apolloClient = apolloClient ?? createApolloClient();
 
   // If page has Next.js data fetching methods that use Apollo Client,
@@ -26,7 +26,7 @@ const initializeApollo = (initialState: any = null) => {
   return _apolloClient;
 };
 
-const useApollo = (initialState: any) => {
+const useApollo = (initialState?: NormalizedCacheObject) => {
   const store = useMemo(() => initializeApollo(initialState), [initialState]);
   return store;
 };

@@ -3,11 +3,13 @@ query GetAllSubmissions($day: DayType!) {
     ... on QueryGetAllSubmissionsSuccess {
       __typename
       data {
+        userId
         user {
           name
           id
         }
         image
+        cardId
         card {
           clue
           id

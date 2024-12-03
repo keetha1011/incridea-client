@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { QueryResult, useQuery } from "@apollo/client";
 import { FC, useState, useRef, useEffect, useCallback } from "react";
 
 import Button from "~/components/button";
@@ -7,6 +7,7 @@ import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
 import {
   EventsByBranchRepQuery,
+  EventsByBranchRepQueryVariables,
   SearchUsersDocument,
 } from "~/generated/generated";
 
@@ -16,7 +17,10 @@ import RemoveOrganizerButton from "./removeOrganizerButton";
 const AddOrganizerModal: FC<{
   eventId: string;
   organizers: EventsByBranchRepQuery["eventsByBranchRep"][0]["organizers"];
-  eventsRefetch: () => Promise<any>;
+  eventsRefetch: QueryResult<
+    EventsByBranchRepQuery,
+    EventsByBranchRepQueryVariables
+  >["refetch"];
   eventName: string;
 }> = ({ eventId, organizers, eventName }) => {
   const [showModal, setShowModal] = useState(false);

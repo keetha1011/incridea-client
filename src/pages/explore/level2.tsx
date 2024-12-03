@@ -14,6 +14,7 @@ import Pokedex from "~/components/pokedex";
 import useStore from "~/components/store/store";
 import { env } from "~/env";
 import {
+  EventCategory,
   PublishedEventsDocument,
   PublishedEventsQuery,
 } from "~/generated/generated";
@@ -33,7 +34,7 @@ const App = () => {
   let tempFilteredEvents = eventsData?.publishedEvents;
 
   tempFilteredEvents = tempFilteredEvents?.filter(
-    (event) => event.category === "CORE",
+    (event) => event.category === EventCategory.Core,
   );
 
   const events: { id: string; name: string; image: string }[] =

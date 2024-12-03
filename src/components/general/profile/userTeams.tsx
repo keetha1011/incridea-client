@@ -1,32 +1,32 @@
 import { FC } from "react";
 
-import { EventType } from "~/generated/generated";
+import { EventType, QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 import TeamCard from "./teamCard";
 
-export type Team = {
-  id: string;
-  name: string;
-  confirmed: boolean;
-  leaderId: string;
-  event: {
-    minTeamSize: number;
-    id: string;
-    name: string;
-    maxTeamSize: number;
-    fees: number;
-    eventType: EventType;
-  };
-  members: {
-    user: {
-      id: string;
-      name: string;
-    };
-  }[];
-};
+// export type Team = {
+//   id: string;
+//   name: string;
+//   confirmed: boolean;
+//   leaderId: string;
+//   event: {
+//     minTeamSize: number;
+//     id: string;
+//     name: string;
+//     maxTeamSize: number;
+//     fees: number;
+//     eventType: EventType;
+//   };
+//   members: {
+//     user: {
+//       id: string;
+//       name: string;
+//     };
+//   }[];
+// };
 
 const UserTeams: FC<{
-  teams: any;
+  teams: QueryRegisteredEventsSuccess["data"][number]["teams"];
   userId: string;
   name: string;
   email: string;
@@ -40,14 +40,14 @@ const UserTeams: FC<{
         Set sail with your Squad
       </h1> */}
       <div className="flex flex-wrap items-stretch justify-center gap-5">
-        {teams?.map((team: Team) => (
+        {teams?.map((team) => (
           <TeamCard
             key={team.id}
             team={team}
             userId={userId}
             solo={
-              team.event.eventType === "INDIVIDUAL" ||
-              team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
+              team.event.eventType === EventType.Individual ||
+              team.event.eventType === EventType.IndividualMultipleEntry
             }
             name={name}
             email={email}

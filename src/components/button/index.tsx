@@ -69,11 +69,8 @@ interface ButtonProps
   extends VariantProps<typeof buttonStyles>,
     React.ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
-  style?: React.CSSProperties & { [key: string]: any };
   noScaleOnHover?: boolean;
   variant?: string;
-  children?: React.ReactNode;
-  className?: string;
 }
 
 const Button = ({

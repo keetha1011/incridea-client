@@ -53,7 +53,7 @@ const Profile: NextPage = () => {
         }
       });
     }
-  }, [bombXp]);
+  }, [addXp, bombXp]);
 
   if (loading) return <Loader />; // Todo: Loading page here
 

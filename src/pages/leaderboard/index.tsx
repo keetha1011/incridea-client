@@ -11,6 +11,8 @@ import { env } from "~/env";
 import { GetXpLeaderboardDocument } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
+const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
+
 const LeaderBoard: NextPage = () => {
   interface UserTotalPoints {
     [userId: string]: {
@@ -34,7 +36,6 @@ const LeaderBoard: NextPage = () => {
     }[]
   >([]);
 
-  const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
   useEffect(() => {
     if (
       Leaderboard?.getXpLeaderboard.__typename ===

@@ -13,7 +13,9 @@ import {
   EventByIdDocument,
   EventByIdQuery,
   GetScoreSheetJuryDocument,
+  JudgeJuryView,
   QueryGetScoreSheetJuryViewSuccess,
+  Role,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { StatusBadge } from "~/pages/dashboard/jury";
@@ -22,6 +24,7 @@ type Props = {
   slug: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/require-await
 const getServerSideProps: GetServerSideProps<Props> = async (context) => {
   const query = context.query;
   const slug = query.slug as string;
@@ -53,7 +56,7 @@ const Page = ({
     void router.push("/login");
     return <div>Redirecting...</div>;
   }
-  if (user.role !== "JURY") {
+  if (user.role !== Role.Jury) {
     void router.push("/profile");
     return <div>Redirecting...</div>;
   }
@@ -74,11 +77,8 @@ const RoundTabs = ({
 }) => {
   const getRoundStatus = (round: EventByIdQuery["eventById"]["rounds"][0]) => {
     if (round.completed) return "COMPLETED";
-    if (
-      new Date(
-        rounds.find((r) => r.roundNo === round.roundNo)?.date,
-      ).getTime() > new Date().getTime()
-    )
+    const roundTime = rounds.find((r) => r.roundNo === round.roundNo)?.date;
+    if (roundTime && roundTime.getTime() > new Date().getTime())
       return "YET_TO_START";
     return "ONGOING";
   };
@@ -176,29 +176,33 @@ const JudgeTable = ({
 }) => {
   const [csvData, setCsvData] = useState<
     {
-      JudgeName: string;
+      JudgeName: string | undefined;
     }[]
   >([]);
   const [judgeName, setJudgeName] = useState<string | null>(null);
-  const process = (judgeId: any) => {
-    const judgesData: any = [];
-    const teamData: any = [];
+  const process = (judgeId: number) => {
+    const judgesData: JudgeJuryView[][] = [];
+    const teamData: string[] = [];
     const data = [];
     teams.map((team) => {
-      const judges: any = team.judges;
-      teamData.push(team?.teamName);
-      const temp = judges?.filter((judge: any) => judge?.judgeId === judgeId);
+      const judges = team.judges;
+      teamData.push(team.teamName);
+      const temp = judges.filter((judge) => judge.judgeId === judgeId);
       judgesData.push(temp);
     });
-    data.push({ JudgeName: judgesData[0][0]?.judgeName });
+    data.push({ JudgeName: judgesData[0]?.[0]?.judgeName });
 
-    teamData.map((team: any, index: any) => {
+    teamData.map((team, index) => {
       const obj: {
-        [key: string]: any;
-      } = {};
+        [key: string]: number | string;
+        judgeTotal: number;
+        teamNames: string;
+      } = {
+        judgeTotal: 0,
+        teamNames: team,
+      };
       let sum = 0;
-      obj.teamNames = team;
-      judgesData[index][0]?.criteria?.map((data: any) => {
+      judgesData[index]?.[0]?.criteria?.map((data) => {
         obj[data.criteriaName] = data.score;
         sum += data.score;
       });
@@ -220,7 +224,7 @@ const JudgeTable = ({
             {({ selected }) => (
               <button
                 onClick={() => {
-                  setCsvData(process(judge?.judgeId));
+                  if (judge.judgeId) setCsvData(process(judge.judgeId));
                   setJudgeName(judge?.judgeName);
                 }}
                 className={`px-4 py-2 font-semibold shadow-md hover:bg-gray-700/90 ${

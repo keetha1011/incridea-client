@@ -1,7 +1,7 @@
 import { env } from "~/env";
 
 import { ApolloLink, NextLink, Operation } from "@apollo/client";
-import { getOperationAST, OperationTypeNode } from "graphql";
+import { getOperationAST, Kind, OperationTypeNode } from "graphql";
 
 const EXPANDED_QUERY_IN_SERVER = false;
 
@@ -51,7 +51,7 @@ class LogLink extends ApolloLink {
   }) {
     const colorMode = typeof window === "undefined" ? "ansi" : "css";
     const parts: string[] = [];
-    const args: any[] = [];
+    const args: (string | object)[] = [];
 
     switch (colorMode) {
       case "ansi":
@@ -102,7 +102,7 @@ class LogLink extends ApolloLink {
       operation.query,
       operation.operationName,
     );
-    if (!definition || definition.kind !== "OperationDefinition")
+    if (!definition || definition.kind !== Kind.OPERATION_DEFINITION)
       return forward(operation);
 
     this.operationCount += 1;

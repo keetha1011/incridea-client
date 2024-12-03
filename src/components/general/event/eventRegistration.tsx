@@ -9,9 +9,11 @@ import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import {
   Event,
+  EventType,
   MyTeamDocument,
   QueryMyTeamSuccess,
   RegisterSoloEventDocument,
+  Role,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { makeTeamPayment } from "~/utils/razorpay";
@@ -77,7 +79,7 @@ function EventRegistration({
       ) : (
         <EventRegistrationButton
           userId={user.id}
-          registered={user.role !== "USER"}
+          registered={user.role !== Role.User}
           eventId={eventId}
           type={type}
           fees={fees}
@@ -182,7 +184,10 @@ function EventRegistrationButton({
       />
     );
   } else {
-    if (type === "INDIVIDUAL" || type === "INDIVIDUAL_MULTIPLE_ENTRY") {
+    if (
+      type === EventType.Individual ||
+      type === EventType.IndividualMultipleEntry
+    ) {
       if (fees === 0) {
         return (
           <>

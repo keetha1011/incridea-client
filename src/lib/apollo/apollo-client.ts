@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 import { setContext } from "@apollo/client/link/context";
 import { from, split } from "@apollo/client/link/core";
 import { HttpLink } from "@apollo/client/link/http";
-import { getOperationAST } from "graphql";
+import { getOperationAST, Kind, OperationTypeNode } from "graphql";
 import { getSession } from "next-auth/react";
 
 import { env } from "~/env";
@@ -40,8 +40,8 @@ const splitLink = split(
     const definition = getOperationAST(query, operationName);
 
     return (
-      definition?.kind === "OperationDefinition" &&
-      definition.operation === "subscription"
+      definition?.kind === Kind.OPERATION_DEFINITION &&
+      definition.operation === OperationTypeNode.SUBSCRIPTION
     );
   },
   sseLink,

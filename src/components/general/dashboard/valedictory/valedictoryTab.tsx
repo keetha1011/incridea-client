@@ -4,7 +4,7 @@ import { CSVLink } from "react-csv";
 
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
-import { CompletedEventsDocument } from "~/generated/generated";
+import { CompletedEventsDocument, WinnerType } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";
@@ -69,13 +69,13 @@ const ValedictoryTab: FC = () => {
           eventName: event.name,
         };
         event.winner?.map((eventData) => {
-          if (eventData.type === "WINNER") {
+          if (eventData.type === WinnerType.Winner) {
             temp.winner = eventData.team.name;
           }
-          if (eventData.type === "RUNNER_UP") {
+          if (eventData.type === WinnerType.RunnerUp) {
             temp.runnerUp = eventData.team.name;
           }
-          if (eventData.type === "SECOND_RUNNER_UP") {
+          if (eventData.type === WinnerType.SecondRunnerUp) {
             temp.secondRunnerUp = eventData.team.name;
           }
         });
@@ -185,7 +185,7 @@ const ValedictoryTab: FC = () => {
                       </h1>
                       <h1 className="mt-2 flex basis-1/4 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">
                         {event.winner?.map((eventData, i) =>
-                          eventData.type === "WINNER" ? (
+                          eventData.type === WinnerType.Winner ? (
                             <ViewTeamModal
                               key={i}
                               teamId={eventData.team.id}
@@ -201,7 +201,7 @@ const ValedictoryTab: FC = () => {
                       </h1>
                       <h1 className="mt-2 flex basis-1/4 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">
                         {event.winner?.map((eventData, i) =>
-                          eventData.type === "RUNNER_UP" ? (
+                          eventData.type === WinnerType.RunnerUp ? (
                             <ViewTeamModal
                               key={i}
                               teamId={eventData.team.id}
@@ -217,7 +217,7 @@ const ValedictoryTab: FC = () => {
                       </h1>
                       <h1 className="mt-2 flex basis-1/4 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">
                         {event.winner?.map((eventData, i) =>
-                          eventData.type === "SECOND_RUNNER_UP" ? (
+                          eventData.type === WinnerType.SecondRunnerUp ? (
                             <ViewTeamModal
                               key={i}
                               teamId={eventData.team.id}

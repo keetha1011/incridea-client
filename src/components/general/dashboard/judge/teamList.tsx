@@ -52,7 +52,9 @@ const TeamList = ({
   const [sortField, setSortField] = React.useState<
     "Total Score" | "Your Score"
   >("Total Score");
-  const [winnerType, setWinnerType] = React.useState<WinnerType[0]>("WINNER");
+  const [winnerType, setWinnerType] = React.useState<WinnerType>(
+    WinnerType.Winner,
+  );
 
   const [promote, { loading: promoteLoading }] = useMutation(
     PromoteToNextRoundDocument,
@@ -168,12 +170,6 @@ const TeamList = ({
     }
   });
 
-  enum WinnersType {
-    Winner = "WINNER",
-    RunnerUp = "RUNNER_UP",
-    SecondRunnerUp = "SECOND_RUNNER_UP",
-  }
-
   return (
     <div className="h-full overflow-y-auto">
       <div className="sticky top-0 mb-1 flex justify-between rounded-t-lg bg-[#35436F] p-3 shadow-sm">
@@ -242,7 +238,7 @@ const TeamList = ({
       <div className="mt-3 flex flex-col gap-2 px-3 pb-3">
         {selectionMode && finalRound && (
           <div className="my-3 flex flex-row justify-between">
-            {Object.values(WinnersType).map((type) => (
+            {Object.values(WinnerType).map((type) => (
               <Button
                 key={type}
                 onClick={() => setWinnerType(type)}
@@ -391,7 +387,7 @@ const TeamList = ({
                           variables: {
                             eventId,
                             teamId: team?.id,
-                            type: winnerType as WinnerType,
+                            type: winnerType,
                           },
                         }).then((data) => {
                           if (data.data?.createWinner.__typename === "Error") {

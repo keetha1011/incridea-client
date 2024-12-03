@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { QueryResult, useMutation } from "@apollo/client";
 import { FC, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
@@ -6,10 +6,15 @@ import Button from "~/components/button";
 import TextInput from "~/components/input";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
-import { CreateCardDocument, DayType } from "~/generated/generated";
+import {
+  CreateCardDocument,
+  DayType,
+  GetCardsQuery,
+  GetCardsQueryVariables,
+} from "~/generated/generated";
 
 const CreateCardModal: FC<{
-  cardsRefetch: () => Promise<any>;
+  cardsRefetch: QueryResult<GetCardsQuery, GetCardsQueryVariables>["refetch"];
 }> = ({ cardsRefetch }) => {
   const [showModal, setShowModal] = useState(false);
 

@@ -60,7 +60,9 @@ export default function AddTeamModal({ eventId }: { eventId: string }) {
           }
         })
         .catch((error) => {
-          throw new Error(`Error: ${error.message}`);
+          throw new Error(
+            `Error: ${error instanceof Error ? error.message : error}`,
+          );
         });
       await createToast(promise, "Creating Team...");
     } else {

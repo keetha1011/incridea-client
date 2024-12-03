@@ -19,6 +19,7 @@ const Explore = () => {
 
   const onReady: YouTubeProps["onReady"] = (e) => {
     YTPlayerRef.current = e.target;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     e.target.playVideo();
   };
 
@@ -29,6 +30,7 @@ const Explore = () => {
   };
 
   const onPause: YouTubeProps["onPause"] = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     e.target.playVideo();
   };
 
@@ -60,11 +62,14 @@ const Explore = () => {
       <button
         onClick={() => {
           if (!YTPlayerRef.current) return;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           if (YTPlayerRef.current.isMuted()) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             YTPlayerRef.current.unMute();
             setIsMuted(false);
           } else {
             setIsMuted(true);
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             YTPlayerRef.current.mute();
           }
         }}

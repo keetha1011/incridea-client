@@ -16,6 +16,7 @@ import {
   DeleteCardDocument,
   GetAllSubmissionsDocument,
   GetCardsDocument,
+  QueryGetAllSubmissionsSuccess,
   Submission,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
@@ -40,7 +41,9 @@ const EasterEggDashboard = () => {
     },
   });
 
-  const [sortedSubmissions, setSortedSubmissions] = useState<any>([]);
+  const [sortedSubmissions, setSortedSubmissions] = useState<
+    QueryGetAllSubmissionsSuccess["data"]
+  >([]);
 
   useEffect(() => {
     if (

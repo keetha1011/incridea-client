@@ -64,10 +64,8 @@ const AccommodationForm: FunctionComponent = () => {
       },
     })
       .then((res) => res.json())
-      .then((res) => {
-        setAccommodationInfo((prevValue) => {
-          return { ...prevValue, id: res.url };
-        });
+      .then((data: { message: string; url: string }) => {
+        setAccommodationInfo((prevValue) => ({ ...prevValue, id: data.url }));
         setUploading(false);
       })
       .catch(() => {

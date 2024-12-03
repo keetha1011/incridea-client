@@ -1,5 +1,10 @@
 import { useMutation } from "@apollo/client";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  RawDraftContentState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import { useState, useEffect } from "react";
@@ -78,7 +83,7 @@ const EditEvent: FC<{
   useEffect(() => {
     const description = event?.description;
     try {
-      const editorState = JSON.parse(description ?? "");
+      const editorState = JSON.parse(description ?? "") as RawDraftContentState;
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );
@@ -108,8 +113,8 @@ const EditEvent: FC<{
       },
     })
       .then((res) => res.json())
-      .then((res) => {
-        setBanner(res.url);
+      .then((data: { message: string; url: string }) => {
+        setBanner(data.url);
         setUploading(false);
       })
       .catch((err) => {
