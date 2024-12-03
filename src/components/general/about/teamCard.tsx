@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FC } from "react";
+import { type FC } from "react";
 import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
 import { RiLinkedinFill } from "react-icons/ri";
 

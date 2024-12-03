@@ -1,7 +1,7 @@
 import gsap from "gsap";
 import Image from "next/image";
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { Swiper as SwiperType } from "swiper";
+import { type Swiper as SwiperType } from "swiper";
 import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 

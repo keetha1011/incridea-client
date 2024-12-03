@@ -1,9 +1,9 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { EventsQuery } from "~/generated/generated";
+import { type EventsQuery } from "~/generated/generated";
 
 const VieweventModal: FC<{
   members: EventsQuery["events"]["edges"][number]["node"]["teams"][number]["members"];

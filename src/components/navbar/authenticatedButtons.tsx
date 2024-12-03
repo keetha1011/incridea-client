@@ -1,10 +1,10 @@
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { FC } from "react";
+import { type FC } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 
 import Button from "~/components/button";
-import { Role, User } from "~/generated/generated";
+import { Role, type User } from "~/generated/generated";
 
 const AuthenticatedButtons: FC<{
   user: User | undefined | null;

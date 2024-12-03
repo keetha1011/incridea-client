@@ -1,4 +1,9 @@
-import { ApolloLink, FetchResult, Observable, Operation } from "@apollo/client";
+import {
+  ApolloLink,
+  type FetchResult,
+  Observable,
+  type Operation,
+} from "@apollo/client";
 import { print } from "graphql";
 
 type SSELinkOptions = EventSourceInit & { uri: string };

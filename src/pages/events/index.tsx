@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import "locomotive-scroll/dist/locomotive-scroll.css";
-import { GetStaticProps } from "next";
+import { type GetStaticProps } from "next";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -12,7 +12,7 @@ import Event from "~/components/event";
 import {
   EventCategory,
   PublishedEventsDocument,
-  PublishedEventsQuery,
+  type PublishedEventsQuery,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
 

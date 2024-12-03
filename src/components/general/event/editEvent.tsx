@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { type FC, useState } from "react";
 import { BiEditAlt } from "react-icons/bi";
 
 import Badge from "~/components/badge";
@@ -6,7 +6,7 @@ import Button from "~/components/button";
 import DeleteTeamMember from "~/components/general/profile/deleteMember";
 import DeleteTeamModal from "~/components/general/profile/deleteTeam";
 import Modal from "~/components/modal";
-import { QueryMyTeamSuccess } from "~/generated/generated";
+import { type QueryMyTeamSuccess } from "~/generated/generated";
 import { idToTeamId } from "~/utils/id";
 
 import AddMemberModal from "./addMemberModal";

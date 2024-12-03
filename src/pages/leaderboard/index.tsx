@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 

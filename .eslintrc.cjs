@@ -13,12 +13,31 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked",
   ],
   rules: {
-    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "warn",
+      {
+        prefer: "type-imports",
+        fixStyle: "inline-type-imports",
+      },
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        argsIgnorePattern: "^_",
+      },
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "off",
+      {
+        checksVoidReturn: {
+          attributes: false,
+        },
+      },
+    ],
     "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/consistent-indexed-object-style": "off",
-    "@typescript-eslint/consistent-type-definitions": "off",
     "@typescript-eslint/no-base-to-string": "off",
-    "@typescript-eslint/no-unsafe-call": "off",
   },
 };
 module.exports = config;

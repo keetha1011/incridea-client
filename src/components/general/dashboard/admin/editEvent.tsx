@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import {
   EditorState,
-  RawDraftContentState,
+  type RawDraftContentState,
   convertFromRaw,
   convertToRaw,
 } from "draft-js";
 import dynamic from "next/dynamic";
-import { FC } from "react";
+import { type FC } from "react";
 import { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -16,7 +16,7 @@ import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
 import { env } from "~/env";
-import { EventsQuery } from "~/generated/generated";
+import { type EventsQuery } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
 

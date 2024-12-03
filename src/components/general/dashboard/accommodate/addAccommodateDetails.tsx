@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import React from "react";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 
 import Button from "~/components/button";

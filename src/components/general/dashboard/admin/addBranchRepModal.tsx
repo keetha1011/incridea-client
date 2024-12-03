@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
-import { FC, useState, useEffect, useRef, useCallback } from "react";
+import { type FC, useState, useEffect, useRef, useCallback } from "react";
 
 import Badge from "~/components/badge";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
-import { BranchesQuery } from "~/generated/generated";
+import { type BranchesQuery } from "~/generated/generated";
 import { SearchUsersDocument } from "~/generated/generated";
 
 import AddBranchRepButton from "./addBranchRepButton";

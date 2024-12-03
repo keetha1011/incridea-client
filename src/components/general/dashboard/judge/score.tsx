@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { type ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import Spinner from "~/components/spinner";

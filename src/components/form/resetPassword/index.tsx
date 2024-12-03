@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEventHandler, FunctionComponent, useState } from "react";
+import { type FormEventHandler, type FunctionComponent, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 

@@ -1,4 +1,4 @@
-import { Criteria } from "~/generated/generated";
+import { type Criteria } from "~/generated/generated";
 
 import CreateCriteriaModal from "./createCriteriaModal";
 import CriteriaBox from "./criteriaBox";

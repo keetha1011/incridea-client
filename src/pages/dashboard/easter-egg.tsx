@@ -12,12 +12,12 @@ import Dashboard from "~/components/layout/dashboard";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
 import {
-  DayType,
+  type DayType,
   DeleteCardDocument,
   GetAllSubmissionsDocument,
   GetCardsDocument,
-  QueryGetAllSubmissionsSuccess,
-  Submission,
+  type QueryGetAllSubmissionsSuccess,
+  type Submission,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { idToPid } from "~/utils/id";

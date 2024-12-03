@@ -1,16 +1,16 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import gsap from "gsap";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
 import {
-  MouseEventHandler,
+  type MouseEventHandler,
   useEffect,
   useLayoutEffect,
   useRef,
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { Swiper as SwiperType } from "swiper";
+import { type Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";

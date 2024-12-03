@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import "locomotive-scroll/dist/locomotive-scroll.css";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";

@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 
 import SearchBox from "~/components/searchbox";

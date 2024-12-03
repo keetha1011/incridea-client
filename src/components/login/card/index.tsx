@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { type FunctionComponent, useEffect, useState } from "react";
 
-import { CardStyle } from "~/pages/login";
+import { type CardStyle } from "~/pages/login";
 
 import ResendEmail from "~/components/form/login/resendEmailForm";
 import ResetPasswordForm from "~/components/form/login/resetPasswordForm";

@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { FC, useState } from "react";
+import React, { type FC, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import Button from "~/components/button";

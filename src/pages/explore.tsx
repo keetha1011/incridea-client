@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosSkipForward } from "react-icons/io";
 import { SlVolumeOff, SlVolume2 } from "react-icons/sl";
-import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
+import YouTube, { type YouTubePlayer, type YouTubeProps } from "react-youtube";
 
 import Button from "~/components/button";
 
@@ -19,8 +19,7 @@ const Explore = () => {
 
   const onReady: YouTubeProps["onReady"] = (e) => {
     YTPlayerRef.current = e.target;
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    e.target.playVideo();
+    (e.target as YouTubePlayerPatch).playVideo();
   };
 
   const onPlay: YouTubeProps["onPlay"] = () => {
@@ -30,8 +29,7 @@ const Explore = () => {
   };
 
   const onPause: YouTubeProps["onPause"] = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    e.target.playVideo();
+    (e.target as YouTubePlayerPatch).playVideo();
   };
 
   const onEnd: YouTubeProps["onEnd"] = async () => {
@@ -63,14 +61,14 @@ const Explore = () => {
         onClick={() => {
           if (!YTPlayerRef.current) return;
           // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-          if (YTPlayerRef.current.isMuted()) {
+          if ((YTPlayerRef.current as YouTubePlayerPatch).isMuted()) {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            YTPlayerRef.current.unMute();
+            (YTPlayerRef.current as YouTubePlayerPatch).unMute();
             setIsMuted(false);
           } else {
             setIsMuted(true);
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            YTPlayerRef.current.mute();
+            (YTPlayerRef.current as YouTubePlayerPatch).mute();
           }
         }}
         className="absolute right-[2vw] top-[3vh] z-50 cursor-pointer text-white"

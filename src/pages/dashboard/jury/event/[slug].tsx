@@ -1,6 +1,9 @@
 import { useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import {
+  type GetServerSideProps,
+  type InferGetServerSidePropsType,
+} from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
@@ -11,10 +14,10 @@ import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import {
   EventByIdDocument,
-  EventByIdQuery,
+  type EventByIdQuery,
   GetScoreSheetJuryDocument,
-  JudgeJuryView,
-  QueryGetScoreSheetJuryViewSuccess,
+  type JudgeJuryView,
+  type QueryGetScoreSheetJuryViewSuccess,
   Role,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";

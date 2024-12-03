@@ -2,7 +2,7 @@ import draftToHtml from "draftjs-to-html";
 import React from "react";
 
 import styles from "./eventDetails.module.css";
-import { RawDraftContentState } from "draft-js";
+import { type RawDraftContentState } from "draft-js";
 
 function EventDetails({ details }: { details: string }) {
   const data = JSON.parse(details) as RawDraftContentState;

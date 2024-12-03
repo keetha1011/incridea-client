@@ -11,7 +11,7 @@ import Button from "~/components/button";
 import ConfirmTeamModal from "~/components/general/profile/confirmTeam";
 // import GoogleCalendar from './googleCalendar';
 import LeaveTeamModal from "~/components/general/profile/leaveTeamModal";
-import { EventType, QueryMyTeamSuccess } from "~/generated/generated";
+import { EventType, type QueryMyTeamSuccess } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 import { makeTeamPayment } from "~/utils/razorpay";
 import { generateEventUrl } from "~/utils/url";

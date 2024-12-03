@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { MdOutlineDeleteOutline, MdOutlineQrCodeScanner } from "react-icons/md";
 

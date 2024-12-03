@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 
@@ -10,7 +10,7 @@ import {
   DeleteCriteriaDocument,
   DeleteJudgeDocument,
   DeleteRoundDocument,
-  EventByOrganizerQuery,
+  type EventByOrganizerQuery,
 } from "~/generated/generated";
 
 import CreateCriteriaModal from "./createCriteriaModal";

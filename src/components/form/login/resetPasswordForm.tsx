@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FormEventHandler, FunctionComponent, useState } from "react";
+import { type FormEventHandler, type FunctionComponent, useState } from "react";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { FaAngleLeft } from "react-icons/fa";
 

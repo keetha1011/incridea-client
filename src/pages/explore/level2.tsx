@@ -16,7 +16,7 @@ import { env } from "~/env";
 import {
   EventCategory,
   PublishedEventsDocument,
-  PublishedEventsQuery,
+  type PublishedEventsQuery,
 } from "~/generated/generated";
 
 const Scene1 = dynamic(() => import("~/components/scene1"), {

@@ -1,5 +1,5 @@
-import { QueryResult, useMutation } from "@apollo/client";
-import { FC, useState } from "react";
+import { type QueryResult, useMutation } from "@apollo/client";
+import { type FC, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
 import Button from "~/components/button";
@@ -9,8 +9,8 @@ import createToast from "~/components/toast";
 import {
   CreateCardDocument,
   DayType,
-  GetCardsQuery,
-  GetCardsQueryVariables,
+  type GetCardsQuery,
+  type GetCardsQueryVariables,
 } from "~/generated/generated";
 
 const CreateCardModal: FC<{

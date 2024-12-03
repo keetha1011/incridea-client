@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineCopy, AiOutlineUserAdd } from "react-icons/ai";
 import { BsWhatsapp } from "react-icons/bs";
@@ -9,7 +9,7 @@ import Modal from "~/components/modal";
 import { idToTeamId } from "~/utils/id";
 import { generateEventUrl } from "~/utils/url";
 
-import { QueryRegisteredEventsSuccess } from "~/generated/generated";
+import { type QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 const AddMemberModal: FC<{
   team: QueryRegisteredEventsSuccess["data"][number]["teams"][number];

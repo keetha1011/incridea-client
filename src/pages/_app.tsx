@@ -1,4 +1,4 @@
-import { ApolloProvider, NormalizedCacheObject } from "@apollo/client";
+import { ApolloProvider, type NormalizedCacheObject } from "@apollo/client";
 import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { AppProps } from "next/app";

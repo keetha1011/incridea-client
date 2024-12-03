@@ -11,10 +11,10 @@ import {
   CreateWinnerDocument,
   GetRoundStatusDocument,
   GetTotalScoresDocument,
-  JudgeGetTeamsByRoundSubscription,
+  type JudgeGetTeamsByRoundSubscription,
   PromoteToNextRoundDocument,
   WinnerType,
-  WinnersByEventQuery,
+  type WinnersByEventQuery,
 } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 

@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import {
   EditorState,
-  RawDraftContentState,
+  type RawDraftContentState,
   convertFromRaw,
   convertToRaw,
 } from "draft-js";
@@ -16,7 +16,7 @@ import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
 import { env } from "~/env";
 import {
-  EventByOrganizerQuery,
+  type EventByOrganizerQuery,
   EventCategory,
   UpdateEventDocument,
 } from "~/generated/generated";

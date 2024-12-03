@@ -9,8 +9,8 @@ import createToast from "~/components/toast";
 import {
   CompleteRoundDocument,
   GetTotalScoresDocument,
-  JudgeGetTeamsByRoundSubscription,
-  WinnersByEventQuery,
+  type JudgeGetTeamsByRoundSubscription,
+  type WinnersByEventQuery,
   WinnerType,
 } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";

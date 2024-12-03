@@ -1,10 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { FC, Fragment, useState } from "react";
+import { type FC, Fragment, useState } from "react";
 import { AiFillSetting } from "react-icons/ai";
 import { IoClose } from "react-icons/io5";
 
 import Button from "~/components/button";
-import { EventByOrganizerQuery } from "~/generated/generated";
+import { type EventByOrganizerQuery } from "~/generated/generated";
 
 import RoundsSidebar from "./roundsSidebar";
 

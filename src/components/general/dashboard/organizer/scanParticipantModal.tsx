@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { MdOutlineQrCodeScanner } from "react-icons/md";
 
 import Button from "~/components/button";

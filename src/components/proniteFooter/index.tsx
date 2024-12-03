@@ -1,6 +1,6 @@
 import Link from "next/link";
 import * as React from "react";
-import { SVGProps } from "react";
+import { type SVGProps } from "react";
 
 const SVGComponent = (props: SVGProps<SVGSVGElement>) => (
   <svg

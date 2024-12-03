@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import React from "react";
 
 import Spinner from "~/components/spinner";
-import { DayType, GetCardsDocument } from "~/generated/generated";
+import { type DayType, GetCardsDocument } from "~/generated/generated";
 
 type Props = {
   day: string;

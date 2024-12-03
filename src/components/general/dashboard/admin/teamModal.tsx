@@ -1,8 +1,8 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { EventsQuery, EventType } from "~/generated/generated";
+import { type EventsQuery, EventType } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";

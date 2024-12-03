@@ -1,6 +1,6 @@
 import draftToHtml from "draftjs-to-html";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import {
   IoCashOutline,
@@ -14,11 +14,11 @@ import {
 import Button from "~/components/button";
 import styles from "~/components/general/event/eventDetails.module.css";
 import Modal from "~/components/modal";
-import { EventsQuery } from "~/generated/generated";
+import { type EventsQuery } from "~/generated/generated";
 
 import EditEventModal from "./editEvent";
 import TeamModal from "./teamModal";
-import { RawDraftContentState } from "draft-js";
+import { type RawDraftContentState } from "draft-js";
 
 const VieweventModal: FC<{
   Event: EventsQuery["events"]["edges"][0];

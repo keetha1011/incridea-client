@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Combobox, Transition } from "@headlessui/react";
 import Link from "next/link";
-import { useState, FormEventHandler, FunctionComponent, Fragment } from "react";
+import {
+  useState,
+  type FormEventHandler,
+  type FunctionComponent,
+  Fragment,
+} from "react";
 import {
   AiFillEye,
   AiFillEyeInvisible,

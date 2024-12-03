@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { type FC, useState } from "react";
 import { BiEditAlt } from "react-icons/bi";
 
 import Badge from "~/components/badge";
@@ -9,7 +9,7 @@ import { idToTeamId } from "~/utils/id";
 import AddMemberModal from "./addMember";
 import DeleteTeamMember from "./deleteMember";
 import DeleteTeamModal from "./deleteTeam";
-import { QueryRegisteredEventsSuccess } from "~/generated/generated";
+import { type QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 const EditTeamModal: FC<{
   team: QueryRegisteredEventsSuccess["data"][number]["teams"][number];

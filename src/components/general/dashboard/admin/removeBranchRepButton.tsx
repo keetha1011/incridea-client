@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 import { useState } from "react";
 import { IoTrash } from "react-icons/io5";
 

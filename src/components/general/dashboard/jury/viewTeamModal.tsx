@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { BsFillEyeFill } from "react-icons/bs";
 import { MdOutlineMail } from "react-icons/md";
 

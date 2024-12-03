@@ -2,7 +2,7 @@ import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useState, useEffect } from "react";
+import { type FC, useState, useEffect } from "react";
 import { AiOutlineClose as XIcon } from "react-icons/ai";
 import { BiMenuAltLeft as MenuIcon } from "react-icons/bi";
 

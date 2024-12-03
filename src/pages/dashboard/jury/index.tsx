@@ -13,7 +13,7 @@ import Spinner from "~/components/spinner";
 import {
   EventCategory,
   PublishedEventsDocument,
-  PublishedEventsQuery,
+  type PublishedEventsQuery,
   Role,
 } from "~/generated/generated";
 import { GetAllWinnersDocument } from "~/generated/generated";
@@ -87,9 +87,7 @@ const Jury = () => {
             : "2024-02-24",
       ).getDate();
       tempFilteredEvents = tempFilteredEvents?.filter((event) =>
-        event.rounds.some(
-          (round) => new Date(round.date).getDate() === filteredDay,
-        ),
+        event.rounds.some((round) => round.date?.getDate() === filteredDay),
       );
     }
     if (currentCategoryFilter !== AllCategory.ALL) {
@@ -135,9 +133,9 @@ const Jury = () => {
                     ? "2024-02-23"
                     : "2024-02-24",
               ).getDate() ===
-              new Date(
-                winner.event.rounds[winner.event.rounds.length - 1]!.date,
-              ).getDate()
+              winner.event.rounds[
+                winner.event.rounds.length - 1
+              ]!.date?.getDate()
             ) {
               if (winner.event.branch.name === "CORE") {
                 winner.team.members.map((member) => {
@@ -182,9 +180,9 @@ const Jury = () => {
                     ? "2024-02-23"
                     : "2024-02-24",
               ).getDate() ===
-              new Date(
-                winner.event.rounds[winner.event.rounds.length - 1]!.date,
-              ).getDate()
+              winner.event.rounds[
+                winner.event.rounds.length - 1
+              ]!.date?.getDate()
             ) {
               if (winner.event.branch.name !== "CORE") {
                 winner.team.members.map((member) => {
@@ -499,7 +497,7 @@ const EventCard = ({
   const getRoundStatus = () => {
     if (getCompletedRounds() === totalRounds) return "COMPLETED";
     if (
-      new Date(event.rounds.find((r) => r.roundNo === 1)?.date).getTime() >
+      (event.rounds.find((r) => r.roundNo === 1)?.date?.getTime() ?? 0) >
       new Date().getTime()
     )
       return "YET_TO_START";
@@ -546,8 +544,10 @@ const EventCard = ({
                 key={idx}
                 className="grid grid-rows-2 rounded-sm bg-white/20 p-2 text-sm"
               >
-                <span>Round :{" " + round?.roundNo}</span>
-                <span>Date: {" " + round?.date?.substring(0, 10)}</span>
+                <span>Round :{" " + round.roundNo}</span>
+                <span>
+                  Date: {" " + round.date?.toString().substring(0, 14)}
+                </span>
               </div>
             );
           })}

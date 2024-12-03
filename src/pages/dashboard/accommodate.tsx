@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 

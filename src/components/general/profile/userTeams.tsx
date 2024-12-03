@@ -1,6 +1,9 @@
-import { FC } from "react";
+import { type FC } from "react";
 
-import { EventType, QueryRegisteredEventsSuccess } from "~/generated/generated";
+import {
+  EventType,
+  type QueryRegisteredEventsSuccess,
+} from "~/generated/generated";
 
 import TeamCard from "./teamCard";
 

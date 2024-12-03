@@ -7,9 +7,9 @@ import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import {
   DeleteWinnerDocument,
-  JudgeGetTeamsByRoundSubscription,
+  type JudgeGetTeamsByRoundSubscription,
   PromoteToNextRoundDocument,
-  WinnersByEventQuery,
+  type WinnersByEventQuery,
 } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 

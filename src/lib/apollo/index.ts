@@ -1,4 +1,4 @@
-import { type ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import { type ApolloClient, type NormalizedCacheObject } from "@apollo/client";
 import { useMemo } from "react";
 import { createApolloClient } from "~/lib/apollo/apollo-client";
 

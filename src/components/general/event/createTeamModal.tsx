@@ -5,7 +5,7 @@ import { IoCreateOutline } from "react-icons/io5";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
-import { CreateTeamDocument, Event } from "~/generated/generated";
+import { CreateTeamDocument, type Event } from "~/generated/generated";
 
 const CreateTeamModal = ({ eventId }: { eventId: Event["id"] }) => {
   const [open, setOpen] = useState(false);

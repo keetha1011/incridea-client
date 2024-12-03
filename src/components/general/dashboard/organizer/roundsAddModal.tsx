@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { Dialog, Transition } from "@headlessui/react";
-import { FC, Fragment, useState } from "react";
+import { type FC, Fragment, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
@@ -22,7 +22,7 @@ const RoundAddModal: FC<{
     refetchQueries: ["EventByOrganizer"],
     variables: {
       eventId: eventID,
-      date: dateTime.toString(),
+      date: dateTime,
     },
     awaitRefetchQueries: true, // waits for changes to be reflected, better UX(?) but slower
   });

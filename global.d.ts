@@ -26,6 +26,14 @@ declare global {
       contact?: string;
     };
   }
+
+  interface YouTubePlayerPatch {
+    playVideo: () => void;
+    pauseVideo: () => void;
+    isMuted: () => boolean;
+    mute: () => void;
+    unMute: () => void;
+  }
 }
 
 export {};

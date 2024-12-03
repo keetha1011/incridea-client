@@ -8,10 +8,10 @@ import Button from "~/components/button";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import {
-  Event,
+  type Event,
   EventType,
   MyTeamDocument,
-  QueryMyTeamSuccess,
+  type QueryMyTeamSuccess,
   RegisterSoloEventDocument,
   Role,
 } from "~/generated/generated";

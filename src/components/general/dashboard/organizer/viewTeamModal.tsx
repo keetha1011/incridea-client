@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { BiTrashAlt } from "react-icons/bi";
 import { BsFillEyeFill } from "react-icons/bs";
 import { MdOutlineDeleteOutline, MdOutlineMail } from "react-icons/md";

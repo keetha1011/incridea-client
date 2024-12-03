@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 
 import Badge from "~/components/badge";
 import ViewEventModal from "~/components/general/dashboard/organizer/viewEventModal";

@@ -6,9 +6,9 @@ import {
   useScroll,
 } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { Dispatch, useEffect, useRef } from "react";
-import * as THREE from "three";
-import { GLTF } from "three-stdlib";
+import React, { type Dispatch, useEffect, useRef } from "react";
+import type * as THREE from "three";
+import { type GLTF } from "three-stdlib";
 
 import { env } from "~/env";
 

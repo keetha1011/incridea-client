@@ -4,7 +4,7 @@ import { idToPid, idToTeamId } from "~/utils/id";
 
 import DeleteTeamModal from "./deleteTeam";
 import EditTeamModal from "./editTeam";
-import { QueryRegisteredEventsSuccess } from "~/generated/generated";
+import { type QueryRegisteredEventsSuccess } from "~/generated/generated";
 
 // For both Team and Solo Teams
 const TeamCard = ({

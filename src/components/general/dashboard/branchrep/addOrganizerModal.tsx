@@ -1,13 +1,13 @@
-import { QueryResult, useQuery } from "@apollo/client";
-import { FC, useState, useRef, useEffect, useCallback } from "react";
+import { type QueryResult, useQuery } from "@apollo/client";
+import { type FC, useState, useRef, useEffect, useCallback } from "react";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
 import {
-  EventsByBranchRepQuery,
-  EventsByBranchRepQueryVariables,
+  type EventsByBranchRepQuery,
+  type EventsByBranchRepQueryVariables,
   SearchUsersDocument,
 } from "~/generated/generated";
 

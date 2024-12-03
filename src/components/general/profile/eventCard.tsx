@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { QRCodeSVG } from "qrcode.react";
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { RiNumbersLine } from "react-icons/ri";
 
@@ -10,7 +10,10 @@ import { idToPid, idToTeamId } from "~/utils/id";
 import ConfirmTeamModal from "./confirmTeam";
 import DeleteTeamModal from "./deleteTeam";
 import EditTeamModal from "./editTeam";
-import { EventType, QueryRegisteredEventsSuccess } from "~/generated/generated";
+import {
+  EventType,
+  type QueryRegisteredEventsSuccess,
+} from "~/generated/generated";
 
 const EventCard: FC<{
   teams: QueryRegisteredEventsSuccess["data"][number]["teams"];

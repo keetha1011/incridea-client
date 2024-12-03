@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import React from "react";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { IoEye } from "react-icons/io5";
 
 import Button from "~/components/button";

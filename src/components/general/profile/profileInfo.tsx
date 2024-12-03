@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { QRCodeSVG } from "qrcode.react";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { FaSignOutAlt, FaAward } from "react-icons/fa";
 import { MdAddAPhoto, MdOutlineEmail, MdPhone } from "react-icons/md";
 import { RiHotelBedLine } from "react-icons/ri";
@@ -17,7 +17,7 @@ import {
   GetUserXpDocument,
   GetXpLeaderboardDocument,
   Role,
-  User,
+  type User,
 } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 

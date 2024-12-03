@@ -458,7 +458,7 @@ export type MutationCreateQuizArgs = {
 };
 
 export type MutationCreateRoundArgs = {
-  date: Scalars["String"]["input"];
+  date: Scalars["DateTime"]["input"];
   eventId: Scalars["ID"]["input"];
 };
 
@@ -2085,7 +2085,7 @@ export type CreateJudgeMutation = {
 
 export type CreateRoundMutationVariables = Exact<{
   eventId: Scalars["ID"]["input"];
-  date: Scalars["String"]["input"];
+  date: Scalars["DateTime"]["input"];
 }>;
 
 export type CreateRoundMutation = {
@@ -5906,7 +5906,7 @@ export const CreateRoundDocument = {
             kind: "NonNullType",
             type: {
               kind: "NamedType",
-              name: { kind: "Name", value: "String" },
+              name: { kind: "Name", value: "DateTime" },
             },
           },
         },

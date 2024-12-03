@@ -1,7 +1,7 @@
 import { env } from "~/env";
 
-import { ApolloLink, NextLink, Operation } from "@apollo/client";
-import { getOperationAST, Kind, OperationTypeNode } from "graphql";
+import { ApolloLink, type NextLink, type Operation } from "@apollo/client";
+import { getOperationAST, Kind, type OperationTypeNode } from "graphql";
 
 const EXPANDED_QUERY_IN_SERVER = false;
 

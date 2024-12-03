@@ -1,5 +1,10 @@
 import Image from "next/image";
-import React, { FunctionComponent, useEffect, useRef, useState } from "react";
+import React, {
+  type FunctionComponent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { env } from "~/env";
 
