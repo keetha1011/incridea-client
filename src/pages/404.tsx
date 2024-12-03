@@ -4,8 +4,8 @@ import Link from "next/link";
 import Button from "~/components/button";
 
 const Page404: NextPage = () => {
-  const titleText: string = "Game Over!";
-  const bodyText: string = "Looks like you've taken a wrong turn.";
+  const titleText = "Game Over!";
+  const bodyText = "Looks like you've taken a wrong turn.";
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-primary-300 to-primary-500">

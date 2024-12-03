@@ -25,22 +25,18 @@ const AddTeamMember: FC<{
   const [scanModalOpen, setScanModalOpen] = useState(false);
   const [userId, setUserId] = useState<string>("");
 
-  const [organizerAddParticipantToTeam, { data, loading, error }] = useMutation(
+  const [organizerAddParticipantToTeam] = useMutation(
     OrganizerAddTeamMemberDocument,
     {
       refetchQueries: ["TeamDetails"],
     },
   );
-  const {
-    data: teamData,
-    error: teamError,
-    loading: teamLoading,
-  } = useQuery(TeamDetailsDocument, {
+  const { data: teamData } = useQuery(TeamDetailsDocument, {
     variables: {
       id: teamId,
     },
   });
-  const [organizerDeleteTeamMember, _] = useMutation(
+  const [organizerDeleteTeamMember] = useMutation(
     OrganizerDeleteTeamMemberDocument,
     {
       refetchQueries: ["TeamDetails"],

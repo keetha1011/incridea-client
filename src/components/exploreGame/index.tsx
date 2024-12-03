@@ -17,7 +17,6 @@ import {
   platformSpriteDimensions,
 } from "~/constants/exploreRound1";
 
-const fps: number = 60;
 const actionKeys: string[] = [];
 
 const ExploreGame = () => {
@@ -69,10 +68,10 @@ const ExploreGame = () => {
     awaitRefetchQueries: true,
   });
 
-  const handleAddXp = () => {
+  const handleAddXp = async () => {
     if (calledXp) return;
     calledXp = true;
-    const promise = addXp().then((res) => {
+    await addXp().then((res) => {
       if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
         toast.success(
           `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
@@ -113,9 +112,9 @@ const ExploreGame = () => {
   let isRightDirection = true;
   let spriteState: "idle" | "walk" = "idle";
   let isGrounded: boolean;
-  let spriteIndex: number = 0;
-  let frameCount: number = 0;
-  const gravity: number = 0.15;
+  let spriteIndex = 0;
+  let frameCount = 0;
+  const gravity = 0.15;
   let showAboutFlag = true;
   let showRuleBookFlag = true;
   let showScheduleFlag = true;
@@ -234,27 +233,27 @@ const ExploreGame = () => {
       case "ArrowLeft":
         e.preventDefault();
         isRightDirection = false;
-        !actionKeys.includes("ArrowLeft") && actionKeys.push(e.key);
+        if (!actionKeys.includes("ArrowLeft")) actionKeys.push(e.key);
         break;
       case "ArrowRight":
         e.preventDefault();
-        !actionKeys.includes("ArrowRight") && actionKeys.push(e.key);
+        if (!actionKeys.includes("ArrowRight")) actionKeys.push(e.key);
         break;
       case "ArrowUp":
         e.preventDefault();
-        !actionKeys.includes("ArrowUp") && actionKeys.push(e.key);
+        if (!actionKeys.includes("ArrowUp")) actionKeys.push(e.key);
         break;
       case " ":
         e.preventDefault();
-        !actionKeys.includes("ArrowUp") && actionKeys.push("ArrowUp");
+        if (!actionKeys.includes("ArrowUp")) actionKeys.push("ArrowUp");
         break;
     }
   };
 
   const keyboardUpEventHandler = (event: KeyboardEvent) => {
-    actionKeys.includes(event.key) &&
+    if (actionKeys.includes(event.key))
       actionKeys.splice(actionKeys.indexOf(event.key), 1);
-    event.key === " " && actionKeys.splice(actionKeys.indexOf("ArrowUp"), 1);
+    if (event.key === " ") actionKeys.splice(actionKeys.indexOf("ArrowUp"), 1);
   };
 
   function drawBackground(
@@ -407,243 +406,248 @@ const ExploreGame = () => {
     }
   };
 
-  const collisionDetection = (
-    ctx: CanvasRenderingContext2D | null | undefined,
-  ) => {
-    const centralPlatformSpriteHeight =
-      window.innerHeight * platformDimensions.centre.heightPercentage;
-    const centralPlatformSpriteWidth = Math.ceil(
-      centralPlatformSpriteHeight * platformDimensions.centre.aspectRatio,
-    );
+  const collisionDetection = () =>
+    // ctx: CanvasRenderingContext2D | null | undefined
+    {
+      const centralPlatformSpriteHeight =
+        window.innerHeight * platformDimensions.centre.heightPercentage;
+      const centralPlatformSpriteWidth = Math.ceil(
+        centralPlatformSpriteHeight * platformDimensions.centre.aspectRatio,
+      );
 
-    const leftPlatformSpriteHeight =
-      window.innerHeight * platformDimensions.left.heightPercentage;
-    const leftPlatformSpriteWidth = Math.ceil(
-      leftPlatformSpriteHeight * platformDimensions.left.aspectRatio,
-    );
+      const leftPlatformSpriteHeight =
+        window.innerHeight * platformDimensions.left.heightPercentage;
+      const leftPlatformSpriteWidth = Math.ceil(
+        leftPlatformSpriteHeight * platformDimensions.left.aspectRatio,
+      );
 
-    const rightPlatformSpriteHeight =
-      window.innerHeight * platformDimensions.right.heightPercentage;
-    const rightPlatformSpriteWidth = Math.ceil(
-      rightPlatformSpriteHeight * platformDimensions.right.aspectRatio,
-    );
+      const rightPlatformSpriteHeight =
+        window.innerHeight * platformDimensions.right.heightPercentage;
+      const rightPlatformSpriteWidth = Math.ceil(
+        rightPlatformSpriteHeight * platformDimensions.right.aspectRatio,
+      );
 
-    // ctx?.strokeRect(
-    //   window.innerWidth * 0.5 -
-    //     leftPlatformSpriteWidth * platformDimensions.left.xPercentage,
-    //   window.innerHeight * (platformDimensions.left.yPercentage + 0.015),
-    //   leftPlatformSpriteWidth,
-    //   window.innerHeight * 0.02
-    // );
+      // ctx?.strokeRect(
+      //   window.innerWidth * 0.5 -
+      //     leftPlatformSpriteWidth * platformDimensions.left.xPercentage,
+      //   window.innerHeight * (platformDimensions.left.yPercentage + 0.015),
+      //   leftPlatformSpriteWidth,
+      //   window.innerHeight * 0.02
+      // );
 
-    // ctx?.strokeRect(
-    //   window.innerWidth * 0.5 -
-    //     rightPlatformSpriteWidth * platformDimensions.right.xPercentage -
-    //     player.current.width / 4,
-    //   window.innerHeight * (platformDimensions.right.yPercentage + 0.02),
-    //   rightPlatformSpriteWidth,
-    //   window.innerHeight * 0.02
-    // );
+      // ctx?.strokeRect(
+      //   window.innerWidth * 0.5 -
+      //     rightPlatformSpriteWidth * platformDimensions.right.xPercentage -
+      //     player.current.width / 4,
+      //   window.innerHeight * (platformDimensions.right.yPercentage + 0.02),
+      //   rightPlatformSpriteWidth,
+      //   window.innerHeight * 0.02
+      // );
 
-    // ctx?.strokeRect(
-    //   window.innerWidth * 0.5 -
-    //     centralPlatformSpriteWidth * platformDimensions.centre.xPercentage,
-    //   window.innerHeight * (platformDimensions.centre.yPercentage + 0.153),
-    //   centralPlatformSpriteWidth,
-    //   window.innerHeight * 0.02
-    // );
+      // ctx?.strokeRect(
+      //   window.innerWidth * 0.5 -
+      //     centralPlatformSpriteWidth * platformDimensions.centre.xPercentage,
+      //   window.innerHeight * (platformDimensions.centre.yPercentage + 0.153),
+      //   centralPlatformSpriteWidth,
+      //   window.innerHeight * 0.02
+      // );
 
-    if (player.current.y >= window.innerHeight * 1.62 - player.current.height) {
-      // Standing on the ground
-      if (audioElement !== "ground") {
-        audioElement = "ground";
+      if (
+        player.current.y >=
+        window.innerHeight * 1.62 - player.current.height
+      ) {
+        // Standing on the ground
+        if (audioElement !== "ground") {
+          audioElement = "ground";
+          movementSoundTrigger(
+            `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thud.mp3`,
+            300,
+          );
+        }
+        isGrounded = true;
+        player.current.y = window.innerHeight * 1.62 - player.current.height;
+        return;
+      }
+      if (
+        player.current.y >=
+          window.innerHeight * (platformDimensions.left.yPercentage + 0.015) -
+            player.current.height &&
+        prevPos.current.y <=
+          window.innerHeight * (platformDimensions.left.yPercentage + 0.015) -
+            player.current.height &&
+        player.current.x >=
+          window.innerWidth * 0.5 -
+            leftPlatformSpriteWidth * platformDimensions.left.xPercentage -
+            player.current.width / 2 &&
+        player.current.x <=
+          window.innerWidth * 0.5 -
+            leftPlatformSpriteWidth * platformDimensions.left.xPercentage +
+            leftPlatformSpriteWidth -
+            player.current.width / 4
+      ) {
+        // Standing on the left platform
+        isGrounded = true;
+        if (audioElement !== "left") {
+          audioElement = "left";
+          movementSoundTrigger(
+            `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
+            300,
+          );
+        }
+
+        if (showScheduleFlag) {
+          setShowSchedule(true);
+          showScheduleFlag = false;
+        }
+        player.current.y =
+          window.innerHeight * (platformDimensions.left.yPercentage + 0.015) -
+          player.current.height;
+        return;
+      }
+      if (
+        player.current.y <=
+          window.innerHeight * (platformDimensions.left.yPercentage + 0.035) &&
+        prevPos.current.y >
+          window.innerHeight * (platformDimensions.left.yPercentage + 0.035) &&
+        player.current.x >=
+          window.innerWidth * 0.5 -
+            leftPlatformSpriteWidth * platformDimensions.left.xPercentage -
+            player.current.width / 2 &&
+        player.current.x <=
+          window.innerWidth * 0.5 -
+            leftPlatformSpriteWidth * platformDimensions.left.xPercentage +
+            leftPlatformSpriteWidth -
+            player.current.width / 4
+      ) {
+        isGrounded = false;
+        velocity.current.y = 0;
+        return;
+      }
+      if (
+        player.current.y >=
+          window.innerHeight * (platformDimensions.right.yPercentage + 0.02) -
+            player.current.height &&
+        prevPos.current.y <=
+          window.innerHeight * (platformDimensions.right.yPercentage + 0.02) -
+            player.current.height &&
+        player.current.x >=
+          window.innerWidth * 0.5 -
+            rightPlatformSpriteWidth * platformDimensions.right.xPercentage -
+            player.current.width / 2 &&
+        player.current.x <=
+          window.innerWidth * 0.5 -
+            rightPlatformSpriteWidth * platformDimensions.right.xPercentage +
+            rightPlatformSpriteWidth -
+            player.current.width / 2
+      ) {
+        // Standing on the right platform
+        if (audioElement !== "right") {
+          audioElement = "right";
+          movementSoundTrigger(
+            `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
+            300,
+          );
+        }
+        isGrounded = true;
+        if (showRuleBookFlag) {
+          setShowRuleBook(true);
+          showRuleBookFlag = false;
+        }
+        player.current.y =
+          window.innerHeight * (platformDimensions.right.yPercentage + 0.02) -
+          player.current.height;
+        return;
+      }
+      if (
+        player.current.y <=
+          window.innerHeight * (platformDimensions.right.yPercentage + 0.04) &&
+        prevPos.current.y >
+          window.innerHeight * (platformDimensions.right.yPercentage + 0.04) &&
+        player.current.x >=
+          window.innerWidth * 0.5 -
+            rightPlatformSpriteWidth * platformDimensions.right.xPercentage -
+            player.current.width / 2 &&
+        player.current.x <=
+          window.innerWidth * 0.5 -
+            rightPlatformSpriteWidth * platformDimensions.right.xPercentage +
+            rightPlatformSpriteWidth -
+            player.current.width / 2
+      ) {
+        isGrounded = false;
+        velocity.current.y = 0;
+        return;
+      }
+      if (
+        player.current.y >=
+          window.innerHeight * (platformDimensions.centre.yPercentage + 0.153) -
+            player.current.height &&
+        prevPos.current.y <=
+          window.innerHeight * (platformDimensions.centre.yPercentage + 0.153) -
+            player.current.height &&
+        player.current.x >=
+          window.innerWidth * 0.5 -
+            centralPlatformSpriteWidth * platformDimensions.centre.xPercentage -
+            player.current.width / 2 &&
+        player.current.x <=
+          window.innerWidth * 0.5 -
+            centralPlatformSpriteWidth * platformDimensions.centre.xPercentage +
+            centralPlatformSpriteWidth
+      ) {
+        // Standing on the central platform
+        if (audioElement !== "middle") {
+          audioElement = "middle";
+          movementSoundTrigger(
+            `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
+            300,
+          );
+        }
+        isGrounded = true;
+        if (showAboutFlag) {
+          setShowAbout(true);
+          showAboutFlag = false;
+        }
+        player.current.y =
+          window.innerHeight * (platformDimensions.centre.yPercentage + 0.153) -
+          player.current.height;
+        return;
+      }
+      if (
+        player.current.y <=
+          window.innerHeight *
+            (platformDimensions.centre.yPercentage + 0.173) &&
+        prevPos.current.y >
+          window.innerHeight *
+            (platformDimensions.centre.yPercentage + 0.173) &&
+        player.current.x >=
+          window.innerWidth * 0.5 -
+            centralPlatformSpriteWidth * platformDimensions.centre.xPercentage -
+            player.current.width / 2 &&
+        player.current.x <=
+          window.innerWidth * 0.5 -
+            centralPlatformSpriteWidth * platformDimensions.centre.xPercentage +
+            centralPlatformSpriteWidth
+      ) {
+        isGrounded = false;
+        velocity.current.y = 0;
+
+        /* ######### EASTER EGG GOES HERE ######### */
         movementSoundTrigger(
           `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thud.mp3`,
           300,
         );
-      }
-      isGrounded = true;
-      player.current.y = window.innerHeight * 1.62 - player.current.height;
-      return;
-    }
-    if (
-      player.current.y >=
-        window.innerHeight * (platformDimensions.left.yPercentage + 0.015) -
-          player.current.height &&
-      prevPos.current.y <=
-        window.innerHeight * (platformDimensions.left.yPercentage + 0.015) -
-          player.current.height &&
-      player.current.x >=
-        window.innerWidth * 0.5 -
-          leftPlatformSpriteWidth * platformDimensions.left.xPercentage -
-          player.current.width / 2 &&
-      player.current.x <=
-        window.innerWidth * 0.5 -
-          leftPlatformSpriteWidth * platformDimensions.left.xPercentage +
-          leftPlatformSpriteWidth -
-          player.current.width / 4
-    ) {
-      // Standing on the left platform
-      isGrounded = true;
-      if (audioElement !== "left") {
-        audioElement = "left";
-        movementSoundTrigger(
-          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
-          300,
-        );
+        void handleAddXp();
+        //replace with xp sound
+        return;
       }
 
-      if (showScheduleFlag) {
-        setShowSchedule(true);
-        showScheduleFlag = false;
-      }
-      player.current.y =
-        window.innerHeight * (platformDimensions.left.yPercentage + 0.015) -
-        player.current.height;
-      return;
-    }
-    if (
-      player.current.y <=
-        window.innerHeight * (platformDimensions.left.yPercentage + 0.035) &&
-      prevPos.current.y >
-        window.innerHeight * (platformDimensions.left.yPercentage + 0.035) &&
-      player.current.x >=
-        window.innerWidth * 0.5 -
-          leftPlatformSpriteWidth * platformDimensions.left.xPercentage -
-          player.current.width / 2 &&
-      player.current.x <=
-        window.innerWidth * 0.5 -
-          leftPlatformSpriteWidth * platformDimensions.left.xPercentage +
-          leftPlatformSpriteWidth -
-          player.current.width / 4
-    ) {
       isGrounded = false;
-      velocity.current.y = 0;
-      return;
-    }
-    if (
-      player.current.y >=
-        window.innerHeight * (platformDimensions.right.yPercentage + 0.02) -
-          player.current.height &&
-      prevPos.current.y <=
-        window.innerHeight * (platformDimensions.right.yPercentage + 0.02) -
-          player.current.height &&
-      player.current.x >=
-        window.innerWidth * 0.5 -
-          rightPlatformSpriteWidth * platformDimensions.right.xPercentage -
-          player.current.width / 2 &&
-      player.current.x <=
-        window.innerWidth * 0.5 -
-          rightPlatformSpriteWidth * platformDimensions.right.xPercentage +
-          rightPlatformSpriteWidth -
-          player.current.width / 2
-    ) {
-      // Standing on the right platform
-      if (audioElement !== "right") {
-        audioElement = "right";
-        movementSoundTrigger(
-          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
-          300,
-        );
-      }
-      isGrounded = true;
-      if (showRuleBookFlag) {
-        setShowRuleBook(true);
-        showRuleBookFlag = false;
-      }
-      player.current.y =
-        window.innerHeight * (platformDimensions.right.yPercentage + 0.02) -
-        player.current.height;
-      return;
-    }
-    if (
-      player.current.y <=
-        window.innerHeight * (platformDimensions.right.yPercentage + 0.04) &&
-      prevPos.current.y >
-        window.innerHeight * (platformDimensions.right.yPercentage + 0.04) &&
-      player.current.x >=
-        window.innerWidth * 0.5 -
-          rightPlatformSpriteWidth * platformDimensions.right.xPercentage -
-          player.current.width / 2 &&
-      player.current.x <=
-        window.innerWidth * 0.5 -
-          rightPlatformSpriteWidth * platformDimensions.right.xPercentage +
-          rightPlatformSpriteWidth -
-          player.current.width / 2
-    ) {
-      isGrounded = false;
-      velocity.current.y = 0;
-      return;
-    }
-    if (
-      player.current.y >=
-        window.innerHeight * (platformDimensions.centre.yPercentage + 0.153) -
-          player.current.height &&
-      prevPos.current.y <=
-        window.innerHeight * (platformDimensions.centre.yPercentage + 0.153) -
-          player.current.height &&
-      player.current.x >=
-        window.innerWidth * 0.5 -
-          centralPlatformSpriteWidth * platformDimensions.centre.xPercentage -
-          player.current.width / 2 &&
-      player.current.x <=
-        window.innerWidth * 0.5 -
-          centralPlatformSpriteWidth * platformDimensions.centre.xPercentage +
-          centralPlatformSpriteWidth
-    ) {
-      // Standing on the central platform
-      if (audioElement !== "middle") {
-        audioElement = "middle";
-        movementSoundTrigger(
-          `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thump.mp3`,
-          300,
-        );
-      }
-      isGrounded = true;
-      if (showAboutFlag) {
-        setShowAbout(true);
-        showAboutFlag = false;
-      }
-      player.current.y =
-        window.innerHeight * (platformDimensions.centre.yPercentage + 0.153) -
-        player.current.height;
-      return;
-    }
-    if (
-      player.current.y <=
-        window.innerHeight * (platformDimensions.centre.yPercentage + 0.173) &&
-      prevPos.current.y >
-        window.innerHeight * (platformDimensions.centre.yPercentage + 0.173) &&
-      player.current.x >=
-        window.innerWidth * 0.5 -
-          centralPlatformSpriteWidth * platformDimensions.centre.xPercentage -
-          player.current.width / 2 &&
-      player.current.x <=
-        window.innerWidth * 0.5 -
-          centralPlatformSpriteWidth * platformDimensions.centre.xPercentage +
-          centralPlatformSpriteWidth
-    ) {
-      isGrounded = false;
-      velocity.current.y = 0;
-
-      /* ######### EASTER EGG GOES HERE ######### */
-      movementSoundTrigger(
-        `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/thud.mp3`,
-        300,
-      );
-      handleAddXp();
-      //replace with xp sound
-      return;
-    }
-
-    isGrounded = false;
-    setShowAbout(false);
-    setShowRuleBook(false);
-    setShowSchedule(false);
-    showRuleBookFlag = true;
-    showAboutFlag = true;
-    showScheduleFlag = true;
-  };
+      setShowAbout(false);
+      setShowRuleBook(false);
+      setShowSchedule(false);
+      showRuleBookFlag = true;
+      showAboutFlag = true;
+      showScheduleFlag = true;
+    };
 
   const animate = async () => {
     ctx.current?.clearRect(0, 0, window.innerWidth, window.innerHeight * 2);
@@ -700,7 +704,7 @@ const ExploreGame = () => {
           ];
 
     player.current.y += velocity.current.y;
-    collisionDetection(ctx.current);
+    collisionDetection();
     if (!isGrounded) velocity.current.y += gravity;
     else velocity.current.y = 0;
 
@@ -775,7 +779,7 @@ const ExploreGame = () => {
         mainTheme={`${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/Level1MainTheme.mp3`}
         isMuted={isMuted}
         setIsMuted={setIsMuted}
-      ></AudioPlayer>
+      />
       <div className="relative h-[200vh] w-full overflow-clip">
         <div className="hidden">
           <img

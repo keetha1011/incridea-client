@@ -5,13 +5,12 @@ import React from "react";
 import { TbArrowBackUp } from "react-icons/tb";
 
 import Button from "~/components/button";
-import AccommodationForm from "~/components/form/accommodation";
 import Loader from "~/components/loader";
 import { useAuth } from "~/hooks/useAuth";
 
 const Accommodation: NextPage = () => {
   const router = useRouter();
-  const { error, user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) return <Loader />;
   if (!user) void router.push("/login");

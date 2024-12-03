@@ -34,7 +34,7 @@ const LeaveTeamModal: FC<{
         toast.success("You've left the team!");
         toast.dismiss(loadingToast);
       } else {
-        toast.error(res.data?.leaveTeam.message!);
+        toast.error(res.data?.leaveTeam.message ?? "An error occurred");
         toast.dismiss(loadingToast);
       }
     });

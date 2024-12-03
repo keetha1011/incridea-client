@@ -133,7 +133,7 @@ const Navbar = () => {
 const AuthButtons: FC<{
   className?: string;
 }> = ({ className }) => {
-  const { status, user, error, loading } = useAuth();
+  const { status, user } = useAuth();
   return (
     <div className={`flex space-x-2 px-2 lg:px-0 ${className}`}>
       {status === "authenticated" && <AuthenticatedButtons user={user} />}
@@ -154,7 +154,7 @@ const AuthButtons: FC<{
 const MobileButtons: FC<{
   className?: string;
 }> = ({ className }) => {
-  const { status, user, error, loading } = useAuth();
+  const { status, user } = useAuth();
   const router = useRouter();
   return (
     <div className={`flex space-x-2 lg:px-0 ${className}`}>

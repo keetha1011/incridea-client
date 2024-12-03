@@ -31,7 +31,7 @@ const getServerSideProps: GetServerSideProps<Props> = async (context) => {
 const Page = ({
   slug,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { user, loading, error } = useAuth();
+  const { user, loading } = useAuth();
   const router = useRouter();
 
   const id = slug.split("-").pop();
@@ -72,10 +72,7 @@ const RoundTabs = ({
   rounds: EventByIdQuery["eventById"]["rounds"];
   eventId: string;
 }) => {
-  const getRoundStatus = (
-    round: EventByIdQuery["eventById"]["rounds"][0],
-    totalRounds: number,
-  ) => {
+  const getRoundStatus = (round: EventByIdQuery["eventById"]["rounds"][0]) => {
     if (round.completed) return "COMPLETED";
     if (
       new Date(
@@ -105,9 +102,7 @@ const RoundTabs = ({
                 }`}
               >
                 <span>Round {round.roundNo} </span>
-                <StatusBadge
-                  status={getRoundStatus(round, rounds.length)}
-                />{" "}
+                <StatusBadge status={getRoundStatus(round)} />{" "}
               </button>
             )}
           </Tab>

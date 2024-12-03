@@ -10,7 +10,7 @@ import RoundsTab from "./roundsTab";
 import ViewEventModal from "./viewEventModal";
 
 function OrganizerTab({ organizerId }: { organizerId: string }) {
-  const { data, loading, error } = useQuery(EventByOrganizerDocument, {
+  const { data, loading } = useQuery(EventByOrganizerDocument, {
     variables: {
       organizerId,
     },

@@ -44,12 +44,11 @@ const Pokedex: React.FC<DexProps> = ({
     awaitRefetchQueries: true,
   });
 
-  const handleAddXp = () => {
-    if (calledXp) {
-      return;
-    }
+  const handleAddXp = async () => {
+    if (calledXp) return;
+
     setCalledXp(true);
-    const promise = addXp().then((res) => {
+    await addXp().then((res) => {
       if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
         toast.success(
           `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
@@ -104,7 +103,7 @@ const Pokedex: React.FC<DexProps> = ({
         setFullyOpen(true);
         if (!mutationCalled) {
           mutationCalled = true;
-          handleAddXp();
+          void handleAddXp();
         }
       });
   }, []);

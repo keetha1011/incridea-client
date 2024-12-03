@@ -18,7 +18,7 @@ const AddOrganizerModal: FC<{
   organizers: EventsByBranchRepQuery["eventsByBranchRep"][0]["organizers"];
   eventsRefetch: () => Promise<any>;
   eventName: string;
-}> = ({ eventId, organizers, eventsRefetch, eventName }) => {
+}> = ({ eventId, organizers, eventName }) => {
   const [showModal, setShowModal] = useState(false);
 
   function handleCloseModal() {

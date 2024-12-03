@@ -73,7 +73,7 @@ export default NextAuth({
     CredentialsProvider({
       name: "Email",
       credentials: {},
-      async authorize(credentials: any, _req): Promise<any> {
+      async authorize(credentials: any): Promise<any> {
         const { email, password } = credentials;
         const { data } = await client.mutate({
           mutation: SignInDocument,
@@ -95,7 +95,7 @@ export default NextAuth({
   },
   secret: env.NEXTAUTH_SECRET,
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    async redirect({ baseUrl }) {
       return baseUrl;
     },
     async jwt({ token, user }): Promise<any> {

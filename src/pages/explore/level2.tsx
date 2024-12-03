@@ -26,11 +26,9 @@ const demoSheet = getProject("Scene 1", { state: scene1 }).sheet("Scene 1");
 
 const App = () => {
   const [instruction, setInstruction] = useState<boolean>(true);
-  const {
-    data: eventsData,
-    loading: eventLoading,
-    error: eventError,
-  } = useQuery<PublishedEventsQuery>(PublishedEventsDocument);
+  const { data: eventsData } = useQuery<PublishedEventsQuery>(
+    PublishedEventsDocument,
+  );
 
   let tempFilteredEvents = eventsData?.publishedEvents;
 

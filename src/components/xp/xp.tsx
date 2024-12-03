@@ -16,9 +16,9 @@ const Xp = ({ children, levelId }: XpProps) => {
     },
   });
 
-  const handleAddXp = () => {
+  const handleAddXp = async () => {
     console.log("add xp");
-    const promise = addXp().then((res) => {
+    await addXp().then((res) => {
       if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
         toast.success(
           `Congratulations!! Added ${res.data?.addXP.data.level.point} Xp`,

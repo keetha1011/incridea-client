@@ -17,7 +17,7 @@ export const initializeRazorpay = () =>
   });
 
 export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
-  setSDKLoading && setSDKLoading(true);
+  if (setSDKLoading) setSDKLoading(true);
 
   const res = await initializeRazorpay();
   if (!res) alert("Razorpay SDK Failed to load");
@@ -37,7 +37,7 @@ export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
       order_id: data.createPaymentOrder.data.orderId,
       description: "Incridea 2024 Registration",
       image: "/logo.png",
-      handler: async function (response: any) {
+      handler: async function () {
         await client.refetchQueries({
           include: ["MeQuery"],
         });
@@ -55,7 +55,7 @@ export const makePayment = async (setSDKLoading?: (arg1: any) => void) => {
     console.log(data);
   }
 
-  setSDKLoading && setSDKLoading(false);
+  if (setSDKLoading) setSDKLoading(false);
 };
 
 export const makeTeamPayment = async (
@@ -64,7 +64,7 @@ export const makeTeamPayment = async (
   email: string,
   setSDKLoading?: (arg1: any) => void,
 ) => {
-  setSDKLoading && setSDKLoading(true);
+  if (setSDKLoading) setSDKLoading(true);
 
   const res = await initializeRazorpay();
   if (!res) alert("Razorpay SDK Failed to load");
@@ -86,7 +86,7 @@ export const makeTeamPayment = async (
       order_id: data.eventPaymentOrder.data.orderId,
       description: `Register for ${data.eventPaymentOrder.data.Team.event.name}`,
       image: "/logo.png",
-      handler: async function (response: any) {
+      handler: async function () {
         await client.refetchQueries({
           include: ["MyTeam"],
         });
@@ -103,5 +103,5 @@ export const makeTeamPayment = async (
     console.log(data);
   }
 
-  setSDKLoading && setSDKLoading(false);
+  if (setSDKLoading) setSDKLoading(false);
 };

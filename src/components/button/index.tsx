@@ -1,5 +1,5 @@
 import { cva, VariantProps } from "class-variance-authority";
-import React, { ReactChildren, ReactElement } from "react";
+import React from "react";
 
 import { cn } from "~/lib/utils";
 
@@ -85,7 +85,6 @@ const Button = ({
   disabled,
   className,
   noScaleOnHover,
-  variant,
   ...props
 }: ButtonProps) => {
   return (

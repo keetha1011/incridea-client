@@ -9,8 +9,7 @@ import { GetUserXpDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 export default function CountDown() {
-  const { user, loading, status } = useAuth();
-  const [userId, setUserId] = useState<string>("");
+  const { user } = useAuth();
   const [userAuthStatus, setUserAuthStatus] = useState<boolean>(false);
   const { data: userXp, loading: userXpLoading } = useQuery(
     GetUserXpDocument,
@@ -18,13 +17,8 @@ export default function CountDown() {
   );
 
   useEffect(() => {
-    console.log("user", user);
-    if (user && user.role !== "USER") {
-      setUserId(user.id);
-      setUserAuthStatus(true);
-    } else {
-      setUserAuthStatus(false);
-    }
+    if (user && user.role !== "USER") setUserAuthStatus(true);
+    else setUserAuthStatus(false);
   }, [user]);
 
   const [xp, setXp] = useState<number>(0);

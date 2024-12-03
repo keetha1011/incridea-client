@@ -63,9 +63,9 @@ export default function App() {
 
   useEffect(() => {
     if (!loading) {
-      audioRef.current &&
-        (audioRef.current.src = artists[isArtist1 ? 0 : 1]!.audioSrc);
-      audioRef.current && (audioRef.current.currentTime = 0);
+      if (audioRef.current)
+        audioRef.current.src = artists[isArtist1 ? 0 : 1]!.audioSrc;
+      if (audioRef.current) audioRef.current.currentTime = 0;
       void audioRef.current?.play();
 
       if (timeRef.current) {

@@ -299,6 +299,8 @@ export type Mutation = {
   createHotel: MutationCreateHotelResult;
   createJudge: MutationCreateJudgeResult;
   createPaymentOrder: MutationCreatePaymentOrderResult;
+  createQuestion: MutationCreateQuestionResult;
+  createQuiz: MutationCreateQuizResult;
   createRound: MutationCreateRoundResult;
   createSubmission: MutationCreateSubmissionResult;
   createTeam: MutationCreateTeamResult;
@@ -339,6 +341,7 @@ export type Mutation = {
   updateCard: MutationUpdateCardResult;
   updateEvent: MutationUpdateEventResult;
   updateProfileImage: MutationUpdateProfileImageResult;
+  updateQuizStatus: MutationUpdateQuizStatusResult;
   updateStatus: MutationUpdateStatusResult;
   verifyEmail: MutationVerifyEmailResult;
 };
@@ -434,6 +437,25 @@ export type MutationCreateJudgeArgs = {
 
 export type MutationCreatePaymentOrderArgs = {
   type: OrderType;
+};
+
+export type MutationCreateQuestionArgs = {
+  image?: InputMaybe<Scalars["String"]["input"]>;
+  negativePoint: Scalars["Int"]["input"];
+  options?: InputMaybe<Scalars["String"]["input"]>;
+  points: Scalars["Int"]["input"];
+  question: Scalars["String"]["input"];
+  quizId: Scalars["String"]["input"];
+  type: Scalars["String"]["input"];
+};
+
+export type MutationCreateQuizArgs = {
+  description: Scalars["String"]["input"];
+  endTime: Scalars["String"]["input"];
+  eventId: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  roundId: Scalars["String"]["input"];
+  startTime: Scalars["String"]["input"];
 };
 
 export type MutationCreateRoundArgs = {
@@ -618,6 +640,12 @@ export type MutationUpdateProfileImageArgs = {
   imageURL: Scalars["String"]["input"];
 };
 
+export type MutationUpdateQuizStatusArgs = {
+  allowAttempts: Scalars["Boolean"]["input"];
+  password: Scalars["String"]["input"];
+  quizId: Scalars["String"]["input"];
+};
+
 export type MutationUpdateStatusArgs = {
   bookingId: Scalars["String"]["input"];
   hotelId: Scalars["String"]["input"];
@@ -761,6 +789,22 @@ export type MutationCreatePaymentOrderResult =
 export type MutationCreatePaymentOrderSuccess = {
   __typename?: "MutationCreatePaymentOrderSuccess";
   data: PaymentOrder;
+};
+
+export type MutationCreateQuestionResult =
+  | Error
+  | MutationCreateQuestionSuccess;
+
+export type MutationCreateQuestionSuccess = {
+  __typename?: "MutationCreateQuestionSuccess";
+  data: Question;
+};
+
+export type MutationCreateQuizResult = Error | MutationCreateQuizSuccess;
+
+export type MutationCreateQuizSuccess = {
+  __typename?: "MutationCreateQuizSuccess";
+  data: Quiz;
 };
 
 export type MutationCreateRoundResult = Error | MutationCreateRoundSuccess;
@@ -1072,6 +1116,15 @@ export type MutationUpdateProfileImageResult =
 export type MutationUpdateProfileImageSuccess = {
   __typename?: "MutationUpdateProfileImageSuccess";
   data: User;
+};
+
+export type MutationUpdateQuizStatusResult =
+  | Error
+  | MutationUpdateQuizStatusSuccess;
+
+export type MutationUpdateQuizStatusSuccess = {
+  __typename?: "MutationUpdateQuizStatusSuccess";
+  data: Quiz;
 };
 
 export type MutationUpdateStatusResult = Error | MutationUpdateStatusSuccess;

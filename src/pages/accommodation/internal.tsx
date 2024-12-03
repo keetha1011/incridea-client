@@ -11,7 +11,7 @@ import { useAuth } from "~/hooks/useAuth";
 
 const Accommodation: NextPage = () => {
   const router = useRouter();
-  const { error, user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) return <Loader />;
   if (!user) void router.push("/login");

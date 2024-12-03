@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 import { MdDelete } from "react-icons/md";
 
 import Button from "~/components/button";
-import Cards from "~/components/general/dashboard/easter-egg/cards";
 import CreateCardModal from "~/components/general/dashboard/easter-egg/createCardModal";
 import Dashboard from "~/components/layout/dashboard";
 import SearchBox from "~/components/searchbox";
@@ -16,7 +15,6 @@ import {
   DayType,
   DeleteCardDocument,
   GetAllSubmissionsDocument,
-  GetAllSubmissionsQuery,
   GetCardsDocument,
   Submission,
 } from "~/generated/generated";
@@ -35,7 +33,6 @@ const EasterEggDashboard = () => {
   const {
     data,
     loading: submissionsLoading,
-    error,
     refetch: submissionsRefetch,
   } = useQuery(GetAllSubmissionsDocument, {
     variables: {
@@ -90,7 +87,6 @@ const EasterEggDashboard = () => {
   const {
     data: cards,
     loading: cardsLoading,
-    error: cardsError,
     refetch: cardsRefetch,
   } = useQuery(GetCardsDocument, {
     variables: {

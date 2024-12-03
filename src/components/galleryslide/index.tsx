@@ -13,7 +13,7 @@ type GalleryProps = {
   emulator: "gba" | "retroPC" | "console" | "retroTV" | "final";
 };
 
-const GallerySlide: FC<GalleryProps> = ({ title, imgArr, emulator }) => {
+const GallerySlide: FC<GalleryProps> = ({ imgArr, emulator }) => {
   switch (emulator) {
     case "gba":
       return <GbaComponent imgArr={imgArr} />;

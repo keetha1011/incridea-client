@@ -37,7 +37,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
         );
 
         const elementRect = element.getBoundingClientRect();
-        const characterRect = character?.getBoundingClientRect();
+        character?.getBoundingClientRect();
         if (index !== 0) {
           tl.to(
             character,

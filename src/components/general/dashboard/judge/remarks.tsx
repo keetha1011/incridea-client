@@ -23,10 +23,7 @@ const Remarks = ({
     skip: !eventId || !roundNo || !teamId,
   });
 
-  const [
-    addRemark,
-    { data: addRemarkData, loading: addRemarkLoading, error: addRemarkError },
-  ] = useMutation(AddCommentDocument, {
+  const [addRemark, { data: addRemarkData }] = useMutation(AddCommentDocument, {
     refetchQueries: ["GetComment"],
     awaitRefetchQueries: true,
   });

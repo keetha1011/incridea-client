@@ -9,11 +9,10 @@ import HotelModal from "./hotelModal";
 import ViewAccommodateDetails from "./viewAccommodateDetails";
 
 const AccommodateTab: FC = () => {
-  const {
-    data: accommodationRequests,
-    loading: accommodateLoading,
-    refetch: accommodatefetch,
-  } = useQuery(AccommodationRequestsDocument, {});
+  const { data: accommodationRequests, loading: accommodateLoading } = useQuery(
+    AccommodationRequestsDocument,
+    {},
+  );
   return (
     <>
       <div>
@@ -50,7 +49,7 @@ const AccommodateTab: FC = () => {
                 accommodationRequests?.accommodationRequests?.data.map(
                   (acc, idx) => (
                     <div
-                      key={acc?.id}
+                      key={idx}
                       className={`mb-3 ml-2 flex flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-center md:rounded-none md:p-4`}
                     >
                       <h1 className="flex basis-1/6 justify-start py-0.5 text-start text-lg">

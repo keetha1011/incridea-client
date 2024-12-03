@@ -10,12 +10,9 @@ import { CreateTeamDocument, Event } from "~/generated/generated";
 const CreateTeamModal = ({ eventId }: { eventId: Event["id"] }) => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
-  const [createTeam, { loading, error: mutationError }] = useMutation(
-    CreateTeamDocument,
-    {
-      refetchQueries: ["MyTeam"],
-    },
-  );
+  const [createTeam] = useMutation(CreateTeamDocument, {
+    refetchQueries: ["MyTeam"],
+  });
 
   const [name, setName] = useState("");
   const handleCreateTeam = async (e: React.FormEvent<HTMLFormElement>) => {

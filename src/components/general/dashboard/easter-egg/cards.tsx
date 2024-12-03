@@ -9,11 +9,7 @@ type Props = {
 };
 
 const Cards = ({ day }: Props) => {
-  const {
-    data: cards,
-    loading: cardsLoading,
-    error: cardsError,
-  } = useQuery(GetCardsDocument, {
+  const { data: cards, loading: cardsLoading } = useQuery(GetCardsDocument, {
     variables: {
       day: day as DayType,
     },

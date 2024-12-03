@@ -13,7 +13,7 @@ const Reveal = ({
   const control = useAnimation();
 
   useEffect(() => {
-    isInView && control.start("visible").catch((err) => console.log(err));
+    if (isInView) control.start("visible").catch((err) => console.log(err));
   }, [isInView]);
 
   return (

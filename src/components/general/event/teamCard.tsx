@@ -1,4 +1,3 @@
-import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
@@ -12,11 +11,7 @@ import Button from "~/components/button";
 import ConfirmTeamModal from "~/components/general/profile/confirmTeam";
 // import GoogleCalendar from './googleCalendar';
 import LeaveTeamModal from "~/components/general/profile/leaveTeamModal";
-import createToast from "~/components/toast";
-import {
-  QueryMyTeamSuccess,
-  RegisterSoloEventDocument,
-} from "~/generated/generated";
+import { QueryMyTeamSuccess } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 import { makeTeamPayment } from "~/utils/razorpay";
 import { generateEventUrl } from "~/utils/url";
@@ -158,21 +153,20 @@ const TeamCard = ({
                   className="mt-2 items-center justify-center !font-sans font-bold"
                   disabled={sdkLoading}
                   onClick={async () => {
-                    team.members.length >= team.event.minTeamSize
-                      ? await makeTeamPayment(
-                          team.id,
-                          name,
-                          email,
-                          setSdkLoading,
-                        )
-                      : toast.error(
-                          `You need ${
-                            team.event.minTeamSize - team.members.length
-                          } more members to confirm your team.`,
-                          {
-                            position: "bottom-center",
-                          },
-                        );
+                    if (team.members.length >= team.event.minTeamSize)
+                      await makeTeamPayment(
+                        team.id,
+                        name,
+                        email,
+                        setSdkLoading,
+                      );
+                    else
+                      toast.error(
+                        `You need ${
+                          team.event.minTeamSize - team.members.length
+                        } more members to confirm your team.`,
+                        { position: "bottom-center" },
+                      );
                   }}
                 >
                   Pay {team.event.fees} to confirm
@@ -278,9 +272,6 @@ const TeamCard = ({
 const EventButtons = ({
   type,
   eventId,
-  fees,
-  name,
-  email,
 }: {
   type: string;
   eventId: string;
@@ -288,36 +279,6 @@ const EventButtons = ({
   name: string;
   email: string;
 }) => {
-  // const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [registerSoloEvent, { loading: regLoading, data: regData }] =
-    useMutation(RegisterSoloEventDocument, {
-      refetchQueries: ["MyTeam"],
-    });
-
-  const handleSoloRegister = async () => {
-    const promise = registerSoloEvent({
-      variables: {
-        eventId: eventId,
-      },
-    });
-    // .then((res) => {
-    //   if (
-    //     res.data?.registerSoloEvent.__typename ===
-    //     "MutationRegisterSoloEventSuccess"
-    //   ) {
-    //     if (fees !== 0) {
-    //       makeTeamPayment(
-    //         res.data?.registerSoloEvent.data.id,
-    //         name,
-    //         email,
-    //         setSdkLoaded
-    //       );
-    //     }
-    //   }
-    // });
-    await createToast(promise, "Registering...");
-  };
-
   if (type === "INDIVIDUAL" || type === "INDIVIDUAL_MULTIPLE_ENTRY") {
     return null;
   } else {

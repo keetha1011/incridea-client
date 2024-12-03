@@ -30,12 +30,11 @@ export default function Level3() {
     awaitRefetchQueries: true,
   });
 
-  const handleAddXp = () => {
-    if (calledXp) {
-      return;
-    }
+  const handleAddXp = async () => {
+    if (calledXp) return;
+
     setCalledXp(true);
-    const promise = addXp().then((res) => {
+    await addXp().then((res) => {
       if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
         toast.success(
           `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
@@ -58,7 +57,7 @@ export default function Level3() {
         stack.shift();
         if (stack.length === 0) {
           //add mutation here for xp points
-          handleAddXp();
+          void handleAddXp();
         }
       }
     };

@@ -9,7 +9,7 @@ import { useAuth } from "~/hooks/useAuth";
 
 const Organizer: NextPage = () => {
   const router = useRouter();
-  const { user, loading, error } = useAuth();
+  const { user, loading } = useAuth();
   if (loading)
     return (
       <div className="flex h-screen w-screen justify-center">

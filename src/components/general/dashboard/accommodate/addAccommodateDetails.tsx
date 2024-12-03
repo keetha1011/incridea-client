@@ -5,7 +5,6 @@ import { MdModeEditOutline } from "react-icons/md";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import {
   GetAllHotelsDocument,
@@ -25,15 +24,9 @@ const AddAccommodateDetails: FC<{
   const [roomNo, setRoomNo] = useState("");
   const [status, setStatus] = useState("");
 
-  const {
-    data: allHotels,
-    loading: hotelLoading,
-    refetch: hotelRefetch,
-  } = useQuery(GetAllHotelsDocument);
+  const { data: allHotels } = useQuery(GetAllHotelsDocument);
 
-  const [updateStatus, { data: updateStatusResult }] = useMutation(
-    UpdateAccommodationStatusDocument,
-  );
+  const [updateStatus] = useMutation(UpdateAccommodationStatusDocument);
   const handleUpdate = async () => {
     const promise = updateStatus({
       variables: {

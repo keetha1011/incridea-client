@@ -99,8 +99,6 @@ type GLTFResult = GLTF & {
   };
 };
 
-type ActionName = "CameraAction";
-type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 interface Scene2Props {
   isMuted: boolean;
   setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
@@ -109,7 +107,6 @@ interface Scene2Props {
 
 const Scene2: React.FC<Scene2Props> = ({
   isMuted,
-  setIsMuted,
   setInstruction,
   ...props
 }) => {

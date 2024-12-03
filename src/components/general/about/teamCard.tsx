@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { FC } from "react";
 import { AiFillGithub, AiFillInstagram } from "react-icons/ai";
@@ -15,7 +14,7 @@ const TeamCard: FC<{
   github: string;
   quote: string;
   avatar: string;
-}> = ({ name, role, linkedin, github, quote, instagram, image, avatar }) => {
+}> = ({ name, role, linkedin, github, quote, instagram, image }) => {
   return (
     <div className="flex w-[20rem] gap-4 rounded-xl border border-primary-200/70 bg-primary-500 px-5 pt-5 duration-200 hover:scale-[1.02]">
       <div className="flex h-full w-full flex-col gap-4">

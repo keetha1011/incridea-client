@@ -39,16 +39,15 @@ const Score = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  const [updateScore, { loading: updateScoreLoading, error: updateError }] =
-    useMutation(AddScoreDocument, {
-      refetchQueries: ["GetScore", "GetTotalScores"],
-      awaitRefetchQueries: true,
-      variables: {
-        criteriaId: Number(criteriaId),
-        teamId: Number(teamId),
-        score: score ? score : "0",
-      },
-    });
+  const [updateScore, { error: updateError }] = useMutation(AddScoreDocument, {
+    refetchQueries: ["GetScore", "GetTotalScores"],
+    awaitRefetchQueries: true,
+    variables: {
+      criteriaId: Number(criteriaId),
+      teamId: Number(teamId),
+      score: score ? score : "0",
+    },
+  });
   console.log(error, updateError);
 
   const handleUpdateScore = async () => {

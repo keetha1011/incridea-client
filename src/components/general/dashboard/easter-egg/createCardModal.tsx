@@ -6,12 +6,7 @@ import Button from "~/components/button";
 import TextInput from "~/components/input";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
-import {
-  CreateCardDocument,
-  CreateEventDocument,
-  DayType,
-  EventType,
-} from "~/generated/generated";
+import { CreateCardDocument, DayType } from "~/generated/generated";
 
 const CreateCardModal: FC<{
   cardsRefetch: () => Promise<any>;

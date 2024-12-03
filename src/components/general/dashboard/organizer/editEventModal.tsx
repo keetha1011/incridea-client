@@ -49,12 +49,9 @@ export default function EditEventModal({
     EditorState.createEmpty(),
   );
 
-  const [updateEvent, { data, loading, error }] = useMutation(
-    UpdateEventDocument,
-    {
-      refetchQueries: ["EventByOrganizer"],
-    },
-  );
+  const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
+    refetchQueries: ["EventByOrganizer"],
+  });
 
   const handleUpload = async (file: File) => {
     const formData = new FormData();

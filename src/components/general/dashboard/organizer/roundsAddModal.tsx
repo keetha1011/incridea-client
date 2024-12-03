@@ -1,18 +1,13 @@
 import { useMutation } from "@apollo/client";
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useState } from "react";
-import { AiFillSetting, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
-import {
-  CreateRoundDocument,
-  EventByOrganizerQuery,
-} from "~/generated/generated";
-
-import RoundsSidebar from "./roundsSidebar";
+import { CreateRoundDocument } from "~/generated/generated";
 
 const RoundAddModal: FC<{
   eventID: string;
@@ -23,19 +18,15 @@ const RoundAddModal: FC<{
   const [dateTime, setDateTime] = useState(
     new Date(new Date(2024, 1, 22, 9, 30)),
   );
-  const [createRound, { loading, data, error }] = useMutation(
-    CreateRoundDocument,
-    {
-      refetchQueries: ["EventByOrganizer"],
-      variables: {
-        eventId: eventID,
-        date: dateTime.toString(),
-      },
-      awaitRefetchQueries: true, // waits for changes to be reflected, better UX(?) but slower
+  const [createRound, { loading }] = useMutation(CreateRoundDocument, {
+    refetchQueries: ["EventByOrganizer"],
+    variables: {
+      eventId: eventID,
+      date: dateTime.toString(),
     },
-  );
-  // console.log(dateTime.toISOString().slice(0, 16));
-  // console.log(data, error);
+    awaitRefetchQueries: true, // waits for changes to be reflected, better UX(?) but slower
+  });
+
   const closeModal = () => {
     setIsOpen(false);
     setDateTime(new Date(2024, 1, 22, 14, 30));

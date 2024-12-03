@@ -23,9 +23,8 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
 
   if (emailVerificationError) setGotDialogBox(true);
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async () => {
     setError(null);
-    e.preventDefault();
     if (email === "") return;
 
     await emailVerificationMutation({
@@ -53,7 +52,10 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
         className={`relative flex min-h-full flex-col justify-center gap-2 px-3 py-3 ${
           loading && "pointer-events-none cursor-not-allowed"
         }`}
-        onSubmit={handleSubmit}
+        onSubmit={async (e) => {
+          e.preventDefault();
+          await handleSubmit();
+        }}
       >
         <h2 className="pb-1 text-center text-2xl font-semibold">
           Resend Verification Email
@@ -72,7 +74,10 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
                 <p>Make sure to check your spam folder.</p>
                 <button
                   type="button"
-                  onClick={handleSubmit}
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    await handleSubmit();
+                  }}
                   className="text-sm font-normal text-secondary-800 underline transition-colors hover:font-medium"
                 >
                   Click here to resend it

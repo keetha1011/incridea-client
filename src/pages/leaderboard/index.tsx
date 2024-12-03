@@ -43,11 +43,11 @@ const LeaderBoard: NextPage = () => {
       const userTotalPoints: UserTotalPoints = {};
 
       Leaderboard?.getXpLeaderboard.data.forEach((item) => {
-        const userId: string = item.user.id;
-        const levelPoints: number = item.level.point;
-        const userName: string = item.user.name;
-        const levelCount: number = 1;
-        const createdAt: string = item.createdAt;
+        const userId = item.user.id;
+        const levelPoints = item.level.point;
+        const userName = item.user.name;
+        const levelCount = 1;
+        const createdAt = item.createdAt;
 
         // Check if the user ID is already in the userTotalPoints object
         if (userTotalPoints[userId]) {

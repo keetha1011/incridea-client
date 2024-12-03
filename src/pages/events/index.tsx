@@ -45,22 +45,8 @@ const getStaticProps: GetStaticProps<Props> = async () => {
 const Page = ({ data }: Props) => {
   const containerRef = useRef(null);
 
-  // TODO: add new branchs
-  const branchFilters = [
-    "All",
-    "CORE",
-    "CSE",
-    "ISE",
-    "AIML",
-    "CCE",
-    "ECE",
-    "EEE",
-    "MECH",
-    "CIVIL",
-    "BTE",
-  ];
-
   const dayFilters = ["All", "DAY 1", "DAY 2", "DAY 3"];
+
   const categoryFilters = [
     "All",
     "TECHNICAL",
@@ -68,31 +54,16 @@ const Page = ({ data }: Props) => {
     "CORE",
     "SPECIAL",
   ];
+
   const [currentBranchFilter, setCurrentBranchFilter] =
-    useState<(typeof branchFilters)[number]>("All");
+    useState<(typeof categoryFilters)[number]>("All");
   const [currentDayFilter, setCurrentDayFilter] =
     useState<(typeof dayFilters)[number]>("All");
   const [currentCategoryFilter, setCurrentCategoryFilter] =
-    useState<(typeof branchFilters)[number]>("All");
+    useState<(typeof categoryFilters)[number]>("All");
   const [query, setQuery] = useState("");
 
   const [filteredEvents, setFilteredEvents] = useState(data || []);
-
-  const [showTopButton, setShowTopButton] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowTopButton(true);
-      } else {
-        setShowTopButton(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     let tempFilteredEvents = data;
@@ -136,15 +107,6 @@ const Page = ({ data }: Props) => {
         ),
       );
     }
-  };
-
-  //TODO: Add reset filter button on mobile
-  const resetFilters = () => {
-    setQuery("");
-    setCurrentBranchFilter("All");
-    setCurrentDayFilter("All");
-    setCurrentCategoryFilter("All");
-    setFilteredEvents(data || []);
   };
 
   const backgroundImages = [
@@ -278,7 +240,7 @@ const Page = ({ data }: Props) => {
                       <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
-                            {({ active }) => (
+                            {() => (
                               <button
                                 className={`${
                                   currentDayFilter === filter
@@ -354,7 +316,7 @@ const Page = ({ data }: Props) => {
                       <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {categoryFilters.map((filter) => (
                           <Menu.Item key={filter}>
-                            {({ active }) => (
+                            {() => (
                               <button
                                 className={`${
                                   currentCategoryFilter ===

@@ -29,11 +29,13 @@ function EventRegistration({
   type: Event["eventType"];
   fees: Event["fees"];
 }) {
-  const { loading, user, status } = useAuth();
+  const { loading, user } = useAuth();
   const router = useRouter();
   const { slug } = router.query;
 
-  if (loading) return null;
+  if (loading || typeof slug === "undefined" || slug instanceof Array)
+    return null;
+
   return (
     <>
       {eventId === "29" ||
@@ -106,17 +108,19 @@ function EventRegistrationButton({
   name: string;
   email: string;
 }) {
-  const { loading, data, error } = useQuery(MyTeamDocument, {
+  const { loading, data } = useQuery(MyTeamDocument, {
     variables: {
       eventId: eventId,
     },
   });
 
   const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [registerSoloEvent, { loading: regLoading, data: regData }] =
-    useMutation(RegisterSoloEventDocument, {
+  const [registerSoloEvent, { loading: regLoading }] = useMutation(
+    RegisterSoloEventDocument,
+    {
       refetchQueries: ["MyTeam"],
-    });
+    },
+  );
 
   const handleSoloRegister = async () => {
     const promise = registerSoloEvent({

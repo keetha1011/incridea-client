@@ -168,7 +168,7 @@ const Menu: React.FunctionComponent<{
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
   router: NextRouter;
-}> = ({ showModal, setShowModal, router }) => {
+}> = ({ setShowModal }) => {
   const navItems = [
     { href: "/events", target: "Events" },
     { href: "/pronites", target: "Pronite" },
@@ -177,7 +177,7 @@ const Menu: React.FunctionComponent<{
     { href: "/sponsors", target: "Sponsors" },
   ];
 
-  const { user, loading, error } = useAuth();
+  const { user, loading } = useAuth();
 
   return (
     <div className="absolute bottom-0 left-0 flex h-full w-full flex-col items-center justify-center overflow-x-hidden">

@@ -1,6 +1,6 @@
 import { useGLTF, useScroll } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { ISheet, val } from "@theatre/core";
+import { val } from "@theatre/core";
 import { useCurrentSheet } from "@theatre/r3f";
 import React, { Dispatch, useRef } from "react";
 import * as THREE from "three";

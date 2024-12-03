@@ -15,7 +15,7 @@ const RemoveBranchRepButton: FC<{
   const [showModal, setShowModal] = useState(false);
 
   //mutation to remove branch rep
-  const [removeBranchRep, { loading }] = useMutation(RemoveBranchRepDocument, {
+  const [removeBranchRep] = useMutation(RemoveBranchRepDocument, {
     refetchQueries: ["Branches"],
     awaitRefetchQueries: true,
     variables: {

@@ -13,6 +13,7 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 
 import styles from "./audioPlayer.module.css";
+import { cn } from "~/lib/utils";
 
 interface AudioPlayerProps {
   mainTheme: string;
@@ -68,6 +69,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
   }
 
   const [volume, setVolume] = useState(60);
+
   const handleVolumeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newVolume = parseInt(event.target.value);
     setVolume(newVolume);
@@ -104,8 +106,8 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           <MdVolumeUp className="h-10 w-10 transition-colors duration-150" />
         )}
       </button>
-      {/* <div className={styles["audio-player-volume"]}>
-        <label htmlFor="volumeSlider"></label>
+      <div className={cn(styles["audio-player-volume"], "hidden")}>
+        <label htmlFor="volumeSlider" />
         <input
           id="volumeSlider"
           type="range"
@@ -115,7 +117,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
           onChange={handleVolumeChange}
           className="w-28"
         />
-      </div> */}
+      </div>
       {router.pathname === "/explore/level1" && (
         <Modal
           size="md"

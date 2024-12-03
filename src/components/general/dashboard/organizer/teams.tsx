@@ -21,7 +21,7 @@ function Teams({
   eventId: string;
   contains?: string;
 }) {
-  const { data, loading, error, fetchMore } = useQuery(TeamsByRoundDocument, {
+  const { data, loading, fetchMore } = useQuery(TeamsByRoundDocument, {
     variables: {
       roundNo,
       eventId,

@@ -16,8 +16,9 @@ import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
 
 const Editor = dynamic(
-  () => {
-    return import("react-draft-wysiwyg").then((mod) => mod.Editor);
+  async () => {
+    const mod = await import("react-draft-wysiwyg");
+    return mod.Editor;
   },
   { ssr: false },
 );
@@ -42,15 +43,12 @@ const EditEvent: FC<{
     setShowModal(false);
   }
 
-  const [editorState, setEditorState] = useState<any>(
+  const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(),
   );
-  const [updateEvent, { data, loading, error }] = useMutation(
-    UpdateEventDocument,
-    {
-      refetchQueries: ["Events"],
-    },
-  );
+  const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
+    refetchQueries: ["Events"],
+  });
 
   async function saveHandler() {
     setShowModal(false);

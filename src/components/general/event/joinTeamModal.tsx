@@ -12,12 +12,9 @@ import { teamIdToId } from "~/utils/id";
 const JoinTeamModal = () => {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState("");
-  const [joinTeam, { loading, error: mutationError }] = useMutation(
-    JoinTeamDocument,
-    {
-      refetchQueries: ["MyTeam"],
-    },
-  );
+  const [joinTeam, { loading }] = useMutation(JoinTeamDocument, {
+    refetchQueries: ["MyTeam"],
+  });
   const handleJoinTeam = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const promise = joinTeam({

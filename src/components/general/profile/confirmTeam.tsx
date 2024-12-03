@@ -75,14 +75,12 @@ const ConfirmTeamModal: FC<{
             ) => {
               e.preventDefault();
               e.stopPropagation();
-              canConfirm
-                ? await handleConfirm(teamId)
-                : toast.error(
-                    `You need ${needMore} more members to confirm your team.`,
-                    {
-                      position: "bottom-center",
-                    },
-                  );
+              if (canConfirm) await handleConfirm(teamId);
+              else
+                toast.error(
+                  `You need ${needMore} more members to confirm your team.`,
+                  { position: "bottom-center" },
+                );
             }}
             disabled={confirmTeamLoading}
             className="bodyFont !skew-x-0 justify-center rounded-full !tracking-normal"

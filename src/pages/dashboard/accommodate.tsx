@@ -13,12 +13,7 @@ const Accommodate: NextPage = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
 
-  const {
-    data,
-    loading: submissionsLoading,
-    error,
-    refetch: submissionsRefetch,
-  } = useQuery(AccommodationRequestsDocument);
+  const { data } = useQuery(AccommodationRequestsDocument);
 
   if (loading)
     return (

@@ -52,7 +52,7 @@ const Gallery: NextPage = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+    gsap.context(() => {
       const t1 = gsap.timeline();
       t1.from("#animation", {
         delay: 0.3,
@@ -68,9 +68,9 @@ const Gallery: NextPage = () => {
     });
     window?.addEventListener("deviceorientation", (evt) => {
       const xAng = evt.gamma;
-      xAng ? x.set(xAng / 100) : null;
+      if (xAng) x.set(xAng / 100);
       const yAng = evt.beta;
-      yAng ? y.set(yAng / 100) : null;
+      if (yAng) y.set(yAng / 100);
     });
   }, [activeYear, x, y]);
   const img2019: string[] = generateImagePaths(years[0], imageCounts[0], "jpg");

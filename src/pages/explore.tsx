@@ -22,7 +22,7 @@ const Explore = () => {
     e.target.playVideo();
   };
 
-  const onPlay: YouTubeProps["onPlay"] = (e) => {
+  const onPlay: YouTubeProps["onPlay"] = () => {
     console.log(YTPlayerRef.current);
     if (blackScreenRef.current) blackScreenRef.current.style.display = "none";
     setClickThru(false);
@@ -32,13 +32,13 @@ const Explore = () => {
     e.target.playVideo();
   };
 
-  const onEnd: YouTubeProps["onEnd"] = async (e) => {
+  const onEnd: YouTubeProps["onEnd"] = async () => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
     await router.push("/explore/level1");
   };
 
-  const onError: YouTubeProps["onError"] = async (e) => {
+  const onError: YouTubeProps["onError"] = async () => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
     await router.push("/explore/level1");

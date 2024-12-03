@@ -65,6 +65,7 @@ export const pressStart = Press_Start_2P({
 
 export default function App({
   Component,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);

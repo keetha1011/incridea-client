@@ -190,7 +190,7 @@ const ConfirmRoundModal = ({
                         } text-lg text-white/60`}
                       >
                         {solo
-                          ? idToPid(team.leaderId?.toString()!)
+                          ? idToPid(team.leaderId?.toString() ?? "")
                           : idToTeamId(team.id)}
                       </p>
 
@@ -259,7 +259,7 @@ const ConfirmRoundModal = ({
                       </div>
                       <p className="basis-1/4 text-lg text-white/60">
                         {solo
-                          ? idToPid(winner.team.leaderId?.toString()!)
+                          ? idToPid(winner.team.leaderId?.toString() ?? "")
                           : idToTeamId(winner.team.id)}
                       </p>
                       <div className="basis-1/4">

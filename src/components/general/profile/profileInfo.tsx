@@ -98,19 +98,7 @@ const ProfileInfo: FC<{
       createdAt: string;
     };
   }
-  const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
-    GetXpLeaderboardDocument,
-    {},
-  );
-
-  const [sortedLeaderboard, setSortedLeaderboard] = useState<
-    {
-      levelPoints: number;
-      name: string;
-      userId: string;
-      count: number;
-    }[]
-  >([]);
+  const { data: Leaderboard } = useQuery(GetXpLeaderboardDocument, {});
 
   useEffect(() => {
     if (
@@ -120,11 +108,11 @@ const ProfileInfo: FC<{
       const userTotalPoints: UserTotalPoints = {};
 
       Leaderboard?.getXpLeaderboard.data.forEach((item) => {
-        const userId: string = item.user.id;
-        const levelPoints: number = item.level.point;
-        const userName: string = item.user.name;
-        const levelCount: number = 1;
-        const createdAt: string = item.createdAt;
+        const userId = item.user.id;
+        const levelPoints = item.level.point;
+        const userName = item.user.name;
+        const levelCount = 1;
+        const createdAt = item.createdAt;
 
         // Check if the user ID is already in the userTotalPoints object
         if (userTotalPoints[userId]) {
@@ -266,7 +254,7 @@ const ProfileInfo: FC<{
         <div className="flex h-full w-full flex-col items-center justify-between gap-5 sm:flex-row lg:flex-col xl:flex-row">
           <div className="flex flex-col items-center justify-center space-y-2">
             <QRCodeSVG
-              value={idToPid(user?.id!)}
+              value={user ? idToPid(user.id) : ""}
               size={130}
               bgColor="transparent"
               color="#ffffff"
@@ -274,7 +262,7 @@ const ProfileInfo: FC<{
               className="h-32 w-32"
             />
             <span className={`text-xl text-[#fff] sm:text-2xl`}>
-              {idToPid(user?.id!)}
+              {user ? idToPid(user.id) : ""}
             </span>
 
             <span className="flex items-center gap-x-2">

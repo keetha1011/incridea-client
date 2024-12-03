@@ -24,7 +24,7 @@ export const useContainerSize = (
       setDimention(getDimention());
     };
 
-    ref.current && setDimention(getDimention());
+    if (ref.current) setDimention(getDimention());
 
     window.addEventListener("resize", handleResize);
 

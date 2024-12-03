@@ -23,9 +23,6 @@ type GLTFResult = GLTF & {
   };
 };
 
-type ActionName = "Armature|mixamo.com|Layer0";
-type GLTFActions = Record<ActionName, THREE.AnimationAction>;
-
 export default function Dhvani(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);
   const { nodes, materials, animations } = useGLTF(

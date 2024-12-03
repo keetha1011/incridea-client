@@ -50,16 +50,13 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
   const [
     emailVerificationMutation,
-    { data, loading: emailVerificationLoading, error: emailVerificationError },
+    { loading: emailVerificationLoading, error: emailVerificationError },
   ] = useMutation(EmailVerificationDocument);
 
   if (emailVerificationError) setGotDialogBox(true);
 
-  const {
-    data: collegeData,
-    loading: collegesLoading,
-    error: collegesError,
-  } = useQuery(CollegesDocument);
+  const { data: collegeData, loading: collegesLoading } =
+    useQuery(CollegesDocument);
 
   if (emailVerificationError) setGotDialogBox(true);
 

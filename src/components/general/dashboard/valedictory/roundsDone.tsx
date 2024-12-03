@@ -7,7 +7,7 @@ const RoundsDone: FC<{
   eventId: string;
 }> = (eventId) => {
   //query to get rounds by event
-  const { loading, error, data } = useQuery(RoundsByEventDocument, {
+  const { data } = useQuery(RoundsByEventDocument, {
     variables: {
       eventId: eventId.eventId,
     },

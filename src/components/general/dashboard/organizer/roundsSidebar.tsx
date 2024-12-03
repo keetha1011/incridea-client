@@ -1,14 +1,12 @@
 import { useMutation } from "@apollo/client";
 import { Tab } from "@headlessui/react";
 import { FC, useState } from "react";
-import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
 import {
-  CreateRoundDocument,
   DeleteCriteriaDocument,
   DeleteJudgeDocument,
   DeleteRoundDocument,
@@ -24,14 +22,16 @@ const RoundsSidebar: FC<{
   eventId: string;
   isPublished: boolean;
 }> = ({ rounds, eventId, isPublished }) => {
-  const [deleteRound, { data: data2, loading: loading2, error: error2 }] =
-    useMutation(DeleteRoundDocument, {
+  const [deleteRound, { loading: loading2 }] = useMutation(
+    DeleteRoundDocument,
+    {
       refetchQueries: ["EventByOrganizer"],
       variables: {
         eventId: eventId,
       },
       awaitRefetchQueries: true,
-    });
+    },
+  );
 
   const [deleteJudge, { loading: deleteJudgeLoading }] = useMutation(
     DeleteJudgeDocument,

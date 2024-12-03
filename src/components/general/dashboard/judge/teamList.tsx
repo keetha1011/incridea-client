@@ -74,15 +74,12 @@ const TeamList = ({
     },
   );
 
-  const { data: roundStatus, loading: roundStatusLoading } = useSubscription(
-    GetRoundStatusDocument,
-    {
-      variables: {
-        roundNo: roundNo,
-        eventId: eventId,
-      },
+  const { data: roundStatus } = useSubscription(GetRoundStatusDocument, {
+    variables: {
+      roundNo: roundNo,
+      eventId: eventId,
     },
-  );
+  });
 
   const { data: scores, loading: scoresLoading } = useQuery(
     GetTotalScoresDocument,
@@ -331,7 +328,7 @@ const TeamList = ({
                 >
                   {teamOrParticipant === "Team"
                     ? idToTeamId(team.id)
-                    : idToPid(team.leaderId?.toString()!)}
+                    : idToPid(team.leaderId?.toString() ?? "")}
                 </div>
 
                 <div

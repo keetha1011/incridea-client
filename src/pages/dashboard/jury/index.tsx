@@ -18,7 +18,7 @@ import { GetAllWinnersDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 const Jury = () => {
-  const { user, loading, error } = useAuth();
+  const { user, loading } = useAuth();
   // function fetchWinners(eventId: string) {
   //   const { data: winners, loading: winnersLoading } = useQuery(
   //     WinnersByEventDocument,
@@ -31,16 +31,12 @@ const Jury = () => {
   //   );
   //   return winners;
   // }
-  const { data: allWinners, loading: allWinnersLoading } = useQuery(
-    GetAllWinnersDocument,
-  );
+  const { data: allWinners } = useQuery(GetAllWinnersDocument);
   console.log(allWinners);
   const router = useRouter();
-  const {
-    data: Events,
-    loading: EventLoading,
-    error: EventError,
-  } = useQuery(PublishedEventsDocument);
+  const { data: Events, loading: EventLoading } = useQuery(
+    PublishedEventsDocument,
+  );
 
   // --------------------------------------------------
   const branchFilters = [
@@ -120,52 +116,29 @@ const Jury = () => {
     }
   };
 
-  const resetFilters = () => {
-    setQuery("");
-    setCurrentBranchFilter("ALL");
-    setCurrentDayFilter("ALL");
-    setCurrentCategoryFilter("ALL");
-    setFilteredEvents(Events?.publishedEvents ?? []);
-  };
-
   function DownloadWinnersCSV() {
     let csv = "Event Name,Participant Name, Position, Phone no,";
-    {
-      allWinners?.allWinners.__typename === "QueryAllWinnersSuccess" &&
-        allWinners?.allWinners.data.map((winner) => {
-          if (currentBranchFilter === "CORE") {
+
+    if (allWinners?.allWinners.__typename === "QueryAllWinnersSuccess")
+      allWinners?.allWinners.data.map((winner) => {
+        if (currentBranchFilter === "CORE") {
+          if (
+            currentDayFilter === "DAY 1" ||
+            currentDayFilter === "DAY 2" ||
+            currentDayFilter === "DAY 3"
+          ) {
             if (
-              currentDayFilter === "DAY 1" ||
-              currentDayFilter === "DAY 2" ||
-              currentDayFilter === "DAY 3"
+              new Date(
+                currentDayFilter === "DAY 1"
+                  ? "2024-02-22"
+                  : currentDayFilter === "DAY 2"
+                    ? "2024-02-23"
+                    : "2024-02-24",
+              ).getDate() ===
+              new Date(
+                winner.event.rounds[winner.event.rounds.length - 1]!.date,
+              ).getDate()
             ) {
-              if (
-                new Date(
-                  currentDayFilter === "DAY 1"
-                    ? "2024-02-22"
-                    : currentDayFilter === "DAY 2"
-                      ? "2024-02-23"
-                      : "2024-02-24",
-                ).getDate() ===
-                new Date(
-                  winner.event.rounds[winner.event.rounds.length - 1]!.date,
-                ).getDate()
-              ) {
-                if (winner.event.branch.name === "CORE") {
-                  winner.team.members.map((member) => {
-                    csv +=
-                      "\n" +
-                      winner.event.name +
-                      "," +
-                      member.user.name +
-                      "," +
-                      winner.type +
-                      "," +
-                      member.user.phoneNumber;
-                  });
-                }
-              }
-            } else {
               if (winner.event.branch.name === "CORE") {
                 winner.team.members.map((member) => {
                   csv +=
@@ -181,38 +154,38 @@ const Jury = () => {
               }
             }
           } else {
+            if (winner.event.branch.name === "CORE") {
+              winner.team.members.map((member) => {
+                csv +=
+                  "\n" +
+                  winner.event.name +
+                  "," +
+                  member.user.name +
+                  "," +
+                  winner.type +
+                  "," +
+                  member.user.phoneNumber;
+              });
+            }
+          }
+        } else {
+          if (
+            currentDayFilter === "DAY 1" ||
+            currentDayFilter === "DAY 2" ||
+            currentDayFilter === "DAY 3"
+          ) {
             if (
-              currentDayFilter === "DAY 1" ||
-              currentDayFilter === "DAY 2" ||
-              currentDayFilter === "DAY 3"
+              new Date(
+                currentDayFilter === "DAY 1"
+                  ? "2024-02-22"
+                  : currentDayFilter === "DAY 2"
+                    ? "2024-02-23"
+                    : "2024-02-24",
+              ).getDate() ===
+              new Date(
+                winner.event.rounds[winner.event.rounds.length - 1]!.date,
+              ).getDate()
             ) {
-              if (
-                new Date(
-                  currentDayFilter === "DAY 1"
-                    ? "2024-02-22"
-                    : currentDayFilter === "DAY 2"
-                      ? "2024-02-23"
-                      : "2024-02-24",
-                ).getDate() ===
-                new Date(
-                  winner.event.rounds[winner.event.rounds.length - 1]!.date,
-                ).getDate()
-              ) {
-                if (winner.event.branch.name !== "CORE") {
-                  winner.team.members.map((member) => {
-                    csv +=
-                      "\n" +
-                      winner.event.name +
-                      "," +
-                      member.user.name +
-                      "," +
-                      winner.type +
-                      "," +
-                      member.user.phoneNumber;
-                  });
-                }
-              }
-            } else {
               if (winner.event.branch.name !== "CORE") {
                 winner.team.members.map((member) => {
                   csv +=
@@ -227,9 +200,23 @@ const Jury = () => {
                 });
               }
             }
+          } else {
+            if (winner.event.branch.name !== "CORE") {
+              winner.team.members.map((member) => {
+                csv +=
+                  "\n" +
+                  winner.event.name +
+                  "," +
+                  member.user.name +
+                  "," +
+                  winner.type +
+                  "," +
+                  member.user.phoneNumber;
+              });
+            }
           }
-        });
-    }
+        }
+      });
 
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
@@ -300,7 +287,7 @@ const Jury = () => {
                 <Menu.Items className="absolute z-10 mt-1 overflow-hidden rounded-sm bg-[#286D8C] pb-1.5 text-center shadow-2xl shadow-black/80">
                   {branchFilters.map((filter) => (
                     <Menu.Item key={filter}>
-                      {({ active }) => (
+                      {() => (
                         <button
                           className={`${
                             currentBranchFilter === filter
@@ -329,7 +316,7 @@ const Jury = () => {
                 <Menu.Items className="absolute right-0 z-[1] mt-1 overflow-hidden rounded-sm bg-[#286D8C] pb-1.5 text-center shadow-2xl shadow-black/80">
                   {dayFilters.map((filter) => (
                     <Menu.Item key={filter}>
-                      {({ active }) => (
+                      {() => (
                         <button
                           className={`${
                             currentDayFilter === filter
@@ -385,7 +372,7 @@ const Jury = () => {
               <Menu.Items className="absolute z-50 mt-1 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
                 {branchFilters.map((filter) => (
                   <Menu.Item key={filter}>
-                    {({ active }) => (
+                    {() => (
                       <button
                         className={`${
                           currentBranchFilter === filter
@@ -416,7 +403,7 @@ const Jury = () => {
               <Menu.Items className="absolute right-1/2 z-50 mt-1 translate-x-1/2 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
                 {categoryFilters.map((filter) => (
                   <Menu.Item key={filter}>
-                    {({ active }) => (
+                    {() => (
                       <button
                         className={`${
                           currentCategoryFilter === filter
@@ -445,7 +432,7 @@ const Jury = () => {
               <Menu.Items className="absolute right-0 z-50 mt-1 overflow-hidden rounded-sm bg-[#2e768a] pb-1.5 text-center shadow-2xl shadow-black/80">
                 {dayFilters.map((filter) => (
                   <Menu.Item key={filter}>
-                    {({ active }) => (
+                    {() => (
                       <button
                         className={`${
                           currentDayFilter === filter

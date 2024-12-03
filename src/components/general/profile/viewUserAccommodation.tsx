@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
@@ -17,11 +17,9 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
   setShowModal,
   inAccommodation,
 }) => {
-  const {
-    data: userdetails,
-    loading: userLoading,
-    refetch: userRefetch,
-  } = useQuery(AccommodationRequestsByUserDocument);
+  const { data: userdetails, loading: userLoading } = useQuery(
+    AccommodationRequestsByUserDocument,
+  );
 
   const dataRef = useRef<{
     name: string;

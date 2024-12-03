@@ -11,7 +11,7 @@ import AddParticipantToTeam from "./addParticipantToTeam";
 export default function AddTeamModal({ eventId }: { eventId: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenParticipantModal, setIsOpenParticipantModal] = useState(false);
-  const [organizerCreateTeam, { data, loading, error }] = useMutation(
+  const [organizerCreateTeam, { data, loading }] = useMutation(
     OrganizerCreateTeamDocument,
     {
       refetchQueries: ["TeamDetails"],
