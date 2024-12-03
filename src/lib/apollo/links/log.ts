@@ -1,9 +1,11 @@
 import { env } from "~/env";
 
-import { ApolloLink, FetchResult, NextLink, Operation } from "@apollo/client";
+import { ApolloLink, NextLink, Operation } from "@apollo/client";
 import { getOperationAST, OperationTypeNode } from "graphql";
 
-const palettes = {
+const EXPANDED_QUERY_IN_SERVER = false;
+
+const PALLETES = {
   css: {
     query: ["72e3ff", "3fb0d8"],
     mutation: ["c5a3fc", "904dfc"],
@@ -51,12 +53,10 @@ class LogLink extends ApolloLink {
     const parts: string[] = [];
     const args: any[] = [];
 
-    console.log(input);
-
     switch (colorMode) {
       case "ansi":
-        const [lightRegular, darkRegular] = palettes.ansi.regular[type];
-        const [lightBold, darkBold] = palettes.ansi.bold[type];
+        const [lightRegular, darkRegular] = PALLETES.ansi.regular[type];
+        const [lightBold, darkBold] = PALLETES.ansi.bold[type];
         parts.push(
           direction === "up" ? lightRegular : darkRegular,
           ">>",
@@ -68,7 +68,7 @@ class LogLink extends ApolloLink {
         );
         break;
       case "css":
-        const [light, dark] = palettes.css[type];
+        const [light, dark] = PALLETES.css[type];
         const css = `background-color: #${direction === "up" ? light : dark};color: ${direction === "up" ? "black" : "white"};padding: 2px;`;
         parts.push(
           "%c",
@@ -112,7 +112,15 @@ class LogLink extends ApolloLink {
     this.handleLogging({
       id: id,
       direction: "up",
-      input: operation,
+      input:
+        typeof window === "undefined"
+          ? {
+              ...operation,
+              query: EXPANDED_QUERY_IN_SERVER
+                ? operation.query
+                : "ENABLE EXPANDED_QUERY_IN_SERVER",
+            }
+          : operation,
       name: operation.operationName,
       type: definition.operation,
     });

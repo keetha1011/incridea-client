@@ -1,6 +1,5 @@
 import {
   PerspectiveCamera,
-  Text,
   useAnimations,
   useFBX,
   useGLTF,
