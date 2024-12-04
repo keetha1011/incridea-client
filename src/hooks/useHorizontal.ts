@@ -21,10 +21,10 @@ export function useHorizontalScroll() {
   return elRef;
 }
 
-interface Touch {
+type Touch = {
   x: number;
   y: number;
-}
+};
 
 export function useHorizontalTouch(elRef: RefObject<HTMLDivElement>) {
   useEffect(() => {

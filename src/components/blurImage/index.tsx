@@ -2,14 +2,14 @@ import Image from "next/image";
 import { type FunctionComponent, useState } from "react";
 import { cn } from "~/lib/utils";
 
-interface BlurImageProps {
+type BlurImageProps = {
   alt: string;
   src: string;
   fill: boolean;
   style?: React.CSSProperties;
   className?: string;
   priority?: boolean;
-}
+};
 
 const BlurImage: FunctionComponent<BlurImageProps> = (props) => {
   const [isLoading, setLoading] = useState(true);

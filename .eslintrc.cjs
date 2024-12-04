@@ -5,7 +5,6 @@ const config = {
   parserOptions: {
     project: true,
   },
-  // @ts-expect-error - plugin works, but has wrong type
   plugins: ["@typescript-eslint"],
   extends: [
     "next/core-web-vitals",
@@ -13,12 +12,30 @@ const config = {
     "plugin:@typescript-eslint/stylistic-type-checked",
   ],
   rules: {
-    "@typescript-eslint/consistent-type-definitions": "off",
+    "@typescript-eslint/array-type": [
+      "warn",
+      {
+        default: "array",
+      },
+    ],
+    "@typescript-eslint/consistent-indexed-object-style": [
+      "warn",
+      "index-signature",
+    ],
+    "@typescript-eslint/consistent-type-definitions": ["warn", "type"],
     "@typescript-eslint/consistent-type-imports": [
       "warn",
       {
         prefer: "type-imports",
         fixStyle: "inline-type-imports",
+      },
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        checksVoidReturn: {
+          attributes: false,
+        },
       },
     ],
     "@typescript-eslint/no-unused-vars": [
@@ -27,17 +44,6 @@ const config = {
         argsIgnorePattern: "^_",
       },
     ],
-    "@typescript-eslint/no-misused-promises": [
-      "off",
-      {
-        checksVoidReturn: {
-          attributes: false,
-        },
-      },
-    ],
-    "@typescript-eslint/no-unsafe-assignment": "off",
-    "@typescript-eslint/consistent-indexed-object-style": "off",
-    "@typescript-eslint/no-base-to-string": "off",
   },
 };
 module.exports = config;

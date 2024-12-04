@@ -3,6 +3,7 @@ import Image from "next/image";
 
 import Modal from "~/components/modal";
 import {
+  type Avatar,
   GetAvatarsDocument,
   MeDocument,
   UpdateProfileImageDocument,
@@ -21,15 +22,9 @@ const AvatarModal: React.FunctionComponent<Props> = ({
     refetchQueries: [{ query: MeDocument }],
   });
 
-  const data = useQuery(GetAvatarsDocument) || [];
-  let avatarList: {
-    id: string;
-    name: string;
-    url: string;
-  }[] = [];
-  if (data.loading === false && data.data !== undefined) {
-    avatarList = JSON.parse(data.data?.getAvatars);
-  }
+  const { data, loading } = useQuery(GetAvatarsDocument) || [];
+  let avatarList: Avatar[] = [];
+  if (loading === false && data !== undefined) avatarList = data.getAvatars;
 
   return (
     <Modal
@@ -60,7 +55,6 @@ const AvatarModal: React.FunctionComponent<Props> = ({
                 width={100}
                 height={100}
               />
-              {/* <div className="text-center">{avatar.name}</div> */}
             </div>
           ))}
         </div>

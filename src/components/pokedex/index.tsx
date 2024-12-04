@@ -12,15 +12,11 @@ import useStore from "~/components/store/store";
 import { env } from "~/env";
 import { AddXpDocument } from "~/generated/generated";
 
-interface DexProps {
-  data?: { id: string; name: string; image: string }[];
-}
-
-interface DexProps {
+type DexProps = {
   data?: { id: string; name: string; image: string }[];
   isMuted: boolean;
   mainThemeAudioRef: React.MutableRefObject<HTMLAudioElement | null>;
-}
+};
 
 const Pokedex: React.FC<DexProps> = ({
   data = [],

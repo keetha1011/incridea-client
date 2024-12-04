@@ -72,9 +72,7 @@ const Page = ({ data }: Props) => {
             : "2024-02-24",
       ).getDate();
       tempFilteredEvents = tempFilteredEvents.filter((event) =>
-        event.rounds.some(
-          (round) => new Date(round.date).getDate() === filteredDay,
-        ),
+        event.rounds.some((round) => round.date?.getDate() === filteredDay),
       );
     }
     if (currentCategoryFilter !== AllCategory.ALL)

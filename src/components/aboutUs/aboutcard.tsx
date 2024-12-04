@@ -1,12 +1,12 @@
 import Image from "next/image";
 import React from "react";
 
-interface CardProps {
+type CardProps = {
   name: string;
   role: string;
   // desc: string;
   url: string;
-}
+};
 
 const Card: React.FC<CardProps> = ({ name, role, url }) => {
   return (

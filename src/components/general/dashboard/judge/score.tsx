@@ -36,7 +36,6 @@ const Score = ({
     } else {
       setScore("0");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const [updateScore, { error: updateError }] = useMutation(AddScoreDocument, {
@@ -74,19 +73,15 @@ const Score = ({
     if (loading) return;
 
     // Clear previous timeout
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
+    if (timeoutId) clearTimeout(timeoutId);
 
     // Set a new timeout
-    timeoutId = setTimeout(async () => {
-      await handleUpdateScore();
+    timeoutId = setTimeout(() => {
+      void handleUpdateScore();
     }, 500);
 
     // Cleanup function to clear the timeout
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    return () => clearTimeout(timeoutId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score]);
 
@@ -116,10 +111,10 @@ const Score = ({
 
 export default Score;
 
-interface TimePickerProps {
+type TimePickerProps = {
   milliseconds: number;
   onChange: (newTime: number) => void;
-}
+};
 
 const TimePicker: React.FC<TimePickerProps> = ({ milliseconds, onChange }) => {
   const [hours, setHours] = useState<number>(0);

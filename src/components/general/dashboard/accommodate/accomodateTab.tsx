@@ -63,22 +63,16 @@ const AccommodateTab: FC = () => {
                       </h1>
                       <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-sm">
                         {acc?.checkIn
-                          ? new Date(Date.parse(acc?.checkIn)).toLocaleString(
-                              "en-IN",
-                              {
-                                timeZone: "Asia/Kolkata",
-                              },
-                            )
+                          ? new Date(acc?.checkIn).toLocaleString("en-IN", {
+                              timeZone: "Asia/Kolkata",
+                            })
                           : "Not Available"}
                       </h1>
                       <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-sm">
-                        {acc?.checkIn
-                          ? new Date(Date.parse(acc?.checkOut)).toLocaleString(
-                              "en-IN",
-                              {
-                                timeZone: "Asia/Kolkata",
-                              },
-                            )
+                        {acc?.checkOut
+                          ? new Date(acc?.checkOut).toLocaleString("en-IN", {
+                              timeZone: "Asia/Kolkata",
+                            })
                           : "Not Available"}
                       </h1>
                       <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-lg">

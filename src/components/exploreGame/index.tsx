@@ -649,7 +649,7 @@ const ExploreGame = () => {
       showScheduleFlag = true;
     };
 
-  const animate = async () => {
+  const animate = () => {
     ctx.current?.clearRect(0, 0, window.innerWidth, window.innerHeight * 2);
 
     actionKeys.map((key) => {
@@ -689,7 +689,7 @@ const ExploreGame = () => {
       isRightDirection = true;
     }
 
-    if (player.current.x > boundary.right) await router.push("/explore/level2");
+    if (player.current.x > boundary.right) void router.push("/explore/level2");
 
     if (background.current) drawBackground(ctx.current, background.current);
     if (platformSprite.current) drawGround(ctx.current, platformSprite.current);

@@ -50,8 +50,8 @@ const AccommodationForm: FunctionComponent = () => {
   const [AccommodationInfo, setAccommodationInfo] = useState({
     hotelId: 1,
     gender: "",
-    checkInTime: new Date(2024, 2, 22, 9, 30).toString(),
-    checkOutTime: new Date(2024, 2, 24, 22, 30).toString(),
+    checkInTime: new Date(2024, 2, 22, 9, 30),
+    checkOutTime: new Date(2024, 2, 24, 22, 30),
     id: "",
   });
 
@@ -79,11 +79,11 @@ const AccommodationForm: FunctionComponent = () => {
     await createToast(promise, "Uploading image...");
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    await addAccommodation({
+    addAccommodation({
       variables: AccommodationInfo,
-    });
+    }).catch(console.log);
     setFormSubmitted(true);
   };
 

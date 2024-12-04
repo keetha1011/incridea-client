@@ -70,7 +70,7 @@ const Remarks = ({
     }
 
     // Set a new timeout
-    timeoutId = setTimeout(async () => await handleUpdate(), 500);
+    timeoutId = setTimeout(() => void handleUpdate(), 500);
 
     // Cleanup function to clear the timeout
     return () => {

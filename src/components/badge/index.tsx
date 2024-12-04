@@ -19,10 +19,10 @@ const badgeStyles = cva(
   },
 );
 
-export interface BadgeProps extends VariantProps<typeof badgeStyles> {
+export type BadgeProps = {
   children: React.ReactNode;
   className?: string;
-}
+} & VariantProps<typeof badgeStyles>;
 
 const Badge = ({ color, children, className }: BadgeProps) => {
   return (

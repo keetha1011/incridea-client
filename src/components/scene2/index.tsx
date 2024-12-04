@@ -99,11 +99,11 @@ type GLTFResult = GLTF & {
   };
 };
 
-interface Scene2Props {
+type Scene2Props = {
   isMuted: boolean;
   setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
   setInstruction: Dispatch<boolean>;
-}
+};
 
 const Scene2: React.FC<Scene2Props> = ({
   isMuted,

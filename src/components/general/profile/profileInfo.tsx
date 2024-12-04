@@ -91,14 +91,14 @@ const ProfileInfo: FC<{
     }
   }, [userXp.data]);
 
-  interface UserTotalPoints {
+  type UserTotalPoints = {
     [userId: string]: {
       levelPoints: number;
       name: string;
       count: number;
-      createdAt: string;
+      createdAt: Date;
     };
-  }
+  };
   const { data: Leaderboard } = useQuery(GetXpLeaderboardDocument, {});
 
   useEffect(() => {
@@ -245,9 +245,8 @@ const ProfileInfo: FC<{
 
         <p className="text-center">
           You need <br />
-          <span className="font-bold text-secondary-600">
-            {needMore} XP
-          </span> to level up!
+          <span className="font-bold text-secondary-600">{needMore} XP</span> to
+          level up!
         </p>
       </div>
 

@@ -10,9 +10,9 @@ import { generateEventUrl } from "~/utils/url";
 
 import styles from "./styles.module.css";
 
-interface CarouselProps {
+type CarouselProps = {
   events?: { id: string; name: string; image: string }[];
-}
+};
 
 const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {
   // Install Swiper modules

@@ -18,6 +18,7 @@ const Explore = () => {
   const skipRef = useRef<HTMLDivElement>(null);
 
   const onReady: YouTubeProps["onReady"] = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     YTPlayerRef.current = e.target;
     (e.target as YouTubePlayerPatch).playVideo();
   };
@@ -32,16 +33,16 @@ const Explore = () => {
     (e.target as YouTubePlayerPatch).playVideo();
   };
 
-  const onEnd: YouTubeProps["onEnd"] = async () => {
+  const onEnd: YouTubeProps["onEnd"] = () => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
-    await router.push("/explore/level1");
+    void router.push("/explore/level1");
   };
 
-  const onError: YouTubeProps["onError"] = async () => {
+  const onError: YouTubeProps["onError"] = () => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
-    await router.push("/explore/level1");
+    void router.push("/explore/level1");
   };
 
   useEffect(() => {
@@ -60,14 +61,11 @@ const Explore = () => {
       <button
         onClick={() => {
           if (!YTPlayerRef.current) return;
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           if ((YTPlayerRef.current as YouTubePlayerPatch).isMuted()) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             (YTPlayerRef.current as YouTubePlayerPatch).unMute();
             setIsMuted(false);
           } else {
             setIsMuted(true);
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             (YTPlayerRef.current as YouTubePlayerPatch).mute();
           }
         }}

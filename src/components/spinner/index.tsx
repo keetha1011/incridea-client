@@ -25,9 +25,9 @@ const spinnerStyles = cva(
   },
 );
 
-export interface Props extends VariantProps<typeof spinnerStyles> {
+export type Props = {
   className?: string;
-}
+} & VariantProps<typeof spinnerStyles>;
 
 const Spinner = ({ size, intent, className }: Props) => {
   return (

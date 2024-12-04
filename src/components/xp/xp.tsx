@@ -4,10 +4,10 @@ import toast from "react-hot-toast";
 
 import { AddXpDocument } from "~/generated/generated";
 
-interface XpProps {
+type XpProps = {
   children: React.ReactNode;
   levelId: string;
-}
+};
 
 const Xp = ({ children, levelId }: XpProps) => {
   const [addXp] = useMutation(AddXpDocument, {

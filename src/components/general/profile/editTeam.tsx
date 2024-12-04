@@ -9,10 +9,19 @@ import { idToTeamId } from "~/utils/id";
 import AddMemberModal from "./addMember";
 import DeleteTeamMember from "./deleteMember";
 import DeleteTeamModal from "./deleteTeam";
-import { type QueryRegisteredEventsSuccess } from "~/generated/generated";
+import {
+  type RegisterdEventsQuery,
+  type RegisterdEventsQueryVariables,
+} from "~/generated/generated";
+import { type QueryResult } from "@apollo/client";
 
 const EditTeamModal: FC<{
-  team: QueryRegisteredEventsSuccess["data"][number]["teams"][number];
+  team: Extract<
+    NonNullable<
+      QueryResult<RegisterdEventsQuery, RegisterdEventsQueryVariables>["data"]
+    >["registeredEvents"],
+    { __typename: "QueryRegisteredEventsSuccess" }
+  >["data"][number]["teams"][number];
   userId: string;
 }> = ({ team, userId }) => {
   const [showModal, setShowModal] = useState(false);

@@ -124,7 +124,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     });
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     setVerifyError(false);
     setError("");
@@ -160,7 +160,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       return;
     }
 
-    await signUpMutation({
+    signUpMutation({
       variables: {
         name: userInfo.name,
         email:

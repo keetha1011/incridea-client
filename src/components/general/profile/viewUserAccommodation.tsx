@@ -25,8 +25,8 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
     name: string;
     price: number | string;
     room: string;
-    checkIn: string;
-    checkOut: string;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
     status: string;
   }>();
 
@@ -39,26 +39,8 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
         userdetails?.accommodationRequestsByUser[0]?.hotel?.price ??
         "Unavailable",
       room: userdetails?.accommodationRequestsByUser[0]?.room ?? "Unavailable",
-      checkIn: new Date(
-        userdetails?.accommodationRequestsByUser[0]?.checkIn,
-      ).toLocaleString("en-GB", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      }),
-      checkOut: new Date(
-        userdetails?.accommodationRequestsByUser[0]?.checkOut,
-      ).toLocaleString("en-GB", {
-        day: "numeric",
-        month: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      }),
+      checkIn: userdetails?.accommodationRequestsByUser[0]?.checkIn,
+      checkOut: userdetails?.accommodationRequestsByUser[0]?.checkOut,
       status:
         userdetails?.accommodationRequestsByUser[0]?.status ?? "Unavailable",
     };
@@ -91,8 +73,26 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
                   <div>{dataRef.current?.name}</div>
                   <div>{dataRef.current?.price}</div>
                   <div>{dataRef.current?.room}</div>
-                  <div>{dataRef.current?.checkIn}</div>
-                  <div>{dataRef.current?.checkOut}</div>
+                  <div>
+                    {dataRef.current?.checkIn?.toLocaleString("en-GB", {
+                      day: "numeric",
+                      month: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    })}
+                  </div>
+                  <div>
+                    {dataRef.current?.checkOut?.toLocaleString("en-GB", {
+                      day: "numeric",
+                      month: "numeric",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      hour12: true,
+                    })}
+                  </div>
                   <div>{dataRef.current?.status}</div>
                 </div>
               </div>

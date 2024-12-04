@@ -1,9 +1,5 @@
-import { useQuery } from "@apollo/client";
+import { type QueryResult, useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import {
-  type GetServerSideProps,
-  type InferGetServerSidePropsType,
-} from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
@@ -16,31 +12,20 @@ import {
   EventByIdDocument,
   type EventByIdQuery,
   GetScoreSheetJuryDocument,
-  type JudgeJuryView,
-  type QueryGetScoreSheetJuryViewSuccess,
+  type GetScoreSheetJuryQuery,
+  type GetScoreSheetJuryQueryVariables,
   Role,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { StatusBadge } from "~/pages/dashboard/jury";
 
-type Props = {
-  slug: string;
-};
-
-// eslint-disable-next-line @typescript-eslint/require-await
-const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const query = context.query;
-  const slug = query.slug as string;
-  return { props: { slug: slug } };
-};
-
-const Page = ({
-  slug,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const Page = () => {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const query = router.query;
+  const slug = query.slug instanceof Array ? query.slug[0] : query.slug;
 
-  const id = slug.split("-").pop();
+  const id = slug?.split("-").pop();
 
   const { data: event, loading: eventLoading } = useQuery(EventByIdDocument, {
     variables: {
@@ -170,12 +155,19 @@ const RoundTable = ({
   );
 };
 
+type QuerySuccess = Extract<
+  NonNullable<
+    QueryResult<GetScoreSheetJuryQuery, GetScoreSheetJuryQueryVariables>["data"]
+  >["getScoreSheetJuryView"],
+  { __typename: "QueryGetScoreSheetJuryViewSuccess" }
+>;
+
 const JudgeTable = ({
   judges,
   teams,
 }: {
-  judges: QueryGetScoreSheetJuryViewSuccess["data"][0]["judges"];
-  teams: QueryGetScoreSheetJuryViewSuccess["data"];
+  judges: QuerySuccess["data"][number]["judges"];
+  teams: QuerySuccess["data"];
 }) => {
   const [csvData, setCsvData] = useState<
     {
@@ -184,7 +176,7 @@ const JudgeTable = ({
   >([]);
   const [judgeName, setJudgeName] = useState<string | null>(null);
   const process = (judgeId: number) => {
-    const judgesData: JudgeJuryView[][] = [];
+    const judgesData: QuerySuccess["data"][number]["judges"][] = [];
     const teamData: string[] = [];
     const data = [];
     teams.map((team) => {
@@ -311,5 +303,4 @@ const JudgeTable = ({
   );
 };
 
-export { getServerSideProps };
 export default Page;

@@ -58,7 +58,7 @@ export default function AddParticipantToTeam({
         setUserId("");
       } else {
         if (res.errors) {
-          throw new Error(res.errors[0]!.toString());
+          throw new Error(res.errors[0]?.message);
         } else {
           throw new Error("Error adding member to team");
         }

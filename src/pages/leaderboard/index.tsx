@@ -14,14 +14,14 @@ import { idToPid } from "~/utils/id";
 const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
 
 const LeaderBoard: NextPage = () => {
-  interface UserTotalPoints {
+  type UserTotalPoints = {
     [userId: string]: {
       levelPoints: number;
       name: string;
       count: number;
-      createdAt: string;
+      createdAt: Date;
     };
-  }
+  };
   const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
     GetXpLeaderboardDocument,
     {},

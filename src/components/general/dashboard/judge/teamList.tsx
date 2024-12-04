@@ -20,20 +20,6 @@ import { idToPid, idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";
 
-type Props = {
-  data: JudgeGetTeamsByRoundSubscription | undefined;
-  loading: boolean;
-  roundNo: number;
-  eventId: string;
-  eventType: string;
-  selectedTeam: string | null;
-  setSelectedTeam: React.Dispatch<React.SetStateAction<string | null>>;
-  selectionMode: boolean;
-  setSelectionMode: React.Dispatch<React.SetStateAction<boolean>>;
-  finalRound: boolean;
-  winners: WinnersByEventQuery | undefined;
-};
-
 const TeamList = ({
   data,
   loading,
@@ -46,7 +32,19 @@ const TeamList = ({
   setSelectionMode,
   finalRound,
   winners,
-}: Props) => {
+}: {
+  data: JudgeGetTeamsByRoundSubscription | undefined;
+  loading: boolean;
+  roundNo: number;
+  eventId: string;
+  eventType: string;
+  selectedTeam: string | null;
+  setSelectedTeam: React.Dispatch<React.SetStateAction<string | null>>;
+  selectionMode: boolean;
+  setSelectionMode: React.Dispatch<React.SetStateAction<boolean>>;
+  finalRound: boolean;
+  winners: WinnersByEventQuery | undefined;
+}) => {
   const [query, setQuery] = React.useState("");
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
   const [sortField, setSortField] = React.useState<
@@ -99,14 +97,10 @@ const TeamList = ({
       roundStatus?.getRoundStatus.__typename ===
       "SubscriptionGetRoundStatusSuccess"
     ) {
-      if (roundStatus.getRoundStatus.data.selectStatus) {
-        setSelectionMode(true);
-      }
+      if (roundStatus.getRoundStatus.data.selectStatus) setSelectionMode(true);
     }
 
-    return () => {
-      setSelectionMode(false);
-    };
+    return () => setSelectionMode(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roundStatus]);
 

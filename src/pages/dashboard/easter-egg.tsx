@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { type QueryResult, useMutation, useQuery } from "@apollo/client";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -15,9 +15,9 @@ import {
   type DayType,
   DeleteCardDocument,
   GetAllSubmissionsDocument,
+  type GetAllSubmissionsQuery,
+  type GetAllSubmissionsQueryVariables,
   GetCardsDocument,
-  type QueryGetAllSubmissionsSuccess,
-  type Submission,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { idToPid } from "~/utils/id";
@@ -42,7 +42,17 @@ const EasterEggDashboard = () => {
   });
 
   const [sortedSubmissions, setSortedSubmissions] = useState<
-    QueryGetAllSubmissionsSuccess["data"]
+    Extract<
+      NonNullable<
+        QueryResult<
+          GetAllSubmissionsQuery,
+          GetAllSubmissionsQueryVariables
+        >["data"]
+      >["getAllSubmissions"],
+      {
+        __typename: "QueryGetAllSubmissionsSuccess";
+      }
+    >["data"]
   >([]);
 
   useEffect(() => {
@@ -73,7 +83,7 @@ const EasterEggDashboard = () => {
       }
     }
     // filter submissions by query
-    const filtered = sortedSubmissions.filter((submission: Submission) => {
+    const filtered = sortedSubmissions.filter((submission) => {
       const name = submission.user.name.toLowerCase();
       const pid = idToPid(submission.user.id);
       const clue = submission.card.clue.toLowerCase();
@@ -257,43 +267,39 @@ const EasterEggDashboard = () => {
                   sortedSubmissions.length === 0 ? (
                     <span className="text-white/70">No submissions found</span>
                   ) : (
-                    sortedSubmissions.map(
-                      (submission: Submission, index: number) => (
-                        <div
-                          className="flex flex-col justify-between overflow-hidden rounded-sm bg-white/20 md:shrink-0 md:grow md:flex-row"
-                          key={index}
-                        >
-                          <div className="flex max-w-sm flex-col gap-1.5 p-3">
-                            <span>
-                              <span className="font-semibold">Name:</span>{" "}
-                              {submission.user.name}
-                            </span>
-                            <span>
-                              <span className="font-semibold">PID:</span>{" "}
-                              {idToPid(submission.user.id)}
-                            </span>
-                            <span>
-                              <span className="font-semibold">Clue ID:</span>{" "}
-                              {submission.card.id}
-                            </span>
-                            <span>
-                              <span className="font-semibold">Clue:</span>{" "}
-                              {submission.card.clue}
-                            </span>
-                          </div>
-                          <Image
-                            onClick={() =>
-                              setHighlightedImage(submission.image)
-                            }
-                            className="max-h-[200px] max-w-full cursor-pointer object-contain object-center md:ml-auto md:max-w-[250px] md:object-right"
-                            alt="submission"
-                            src={submission.image}
-                            width={500}
-                            height={500}
-                          />
+                    sortedSubmissions.map((submission, i) => (
+                      <div
+                        className="flex flex-col justify-between overflow-hidden rounded-sm bg-white/20 md:shrink-0 md:grow md:flex-row"
+                        key={i}
+                      >
+                        <div className="flex max-w-sm flex-col gap-1.5 p-3">
+                          <span>
+                            <span className="font-semibold">Name:</span>{" "}
+                            {submission.user.name}
+                          </span>
+                          <span>
+                            <span className="font-semibold">PID:</span>{" "}
+                            {idToPid(submission.user.id)}
+                          </span>
+                          <span>
+                            <span className="font-semibold">Clue ID:</span>{" "}
+                            {submission.card.id}
+                          </span>
+                          <span>
+                            <span className="font-semibold">Clue:</span>{" "}
+                            {submission.card.clue}
+                          </span>
                         </div>
-                      ),
-                    )
+                        <Image
+                          onClick={() => setHighlightedImage(submission.image)}
+                          className="max-h-[200px] max-w-full cursor-pointer object-contain object-center md:ml-auto md:max-w-[250px] md:object-right"
+                          alt="submission"
+                          src={submission.image}
+                          width={500}
+                          height={500}
+                        />
+                      </div>
+                    ))
                   )
                 ) : (
                   <span className="mt-10 text-white/70">

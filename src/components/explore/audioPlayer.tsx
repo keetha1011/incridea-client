@@ -15,12 +15,12 @@ import Modal from "~/components/modal";
 import styles from "./audioPlayer.module.css";
 import { cn } from "~/lib/utils";
 
-interface AudioPlayerProps {
+type AudioPlayerProps = {
   mainTheme: string;
   isMuted: boolean;
   setIsMuted: Dispatch<SetStateAction<boolean>>;
   mainThemeAudioRef: React.MutableRefObject<HTMLAudioElement | null>;
-}
+};
 
 const AudioPlayer: React.FC<AudioPlayerProps> = ({
   mainThemeAudioRef,

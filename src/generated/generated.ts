@@ -49,6 +49,13 @@ export type AllSubmissions = {
   userId: Scalars["String"]["output"];
 };
 
+export type Avatar = {
+  __typename?: "Avatar";
+  id: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  url: Scalars["String"]["output"];
+};
+
 export type Branch = {
   __typename?: "Branch";
   branchReps: Array<BranchRep>;
@@ -347,8 +354,8 @@ export type Mutation = {
 
 export type MutationAddAccommodationRequestArgs = {
   IdCard: Scalars["String"]["input"];
-  checkIn: Scalars["String"]["input"];
-  checkOut: Scalars["String"]["input"];
+  checkIn: Scalars["DateTime"]["input"];
+  checkOut: Scalars["DateTime"]["input"];
   gender: Scalars["String"]["input"];
   hotelId: Scalars["Int"]["input"];
 };
@@ -1221,7 +1228,7 @@ export type Query = {
   getAllQuizSubmissions: QueryGetAllQuizSubmissionsResult;
   getAllSubmissions: QueryGetAllSubmissionsResult;
   getAllquestions: QueryGetAllquestionsResult;
-  getAvatars: Scalars["String"]["output"];
+  getAvatars: Array<Avatar>;
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
@@ -1839,8 +1846,8 @@ export type Xp = {
 };
 
 export type AddAccommodationRequestMutationVariables = Exact<{
-  checkInTime: Scalars["String"]["input"];
-  checkOutTime: Scalars["String"]["input"];
+  checkInTime: Scalars["DateTime"]["input"];
+  checkOutTime: Scalars["DateTime"]["input"];
   gender: Scalars["String"]["input"];
   hotelId: Scalars["Int"]["input"];
   id: Scalars["String"]["input"];
@@ -3228,9 +3235,7 @@ export type GetAllSubmissionsQuery = {
         __typename: "QueryGetAllSubmissionsSuccess";
         data: Array<{
           __typename?: "Submission";
-          userId: string;
           image: string;
-          cardId: string;
           user: { __typename?: "User"; name: string; id: string };
           card: { __typename?: "Card"; clue: string; id: string; day: DayType };
         }>;
@@ -3271,7 +3276,15 @@ export type GetAllWinnersQuery = {
 
 export type GetAvatarsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAvatarsQuery = { __typename?: "Query"; getAvatars: string };
+export type GetAvatarsQuery = {
+  __typename?: "Query";
+  getAvatars: Array<{
+    __typename?: "Avatar";
+    id: string;
+    name: string;
+    url: string;
+  }>;
+};
 
 export type BranchesQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -3382,7 +3395,6 @@ export type GetScoreSheetJuryQuery = {
               criteriaId: number;
               score: number;
               criteriaName: string;
-              criteriaType: CriteriaType;
             }>;
           }>;
         }>;
@@ -3837,7 +3849,7 @@ export const AddAccommodationRequestDocument = {
             kind: "NonNullType",
             type: {
               kind: "NamedType",
-              name: { kind: "Name", value: "String" },
+              name: { kind: "Name", value: "DateTime" },
             },
           },
         },
@@ -3851,7 +3863,7 @@ export const AddAccommodationRequestDocument = {
             kind: "NonNullType",
             type: {
               kind: "NamedType",
-              name: { kind: "Name", value: "String" },
+              name: { kind: "Name", value: "DateTime" },
             },
           },
         },
@@ -12810,10 +12822,6 @@ export const GetAllSubmissionsDocument = {
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "userId" },
-                            },
-                            {
-                              kind: "Field",
                               name: { kind: "Name", value: "user" },
                               selectionSet: {
                                 kind: "SelectionSet",
@@ -12832,10 +12840,6 @@ export const GetAllSubmissionsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "image" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "cardId" },
                             },
                             {
                               kind: "Field",
@@ -13042,7 +13046,18 @@ export const GetAvatarsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "getAvatars" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getAvatars" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "url" } },
+              ],
+            },
+          },
         ],
       },
     },
@@ -13663,13 +13678,6 @@ export const GetScoreSheetJuryDocument = {
                                           name: {
                                             kind: "Name",
                                             value: "criteriaName",
-                                          },
-                                        },
-                                        {
-                                          kind: "Field",
-                                          name: {
-                                            kind: "Name",
-                                            value: "criteriaType",
                                           },
                                         },
                                       ],

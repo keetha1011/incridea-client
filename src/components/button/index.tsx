@@ -65,13 +65,12 @@ const buttonStyles = cva(
   },
 );
 
-interface ButtonProps
-  extends VariantProps<typeof buttonStyles>,
-    React.ButtonHTMLAttributes<HTMLButtonElement> {
+type ButtonProps = {
   disabled?: boolean;
   noScaleOnHover?: boolean;
   variant?: string;
-}
+} & VariantProps<typeof buttonStyles> &
+  React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button = ({
   intent,

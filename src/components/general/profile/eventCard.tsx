@@ -12,12 +12,24 @@ import DeleteTeamModal from "./deleteTeam";
 import EditTeamModal from "./editTeam";
 import {
   EventType,
-  type QueryRegisteredEventsSuccess,
+  type RegisterdEventsQuery,
+  type RegisterdEventsQueryVariables,
 } from "~/generated/generated";
+import { type QueryResult } from "@apollo/client";
 
 const EventCard: FC<{
-  teams: QueryRegisteredEventsSuccess["data"][number]["teams"];
-  event: QueryRegisteredEventsSuccess["data"][number];
+  teams: Extract<
+    NonNullable<
+      QueryResult<RegisterdEventsQuery, RegisterdEventsQueryVariables>["data"]
+    >["registeredEvents"],
+    { __typename: "QueryRegisteredEventsSuccess" }
+  >["data"][number]["teams"];
+  event: Extract<
+    NonNullable<
+      QueryResult<RegisterdEventsQuery, RegisterdEventsQueryVariables>["data"]
+    >["registeredEvents"],
+    { __typename: "QueryRegisteredEventsSuccess" }
+  >["data"][number];
   userId: string;
 }> = ({ teams, event, userId }) => {
   const eventType = event.teams.map((team) => team.event.eventType)[0];

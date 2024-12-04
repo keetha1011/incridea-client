@@ -28,36 +28,39 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
 
   const router = useRouter();
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     // add some client side validations like empty fields, password length, etc.
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const res = await signIn("credentials", {
+    signIn("credentials", {
       email: userInfo.email,
       password: userInfo.password,
       redirect: false,
-    }).then((res) => {
-      setLoading(false);
-      return res;
-    });
+    })
+      .then((res) => {
+        setLoading(false);
+        return res;
+      })
+      .then(async (res) => {
+        if (res?.error) {
+          setLoading(false);
+          if (res.error.includes("verify")) setVerifyError(true);
+          setError(res.error);
+          setGotDialogBox(true);
+        }
 
-    if (res?.error) {
-      setLoading(false);
-      if (res.error.includes("verify")) setVerifyError(true);
-      setError(res.error);
-      setGotDialogBox(true);
-    }
-
-    if (res?.ok) {
-      setError("");
-      setGotDialogBox(false);
-      setUserInfo({ email: "", password: "" });
-      await router.push(
-        redirectUrl ? decodeURIComponent(redirectUrl) : "/profile",
-      );
-    }
+        if (res?.ok) {
+          setError("");
+          setGotDialogBox(false);
+          setUserInfo({ email: "", password: "" });
+          await router.push(
+            redirectUrl ? decodeURIComponent(redirectUrl) : "/profile",
+          );
+        }
+      })
+      .catch(console.log);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

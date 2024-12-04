@@ -1,9 +1,10 @@
 import styles from "./glitch.module.css";
 
-interface glitchProps {
+type GlitchProps = {
   text: string;
-}
-export default function GlitchAnimation({ text }: glitchProps) {
+};
+
+export default function GlitchAnimation({ text }: GlitchProps) {
   return (
     <>
       <p
