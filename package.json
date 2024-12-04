@@ -20,8 +20,11 @@
     "knip": "knip --cache"
   },
   "lint-staged": {
-    "**/*": [
-      "next lint .",
+    "**/(*.ts|*.tsx)": [
+      "eslint",
+      "prettier --write --ignore-unknown --cache"
+    ],
+    "**/!(*.ts|*.tsx)": [
       "prettier --write --ignore-unknown --cache"
     ]
   },

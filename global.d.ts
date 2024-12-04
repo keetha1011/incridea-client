@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 declare global {
   interface Window {
     Razorpay: new (_: RazorpayOptions) => Razorpay;
