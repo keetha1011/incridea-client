@@ -20,7 +20,10 @@
     "knip": "knip --cache"
   },
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "**/*": [
+      "next lint .",
+      "prettier --write --ignore-unknown --cache"
+    ]
   },
   "dependencies": {
     "@apollo/client": "^3.11.10",

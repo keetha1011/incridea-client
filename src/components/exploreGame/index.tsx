@@ -108,6 +108,7 @@ const ExploreGame = () => {
   const ryokoSprite = useRef<HTMLImageElement | null>(null);
   const background = useRef<HTMLImageElement | null>(null);
   const platformSprite = useRef<HTMLImageElement | null>(null);
+  const routeChanged = useRef(false);
 
   let isRightDirection = true;
   let spriteState: "idle" | "walk" = "idle";
@@ -689,7 +690,11 @@ const ExploreGame = () => {
       isRightDirection = true;
     }
 
-    if (player.current.x > boundary.right) void router.push("/explore/level2");
+    if (player.current.x > boundary.right)
+      if (!routeChanged.current) {
+        routeChanged.current = true;
+        void router.push("/explore/level2");
+      }
 
     if (background.current) drawBackground(ctx.current, background.current);
     if (platformSprite.current) drawGround(ctx.current, platformSprite.current);
@@ -741,7 +746,8 @@ const ExploreGame = () => {
     // window.addEventListener("scroll", () => {
     //   setScrollY(window.scrollY);
     // });
-    void animate();
+
+    animate();
 
     return () => {
       window.removeEventListener("resize", resizeCanvas);

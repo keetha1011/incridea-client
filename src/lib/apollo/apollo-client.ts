@@ -17,18 +17,18 @@ const sseLink = new SSELink({
 
 const logLink = new LogLink();
 
-const authLink = setContext(async (_, { headers }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  if (typeof window === "undefined") return { headers };
+const authLink = setContext(async (_, prevContext) => {
+  if (typeof window === "undefined") return prevContext;
 
   const session = await getSession();
   const token = session?.accessToken;
 
   return {
+    ...prevContext,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     headers: {
       authorization: token ? `Bearer ${token}` : "",
-      ...headers,
+      ...prevContext.headers,
     },
   };
 });

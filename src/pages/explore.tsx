@@ -12,7 +12,7 @@ const Explore = () => {
 
   // FIXME: Just a fallback feature if autoplay doesn't work
   const [clickThru, setClickThru] = useState<boolean>(true);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
   const blackScreenRef = useRef<HTMLDivElement>(null);
   const YTPlayerRef = useRef<YouTubePlayer>(null);
   const skipRef = useRef<HTMLDivElement>(null);
@@ -20,11 +20,10 @@ const Explore = () => {
   const onReady: YouTubeProps["onReady"] = (e) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     YTPlayerRef.current = e.target;
-    (e.target as YouTubePlayerPatch).playVideo();
+    (YTPlayerRef.current as YouTubePlayerPatch).playVideo();
   };
 
   const onPlay: YouTubeProps["onPlay"] = () => {
-    console.log(YTPlayerRef.current);
     if (blackScreenRef.current) blackScreenRef.current.style.display = "none";
     setClickThru(false);
   };

@@ -69,8 +69,7 @@ type PageProps = {
 
 export default function App({
   Component,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  pageProps: { session, ...pageProps },
+  pageProps: { session: _session, ...pageProps },
   initialApolloState,
 }: AppProps & PageProps) {
   const router = useRouter();

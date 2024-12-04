@@ -41,7 +41,9 @@ const Loader: FC = () => {
       setIsLoading(false);
       setOpen(false);
     };
-  }, [router.events]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="relative h-full w-full">
