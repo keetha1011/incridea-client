@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from "react";
+import { type MutableRefObject, useEffect, useState } from "react";
 
 export const useContainerSize = (
   ref: MutableRefObject<HTMLDivElement | null>,
@@ -24,7 +24,7 @@ export const useContainerSize = (
       setDimention(getDimention());
     };
 
-    ref.current && setDimention(getDimention());
+    if (ref.current) setDimention(getDimention());
 
     window.addEventListener("resize", handleResize);
 

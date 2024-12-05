@@ -1,7 +1,12 @@
 import { useMutation } from "@apollo/client";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  type RawDraftContentState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import dynamic from "next/dynamic";
-import { FC } from "react";
+import { type FC } from "react";
 import { useState, useEffect } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AiOutlineEdit } from "react-icons/ai";
@@ -11,13 +16,14 @@ import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
 import { env } from "~/env";
-import { EventsQuery } from "~/generated/generated";
+import { type EventsQuery } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
 
 const Editor = dynamic(
-  () => {
-    return import("react-draft-wysiwyg").then((mod) => mod.Editor);
+  async () => {
+    const mod = await import("react-draft-wysiwyg");
+    return mod.Editor;
   },
   { ssr: false },
 );
@@ -42,15 +48,12 @@ const EditEvent: FC<{
     setShowModal(false);
   }
 
-  const [editorState, setEditorState] = useState<any>(
+  const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(),
   );
-  const [updateEvent, { data, loading, error }] = useMutation(
-    UpdateEventDocument,
-    {
-      refetchQueries: ["Events"],
-    },
-  );
+  const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
+    refetchQueries: ["Events"],
+  });
 
   async function saveHandler() {
     setShowModal(false);
@@ -80,7 +83,7 @@ const EditEvent: FC<{
   useEffect(() => {
     const description = event?.description;
     try {
-      const editorState = JSON.parse(description ?? "");
+      const editorState = JSON.parse(description ?? "") as RawDraftContentState;
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );
@@ -110,8 +113,8 @@ const EditEvent: FC<{
       },
     })
       .then((res) => res.json())
-      .then((res) => {
-        setBanner(res.url);
+      .then((data: { message: string; url: string }) => {
+        setBanner(data.url);
         setUploading(false);
       })
       .catch((err) => {

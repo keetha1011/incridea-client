@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import { FC } from "react";
+import { type FC } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdOutlineExplore } from "react-icons/md";
 

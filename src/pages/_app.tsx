@@ -1,4 +1,4 @@
-import { ApolloProvider } from "@apollo/client";
+import { ApolloProvider, type NormalizedCacheObject } from "@apollo/client";
 import { Analytics } from "@vercel/analytics/react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { AppProps } from "next/app";
@@ -63,13 +63,18 @@ export const pressStart = Press_Start_2P({
   variable: "--font-Press_Start_2P",
 });
 
+type PageProps = {
+  initialApolloState?: NormalizedCacheObject;
+};
+
 export default function App({
   Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
-  const apolloClient = useApollo(pageProps.initialApolloState);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  pageProps: { session: _session, ...pageProps },
+  initialApolloState,
+}: AppProps & PageProps) {
   const router = useRouter();
+  const apolloClient = useApollo(initialApolloState);
+  const [isLoading, setLoading] = useState<boolean>(false);
 
   if (
     router.pathname === "/theme" ||

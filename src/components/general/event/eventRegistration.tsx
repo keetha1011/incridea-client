@@ -8,10 +8,12 @@ import Button from "~/components/button";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import {
-  Event,
+  type Event,
+  EventType,
   MyTeamDocument,
-  QueryMyTeamSuccess,
+  type QueryMyTeamSuccess,
   RegisterSoloEventDocument,
+  Role,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { makeTeamPayment } from "~/utils/razorpay";
@@ -29,11 +31,13 @@ function EventRegistration({
   type: Event["eventType"];
   fees: Event["fees"];
 }) {
-  const { loading, user, status } = useAuth();
+  const { loading, user } = useAuth();
   const router = useRouter();
   const { slug } = router.query;
 
-  if (loading) return null;
+  if (loading || typeof slug === "undefined" || slug instanceof Array)
+    return null;
+
   return (
     <>
       {eventId === "29" ||
@@ -75,7 +79,7 @@ function EventRegistration({
       ) : (
         <EventRegistrationButton
           userId={user.id}
-          registered={user.role !== "USER"}
+          registered={user.role !== Role.User}
           eventId={eventId}
           type={type}
           fees={fees}
@@ -106,17 +110,19 @@ function EventRegistrationButton({
   name: string;
   email: string;
 }) {
-  const { loading, data, error } = useQuery(MyTeamDocument, {
+  const { loading, data } = useQuery(MyTeamDocument, {
     variables: {
       eventId: eventId,
     },
   });
 
   const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [registerSoloEvent, { loading: regLoading, data: regData }] =
-    useMutation(RegisterSoloEventDocument, {
+  const [registerSoloEvent, { loading: regLoading }] = useMutation(
+    RegisterSoloEventDocument,
+    {
       refetchQueries: ["MyTeam"],
-    });
+    },
+  );
 
   const handleSoloRegister = async () => {
     const promise = registerSoloEvent({
@@ -178,7 +184,10 @@ function EventRegistrationButton({
       />
     );
   } else {
-    if (type === "INDIVIDUAL" || type === "INDIVIDUAL_MULTIPLE_ENTRY") {
+    if (
+      type === EventType.Individual ||
+      type === EventType.IndividualMultipleEntry
+    ) {
       if (fees === 0) {
         return (
           <>

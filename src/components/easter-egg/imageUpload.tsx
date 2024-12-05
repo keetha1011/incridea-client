@@ -20,8 +20,9 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
   const [manualLoading, setManualLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [submissionMutation, { data, loading: submissionLoading, error }] =
-    useMutation(CreateSubmissionDocument);
+  const [submissionMutation, { loading: submissionLoading }] = useMutation(
+    CreateSubmissionDocument,
+  );
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -49,7 +50,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
       },
     })
       .then((res) => res.json())
-      .then(async (data) => {
+      .then(async (data: { message: string; url: string }) => {
         await submissionMutation({
           variables: {
             cardId: Number(cardId),

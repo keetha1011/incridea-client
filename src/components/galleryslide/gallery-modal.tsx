@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { FC, Fragment } from "react";
+import React, { type FC, Fragment } from "react";
 import { IoClose } from "react-icons/io5";
 
 type ModalProps = {
@@ -9,7 +9,7 @@ type ModalProps = {
   showModal: boolean;
 };
 
-const Modal: FC<ModalProps> = ({ children, title, onClose, showModal }) => {
+const Modal: FC<ModalProps> = ({ children, onClose, showModal }) => {
   return (
     <Transition appear show={showModal} as={Fragment}>
       <Dialog as="div" className="relative z-[900]" onClose={onClose}>

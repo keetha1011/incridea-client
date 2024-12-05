@@ -1,4 +1,4 @@
-import { GetStaticPaths, GetStaticProps } from "next";
+import { type GetStaticPaths, type GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
@@ -18,7 +18,7 @@ import EventDetails from "~/components/general/event/eventDetails";
 import EventRegistration from "~/components/general/event/eventRegistration";
 import {
   EventByIdDocument,
-  EventByIdQuery,
+  type EventByIdQuery,
   PublishedEventsSlugDocument,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
@@ -74,10 +74,10 @@ const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       },
       revalidate: 60,
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       props: {
-        error: error?.message || "Could not find event",
+        error: error instanceof Error ? error.message : "Could not find event",
       },
       revalidate: 60,
     };
@@ -253,29 +253,21 @@ const Page = ({ event, error }: Props) => {
                               suppressHydrationWarning
                             >
                               <BsFillCalendar2WeekFill />
-                              {round.date &&
-                                new Date(round.date).toLocaleDateString(
-                                  "en-IN",
-                                  {
-                                    day: "numeric",
-                                    month: "short",
-                                  },
-                                )}
+                              {round.date?.toLocaleDateString("en-IN", {
+                                day: "numeric",
+                                month: "short",
+                              })}
                             </p>
                             <p
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
                               <BiTimeFive />
-                              {round.date &&
-                                new Date(round.date).toLocaleTimeString(
-                                  "en-IN",
-                                  {
-                                    hour: "numeric",
-                                    minute: "numeric",
-                                    hour12: true,
-                                  },
-                                )}
+                              {round.date?.toLocaleDateString("en-IN", {
+                                hour: "numeric",
+                                minute: "numeric",
+                                hour12: true,
+                              })}
                             </p>
                           </div>
                         </div>

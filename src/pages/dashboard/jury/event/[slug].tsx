@@ -1,6 +1,5 @@
-import { useQuery } from "@apollo/client";
+import { type QueryResult, useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { CSVLink } from "react-csv";
@@ -11,30 +10,22 @@ import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import {
   EventByIdDocument,
-  EventByIdQuery,
+  type EventByIdQuery,
   GetScoreSheetJuryDocument,
-  QueryGetScoreSheetJuryViewSuccess,
+  type GetScoreSheetJuryQuery,
+  type GetScoreSheetJuryQueryVariables,
+  Role,
 } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { StatusBadge } from "~/pages/dashboard/jury";
 
-type Props = {
-  slug: string;
-};
-
-const getServerSideProps: GetServerSideProps<Props> = async (context) => {
-  const query = context.query;
-  const slug = query.slug as string;
-  return { props: { slug: slug } };
-};
-
-const Page = ({
-  slug,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { user, loading, error } = useAuth();
+const Page = () => {
+  const { user, loading } = useAuth();
   const router = useRouter();
+  const query = router.query;
+  const slug = query.slug instanceof Array ? query.slug[0] : query.slug;
 
-  const id = slug.split("-").pop();
+  const id = slug?.split("-").pop();
 
   const { data: event, loading: eventLoading } = useQuery(EventByIdDocument, {
     variables: {
@@ -53,7 +44,7 @@ const Page = ({
     void router.push("/login");
     return <div>Redirecting...</div>;
   }
-  if (user.role !== "JURY") {
+  if (user.role !== Role.Jury) {
     void router.push("/profile");
     return <div>Redirecting...</div>;
   }
@@ -72,16 +63,10 @@ const RoundTabs = ({
   rounds: EventByIdQuery["eventById"]["rounds"];
   eventId: string;
 }) => {
-  const getRoundStatus = (
-    round: EventByIdQuery["eventById"]["rounds"][0],
-    totalRounds: number,
-  ) => {
+  const getRoundStatus = (round: EventByIdQuery["eventById"]["rounds"][0]) => {
     if (round.completed) return "COMPLETED";
-    if (
-      new Date(
-        rounds.find((r) => r.roundNo === round.roundNo)?.date,
-      ).getTime() > new Date().getTime()
-    )
+    const roundTime = rounds.find((r) => r.roundNo === round.roundNo)?.date;
+    if (roundTime && roundTime.getTime() > new Date().getTime())
       return "YET_TO_START";
     return "ONGOING";
   };
@@ -105,9 +90,7 @@ const RoundTabs = ({
                 }`}
               >
                 <span>Round {round.roundNo} </span>
-                <StatusBadge
-                  status={getRoundStatus(round, rounds.length)}
-                />{" "}
+                <StatusBadge status={getRoundStatus(round)} />{" "}
               </button>
             )}
           </Tab>
@@ -172,38 +155,49 @@ const RoundTable = ({
   );
 };
 
+type QuerySuccess = Extract<
+  NonNullable<
+    QueryResult<GetScoreSheetJuryQuery, GetScoreSheetJuryQueryVariables>["data"]
+  >["getScoreSheetJuryView"],
+  { __typename: "QueryGetScoreSheetJuryViewSuccess" }
+>;
+
 const JudgeTable = ({
   judges,
   teams,
 }: {
-  judges: QueryGetScoreSheetJuryViewSuccess["data"][0]["judges"];
-  teams: QueryGetScoreSheetJuryViewSuccess["data"];
+  judges: QuerySuccess["data"][number]["judges"];
+  teams: QuerySuccess["data"];
 }) => {
   const [csvData, setCsvData] = useState<
     {
-      JudgeName: string;
+      JudgeName: string | undefined;
     }[]
   >([]);
   const [judgeName, setJudgeName] = useState<string | null>(null);
-  const process = (judgeId: any) => {
-    const judgesData: any = [];
-    const teamData: any = [];
+  const process = (judgeId: number) => {
+    const judgesData: QuerySuccess["data"][number]["judges"][] = [];
+    const teamData: string[] = [];
     const data = [];
     teams.map((team) => {
-      const judges: any = team.judges;
-      teamData.push(team?.teamName);
-      const temp = judges?.filter((judge: any) => judge?.judgeId === judgeId);
+      const judges = team.judges;
+      teamData.push(team.teamName);
+      const temp = judges.filter((judge) => judge.judgeId === judgeId);
       judgesData.push(temp);
     });
-    data.push({ JudgeName: judgesData[0][0]?.judgeName });
+    data.push({ JudgeName: judgesData[0]?.[0]?.judgeName });
 
-    teamData.map((team: any, index: any) => {
+    teamData.map((team, index) => {
       const obj: {
-        [key: string]: any;
-      } = {};
+        [key: string]: number | string;
+        judgeTotal: number;
+        teamNames: string;
+      } = {
+        judgeTotal: 0,
+        teamNames: team,
+      };
       let sum = 0;
-      obj.teamNames = team;
-      judgesData[index][0]?.criteria?.map((data: any) => {
+      judgesData[index]?.[0]?.criteria?.map((data) => {
         obj[data.criteriaName] = data.score;
         sum += data.score;
       });
@@ -225,7 +219,7 @@ const JudgeTable = ({
             {({ selected }) => (
               <button
                 onClick={() => {
-                  setCsvData(process(judge?.judgeId));
+                  if (judge.judgeId) setCsvData(process(judge.judgeId));
                   setJudgeName(judge?.judgeName);
                 }}
                 className={`px-4 py-2 font-semibold shadow-md hover:bg-gray-700/90 ${
@@ -309,5 +303,4 @@ const JudgeTable = ({
   );
 };
 
-export { getServerSideProps };
 export default Page;

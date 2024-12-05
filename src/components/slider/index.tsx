@@ -1,4 +1,3 @@
-// Carousel.tsx
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -11,9 +10,9 @@ import { generateEventUrl } from "~/utils/url";
 
 import styles from "./styles.module.css";
 
-interface CarouselProps {
+type CarouselProps = {
   events?: { id: string; name: string; image: string }[];
-}
+};
 
 const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {
   // Install Swiper modules
@@ -21,9 +20,8 @@ const Carousel: React.FC<CarouselProps> = ({ events = [] }) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleSlideChange = (swiper: any) => {
+  const handleSlideChange = (swiper: SwiperCore) =>
     setActiveIndex(swiper.realIndex);
-  };
 
   return (
     <div className="relative z-10 flex w-[300%] items-center justify-center">

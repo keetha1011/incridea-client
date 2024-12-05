@@ -1,6 +1,6 @@
 mutation AddAccommodationRequest(
-  $checkInTime: String!
-  $checkOutTime: String!
+  $checkInTime: DateTime!
+  $checkOutTime: DateTime!
   $gender: String!
   $hotelId: Int!
   $id: String!

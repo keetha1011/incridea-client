@@ -14,7 +14,7 @@ export const QRCodeScanner: React.FC<{
   teamId?: string;
   eventType?: string;
   pId?: string;
-}> = ({ intent, eventId, teamId, eventType, pId }) => {
+}> = ({ intent, eventId, teamId, eventType }) => {
   const [result, setResult] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 

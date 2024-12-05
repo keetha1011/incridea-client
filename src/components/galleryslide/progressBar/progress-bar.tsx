@@ -6,9 +6,9 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "~/components/galleryslide/styles/gallery.module.css";
 import { env } from "~/env";
 
-interface ProgressBarProps {
+type ProgressBarProps = {
   year: number;
-}
+};
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
   const totalYears = 5;
@@ -37,7 +37,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
         );
 
         const elementRect = element.getBoundingClientRect();
-        const characterRect = character?.getBoundingClientRect();
+        character?.getBoundingClientRect();
         if (index !== 0) {
           tl.to(
             character,
@@ -67,7 +67,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ year }) => {
 
   return (
     <div className={styles["progress-bar"]}>
-      {[...Array(totalYears)].map((_, index) => (
+      {[totalYears].map((_, index) => (
         <div key={index} className={styles["progress-step"]}>
           {index < filledSteps && (
             <Image

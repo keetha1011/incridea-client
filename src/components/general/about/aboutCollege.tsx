@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { FC } from "react";
+import { type FC } from "react";
 
 import { env } from "~/env";
 

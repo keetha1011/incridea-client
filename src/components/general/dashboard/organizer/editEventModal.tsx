@@ -1,5 +1,10 @@
 import { useMutation } from "@apollo/client";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  type RawDraftContentState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -11,7 +16,7 @@ import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
 import { env } from "~/env";
 import {
-  EventByOrganizerQuery,
+  type EventByOrganizerQuery,
   EventCategory,
   UpdateEventDocument,
 } from "~/generated/generated";
@@ -45,16 +50,13 @@ export default function EditEventModal({
     setShowModal(false);
   }
 
-  const [editorState, setEditorState] = useState<any>(
+  const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(),
   );
 
-  const [updateEvent, { data, loading, error }] = useMutation(
-    UpdateEventDocument,
-    {
-      refetchQueries: ["EventByOrganizer"],
-    },
-  );
+  const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
+    refetchQueries: ["EventByOrganizer"],
+  });
 
   const handleUpload = async (file: File) => {
     const formData = new FormData();
@@ -70,8 +72,8 @@ export default function EditEventModal({
       },
     })
       .then((res) => res.json())
-      .then((res) => {
-        setBanner(res.url);
+      .then((data: { message: string; url: string }) => {
+        setBanner(data.url);
         setUploading(false);
       })
       .catch((err) => {
@@ -109,7 +111,9 @@ export default function EditEventModal({
 
   useEffect(() => {
     try {
-      const editorState = JSON.parse(event.description ?? "");
+      const editorState = JSON.parse(
+        event.description ?? "",
+      ) as RawDraftContentState;
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );

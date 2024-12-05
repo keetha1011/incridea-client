@@ -23,10 +23,7 @@ const Remarks = ({
     skip: !eventId || !roundNo || !teamId,
   });
 
-  const [
-    addRemark,
-    { data: addRemarkData, loading: addRemarkLoading, error: addRemarkError },
-  ] = useMutation(AddCommentDocument, {
+  const [addRemark, { data: addRemarkData }] = useMutation(AddCommentDocument, {
     refetchQueries: ["GetComment"],
     awaitRefetchQueries: true,
   });
@@ -73,7 +70,7 @@ const Remarks = ({
     }
 
     // Set a new timeout
-    timeoutId = setTimeout(async () => await handleUpdate(), 500);
+    timeoutId = setTimeout(() => void handleUpdate(), 500);
 
     // Cleanup function to clear the timeout
     return () => {

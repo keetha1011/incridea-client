@@ -1,7 +1,5 @@
 import { BsCalendar2Check } from "react-icons/bs";
 
-import { env } from "~/env";
-
 const GoogleCalendar = () => {
   // const config = {
   //   clientId: env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,

@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FunctionComponent, useState, useEffect } from "react";
+import { type FunctionComponent, useState, useEffect } from "react";
 import { GiConfirmed } from "react-icons/gi";
 import { MdError } from "react-icons/md";
 

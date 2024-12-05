@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import React, { FC, useRef } from "react";
+import React, { type FC, useRef } from "react";
 
 const TextAnimation: FC<{
   text: string;

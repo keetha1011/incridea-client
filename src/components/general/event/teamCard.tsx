@@ -1,4 +1,3 @@
-import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
 import { useState } from "react";
@@ -12,11 +11,7 @@ import Button from "~/components/button";
 import ConfirmTeamModal from "~/components/general/profile/confirmTeam";
 // import GoogleCalendar from './googleCalendar';
 import LeaveTeamModal from "~/components/general/profile/leaveTeamModal";
-import createToast from "~/components/toast";
-import {
-  QueryMyTeamSuccess,
-  RegisterSoloEventDocument,
-} from "~/generated/generated";
+import { EventType, type QueryMyTeamSuccess } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 import { makeTeamPayment } from "~/utils/razorpay";
 import { generateEventUrl } from "~/utils/url";
@@ -57,14 +52,14 @@ const TeamCard = ({
       <div className="relative mb-4 mt-5 flex w-full flex-col items-start justify-center rounded-md border border-secondary-400/40 bg-primary-200/20 p-5">
         <div className="bodyFont w-full text-center">
           {team.confirmed ? (
-            team.event.eventType === "INDIVIDUAL" ||
-            team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY" ? (
+            team.event.eventType === EventType.Individual ||
+            team.event.eventType === EventType.IndividualMultipleEntry ? (
               <h1 className="">You&apos;re registered and ready to play!</h1>
             ) : (
               <h1 className="">Your team is registered and ready to play!</h1>
             )
-          ) : team.event.eventType === "INDIVIDUAL" ||
-            team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY" ? (
+          ) : team.event.eventType === EventType.Individual ||
+            team.event.eventType === EventType.IndividualMultipleEntry ? (
             <h1 className="">
               Heads up! Your registration is not confirmed yet.
             </h1>
@@ -74,8 +69,8 @@ const TeamCard = ({
         </div>
         <div className="w-full">
           <div className="mb-2 flex items-center justify-center">
-            {team.event.eventType === "INDIVIDUAL" ||
-            team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY" ? (
+            {team.event.eventType === EventType.Individual ||
+            team.event.eventType === EventType.IndividualMultipleEntry ? (
               team.confirmed && (
                 <div className="w-fit p-3 text-center">
                   <QRCodeSVG
@@ -106,8 +101,8 @@ const TeamCard = ({
           <div>
             <div className="mt-5 flex w-full items-center justify-between">
               {!(
-                team.event.eventType === "INDIVIDUAL" ||
-                team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
+                team.event.eventType === EventType.Individual ||
+                team.event.eventType === EventType.IndividualMultipleEntry
               ) ? (
                 <div
                   className={`w-fit justify-center space-x-2 text-center text-2xl font-bold`}
@@ -123,8 +118,8 @@ const TeamCard = ({
               )}
               {Number(userId) === team.leaderId && !team.confirmed ? (
                 !(
-                  team.event.eventType === "INDIVIDUAL" ||
-                  team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
+                  team.event.eventType === EventType.Individual ||
+                  team.event.eventType === EventType.IndividualMultipleEntry
                 ) && <EditTeamModal team={team} userId={userId} />
               ) : (
                 <Badge
@@ -142,8 +137,8 @@ const TeamCard = ({
                   ? `Pay ${team.event.fees} to confirm `
                   : "Confirm "}
                 your{" "}
-                {team.event.eventType === "INDIVIDUAL" ||
-                team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
+                {team.event.eventType === EventType.Individual ||
+                team.event.eventType === EventType.IndividualMultipleEntry
                   ? "entry"
                   : "team"}{" "}
                 by clicking the button below.
@@ -158,21 +153,20 @@ const TeamCard = ({
                   className="mt-2 items-center justify-center !font-sans font-bold"
                   disabled={sdkLoading}
                   onClick={async () => {
-                    team.members.length >= team.event.minTeamSize
-                      ? await makeTeamPayment(
-                          team.id,
-                          name,
-                          email,
-                          setSdkLoading,
-                        )
-                      : toast.error(
-                          `You need ${
-                            team.event.minTeamSize - team.members.length
-                          } more members to confirm your team.`,
-                          {
-                            position: "bottom-center",
-                          },
-                        );
+                    if (team.members.length >= team.event.minTeamSize)
+                      await makeTeamPayment(
+                        team.id,
+                        name,
+                        email,
+                        setSdkLoading,
+                      );
+                    else
+                      toast.error(
+                        `You need ${
+                          team.event.minTeamSize - team.members.length
+                        } more members to confirm your team.`,
+                        { position: "bottom-center" },
+                      );
                   }}
                 >
                   Pay {team.event.fees} to confirm
@@ -188,14 +182,14 @@ const TeamCard = ({
         </div>
 
         {!(
-          team.event.eventType === "INDIVIDUAL" ||
-          team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
+          team.event.eventType === EventType.Individual ||
+          team.event.eventType === EventType.IndividualMultipleEntry
         ) && (
           <>
             {/* <hr className="w-full border-white/40 mt-3 mb-2" /> */}
             <p className="bodyFont mb-1 mt-5 font-semibold">Team Members:</p>
             <div className="bodyFont w-full">
-              {team?.members?.map((member: any) => (
+              {team?.members?.map((member) => (
                 <div className="text-sm" key={member.user.id}>
                   <h1>{member.user.name}</h1>
                 </div>
@@ -205,8 +199,8 @@ const TeamCard = ({
         )}
 
         {!(
-          team.event.eventType === "INDIVIDUAL" ||
-          team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
+          team.event.eventType === EventType.Individual ||
+          team.event.eventType === EventType.IndividualMultipleEntry
         ) &&
           !team.confirmed &&
           (team.leaderId === Number(userId) ? (
@@ -259,8 +253,8 @@ const TeamCard = ({
           </>
         )} */}
       </div>
-      {(team.event.eventType === "TEAM_MULTIPLE_ENTRY" ||
-        team.event.eventType === "INDIVIDUAL_MULTIPLE_ENTRY") && (
+      {(team.event.eventType === EventType.TeamMultipleEntry ||
+        team.event.eventType === EventType.IndividualMultipleEntry) && (
         <div className="flex max-w-2xl flex-col items-start justify-center">
           <EventButtons
             type={team.event.eventType}
@@ -278,47 +272,17 @@ const TeamCard = ({
 const EventButtons = ({
   type,
   eventId,
-  fees,
-  name,
-  email,
 }: {
-  type: string;
+  type: EventType;
   eventId: string;
   fees: number;
   name: string;
   email: string;
 }) => {
-  // const [sdkLoaded, setSdkLoaded] = useState(false);
-  const [registerSoloEvent, { loading: regLoading, data: regData }] =
-    useMutation(RegisterSoloEventDocument, {
-      refetchQueries: ["MyTeam"],
-    });
-
-  const handleSoloRegister = async () => {
-    const promise = registerSoloEvent({
-      variables: {
-        eventId: eventId,
-      },
-    });
-    // .then((res) => {
-    //   if (
-    //     res.data?.registerSoloEvent.__typename ===
-    //     "MutationRegisterSoloEventSuccess"
-    //   ) {
-    //     if (fees !== 0) {
-    //       makeTeamPayment(
-    //         res.data?.registerSoloEvent.data.id,
-    //         name,
-    //         email,
-    //         setSdkLoaded
-    //       );
-    //     }
-    //   }
-    // });
-    await createToast(promise, "Registering...");
-  };
-
-  if (type === "INDIVIDUAL" || type === "INDIVIDUAL_MULTIPLE_ENTRY") {
+  if (
+    type === EventType.Individual ||
+    type === EventType.IndividualMultipleEntry
+  ) {
     return null;
   } else {
     return (

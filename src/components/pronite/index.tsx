@@ -21,7 +21,7 @@ function Pronite({
   clearScanResults: () => void;
 }) {
   const [cameraOn, setCameraOn] = useState(true);
-  const [registerPronite, { data, loading, error }] = useMutation(
+  const [registerPronite, { data, loading }] = useMutation(
     RegisterProniteDocument,
     {
       variables: {

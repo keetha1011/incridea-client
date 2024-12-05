@@ -1,10 +1,11 @@
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
 import ValedictoryTab from "~/components/general/dashboard/valedictory/valedictoryTab";
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
+import { Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 const Valedictory: NextPage = () => {
@@ -25,7 +26,7 @@ const Valedictory: NextPage = () => {
   }
 
   // 2. Redirect to profile if user is not a admin
-  if (user && user.role !== "JURY") void router.push("/profile");
+  if (user && user.role !== Role.Jury) void router.push("/profile");
 
   return (
     <Dashboard>

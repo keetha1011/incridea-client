@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 
@@ -13,12 +13,7 @@ const Accommodate: NextPage = () => {
   const router = useRouter();
   const { user, loading } = useAuth();
 
-  const {
-    data,
-    loading: submissionsLoading,
-    error,
-    refetch: submissionsRefetch,
-  } = useQuery(AccommodationRequestsDocument);
+  const { data } = useQuery(AccommodationRequestsDocument);
 
   if (loading)
     return (

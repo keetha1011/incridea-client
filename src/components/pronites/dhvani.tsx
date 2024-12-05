@@ -1,7 +1,7 @@
 import { useGLTF, useAnimations } from "@react-three/drei";
 import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
-import { GLTF } from "three-stdlib";
+import type * as THREE from "three";
+import { type GLTF } from "three-stdlib";
 
 import { env } from "~/env";
 
@@ -22,9 +22,6 @@ type GLTFResult = GLTF & {
     ["avaturn_shoes_0_material.001"]: THREE.MeshStandardMaterial;
   };
 };
-
-type ActionName = "Armature|mixamo.com|Layer0";
-type GLTFActions = Record<ActionName, THREE.AnimationAction>;
 
 export default function Dhvani(props: JSX.IntrinsicElements["group"]) {
   const group = useRef<THREE.Group>(null);

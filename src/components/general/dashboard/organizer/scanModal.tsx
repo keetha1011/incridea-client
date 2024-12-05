@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";

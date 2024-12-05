@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 import { toast } from "react-hot-toast";
 
 import Button from "~/components/button";
@@ -30,13 +30,12 @@ const MarkAttendance: FC<{
     },
   );
 
-  const handleMarkAttendance = () => {
-    let promise: Promise<any>;
+  const handleMarkAttendance = async () => {
     if (
       eventType === "INDIVIDUAL" ||
       eventType === "INDIVIDUAL_MULTIPLE_ENTRY"
     ) {
-      promise = markAttendanceSolo({
+      await markAttendanceSolo({
         variables: {
           userId: pidToId(result),
           eventId: eventId ?? "",
@@ -55,7 +54,7 @@ const MarkAttendance: FC<{
         }
       });
     } else if (eventType === "TEAM" || eventType === "TEAM_MULTIPLE_ENTRY") {
-      promise = markAttendanceTeam({
+      await markAttendanceTeam({
         variables: {
           teamId: teamIdToId(result),
           attended: true,

@@ -11,7 +11,7 @@ import {
 } from "react-icons/io5";
 
 import { env } from "~/env";
-import { PublishedEventsQuery } from "~/generated/generated";
+import { type PublishedEventsQuery } from "~/generated/generated";
 import { generateEventUrl } from "~/utils/url";
 
 const Event = ({

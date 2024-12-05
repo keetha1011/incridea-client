@@ -1,12 +1,13 @@
-import { useQuery } from "@apollo/client";
-import { FC, useState, useRef, useEffect, useCallback } from "react";
+import { type QueryResult, useQuery } from "@apollo/client";
+import { type FC, useState, useRef, useEffect, useCallback } from "react";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
 import {
-  EventsByBranchRepQuery,
+  type EventsByBranchRepQuery,
+  type EventsByBranchRepQueryVariables,
   SearchUsersDocument,
 } from "~/generated/generated";
 
@@ -16,9 +17,12 @@ import RemoveOrganizerButton from "./removeOrganizerButton";
 const AddOrganizerModal: FC<{
   eventId: string;
   organizers: EventsByBranchRepQuery["eventsByBranchRep"][0]["organizers"];
-  eventsRefetch: () => Promise<any>;
+  eventsRefetch: QueryResult<
+    EventsByBranchRepQuery,
+    EventsByBranchRepQueryVariables
+  >["refetch"];
   eventName: string;
-}> = ({ eventId, organizers, eventsRefetch, eventName }) => {
+}> = ({ eventId, organizers, eventName }) => {
   const [showModal, setShowModal] = useState(false);
 
   function handleCloseModal() {
@@ -54,11 +58,11 @@ const AddOrganizerModal: FC<{
    (memoize the handleObserver to avoid triggering unnecessary re-renders,
    function will only be recreated if any of its dependencies change, and not on every render) */
   const handleObserver = useCallback(
-    async (entries: IntersectionObserverEntry[]) => {
+    (entries: IntersectionObserverEntry[]) => {
       const target = entries[0]!;
       if (target.isIntersecting && hasNextPage) {
         setIsFetching(true);
-        await searchUsersFetchMore({
+        void searchUsersFetchMore({
           variables: { after: endCursor },
           updateQuery: (prevResult, { fetchMoreResult }) => {
             fetchMoreResult.users.edges = [

@@ -1,15 +1,14 @@
 import {
   PerspectiveCamera,
-  Text,
   useAnimations,
   useFBX,
   useGLTF,
   useScroll,
 } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import React, { Dispatch, useEffect, useRef } from "react";
-import * as THREE from "three";
-import { GLTF } from "three-stdlib";
+import React, { type Dispatch, useEffect, useRef } from "react";
+import type * as THREE from "three";
+import { type GLTF } from "three-stdlib";
 
 import { env } from "~/env";
 
@@ -100,17 +99,14 @@ type GLTFResult = GLTF & {
   };
 };
 
-type ActionName = "CameraAction";
-type GLTFActions = Record<ActionName, THREE.AnimationAction>;
-interface Scene2Props {
+type Scene2Props = {
   isMuted: boolean;
   setIsMuted: React.Dispatch<React.SetStateAction<boolean>>;
   setInstruction: Dispatch<boolean>;
-}
+};
 
 const Scene2: React.FC<Scene2Props> = ({
   isMuted,
-  setIsMuted,
   setInstruction,
   ...props
 }) => {

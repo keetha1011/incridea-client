@@ -5,7 +5,7 @@ import { BiTrashAlt } from "react-icons/bi";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
-import { Criteria, DeleteCriteriaDocument } from "~/generated/generated";
+import { type Criteria, DeleteCriteriaDocument } from "~/generated/generated";
 
 const DeleteCriteriaModal = ({
   criterias,

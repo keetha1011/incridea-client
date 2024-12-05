@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { type FC } from "react";
 import { useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
-import { BranchesQuery } from "~/generated/generated";
+import { type BranchesQuery } from "~/generated/generated";
 
 import AddBranchRepModal from "./addBranchRepModal";
 

@@ -2,7 +2,7 @@ import { Tab } from "@headlessui/react";
 import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 
-import { EventByOrganizerQuery } from "~/generated/generated";
+import { type EventByOrganizerQuery } from "~/generated/generated";
 
 import AddParticipantModal from "./addParticipantModal";
 import AddTeamModal from "./addTeamModal";

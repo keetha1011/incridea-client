@@ -1,7 +1,7 @@
 import { useGLTF, useAnimations, useFBX } from "@react-three/drei";
 import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
-import { GLTF } from "three-stdlib";
+import type * as THREE from "three";
+import { type GLTF } from "three-stdlib";
 
 import { env } from "~/env";
 

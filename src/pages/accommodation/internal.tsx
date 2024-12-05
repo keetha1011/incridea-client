@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -11,7 +11,7 @@ import { useAuth } from "~/hooks/useAuth";
 
 const Accommodation: NextPage = () => {
   const router = useRouter();
-  const { error, user, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) return <Loader />;
   if (!user) void router.push("/login");

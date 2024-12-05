@@ -1,4 +1,4 @@
-import { useRef, useEffect, RefObject } from "react";
+import { useRef, useEffect, type RefObject } from "react";
 
 export function useHorizontalScroll() {
   const elRef = useRef<HTMLDivElement>(null);
@@ -21,10 +21,10 @@ export function useHorizontalScroll() {
   return elRef;
 }
 
-interface Touch {
+type Touch = {
   x: number;
   y: number;
-}
+};
 
 export function useHorizontalTouch(elRef: RefObject<HTMLDivElement>) {
   useEffect(() => {

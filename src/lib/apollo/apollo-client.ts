@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache } from "@apollo/client/core";
 import { setContext } from "@apollo/client/link/context";
 import { from, split } from "@apollo/client/link/core";
 import { HttpLink } from "@apollo/client/link/http";
-import { getOperationAST } from "graphql";
+import { getOperationAST, Kind, OperationTypeNode } from "graphql";
 import { getSession } from "next-auth/react";
 
 import { env } from "~/env";
@@ -17,16 +17,18 @@ const sseLink = new SSELink({
 
 const logLink = new LogLink();
 
-const authLink = setContext(async (_, { headers }) => {
-  if (typeof window === "undefined") return { headers };
+const authLink = setContext(async (_, prevContext) => {
+  if (typeof window === "undefined") return prevContext;
 
   const session = await getSession();
   const token = session?.accessToken;
 
   return {
+    ...prevContext,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     headers: {
       authorization: token ? `Bearer ${token}` : "",
-      ...headers,
+      ...prevContext.headers,
     },
   };
 });
@@ -40,8 +42,8 @@ const splitLink = split(
     const definition = getOperationAST(query, operationName);
 
     return (
-      definition?.kind === "OperationDefinition" &&
-      definition.operation === "subscription"
+      definition?.kind === Kind.OPERATION_DEFINITION &&
+      definition.operation === OperationTypeNode.SUBSCRIPTION
     );
   },
   sseLink,

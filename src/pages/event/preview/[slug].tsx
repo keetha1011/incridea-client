@@ -1,4 +1,7 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import {
+  type GetServerSideProps,
+  type InferGetServerSidePropsType,
+} from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Toaster } from "react-hot-toast";
@@ -16,7 +19,7 @@ import { MdOutlineMailOutline } from "react-icons/md";
 
 import EventDetails from "~/components/general/event/eventDetails";
 import EventRegistration from "~/components/general/event/eventRegistration";
-import { EventByIdDocument, EventByIdQuery } from "~/generated/generated";
+import { EventByIdDocument, type EventByIdQuery } from "~/generated/generated";
 import { client } from "~/lib/apollo";
 
 type Props =
@@ -49,10 +52,10 @@ const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
         event: event.eventById,
       },
     };
-  } catch (error: any) {
+  } catch (error) {
     return {
       props: {
-        error: error?.message || "Could not find event",
+        error: error instanceof Error ? error.message : "Could not find event",
       },
     };
   }

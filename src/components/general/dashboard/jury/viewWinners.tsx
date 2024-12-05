@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 
 import { WinnersByEventDocument } from "~/generated/generated";
-import { idToTeamId, teamIdToId } from "~/utils/id";
+import { idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";
 

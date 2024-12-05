@@ -1,7 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Combobox, Transition } from "@headlessui/react";
 import Link from "next/link";
-import { useState, FormEventHandler, FunctionComponent, Fragment } from "react";
+import {
+  useState,
+  type FormEventHandler,
+  type FunctionComponent,
+  Fragment,
+} from "react";
 import {
   AiFillEye,
   AiFillEyeInvisible,
@@ -50,16 +55,13 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
   const [
     emailVerificationMutation,
-    { data, loading: emailVerificationLoading, error: emailVerificationError },
+    { loading: emailVerificationLoading, error: emailVerificationError },
   ] = useMutation(EmailVerificationDocument);
 
   if (emailVerificationError) setGotDialogBox(true);
 
-  const {
-    data: collegeData,
-    loading: collegesLoading,
-    error: collegesError,
-  } = useQuery(CollegesDocument);
+  const { data: collegeData, loading: collegesLoading } =
+    useQuery(CollegesDocument);
 
   if (emailVerificationError) setGotDialogBox(true);
 
@@ -122,7 +124,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     });
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     setVerifyError(false);
     setError("");
@@ -158,7 +160,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       return;
     }
 
-    await signUpMutation({
+    signUpMutation({
       variables: {
         name: userInfo.name,
         email:

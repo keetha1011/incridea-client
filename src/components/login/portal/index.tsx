@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { FunctionComponent } from "react";
+import React, { type FunctionComponent } from "react";
 
 import { env } from "~/env";
 

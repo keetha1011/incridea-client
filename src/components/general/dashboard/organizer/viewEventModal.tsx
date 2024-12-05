@@ -14,7 +14,7 @@ import {
 import Button from "~/components/button";
 import EventDetails from "~/components/general/event/eventDetails";
 import Modal from "~/components/modal";
-import { EventByOrganizerQuery } from "~/generated/generated";
+import { type EventByOrganizerQuery } from "~/generated/generated";
 
 export default function ViewEventModal({
   event,

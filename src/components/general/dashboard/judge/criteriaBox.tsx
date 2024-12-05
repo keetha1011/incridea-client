@@ -1,4 +1,4 @@
-import { Criteria } from "~/generated/generated";
+import { type Criteria } from "~/generated/generated";
 
 import Score from "./score";
 

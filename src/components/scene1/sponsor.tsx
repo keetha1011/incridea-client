@@ -24,12 +24,11 @@ const Sponsor = () => {
     awaitRefetchQueries: true,
   });
 
-  const handleAddXp = () => {
-    if (calledXp) {
-      return;
-    }
+  const handleAddXp = async () => {
+    if (calledXp) return;
+
     setCalledXp(true);
-    const promise = addXp().then((res) => {
+    await addXp().then((res) => {
       if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
         toast.success(
           `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
@@ -71,10 +70,9 @@ const Sponsor = () => {
       >
         <div
           className={styles.annotationContainer}
-          onClick={() => {
+          onClick={async () => {
             setSponsorFlag();
-            console.log("Clicked");
-            handleAddXp();
+            await handleAddXp();
           }}
         >
           <div

@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import React from "react";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { IoEye } from "react-icons/io5";
 
 import Button from "~/components/button";
@@ -63,9 +63,7 @@ const ViewAccommodateDetails: FC<{
               <div>
                 {user?.accommodationRequestsByUserId[0]!.checkIn
                   ? new Date(
-                      Date.parse(
-                        user?.accommodationRequestsByUserId[0].checkIn,
-                      ),
+                      user?.accommodationRequestsByUserId[0].checkIn,
                     ).toLocaleString("en-IN", {
                       timeZone: "Asia/Kolkata",
                     })
@@ -74,9 +72,7 @@ const ViewAccommodateDetails: FC<{
               <div>
                 {user?.accommodationRequestsByUserId[0]!.checkOut
                   ? new Date(
-                      Date.parse(
-                        user?.accommodationRequestsByUserId[0].checkOut,
-                      ),
+                      user?.accommodationRequestsByUserId[0].checkOut,
                     ).toLocaleString("en-IN", {
                       timeZone: "Asia/Kolkata",
                     })

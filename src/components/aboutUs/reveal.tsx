@@ -13,8 +13,8 @@ const Reveal = ({
   const control = useAnimation();
 
   useEffect(() => {
-    isInView && control.start("visible").catch((err) => console.log(err));
-  }, [isInView]);
+    if (isInView) control.start("visible").catch((err) => console.log(err));
+  }, [control, isInView]);
 
   return (
     <div ref={ref} style={{ position: "relative" }} className={`${classes}`}>

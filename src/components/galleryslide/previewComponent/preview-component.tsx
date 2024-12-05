@@ -12,7 +12,7 @@ import {
   Navigation,
   Thumbs,
 } from "swiper/modules";
-import { Swiper, SwiperSlide, SwiperClass } from "swiper/react";
+import { Swiper, SwiperSlide, type SwiperClass } from "swiper/react";
 
 import BlurImage from "~/components/blurImage";
 import { env } from "~/env";

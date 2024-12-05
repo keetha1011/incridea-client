@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 
 import { RoundsByEventDocument } from "~/generated/generated";
 
@@ -7,7 +7,7 @@ const RoundsDone: FC<{
   eventId: string;
 }> = (eventId) => {
   //query to get rounds by event
-  const { loading, error, data } = useQuery(RoundsByEventDocument, {
+  const { data } = useQuery(RoundsByEventDocument, {
     variables: {
       eventId: eventId.eventId,
     },

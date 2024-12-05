@@ -3,11 +3,10 @@
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
 import {
-  NameType,
-  Payload,
-  ValueType,
+  type NameType,
+  type Payload,
+  type ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-
 import { cn } from "~/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -19,7 +18,7 @@ export type ChartConfig = {
     icon?: React.ComponentType;
   } & (
     | { color?: string; theme?: never }
-    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+    | { color?: never; theme: { [K in keyof typeof THEMES]: string } }
   );
 };
 
@@ -74,7 +73,7 @@ ChartContainer.displayName = "Chart";
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
-    ([_, config]) => config.theme ?? config.color,
+    ([, config]) => config.theme ?? config.color,
   );
 
   if (!colorConfig.length) {
@@ -191,7 +190,10 @@ const ChartTooltipContent = React.forwardRef<
           {payload.map((item, index) => {
             const key = `${nameKey ?? item.name ?? item.dataKey ?? "value"}`;
             const itemConfig = getPayloadConfigFromPayload(config, item, key);
-            const indicatorColor = color ?? item.payload.fill ?? item.color;
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            const indicatorColor: string | number | object =
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+              color ?? item.payload.fill ?? item.color;
 
             return (
               <div
@@ -202,7 +204,13 @@ const ChartTooltipContent = React.forwardRef<
                 )}
               >
                 {formatter && item?.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, item.payload)
+                  formatter(
+                    item.value,
+                    item.name,
+                    item,
+                    index,
+                    item.payload as Payload<ValueType, NameType>[],
+                  )
                 ) : (
                   <>
                     {itemConfig?.icon ? (
@@ -289,11 +297,12 @@ const ChartLegendContent = React.forwardRef<
         )}
       >
         {payload.map((item) => {
-          const key = `${nameKey ?? item.dataKey ?? "value"}`;
+          const key = `${nameKey ?? String(item.dataKey) ?? "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
           return (
             <div
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               key={item.value}
               className={cn(
                 "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground",

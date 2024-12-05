@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 
 import Badge from "~/components/badge";
 import Spinner from "~/components/spinner";
@@ -16,19 +16,14 @@ import ViewEvent from "./viewEventModal";
 
 const AdminTab: FC<{
   AdminId: string;
-}> = ({ AdminId }) => {
-  const first: number = 200;
-  const {
-    data: branches,
-    loading: branchesLoading,
-    refetch: branchesRefetch,
-  } = useQuery(BranchesDocument, {});
+}> = ({}) => {
+  const first = 200;
+  const { data: branches, loading: branchesLoading } = useQuery(
+    BranchesDocument,
+    {},
+  );
 
-  const {
-    data: events,
-    loading: eventsLoading,
-    refetch: eventsRefetch,
-  } = useQuery(EventsDocument, {
+  const { data: events, loading: eventsLoading } = useQuery(EventsDocument, {
     variables: {
       first: first,
     },
@@ -67,7 +62,7 @@ const AdminTab: FC<{
             <div className="max-h-80 w-full overflow-y-auto text-center md:h-[300px] md:max-h-80">
               {events?.events?.edges?.map((event, i) => (
                 <div
-                  key={event?.node.id}
+                  key={i}
                   className={`mb-3 ml-2 flex flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-center md:rounded-none md:p-4`}
                 >
                   <h1 className="flex basis-1/6 justify-start py-0.5 text-start text-lg">
@@ -126,7 +121,7 @@ const AdminTab: FC<{
             <div className="max-h-60 overflow-y-auto md:h-64 md:max-h-64">
               {branches?.getBranches?.map((branch, i) => (
                 <div
-                  key={branch?.id}
+                  key={i}
                   className={`mb-3 flex flex-col items-start justify-between gap-3 rounded-lg bg-white/10 p-3 md:my-0 md:ml-0 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-4`}
                 >
                   <h1 className="basis-1/2 py-0.5 pl-2 text-start text-lg">
