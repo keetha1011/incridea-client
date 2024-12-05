@@ -12,7 +12,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "preview": "next build && next start",
-    "start": "next start",
+    "start": "NODE_ENV=production next start",
     "typecheck": "tsc --noEmit",
     "codegen": "graphql-codegen",
     "inspect": "graphql-inspector audit 'src/graphql/**/*.graphql' -d",

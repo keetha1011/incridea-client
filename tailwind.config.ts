@@ -1,4 +1,4 @@
-import { Config } from "tailwindcss";
+import { type Config } from "tailwindcss";
 import TWA from "tailwindcss-animate";
 
 const config: Config = {

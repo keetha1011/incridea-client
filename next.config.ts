@@ -5,7 +5,7 @@
 //   disable: env.NODE_ENV === "development",
 // });
 
-import { NextConfig } from "next";
+import { type NextConfig } from "next";
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
