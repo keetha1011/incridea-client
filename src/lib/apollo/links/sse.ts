@@ -1,4 +1,9 @@
-import { ApolloLink, FetchResult, Observable, Operation } from "@apollo/client";
+import {
+  ApolloLink,
+  type FetchResult,
+  Observable,
+  type Operation,
+} from "@apollo/client";
 import { print } from "graphql";
 
 type SSELinkOptions = EventSourceInit & { uri: string };
@@ -24,7 +29,7 @@ class SSELink extends ApolloLink {
     return new Observable((sink) => {
       const eventsource = new EventSource(url.toString(), this.options);
       eventsource.onmessage = function (event) {
-        const data = JSON.parse(event.data);
+        const data = JSON.parse(event.data as string) as FetchResult;
         sink.next(data);
         if (eventsource.readyState === 2) sink.complete();
       };

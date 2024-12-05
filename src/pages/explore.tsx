@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosSkipForward } from "react-icons/io";
 import { SlVolumeOff, SlVolume2 } from "react-icons/sl";
-import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
+import YouTube, { type YouTubePlayer, type YouTubeProps } from "react-youtube";
 
 import Button from "~/components/button";
 
@@ -12,36 +12,36 @@ const Explore = () => {
 
   // FIXME: Just a fallback feature if autoplay doesn't work
   const [clickThru, setClickThru] = useState<boolean>(true);
-  const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [isMuted, setIsMuted] = useState<boolean>(true);
   const blackScreenRef = useRef<HTMLDivElement>(null);
   const YTPlayerRef = useRef<YouTubePlayer>(null);
   const skipRef = useRef<HTMLDivElement>(null);
 
   const onReady: YouTubeProps["onReady"] = (e) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     YTPlayerRef.current = e.target;
-    e.target.playVideo();
+    (YTPlayerRef.current as YouTubePlayerPatch).playVideo();
   };
 
-  const onPlay: YouTubeProps["onPlay"] = (e) => {
-    console.log(YTPlayerRef.current);
+  const onPlay: YouTubeProps["onPlay"] = () => {
     if (blackScreenRef.current) blackScreenRef.current.style.display = "none";
     setClickThru(false);
   };
 
   const onPause: YouTubeProps["onPause"] = (e) => {
-    e.target.playVideo();
+    (e.target as YouTubePlayerPatch).playVideo();
   };
 
-  const onEnd: YouTubeProps["onEnd"] = async (e) => {
+  const onEnd: YouTubeProps["onEnd"] = () => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
-    await router.push("/explore/level1");
+    void router.push("/explore/level1");
   };
 
-  const onError: YouTubeProps["onError"] = async (e) => {
+  const onError: YouTubeProps["onError"] = () => {
     if (blackScreenRef.current)
       blackScreenRef.current.style.display = "initial";
-    await router.push("/explore/level1");
+    void router.push("/explore/level1");
   };
 
   useEffect(() => {
@@ -60,12 +60,12 @@ const Explore = () => {
       <button
         onClick={() => {
           if (!YTPlayerRef.current) return;
-          if (YTPlayerRef.current.isMuted()) {
-            YTPlayerRef.current.unMute();
+          if ((YTPlayerRef.current as YouTubePlayerPatch).isMuted()) {
+            (YTPlayerRef.current as YouTubePlayerPatch).unMute();
             setIsMuted(false);
           } else {
             setIsMuted(true);
-            YTPlayerRef.current.mute();
+            (YTPlayerRef.current as YouTubePlayerPatch).mute();
           }
         }}
         className="absolute right-[2vw] top-[3vh] z-50 cursor-pointer text-white"

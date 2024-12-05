@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { BiPlus } from "react-icons/bi";
 import { MdOutlineDeleteOutline, MdOutlineQrCodeScanner } from "react-icons/md";
 
@@ -25,22 +25,18 @@ const AddTeamMember: FC<{
   const [scanModalOpen, setScanModalOpen] = useState(false);
   const [userId, setUserId] = useState<string>("");
 
-  const [organizerAddParticipantToTeam, { data, loading, error }] = useMutation(
+  const [organizerAddParticipantToTeam] = useMutation(
     OrganizerAddTeamMemberDocument,
     {
       refetchQueries: ["TeamDetails"],
     },
   );
-  const {
-    data: teamData,
-    error: teamError,
-    loading: teamLoading,
-  } = useQuery(TeamDetailsDocument, {
+  const { data: teamData } = useQuery(TeamDetailsDocument, {
     variables: {
       id: teamId,
     },
   });
-  const [organizerDeleteTeamMember, _] = useMutation(
+  const [organizerDeleteTeamMember] = useMutation(
     OrganizerDeleteTeamMemberDocument,
     {
       refetchQueries: ["TeamDetails"],
@@ -95,7 +91,9 @@ const AddTeamMember: FC<{
         }
       })
       .catch((error) => {
-        throw new Error(`Error: ${error.message}`);
+        throw new Error(
+          `Error: ${error instanceof Error ? error.message : error}`,
+        );
       });
     await createToast(promise, "Adding Participant...");
   };

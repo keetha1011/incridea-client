@@ -10,12 +10,9 @@ import { pidToId } from "~/utils/id";
 import ScanParticipantModal from "./scanParticipantModal";
 
 export default function AddParticipantModal({ eventId }: { eventId: string }) {
-  const [organizerRegisterSolo, _] = useMutation(
-    OrganizerRegisterSoloDocument,
-    {
-      refetchQueries: ["TeamsByRound"],
-    },
-  );
+  const [organizerRegisterSolo] = useMutation(OrganizerRegisterSoloDocument, {
+    refetchQueries: ["TeamsByRound"],
+  });
   const [userId, setUserId] = useState<string>("");
   const [isOpen, setIsOpen] = useState(false);
   const addHandler = async () => {

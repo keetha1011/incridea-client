@@ -13,7 +13,7 @@ type BannerProps = {
   credits?: string;
 };
 
-const Banner: React.FC<BannerProps> = ({ photo, text, video, credits }) => {
+const Banner: React.FC<BannerProps> = ({ photo, text, video }) => {
   return (
     <div className="relative h-80 w-full shrink-0 overflow-hidden">
       {photo && (

@@ -3,7 +3,7 @@ import React from "react";
 import { FiExternalLink } from "react-icons/fi";
 
 import Button from "~/components/button";
-import { Sponsor } from "~/constants/sponsors";
+import { type Sponsor } from "~/constants/sponsors";
 import { env } from "~/env";
 
 type SponsorCardProps = {

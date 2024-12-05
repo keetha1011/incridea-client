@@ -1,26 +1,19 @@
 import { useQuery } from "@apollo/client";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
-import {
-  CompletedEventsDocument,
-  CompletedEventsQuery,
-  Query,
-  QueryCompletedEventsSuccess,
-} from "~/generated/generated";
+import { CompletedEventsDocument, WinnerType } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";
 
 const ValedictoryTab: FC = () => {
-  const {
-    data: eventsData,
-    loading: eventsLoading,
-    fetchMore: eventsFetchMore,
-  } = useQuery(CompletedEventsDocument);
-  // console.log("eventsData", eventsData);
+  const { data: eventsData, loading: eventsLoading } = useQuery(
+    CompletedEventsDocument,
+  );
+
   const [query, setQuery] = useState("");
   const [csvData, setCsvData] = useState<
     {
@@ -76,13 +69,13 @@ const ValedictoryTab: FC = () => {
           eventName: event.name,
         };
         event.winner?.map((eventData) => {
-          if (eventData.type === "WINNER") {
+          if (eventData.type === WinnerType.Winner) {
             temp.winner = eventData.team.name;
           }
-          if (eventData.type === "RUNNER_UP") {
+          if (eventData.type === WinnerType.RunnerUp) {
             temp.runnerUp = eventData.team.name;
           }
-          if (eventData.type === "SECOND_RUNNER_UP") {
+          if (eventData.type === WinnerType.SecondRunnerUp) {
             temp.secondRunnerUp = eventData.team.name;
           }
         });
@@ -184,7 +177,7 @@ const ValedictoryTab: FC = () => {
                 (event, i) =>
                   event.name.toLowerCase().includes(query.toLowerCase()) && (
                     <div
-                      key={event?.id}
+                      key={i}
                       className={`mb-3 ml-2 flex flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:rounded-none md:p-4`}
                     >
                       <h1 className="flex basis-1/4 justify-start py-0.5 text-start text-lg">
@@ -192,9 +185,9 @@ const ValedictoryTab: FC = () => {
                       </h1>
                       <h1 className="mt-2 flex basis-1/4 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">
                         {event.winner?.map((eventData, i) =>
-                          eventData.type === "WINNER" ? (
+                          eventData.type === WinnerType.Winner ? (
                             <ViewTeamModal
-                              key={eventData.team.id}
+                              key={i}
                               teamId={eventData.team.id}
                               modalTitle={event.name}
                               modalResult={eventData.type}
@@ -208,9 +201,9 @@ const ValedictoryTab: FC = () => {
                       </h1>
                       <h1 className="mt-2 flex basis-1/4 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">
                         {event.winner?.map((eventData, i) =>
-                          eventData.type === "RUNNER_UP" ? (
+                          eventData.type === WinnerType.RunnerUp ? (
                             <ViewTeamModal
-                              key={eventData.team.id}
+                              key={i}
                               teamId={eventData.team.id}
                               modalTitle={event.name}
                               modalResult={eventData.type}
@@ -224,9 +217,9 @@ const ValedictoryTab: FC = () => {
                       </h1>
                       <h1 className="mt-2 flex basis-1/4 py-0.5 text-lg md:mt-0 md:justify-center md:pl-5 md:text-center">
                         {event.winner?.map((eventData, i) =>
-                          eventData.type === "SECOND_RUNNER_UP" ? (
+                          eventData.type === WinnerType.SecondRunnerUp ? (
                             <ViewTeamModal
-                              key={eventData.team.id}
+                              key={i}
                               teamId={eventData.team.id}
                               modalTitle={event.name}
                               modalResult={eventData.type}

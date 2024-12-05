@@ -26,22 +26,18 @@ export default function AddParticipantToTeam({
   teamName: string;
   setIsOpen: (isOpen: boolean) => void;
 }) {
-  const [organizerAddParticipantToTeam, { data, loading, error }] = useMutation(
+  const [organizerAddParticipantToTeam] = useMutation(
     OrganizerAddTeamMemberDocument,
     {
       refetchQueries: ["TeamDetails"],
     },
   );
-  const {
-    data: teamData,
-    error: teamError,
-    loading: teamLoading,
-  } = useQuery(TeamDetailsDocument, {
+  const { data: teamData } = useQuery(TeamDetailsDocument, {
     variables: {
       id: teamId,
     },
   });
-  const [organizerDeleteTeamMember, _] = useMutation(
+  const [organizerDeleteTeamMember] = useMutation(
     OrganizerDeleteTeamMemberDocument,
     {
       refetchQueries: ["TeamDetails"],
@@ -62,7 +58,7 @@ export default function AddParticipantToTeam({
         setUserId("");
       } else {
         if (res.errors) {
-          throw new Error(res.errors[0]!.toString());
+          throw new Error(res.errors[0]?.message);
         } else {
           throw new Error("Error adding member to team");
         }

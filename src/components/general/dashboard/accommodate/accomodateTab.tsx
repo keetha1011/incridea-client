@@ -1,19 +1,21 @@
 import { useQuery } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 
 import Spinner from "~/components/spinner";
-import { AccommodationRequestsDocument } from "~/generated/generated";
+import {
+  AccommodationBookingStatus,
+  AccommodationRequestsDocument,
+} from "~/generated/generated";
 
 import AddAccommodateDetails from "./addAccommodateDetails";
 import HotelModal from "./hotelModal";
 import ViewAccommodateDetails from "./viewAccommodateDetails";
 
 const AccommodateTab: FC = () => {
-  const {
-    data: accommodationRequests,
-    loading: accommodateLoading,
-    refetch: accommodatefetch,
-  } = useQuery(AccommodationRequestsDocument, {});
+  const { data: accommodationRequests, loading: accommodateLoading } = useQuery(
+    AccommodationRequestsDocument,
+    {},
+  );
   return (
     <>
       <div>
@@ -50,7 +52,7 @@ const AccommodateTab: FC = () => {
                 accommodationRequests?.accommodationRequests?.data.map(
                   (acc, idx) => (
                     <div
-                      key={acc?.id}
+                      key={idx}
                       className={`mb-3 ml-2 flex flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-center md:rounded-none md:p-4`}
                     >
                       <h1 className="flex basis-1/6 justify-start py-0.5 text-start text-lg">
@@ -61,22 +63,16 @@ const AccommodateTab: FC = () => {
                       </h1>
                       <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-sm">
                         {acc?.checkIn
-                          ? new Date(Date.parse(acc?.checkIn)).toLocaleString(
-                              "en-IN",
-                              {
-                                timeZone: "Asia/Kolkata",
-                              },
-                            )
+                          ? new Date(acc?.checkIn).toLocaleString("en-IN", {
+                              timeZone: "Asia/Kolkata",
+                            })
                           : "Not Available"}
                       </h1>
                       <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-sm">
-                        {acc?.checkIn
-                          ? new Date(Date.parse(acc?.checkOut)).toLocaleString(
-                              "en-IN",
-                              {
-                                timeZone: "Asia/Kolkata",
-                              },
-                            )
+                        {acc?.checkOut
+                          ? new Date(acc?.checkOut).toLocaleString("en-IN", {
+                              timeZone: "Asia/Kolkata",
+                            })
                           : "Not Available"}
                       </h1>
                       <h1 className="flex basis-1/6 justify-center py-0.5 text-center text-lg">
@@ -87,7 +83,7 @@ const AccommodateTab: FC = () => {
                       </h1>
                       <h1
                         className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${
-                          acc?.status == "CONFIRMED"
+                          acc?.status == AccommodationBookingStatus.Confirmed
                             ? "border-green-500 text-green-500"
                             : "border-red-500 text-red-500"
                         }`}

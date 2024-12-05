@@ -1,38 +1,21 @@
-import { useQuery } from "@apollo/client";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { NextRouter, useRouter } from "next/router";
+import { type NextRouter, useRouter } from "next/router";
 import Parallax from "parallax-js";
-import { FC, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type FC, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 
 import Button from "~/components/button";
 import ArcadeLoader from "~/components/loader/arcadeLoader";
 import Spinner from "~/components/spinner";
 import { env } from "~/env";
-import { GetUserXpDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 
 export default function Landing() {
   const router = useRouter();
-  const { data: userXp, loading: userXpLoading } = useQuery(
-    GetUserXpDocument,
-    {},
-  );
-  const [xp, setXp] = useState<number>(0);
-
-  useEffect(() => {
-    if (userXp?.getUserXp.__typename === "QueryGetUserXpSuccess") {
-      setXp(
-        userXp.getUserXp.data.reduce((acc, curr) => acc + curr.level.point, 0),
-      );
-    } else {
-      setXp(0);
-    }
-  }, [userXpLoading]);
 
   return (
     <main className="relative h-screen overflow-hidden">
@@ -44,7 +27,7 @@ export default function Landing() {
         </>
       )}
       <div className="absolute top-0">
-        <HomeUi xp={xp} />
+        <HomeUi />
         <Menu router={router} />
         <HomeFooter />
       </div>
@@ -114,7 +97,7 @@ export const Menu: FC<{
     // TODO: remember to change in mainMenuModal.tsx
   ];
 
-  const { user, loading, error } = useAuth();
+  const { user, loading } = useAuth();
 
   return (
     <div className="absolute bottom-0 left-0 flex h-full w-screen flex-col items-center justify-center overflow-x-hidden">
@@ -124,11 +107,9 @@ export const Menu: FC<{
           className="h-fit w-52 px-4 sm:px-12"
           size={"xlarge"}
           onClick={async () => {
-            loading
-              ? null
-              : user
-                ? await router.push("/profile")
-                : await router.push("/login");
+            if (loading) return;
+            if (user) await router.push("/profile");
+            else await router.push("/login");
           }}
         >
           {loading ? (
@@ -164,11 +145,9 @@ export const Menu: FC<{
               className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
               size={"xlarge"}
               onClick={async () => {
-                loading
-                  ? null
-                  : user
-                    ? await router.push("/profile")
-                    : await router.push("/login");
+                if (loading) return;
+                if (user) await router.push("/profile");
+                else await router.push("/login");
               }}
             >
               {loading ? (
@@ -204,9 +183,7 @@ export const Menu: FC<{
   );
 };
 
-export const HomeUi: FC<{
-  xp?: number;
-}> = ({ xp }) => {
+export const HomeUi = () => {
   const sceneRef = useRef<HTMLElement>(null);
 
   useLayoutEffect(() => {
@@ -245,16 +222,16 @@ export const HomeUi: FC<{
       >
         <div className="absolute h-screen w-screen">
           <div id="foglayer_01" className="fog">
-            <div className="image01"></div>
-            <div className="image02"></div>
+            <div className="image01" />
+            <div className="image02" />
           </div>
           <div id="foglayer_02" className="fog">
-            <div className="image01"></div>
-            <div className="image02"></div>
+            <div className="image01" />
+            <div className="image02" />
           </div>
           <div id="foglayer_03" className="fog">
-            <div className="image01"></div>
-            <div className="image02"></div>
+            <div className="image01" />
+            <div className="image02" />
           </div>
         </div>
 

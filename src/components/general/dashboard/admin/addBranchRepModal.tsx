@@ -1,10 +1,10 @@
 import { useQuery } from "@apollo/client";
-import { FC, useState, useEffect, useRef, useCallback } from "react";
+import { type FC, useState, useEffect, useRef, useCallback } from "react";
 
 import Badge from "~/components/badge";
 import SearchBox from "~/components/searchbox";
 import Spinner from "~/components/spinner";
-import { BranchesQuery } from "~/generated/generated";
+import { type BranchesQuery } from "~/generated/generated";
 import { SearchUsersDocument } from "~/generated/generated";
 
 import AddBranchRepButton from "./addBranchRepButton";
@@ -44,11 +44,11 @@ const AddBranchRep: FC<{
  (memoize the handleObserver to avoid triggering unnecessary re-renders,
  function will only be recreated if any of its dependencies change, and not on every render) */
   const handleObserver = useCallback(
-    async (entries: IntersectionObserverEntry[]) => {
+    (entries: IntersectionObserverEntry[]) => {
       const target = entries[0]!;
       if (target.isIntersecting && hasNextPage) {
         setIsFetching(true);
-        await searchUsersFetchMore({
+        void searchUsersFetchMore({
           variables: { after: endCursor },
           updateQuery: (prevResult, { fetchMoreResult }) => {
             fetchMoreResult.users.edges = [

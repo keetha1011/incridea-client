@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 import { useState } from "react";
 import { IoTrash } from "react-icons/io5";
 
@@ -15,7 +15,7 @@ const RemoveBranchRepButton: FC<{
   const [showModal, setShowModal] = useState(false);
 
   //mutation to remove branch rep
-  const [removeBranchRep, { loading }] = useMutation(RemoveBranchRepDocument, {
+  const [removeBranchRep] = useMutation(RemoveBranchRepDocument, {
     refetchQueries: ["Branches"],
     awaitRefetchQueries: true,
     variables: {

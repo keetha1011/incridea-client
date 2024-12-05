@@ -7,10 +7,10 @@ import sponsors from "~/constants/sponsors";
 import useStore from "~/components/store/store";
 import { env } from "~/env";
 
-interface BookModalType {
+type BookModalType = {
   isMuted: boolean;
   mainThemeAudioRef: React.MutableRefObject<HTMLAudioElement | null>;
-}
+};
 
 const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
   const setSponsorFlag = useStore((state) => state.setSponsor);

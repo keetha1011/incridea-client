@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 import { IoAdd } from "react-icons/io5";
 
 import Button from "~/components/button";

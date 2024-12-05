@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FormEventHandler, FunctionComponent, useState } from "react";
+import { type FormEventHandler, type FunctionComponent, useState } from "react";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { FaAngleLeft } from "react-icons/fa";
 
@@ -25,28 +25,30 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
 
   if (mutationError) setGotDialogBox(true);
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     // add some client side validations like empty fields, password length, etc.
     setError(null);
     e.preventDefault();
     if (email === "") return;
 
-    await resetMutation({
+    resetMutation({
       variables: {
         email: email,
       },
-    }).then((res) => {
-      if (res.data?.sendPasswordResetEmail.__typename === "Error") {
-        setError(res.data.sendPasswordResetEmail.message);
-        setGotDialogBox(true);
-      }
+    })
+      .then((res) => {
+        if (res.data?.sendPasswordResetEmail.__typename === "Error") {
+          setError(res.data.sendPasswordResetEmail.message);
+          setGotDialogBox(true);
+        }
 
-      if (
-        res.data?.sendPasswordResetEmail.__typename ===
-        "MutationSendPasswordResetEmailSuccess"
-      )
-        setGotDialogBox(true);
-    });
+        if (
+          res.data?.sendPasswordResetEmail.__typename ===
+          "MutationSendPasswordResetEmailSuccess"
+        )
+          setGotDialogBox(true);
+      })
+      .catch(console.log);
   };
 
   return (

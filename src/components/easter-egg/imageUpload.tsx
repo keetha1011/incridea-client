@@ -17,7 +17,7 @@ type Props = {
 const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
   const [highlighted, setHighlighted] = useState(false);
 
-  const [mediaPreview, setMediaPreview] = useState<string>("");
+  const [mediaPreview, setMediaPreview] = useState<string >("");
   const [manualLoading, setManualLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -96,11 +96,11 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
           setManualLoading(true);
         }}
         onClientUploadComplete={async (res) => {
-          setMediaPreview(res[0]?.url!);
+          setMediaPreview(res[0]?.url??" ");
           await submissionMutation({
             variables: {
               cardId: Number(cardId),
-              image: res[0]?.url!,
+              image: res[0]?.url ?? "",
             },
           })
             .then((res) => {

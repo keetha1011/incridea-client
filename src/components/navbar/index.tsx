@@ -2,16 +2,17 @@ import { Transition } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useState, useEffect } from "react";
+import { type FC, useState, useEffect } from "react";
 import { AiOutlineClose as XIcon } from "react-icons/ai";
 import { BiMenuAltLeft as MenuIcon } from "react-icons/bi";
 
 import CharacterAnimation from "~/components/animation/character";
 import Button from "~/components/button";
 import { env } from "~/env";
-import { useAuth } from "~/hooks/useAuth";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 
 import AuthenticatedButtons from "./authenticatedButtons";
+import { Role } from "~/generated/generated";
 
 const Navbar = () => {
   const links = [
@@ -133,11 +134,13 @@ const Navbar = () => {
 const AuthButtons: FC<{
   className?: string;
 }> = ({ className }) => {
-  const { status, user, error, loading } = useAuth();
+  const { status, user } = useAuth();
   return (
     <div className={`flex space-x-2 px-2 lg:px-0 ${className}`}>
-      {status === "authenticated" && <AuthenticatedButtons user={user} />}
-      {status === "unauthenticated" && (
+      {status === AuthStatus.AUTHENTICATED && (
+        <AuthenticatedButtons user={user} />
+      )}
+      {status === AuthStatus.NOT_AUTHENTICATED && (
         <>
           <Link href={"/login"} as="/login">
             <Button intent={"primary"}>Login</Button>
@@ -154,14 +157,14 @@ const AuthButtons: FC<{
 const MobileButtons: FC<{
   className?: string;
 }> = ({ className }) => {
-  const { status, user, error, loading } = useAuth();
+  const { status, user } = useAuth();
   const router = useRouter();
   return (
     <div className={`flex space-x-2 lg:px-0 ${className}`}>
-      {status === "authenticated" &&
+      {status === AuthStatus.AUTHENTICATED &&
         (router.pathname === "/profile" &&
-        user?.role !== "USER" &&
-        user?.role !== "PARTICIPANT" ? (
+        user?.role !== Role.User &&
+        user?.role !== Role.Participant ? (
           <Link
             href={`/dashboard/${user?.role.replace("_", "").toLowerCase()}`}
           >
@@ -172,7 +175,7 @@ const MobileButtons: FC<{
             <Button>Profile</Button>
           </Link>
         ))}
-      {status === "unauthenticated" && (
+      {status === AuthStatus.NOT_AUTHENTICATED && (
         <>
           <Link href={"/login"} as="/login">
             <Button intent={"primary"}>Login</Button>

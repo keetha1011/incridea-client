@@ -1,4 +1,4 @@
-import { cva, VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import React from "react";
 
 const badgeStyles = cva(
@@ -19,10 +19,10 @@ const badgeStyles = cva(
   },
 );
 
-export interface BadgeProps extends VariantProps<typeof badgeStyles> {
+export type BadgeProps = {
   children: React.ReactNode;
   className?: string;
-}
+} & VariantProps<typeof badgeStyles>;
 
 const Badge = ({ color, children, className }: BadgeProps) => {
   return (

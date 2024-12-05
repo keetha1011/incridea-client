@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/consistent-type-definitions */
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -72,21 +73,26 @@ export default NextAuth({
   providers: [
     CredentialsProvider({
       name: "Email",
-      credentials: {},
-      async authorize(credentials: any, _req): Promise<any> {
-        const { email, password } = credentials;
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async (credentials) => {
+        if (!credentials) return null;
         const { data } = await client.mutate({
           mutation: SignInDocument,
           variables: {
-            email: email as string,
-            password: password as string,
+            email: credentials.email,
+            password: credentials.password,
           },
         });
-        console.log("data", data);
-        if (data?.login.__typename === "MutationLoginSuccess") {
-          return data;
-        }
-        throw new Error(data?.login.message);
+        if (data?.login.__typename === "MutationLoginSuccess")
+          return {
+            id: "",
+            login: data.login,
+            accessToken: "",
+          };
+        else return null;
       },
     }),
   ],
@@ -95,13 +101,11 @@ export default NextAuth({
   },
   secret: env.NEXTAUTH_SECRET,
   callbacks: {
-    async redirect({ url, baseUrl }) {
+    redirect({ baseUrl }) {
       return baseUrl;
     },
-    async jwt({ token, user }): Promise<any> {
-      if (!token && !user) {
-        return null;
-      }
+    jwt: async ({ token, user }) => {
+      if (!token && !user) return token;
 
       if (user) {
         const { accessToken, refreshToken } = user.login.data;
@@ -147,14 +151,13 @@ export default NextAuth({
         console.log(
           "unable to refresh tokens from backend, invalidate the token",
         );
-        return null;
+        return token;
       }
       // token.data = await fetchUser(token.accessToken as string);
       console.log("token-data-attached", token);
       return token;
     },
-
-    async session({ session, token, user }) {
+    session({ session, token, user }) {
       const userOrToken = user || token;
       session.accessToken = userOrToken.accessToken;
       return session;

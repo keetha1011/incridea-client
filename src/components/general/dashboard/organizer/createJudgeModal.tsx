@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FC, useState } from "react";
-import { toast } from "react-hot-toast";
+import { type FC, useState } from "react";
 
 import Button from "~/components/button";
 import TextInput from "~/components/input";
@@ -19,7 +18,7 @@ const CreateJudgeModal: FC<{
     setShowModal(false);
   }
 
-  const [createJudgeMutation, { loading: createJudgeLoading, error }] =
+  const [createJudgeMutation, { loading: createJudgeLoading }] =
     useMutation(CreateJudgeDocument);
 
   const handleCreateJudge = async (e: React.FormEvent<HTMLFormElement>) => {

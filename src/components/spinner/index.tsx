@@ -1,4 +1,4 @@
-import { cva, VariantProps } from "class-variance-authority";
+import { cva, type VariantProps } from "class-variance-authority";
 import React from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 
@@ -25,9 +25,9 @@ const spinnerStyles = cva(
   },
 );
 
-export interface Props extends VariantProps<typeof spinnerStyles> {
+export type Props = {
   className?: string;
-}
+} & VariantProps<typeof spinnerStyles>;
 
 const Spinner = ({ size, intent, className }: Props) => {
   return (

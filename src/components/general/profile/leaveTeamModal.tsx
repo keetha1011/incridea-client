@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { FC, useState } from "react";
+import React, { type FC, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import Button from "~/components/button";
@@ -34,7 +34,7 @@ const LeaveTeamModal: FC<{
         toast.success("You've left the team!");
         toast.dismiss(loadingToast);
       } else {
-        toast.error(res.data?.leaveTeam.message!);
+        toast.error(res.data?.leaveTeam.message ?? "An error occurred");
         toast.dismiss(loadingToast);
       }
     });

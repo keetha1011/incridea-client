@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import { MdCall, MdLocationOn, MdMail } from "react-icons/md";
 
 const Contact: NextPage = () => {

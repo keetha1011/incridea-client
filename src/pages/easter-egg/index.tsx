@@ -1,24 +1,17 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { NextPage } from "next";
+import { useQuery } from "@apollo/client";
+import { type NextPage } from "next";
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 
-import ImageUpload from "~/components/easter-egg/imageUpload";
 import Spinner from "~/components/spinner";
 import {
-  CreateSubmissionDocument,
-  DayType,
+  type DayType,
   GetCardsDocument,
   MySubmissionsDocument,
 } from "~/generated/generated";
-import { useAuth } from "~/hooks/useAuth";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 
 const EasterEgg: NextPage = () => {
-  const [imageFiles, setImageFiles] = useState<(File | null)[] | []>([]);
-  const [saved, setSaved] = useState(false);
-  const [saving, setSaving] = useState(false);
-
   const { status, loading: authLoading } = useAuth();
 
   const getDay = () => {
@@ -30,36 +23,18 @@ const EasterEgg: NextPage = () => {
     if (day === 29) return "Day4";
   };
 
-  const {
-    data: cards,
-    loading: cardsLoading,
-    error: cardsError,
-  } = useQuery(GetCardsDocument, {
+  const { data: cards, loading: cardsLoading } = useQuery(GetCardsDocument, {
     variables: {
       day: getDay() as DayType,
     },
   });
 
-  const {
-    data: submissions,
-    loading: submissionsLoading,
-    error: submissionsError,
-  } = useQuery(MySubmissionsDocument, {
+  const { data: submissions } = useQuery(MySubmissionsDocument, {
     variables: {
       day: getDay() as DayType,
     },
   });
   console.log(submissions);
-
-  const [submissionMutation, { data, loading, error }] = useMutation(
-    CreateSubmissionDocument,
-  );
-
-  useEffect(() => {
-    if (cards?.getCards.__typename === "QueryGetCardsSuccess") {
-      setImageFiles(new Array(cards.getCards.data.length).fill(null));
-    }
-  }, [cards]);
 
   if (authLoading)
     return (
@@ -69,7 +44,7 @@ const EasterEgg: NextPage = () => {
         </div>
       </div>
     );
-  if (status !== "authenticated")
+  if (status !== AuthStatus.AUTHENTICATED)
     return (
       <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6] pt-28">
         <div className="mt-10 flex flex-col items-center justify-center gap-3 text-center text-xl text-white/90">
@@ -112,44 +87,10 @@ const EasterEgg: NextPage = () => {
                     Clue {index + 1}
                   </h2>
                   <h2 className="bodyFont mb-3 px-4 md:px-6">{card.clue}</h2>
-                  <div className="flex grow flex-col md:px-6 md:pb-4">
-                    <ImageUpload
-                      cardId={card.id}
-                      loading={submissionsLoading}
-                      existingImage={
-                        submissions?.submissionsByUser.__typename ===
-                        "QuerySubmissionsByUserSuccess"
-                          ? submissions?.submissionsByUser.data.find(
-                              (submission) => submission.cardId === card.id,
-                            )?.image
-                          : null
-                      }
-                      setImage={(file) => {
-                        setSaved(false);
-                        setImageFiles((prev) => {
-                          const newFiles = [...prev];
-                          newFiles[index] = file;
-                          return newFiles;
-                        });
-                      }}
-                    />
-                  </div>
+                  <div className="flex grow flex-col md:px-6 md:pb-4"></div>
                 </div>
               ))}
             </div>
-            {/* <Button disabled={saving} className="mt-10" onClick={onSave}>
-              {saving ? (
-                <>
-                  Saving <Spinner intent={"white"} size={"small"} />
-                </>
-              ) : saved ? (
-                <>
-                  Saved <FaCheck color="white" />
-                </>
-              ) : (
-                "Save"
-              )}
-            </Button> */}
           </>
         ) : (
           <span className="text-white/60">

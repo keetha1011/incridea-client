@@ -2,18 +2,14 @@ import { useQuery } from "@apollo/client";
 import React from "react";
 
 import Spinner from "~/components/spinner";
-import { DayType, GetCardsDocument } from "~/generated/generated";
+import { type DayType, GetCardsDocument } from "~/generated/generated";
 
 type Props = {
   day: string;
 };
 
 const Cards = ({ day }: Props) => {
-  const {
-    data: cards,
-    loading: cardsLoading,
-    error: cardsError,
-  } = useQuery(GetCardsDocument, {
+  const { data: cards, loading: cardsLoading } = useQuery(GetCardsDocument, {
     variables: {
       day: day as DayType,
     },

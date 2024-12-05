@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FC } from "react";
+import { type FC } from "react";
 import { BiDownload } from "react-icons/bi";
 
 // import { VikingHell } from "~/pages/_app";

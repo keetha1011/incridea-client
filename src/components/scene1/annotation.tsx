@@ -1,8 +1,7 @@
-import { Html, Plane, RoundedBox, useScroll } from "@react-three/drei";
-import { HtmlProps } from "@react-three/drei/web/Html";
+import { Html, Plane, useScroll } from "@react-three/drei";
 import { extend, useFrame } from "@react-three/fiber";
 import { geometry } from "maath";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import useStore from "~/components/store/store";
 

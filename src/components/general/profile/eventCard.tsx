@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { QRCodeSVG } from "qrcode.react";
-import React, { FC } from "react";
+import React, { type FC } from "react";
 import { IoLocationOutline } from "react-icons/io5";
 import { RiNumbersLine } from "react-icons/ri";
 
@@ -10,16 +10,32 @@ import { idToPid, idToTeamId } from "~/utils/id";
 import ConfirmTeamModal from "./confirmTeam";
 import DeleteTeamModal from "./deleteTeam";
 import EditTeamModal from "./editTeam";
-import { Team } from "./userTeams";
+import {
+  EventType,
+  type RegisterdEventsQuery,
+  type RegisterdEventsQueryVariables,
+} from "~/generated/generated";
+import { type QueryResult } from "@apollo/client";
 
 const EventCard: FC<{
-  teams: any;
-  event: any;
+  teams: Extract<
+    NonNullable<
+      QueryResult<RegisterdEventsQuery, RegisterdEventsQueryVariables>["data"]
+    >["registeredEvents"],
+    { __typename: "QueryRegisteredEventsSuccess" }
+  >["data"][number]["teams"];
+  event: Extract<
+    NonNullable<
+      QueryResult<RegisterdEventsQuery, RegisterdEventsQueryVariables>["data"]
+    >["registeredEvents"],
+    { __typename: "QueryRegisteredEventsSuccess" }
+  >["data"][number];
   userId: string;
 }> = ({ teams, event, userId }) => {
-  const eventType = event.teams.map((team: Team) => team.event.eventType)[0];
+  const eventType = event.teams.map((team) => team.event.eventType)[0];
   const solo =
-    eventType === "INDIVIDUAL" || eventType === "INDIVIDUAL_MULTIPLE_ENTRY";
+    eventType === EventType.Individual ||
+    eventType === EventType.IndividualMultipleEntry;
 
   const router = useRouter();
 
@@ -37,7 +53,7 @@ const EventCard: FC<{
         <div className="relative">
           <Image
             // src={`https://res.cloudinary.com/dqy4wpxhn/image/upload/v1682653090/Events/VOCAL_TWIST_%28WESTERN%29_1682653088345.jpg`}
-            src={event.image}
+            src={event.image ?? ""}
             alt={event.name}
             height={300}
             width={300}
@@ -63,7 +79,7 @@ const EventCard: FC<{
             </div>
           </div>
 
-          {teams?.map((team: Team, i: number) => (
+          {teams?.map((team, i) => (
             <div
               key={i}
               className="mt-5 flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-primary-200/80 p-3"
@@ -83,7 +99,7 @@ const EventCard: FC<{
 
                   {!team.confirmed && (
                     <div className="flex items-start">
-                      {!solo && team.leaderId == userId && (
+                      {!solo && team.leaderId?.toString() == userId && (
                         <EditTeamModal userId={userId} team={team} />
                       )}
                       {solo && <DeleteTeamModal teamId={team.id} solo={solo} />}

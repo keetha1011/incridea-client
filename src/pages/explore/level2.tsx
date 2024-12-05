@@ -14,8 +14,9 @@ import Pokedex from "~/components/pokedex";
 import useStore from "~/components/store/store";
 import { env } from "~/env";
 import {
+  EventCategory,
   PublishedEventsDocument,
-  PublishedEventsQuery,
+  type PublishedEventsQuery,
 } from "~/generated/generated";
 
 const Scene1 = dynamic(() => import("~/components/scene1"), {
@@ -26,16 +27,14 @@ const demoSheet = getProject("Scene 1", { state: scene1 }).sheet("Scene 1");
 
 const App = () => {
   const [instruction, setInstruction] = useState<boolean>(true);
-  const {
-    data: eventsData,
-    loading: eventLoading,
-    error: eventError,
-  } = useQuery<PublishedEventsQuery>(PublishedEventsDocument);
+  const { data: eventsData } = useQuery<PublishedEventsQuery>(
+    PublishedEventsDocument,
+  );
 
   let tempFilteredEvents = eventsData?.publishedEvents;
 
   tempFilteredEvents = tempFilteredEvents?.filter(
-    (event) => event.category === "CORE",
+    (event) => event.category === EventCategory.Core,
   );
 
   const events: { id: string; name: string; image: string }[] =

@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 
 import Button from "~/components/button";
 import TextInput from "~/components/input";

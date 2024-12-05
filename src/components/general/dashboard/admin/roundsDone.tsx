@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { FC } from "react";
+import { type FC } from "react";
 
 import { RoundsByEventDocument } from "~/generated/generated";
 
@@ -7,7 +7,7 @@ const RoundsDone: FC<{
   eventId: string;
 }> = (eventId) => {
   //query to get rounds by event
-  const { loading, error, data } = useQuery(RoundsByEventDocument, {
+  const { loading, data } = useQuery(RoundsByEventDocument, {
     variables: {
       eventId: eventId.eventId,
     },
@@ -16,24 +16,18 @@ const RoundsDone: FC<{
   const total = data?.roundsByEvent.length;
   let done = 0;
 
-  {
-    !loading &&
-      data?.roundsByEvent.map((round) => {
-        //checks if the rounds are completed or not
-        round.completed ? done++ : done;
-      });
-  }
+  if (!loading)
+    data?.roundsByEvent.map((round) => {
+      //checks if the rounds are completed or not
+      if (round.completed) done++;
+    });
 
   return (
-    <>
-      <div
-        className={`flex items-center justify-center ${done === total && done !== 0 ? "border-green-500 text-green-500" : ""}`}
-      >
-        {done === total && done !== 0
-          ? "Event has Ended"
-          : done + " / " + total}
-      </div>
-    </>
+    <div
+      className={`flex items-center justify-center ${done === total && done !== 0 ? "border-green-500 text-green-500" : ""}`}
+    >
+      {done === total && done !== 0 ? "Event has Ended" : done + " / " + total}
+    </div>
   );
 };
 

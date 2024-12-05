@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { QRCodeSVG } from "qrcode.react";
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { FaSignOutAlt, FaAward } from "react-icons/fa";
 import { MdAddAPhoto, MdOutlineEmail, MdPhone } from "react-icons/md";
 import { RiHotelBedLine } from "react-icons/ri";
@@ -16,12 +16,15 @@ import {
   AccommodationRequestsByUserDocument,
   GetUserXpDocument,
   GetXpLeaderboardDocument,
-  User,
+  Role,
+  type User,
 } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
 import AvatarModal from "./avatarModal";
 import ViewUserAccommodation from "./viewUserAccommodation";
+
+const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
 
 const ProfileInfo: FC<{
   user: User | null | undefined;
@@ -34,7 +37,7 @@ const ProfileInfo: FC<{
   const [showModal, setShowModal] = useState(false);
   const [avatarModal, setAvatarModal] = useState(false);
 
-  if (user && user.role === "USER") void router.push("/register");
+  if (user && user.role === Role.User) void router.push("/register");
 
   const [level, setLevel] = useState(0);
   const [xp, setXp] = useState(0);
@@ -44,8 +47,6 @@ const ProfileInfo: FC<{
   const [needMore, setNeedMore] = useState(0);
 
   const userXp = useQuery(GetUserXpDocument, {});
-
-  const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
 
   useEffect(() => {
     if (
@@ -90,27 +91,15 @@ const ProfileInfo: FC<{
     }
   }, [userXp.data]);
 
-  interface UserTotalPoints {
+  type UserTotalPoints = {
     [userId: string]: {
       levelPoints: number;
       name: string;
       count: number;
-      createdAt: string;
+      createdAt: Date;
     };
-  }
-  const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
-    GetXpLeaderboardDocument,
-    {},
-  );
-
-  const [sortedLeaderboard, setSortedLeaderboard] = useState<
-    {
-      levelPoints: number;
-      name: string;
-      userId: string;
-      count: number;
-    }[]
-  >([]);
+  };
+  const { data: Leaderboard } = useQuery(GetXpLeaderboardDocument, {});
 
   useEffect(() => {
     if (
@@ -120,11 +109,11 @@ const ProfileInfo: FC<{
       const userTotalPoints: UserTotalPoints = {};
 
       Leaderboard?.getXpLeaderboard.data.forEach((item) => {
-        const userId: string = item.user.id;
-        const levelPoints: number = item.level.point;
-        const userName: string = item.user.name;
-        const levelCount: number = 1;
-        const createdAt: string = item.createdAt;
+        const userId = item.user.id;
+        const levelPoints = item.level.point;
+        const userName = item.user.name;
+        const levelCount = 1;
+        const createdAt = item.createdAt;
 
         // Check if the user ID is already in the userTotalPoints object
         if (userTotalPoints[userId]) {
@@ -256,9 +245,8 @@ const ProfileInfo: FC<{
 
         <p className="text-center">
           You need <br />
-          <span className="font-bold text-secondary-600">
-            {needMore} XP
-          </span> to level up!
+          <span className="font-bold text-secondary-600">{needMore} XP</span> to
+          level up!
         </p>
       </div>
 
@@ -266,7 +254,7 @@ const ProfileInfo: FC<{
         <div className="flex h-full w-full flex-col items-center justify-between gap-5 sm:flex-row lg:flex-col xl:flex-row">
           <div className="flex flex-col items-center justify-center space-y-2">
             <QRCodeSVG
-              value={idToPid(user?.id!)}
+              value={user ? idToPid(user.id) : ""}
               size={130}
               bgColor="transparent"
               color="#ffffff"
@@ -274,7 +262,7 @@ const ProfileInfo: FC<{
               className="h-32 w-32"
             />
             <span className={`text-xl text-[#fff] sm:text-2xl`}>
-              {idToPid(user?.id!)}
+              {user ? idToPid(user.id) : ""}
             </span>
 
             <span className="flex items-center gap-x-2">

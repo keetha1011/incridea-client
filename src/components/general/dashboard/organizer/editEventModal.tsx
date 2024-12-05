@@ -1,5 +1,10 @@
 import { useMutation } from "@apollo/client";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+  EditorState,
+  type RawDraftContentState,
+  convertFromRaw,
+  convertToRaw,
+} from "draft-js";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -13,7 +18,7 @@ import createToast from "~/components/toast";
 import { UploadButton } from "~/components/uploadThingButton";
 
 import {
-  EventByOrganizerQuery,
+  type EventByOrganizerQuery,
   EventCategory,
   UpdateEventDocument,
 } from "~/generated/generated";
@@ -48,7 +53,7 @@ export default function EditEventModal({
     setShowModal(false);
   }
 
-  const [editorState, setEditorState] = useState<any>(
+  const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(),
   );
 
@@ -87,7 +92,9 @@ export default function EditEventModal({
 
   useEffect(() => {
     try {
-      const editorState = JSON.parse(event.description ?? "");
+      const editorState = JSON.parse(
+        event.description ?? "",
+      ) as RawDraftContentState;
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
       );

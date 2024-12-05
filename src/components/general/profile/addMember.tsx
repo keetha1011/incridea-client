@@ -1,18 +1,26 @@
+import { type QueryResult } from "@apollo/client";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { type FC, useState } from "react";
 import { toast } from "react-hot-toast";
 import { AiOutlineCopy, AiOutlineUserAdd } from "react-icons/ai";
 import { BsWhatsapp } from "react-icons/bs";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
+import {
+  type RegisterdEventsQuery,
+  type RegisterdEventsQueryVariables,
+} from "~/generated/generated";
 import { idToTeamId } from "~/utils/id";
 import { generateEventUrl } from "~/utils/url";
 
-import { Team } from "./userTeams";
-
 const AddMemberModal: FC<{
-  team: Team;
+  team: Extract<
+    NonNullable<
+      QueryResult<RegisterdEventsQuery, RegisterdEventsQueryVariables>["data"]
+    >["registeredEvents"],
+    { __typename: "QueryRegisteredEventsSuccess" }
+  >["data"][number]["teams"][number];
 }> = ({ team }) => {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {

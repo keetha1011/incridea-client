@@ -25,6 +25,9 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url(),
     ),
+    // This is a shared secret between the server and the client.
+    // It's used to introspect graphql schema.
+    SCHEMA_TOKEN: z.string(),
     RAZORPAY_KEY: z.string(),
   },
 
@@ -52,6 +55,7 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    SCHEMA_TOKEN: process.env.SCHEMA_TOKEN,
     RAZORPAY_KEY: process.env.RAZORPAY_KEY,
     NEXT_PUBLIC_LOGGING_DISABLED: process.env.NEXT_PUBLIC_LOGGING_DISABLED,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,

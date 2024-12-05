@@ -17,12 +17,11 @@ const FinalComponent = () => {
     awaitRefetchQueries: true,
   });
 
-  const handleAddXp = () => {
-    if (calledXp) {
-      return;
-    }
+  const handleAddXp = async () => {
+    if (calledXp) return;
+
     setCalledXp(true);
-    const promise = addXp().then((res) => {
+    await addXp().then((res) => {
       if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
         toast.success(
           `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
@@ -52,9 +51,7 @@ const FinalComponent = () => {
         width={50}
         height={50}
         className="origin-center cursor-pointer hover:animate-shake"
-        onClick={() => {
-          handleAddXp();
-        }}
+        onClick={handleAddXp}
       ></Image>
     </div>
   );

@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -18,7 +18,7 @@ type CardStyle = {
 };
 
 // HACK: If "top" values are changed, please check LoginCard component logic once
-const CARD_SWITCH_DURATION: number = 1000;
+const CARD_SWITCH_DURATION = 1000;
 const CARD_TOP_STYLE: CardStyle = {
     top: "-50%",
     transitionDuration: "0s",

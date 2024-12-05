@@ -1,5 +1,5 @@
 import { useQuery, useSubscription } from "@apollo/client";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
@@ -11,6 +11,7 @@ import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
 import {
   JudgeGetTeamsByRoundDocument,
+  Role,
   RoundByJudgeDocument,
   WinnersByEventDocument,
 } from "~/generated/generated";
@@ -83,7 +84,7 @@ const Judge: NextPage = () => {
     return <div>Redirecting...</div>;
   }
 
-  if (user.role !== "JUDGE") {
+  if (user.role !== Role.Judge) {
     void router.push("/profile");
     return <div>Redirecting...</div>;
   }

@@ -11,28 +11,14 @@ import {
   CreateWinnerDocument,
   GetRoundStatusDocument,
   GetTotalScoresDocument,
-  JudgeGetTeamsByRoundSubscription,
+  type JudgeGetTeamsByRoundSubscription,
   PromoteToNextRoundDocument,
   WinnerType,
-  WinnersByEventQuery,
+  type WinnersByEventQuery,
 } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 
 import ViewTeamModal from "./viewTeamModal";
-
-type Props = {
-  data: JudgeGetTeamsByRoundSubscription | undefined;
-  loading: boolean;
-  roundNo: number;
-  eventId: string;
-  eventType: string;
-  selectedTeam: string | null;
-  setSelectedTeam: React.Dispatch<React.SetStateAction<string | null>>;
-  selectionMode: boolean;
-  setSelectionMode: React.Dispatch<React.SetStateAction<boolean>>;
-  finalRound: boolean;
-  winners: WinnersByEventQuery | undefined;
-};
 
 const TeamList = ({
   data,
@@ -46,13 +32,27 @@ const TeamList = ({
   setSelectionMode,
   finalRound,
   winners,
-}: Props) => {
+}: {
+  data: JudgeGetTeamsByRoundSubscription | undefined;
+  loading: boolean;
+  roundNo: number;
+  eventId: string;
+  eventType: string;
+  selectedTeam: string | null;
+  setSelectedTeam: React.Dispatch<React.SetStateAction<string | null>>;
+  selectionMode: boolean;
+  setSelectionMode: React.Dispatch<React.SetStateAction<boolean>>;
+  finalRound: boolean;
+  winners: WinnersByEventQuery | undefined;
+}) => {
   const [query, setQuery] = React.useState("");
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
   const [sortField, setSortField] = React.useState<
     "Total Score" | "Your Score"
   >("Total Score");
-  const [winnerType, setWinnerType] = React.useState<WinnerType[0]>("WINNER");
+  const [winnerType, setWinnerType] = React.useState<WinnerType>(
+    WinnerType.Winner,
+  );
 
   const [promote, { loading: promoteLoading }] = useMutation(
     PromoteToNextRoundDocument,
@@ -74,15 +74,12 @@ const TeamList = ({
     },
   );
 
-  const { data: roundStatus, loading: roundStatusLoading } = useSubscription(
-    GetRoundStatusDocument,
-    {
-      variables: {
-        roundNo: roundNo,
-        eventId: eventId,
-      },
+  const { data: roundStatus } = useSubscription(GetRoundStatusDocument, {
+    variables: {
+      roundNo: roundNo,
+      eventId: eventId,
     },
-  );
+  });
 
   const { data: scores, loading: scoresLoading } = useQuery(
     GetTotalScoresDocument,
@@ -100,14 +97,10 @@ const TeamList = ({
       roundStatus?.getRoundStatus.__typename ===
       "SubscriptionGetRoundStatusSuccess"
     ) {
-      if (roundStatus.getRoundStatus.data.selectStatus) {
-        setSelectionMode(true);
-      }
+      if (roundStatus.getRoundStatus.data.selectStatus) setSelectionMode(true);
     }
 
-    return () => {
-      setSelectionMode(false);
-    };
+    return () => setSelectionMode(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [roundStatus]);
 
@@ -170,12 +163,6 @@ const TeamList = ({
       return 0;
     }
   });
-
-  enum WinnersType {
-    Winner = "WINNER",
-    RunnerUp = "RUNNER_UP",
-    SecondRunnerUp = "SECOND_RUNNER_UP",
-  }
 
   return (
     <div className="h-full overflow-y-auto">
@@ -245,7 +232,7 @@ const TeamList = ({
       <div className="mt-3 flex flex-col gap-2 px-3 pb-3">
         {selectionMode && finalRound && (
           <div className="my-3 flex flex-row justify-between">
-            {Object.values(WinnersType).map((type) => (
+            {Object.values(WinnerType).map((type) => (
               <Button
                 key={type}
                 onClick={() => setWinnerType(type)}
@@ -331,7 +318,7 @@ const TeamList = ({
                 >
                   {teamOrParticipant === "Team"
                     ? idToTeamId(team.id)
-                    : idToPid(team.leaderId?.toString()!)}
+                    : idToPid(team.leaderId?.toString() ?? "")}
                 </div>
 
                 <div
@@ -394,7 +381,7 @@ const TeamList = ({
                           variables: {
                             eventId,
                             teamId: team?.id,
-                            type: winnerType as WinnerType,
+                            type: winnerType,
                           },
                         }).then((data) => {
                           if (data.data?.createWinner.__typename === "Error") {

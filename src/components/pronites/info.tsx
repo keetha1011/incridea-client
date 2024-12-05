@@ -1,4 +1,4 @@
-import { Dispatch, useState } from "react";
+import { useState } from "react";
 import { FaInfo } from "react-icons/fa";
 
 import Button from "~/components/button";

@@ -1,7 +1,7 @@
 import { toast } from "react-hot-toast";
 
 const createToast = (
-  promise: Promise<any>,
+  promise: Promise<unknown>,
   loadingText?: string,
   errorMessage?: string,
 ) => {

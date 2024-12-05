@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEventHandler, FunctionComponent, useState } from "react";
+import { type FormEventHandler, type FunctionComponent, useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 
@@ -26,7 +26,7 @@ const ResetPassword: FunctionComponent = () => {
     ResetPasswordDocument,
   );
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     if (password.newPassword.length < 8) {
@@ -44,16 +44,18 @@ const ResetPassword: FunctionComponent = () => {
       return;
     }
 
-    await resetMutation({
+    resetMutation({
       variables: {
         password: password.newPassword,
         token: token,
       },
-    }).then((res) => {
-      if (res.data?.resetPassword.__typename === "Error") {
-        setError(res.data.resetPassword.message);
-      }
-    });
+    })
+      .then((res) => {
+        if (res.data?.resetPassword.__typename === "Error") {
+          setError(res.data.resetPassword.message);
+        }
+      })
+      .catch(console.log);
   };
 
   return (

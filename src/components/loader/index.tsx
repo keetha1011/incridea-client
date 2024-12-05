@@ -41,6 +41,8 @@ const Loader: FC = () => {
       setIsLoading(false);
       setOpen(false);
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

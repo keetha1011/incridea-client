@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { type NextPage } from "next";
 
 import TeamCard from "~/components/general/about/teamCard";
 

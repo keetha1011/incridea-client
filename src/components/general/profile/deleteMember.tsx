@@ -1,5 +1,5 @@
 import { useMutation } from "@apollo/client";
-import React, { FC, useState } from "react";
+import React, { type FC, useState } from "react";
 import { BiTrashAlt } from "react-icons/bi";
 
 import Button from "~/components/button";

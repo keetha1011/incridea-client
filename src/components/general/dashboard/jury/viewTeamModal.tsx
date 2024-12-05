@@ -1,24 +1,14 @@
-import { useMutation } from "@apollo/client";
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import { FC, useState } from "react";
-import { BiPlus, BiTrashAlt } from "react-icons/bi";
+import { type FC, useState } from "react";
 import { BsFillEyeFill } from "react-icons/bs";
-import {
-  MdOutlineDeleteOutline,
-  MdOutlineMail,
-  MdOutlinePhone,
-} from "react-icons/md";
+import { MdOutlineMail } from "react-icons/md";
 
 import Badge from "~/components/badge";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
-import createToast from "~/components/toast";
-import {
-  OrganizerDeleteTeamMemberDocument,
-  TeamDetailsDocument,
-} from "~/generated/generated";
+import { TeamDetailsDocument } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
 const ViewTeamModal: FC<{
@@ -27,11 +17,7 @@ const ViewTeamModal: FC<{
 }> = ({ teamId, teamName }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const {
-    data: teamData,
-    error: teamError,
-    loading: teamLoading,
-  } = useQuery(TeamDetailsDocument, {
+  const { data: teamData } = useQuery(TeamDetailsDocument, {
     variables: {
       id: teamId,
     },

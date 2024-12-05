@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { IoMdClose } from "react-icons/io";
 
@@ -12,15 +12,11 @@ import useStore from "~/components/store/store";
 import { env } from "~/env";
 import { AddXpDocument } from "~/generated/generated";
 
-interface DexProps {
-  data?: { id: string; name: string; image: string }[];
-}
-
-interface DexProps {
+type DexProps = {
   data?: { id: string; name: string; image: string }[];
   isMuted: boolean;
   mainThemeAudioRef: React.MutableRefObject<HTMLAudioElement | null>;
-}
+};
 
 const Pokedex: React.FC<DexProps> = ({
   data = [],
@@ -34,7 +30,7 @@ const Pokedex: React.FC<DexProps> = ({
   const eventDex = useStore((state) => state.eventDex);
   const [fullyOpen, setFullyOpen] = useState(false);
   const [calledXp, setCalledXp] = useState(false);
-  let mutationCalled = false;
+  const mutationCalled = useRef(false);
 
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
@@ -43,27 +39,6 @@ const Pokedex: React.FC<DexProps> = ({
     refetchQueries: ["GetUserXp"],
     awaitRefetchQueries: true,
   });
-
-  const handleAddXp = () => {
-    if (calledXp) {
-      return;
-    }
-    setCalledXp(true);
-    const promise = addXp().then((res) => {
-      if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
-        toast.success(
-          `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
-          {
-            position: "bottom-center",
-            style: {
-              backgroundColor: "#7628D0",
-              color: "white",
-            },
-          },
-        );
-      }
-    });
-  };
 
   useEffect(() => {
     const audio = new Audio(
@@ -84,6 +59,26 @@ const Pokedex: React.FC<DexProps> = ({
   }, [eventDex, isMuted, mainThemeAudioRef]);
 
   useEffect(() => {
+    const handleAddXp = async () => {
+      if (calledXp) return;
+
+      setCalledXp(true);
+      await addXp().then((res) => {
+        if (res.data?.addXP.__typename === "MutationAddXPSuccess") {
+          toast.success(
+            `Congratulations!!! You have found ${res.data?.addXP.data.level.point} Xp`,
+            {
+              position: "bottom-center",
+              style: {
+                backgroundColor: "#7628D0",
+                color: "white",
+              },
+            },
+          );
+        }
+      });
+    };
+
     // Initialize GSAP
     const tl = gsap.timeline();
 
@@ -102,12 +97,12 @@ const Pokedex: React.FC<DexProps> = ({
       .call(() => {
         console.log("Fully open");
         setFullyOpen(true);
-        if (!mutationCalled) {
-          mutationCalled = true;
-          handleAddXp();
+        if (!mutationCalled.current) {
+          mutationCalled.current = true;
+          void handleAddXp();
         }
       });
-  }, []);
+  }, [addXp, calledXp]);
 
   return (
     <div className="fixed inset-0 z-[100] bg-black bg-opacity-50">

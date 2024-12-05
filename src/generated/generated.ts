@@ -26,8 +26,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean };
   Int: { input: number; output: number };
   Float: { input: number; output: number };
-  Date: { input: any; output: any };
-  DateTime: { input: any; output: any };
+  DateTime: { input: Date; output: Date };
 };
 
 export enum AccommodationBookingStatus {
@@ -48,6 +47,13 @@ export type AllSubmissions = {
   qType: Scalars["String"]["output"];
   question: Scalars["String"]["output"];
   userId: Scalars["String"]["output"];
+};
+
+export type Avatar = {
+  __typename?: "Avatar";
+  id: Scalars["String"]["output"];
+  name: Scalars["String"]["output"];
+  url: Scalars["String"]["output"];
 };
 
 export type Branch = {
@@ -190,7 +196,7 @@ export enum EventType {
 export type EventUpdateInput = {
   category?: InputMaybe<EventCategory>;
   description?: InputMaybe<Scalars["String"]["input"]>;
-  eventDate?: InputMaybe<Scalars["Date"]["input"]>;
+  eventDate?: InputMaybe<Scalars["DateTime"]["input"]>;
   eventType?: InputMaybe<EventType>;
   fees?: InputMaybe<Scalars["Int"]["input"]>;
   image?: InputMaybe<Scalars["String"]["input"]>;
@@ -299,6 +305,8 @@ export type Mutation = {
   createHotel: MutationCreateHotelResult;
   createJudge: MutationCreateJudgeResult;
   createPaymentOrder: MutationCreatePaymentOrderResult;
+  createQuestion: MutationCreateQuestionResult;
+  createQuiz: MutationCreateQuizResult;
   createRound: MutationCreateRoundResult;
   createSubmission: MutationCreateSubmissionResult;
   createTeam: MutationCreateTeamResult;
@@ -339,14 +347,15 @@ export type Mutation = {
   updateCard: MutationUpdateCardResult;
   updateEvent: MutationUpdateEventResult;
   updateProfileImage: MutationUpdateProfileImageResult;
+  updateQuizStatus: MutationUpdateQuizStatusResult;
   updateStatus: MutationUpdateStatusResult;
   verifyEmail: MutationVerifyEmailResult;
 };
 
 export type MutationAddAccommodationRequestArgs = {
   IdCard: Scalars["String"]["input"];
-  checkIn: Scalars["String"]["input"];
-  checkOut: Scalars["String"]["input"];
+  checkIn: Scalars["DateTime"]["input"];
+  checkOut: Scalars["DateTime"]["input"];
   gender: Scalars["String"]["input"];
   hotelId: Scalars["Int"]["input"];
 };
@@ -436,8 +445,27 @@ export type MutationCreatePaymentOrderArgs = {
   type: OrderType;
 };
 
+export type MutationCreateQuestionArgs = {
+  image?: InputMaybe<Scalars["String"]["input"]>;
+  negativePoint: Scalars["Int"]["input"];
+  options?: InputMaybe<Scalars["String"]["input"]>;
+  points: Scalars["Int"]["input"];
+  question: Scalars["String"]["input"];
+  quizId: Scalars["String"]["input"];
+  type: Scalars["String"]["input"];
+};
+
+export type MutationCreateQuizArgs = {
+  description: Scalars["String"]["input"];
+  endTime: Scalars["String"]["input"];
+  eventId: Scalars["String"]["input"];
+  name: Scalars["String"]["input"];
+  roundId: Scalars["String"]["input"];
+  startTime: Scalars["String"]["input"];
+};
+
 export type MutationCreateRoundArgs = {
-  date: Scalars["String"]["input"];
+  date: Scalars["DateTime"]["input"];
   eventId: Scalars["ID"]["input"];
 };
 
@@ -618,6 +646,12 @@ export type MutationUpdateProfileImageArgs = {
   imageURL: Scalars["String"]["input"];
 };
 
+export type MutationUpdateQuizStatusArgs = {
+  allowAttempts: Scalars["Boolean"]["input"];
+  password: Scalars["String"]["input"];
+  quizId: Scalars["String"]["input"];
+};
+
 export type MutationUpdateStatusArgs = {
   bookingId: Scalars["String"]["input"];
   hotelId: Scalars["String"]["input"];
@@ -761,6 +795,22 @@ export type MutationCreatePaymentOrderResult =
 export type MutationCreatePaymentOrderSuccess = {
   __typename?: "MutationCreatePaymentOrderSuccess";
   data: PaymentOrder;
+};
+
+export type MutationCreateQuestionResult =
+  | Error
+  | MutationCreateQuestionSuccess;
+
+export type MutationCreateQuestionSuccess = {
+  __typename?: "MutationCreateQuestionSuccess";
+  data: Question;
+};
+
+export type MutationCreateQuizResult = Error | MutationCreateQuizSuccess;
+
+export type MutationCreateQuizSuccess = {
+  __typename?: "MutationCreateQuizSuccess";
+  data: Quiz;
 };
 
 export type MutationCreateRoundResult = Error | MutationCreateRoundSuccess;
@@ -1074,6 +1124,15 @@ export type MutationUpdateProfileImageSuccess = {
   data: User;
 };
 
+export type MutationUpdateQuizStatusResult =
+  | Error
+  | MutationUpdateQuizStatusSuccess;
+
+export type MutationUpdateQuizStatusSuccess = {
+  __typename?: "MutationUpdateQuizStatusSuccess";
+  data: Quiz;
+};
+
 export type MutationUpdateStatusResult = Error | MutationUpdateStatusSuccess;
 
 export type MutationUpdateStatusSuccess = {
@@ -1169,7 +1228,7 @@ export type Query = {
   getAllQuizSubmissions: QueryGetAllQuizSubmissionsResult;
   getAllSubmissions: QueryGetAllSubmissionsResult;
   getAllquestions: QueryGetAllquestionsResult;
-  getAvatars: Scalars["String"]["output"];
+  getAvatars: Array<Avatar>;
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
@@ -1331,7 +1390,7 @@ export type QueryTeamsByRoundArgs = {
 };
 
 export type QueryTotalRegistrationsArgs = {
-  date?: InputMaybe<Scalars["Date"]["input"]>;
+  date?: InputMaybe<Scalars["DateTime"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
@@ -1716,7 +1775,7 @@ export type TotalScores = {
 export type User = {
   __typename?: "User";
   college?: Maybe<College>;
-  createdAt: Scalars["Date"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
   email: Scalars["String"]["output"];
   hotel?: Maybe<UserInHotel>;
   id: Scalars["ID"]["output"];
@@ -1787,8 +1846,8 @@ export type Xp = {
 };
 
 export type AddAccommodationRequestMutationVariables = Exact<{
-  checkInTime: Scalars["String"]["input"];
-  checkOutTime: Scalars["String"]["input"];
+  checkInTime: Scalars["DateTime"]["input"];
+  checkOutTime: Scalars["DateTime"]["input"];
   gender: Scalars["String"]["input"];
   hotelId: Scalars["Int"]["input"];
   id: Scalars["String"]["input"];
@@ -1802,8 +1861,8 @@ export type AddAccommodationRequestMutation = {
         __typename: "MutationAddAccommodationRequestSuccess";
         data: {
           __typename?: "UserInHotel";
-          checkIn?: any | null;
-          checkOut?: any | null;
+          checkIn?: Date | null;
+          checkOut?: Date | null;
           gender: Gender;
           status: AccommodationBookingStatus;
           user: {
@@ -2006,12 +2065,12 @@ export type CreateHotelMutation = {
         __typename: "MutationCreateHotelSuccess";
         data: {
           __typename?: "Hotel";
-          createdAt?: any | null;
+          createdAt?: Date | null;
           details?: string | null;
           id: string;
           name: string;
           price: number;
-          updatedAt?: any | null;
+          updatedAt?: Date | null;
         };
       };
 };
@@ -2033,7 +2092,7 @@ export type CreateJudgeMutation = {
 
 export type CreateRoundMutationVariables = Exact<{
   eventId: Scalars["ID"]["input"];
-  date: Scalars["String"]["input"];
+  date: Scalars["DateTime"]["input"];
 }>;
 
 export type CreateRoundMutation = {
@@ -2704,27 +2763,27 @@ export type AccommodationRequestByDayQuery = {
   __typename?: "Query";
   accommodationRequestByDay: Array<{
     __typename?: "UserInHotel";
-    checkIn?: any | null;
-    checkOut?: any | null;
-    createdAt?: any | null;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
+    createdAt?: Date | null;
     gender: Gender;
     id: string;
     room?: string | null;
     ac: boolean;
     status: AccommodationBookingStatus;
-    updatedAt?: any | null;
+    updatedAt?: Date | null;
     hotel: {
       __typename?: "Hotel";
-      createdAt?: any | null;
+      createdAt?: Date | null;
       details?: string | null;
       id: string;
       name: string;
       price: number;
-      updatedAt?: any | null;
+      updatedAt?: Date | null;
     };
     user: {
       __typename?: "User";
-      createdAt: any;
+      createdAt: Date;
       email: string;
       id: string;
       isVerified: boolean;
@@ -2743,27 +2802,27 @@ export type AccommodationRequestByHotelQuery = {
   __typename?: "Query";
   accommodationRequestByHotel: Array<{
     __typename?: "UserInHotel";
-    checkIn?: any | null;
-    checkOut?: any | null;
-    createdAt?: any | null;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
+    createdAt?: Date | null;
     gender: Gender;
     id: string;
     room?: string | null;
     ac: boolean;
     status: AccommodationBookingStatus;
-    updatedAt?: any | null;
+    updatedAt?: Date | null;
     hotel: {
       __typename?: "Hotel";
-      createdAt?: any | null;
+      createdAt?: Date | null;
       details?: string | null;
       id: string;
       name: string;
       price: number;
-      updatedAt?: any | null;
+      updatedAt?: Date | null;
     };
     user: {
       __typename?: "User";
-      createdAt: any;
+      createdAt: Date;
       email: string;
       id: string;
       isVerified: boolean;
@@ -2786,19 +2845,19 @@ export type AccommodationRequestsQuery = {
         __typename: "QueryAccommodationRequestsSuccess";
         data: Array<{
           __typename?: "UserInHotel";
-          checkIn?: any | null;
-          checkOut?: any | null;
-          createdAt?: any | null;
+          checkIn?: Date | null;
+          checkOut?: Date | null;
+          createdAt?: Date | null;
           gender: Gender;
           id: string;
           room?: string | null;
           ac: boolean;
           status: AccommodationBookingStatus;
-          updatedAt?: any | null;
+          updatedAt?: Date | null;
           user: {
             __typename?: "User";
             email: string;
-            createdAt: any;
+            createdAt: Date;
             id: string;
             isVerified: boolean;
             name: string;
@@ -2828,8 +2887,8 @@ export type AccommodationRequestsByUserQuery = {
   __typename?: "Query";
   accommodationRequestsByUser: Array<{
     __typename?: "UserInHotel";
-    checkIn?: any | null;
-    checkOut?: any | null;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
     room?: string | null;
     status: AccommodationBookingStatus;
     hotel: { __typename?: "Hotel"; name: string; price: number };
@@ -2845,9 +2904,9 @@ export type AccommodationRequestsByUserIdQuery = {
   accommodationRequestsByUserId: Array<{
     __typename?: "UserInHotel";
     ac: boolean;
-    checkIn?: any | null;
-    checkOut?: any | null;
-    createdAt?: any | null;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
+    createdAt?: Date | null;
     gender: Gender;
     IdCard?: string | null;
     room?: string | null;
@@ -2855,7 +2914,7 @@ export type AccommodationRequestsByUserIdQuery = {
     hotel: {
       __typename?: "Hotel";
       details?: string | null;
-      createdAt?: any | null;
+      createdAt?: Date | null;
       id: string;
       name: string;
       price: number;
@@ -2909,7 +2968,7 @@ export type CompletedEventsQuery = {
                   isVerified: boolean;
                   id: string;
                   email: string;
-                  createdAt: any;
+                  createdAt: Date;
                   college?: { __typename?: "College"; name: string } | null;
                 };
               }>;
@@ -2918,7 +2977,7 @@ export type CompletedEventsQuery = {
           rounds: Array<{
             __typename?: "Round";
             completed: boolean;
-            date?: any | null;
+            date?: Date | null;
             eventId: string;
             roundNo: number;
             selectStatus: boolean;
@@ -2997,7 +3056,7 @@ export type EventByIdQuery = {
       __typename?: "Round";
       completed: boolean;
       roundNo: number;
-      date?: any | null;
+      date?: Date | null;
     }>;
   };
 };
@@ -3032,7 +3091,7 @@ export type EventsQuery = {
           __typename?: "Round";
           completed: boolean;
           roundNo: number;
-          date?: any | null;
+          date?: Date | null;
           eventId: string;
           event: {
             __typename?: "Event";
@@ -3056,7 +3115,7 @@ export type EventsQuery = {
               role: Role;
               email: string;
               isVerified: boolean;
-              createdAt: any;
+              createdAt: Date;
             };
           }>;
         }>;
@@ -3090,7 +3149,7 @@ export type EventsByBranchRepQuery = {
       completed: boolean;
       roundNo: number;
       eventId: string;
-      date?: any | null;
+      date?: Date | null;
       judges: Array<{
         __typename?: "Judge";
         user: { __typename?: "User"; email: string; name: string; id: string };
@@ -3129,7 +3188,7 @@ export type EventByOrganizerQuery = {
       completed: boolean;
       roundNo: number;
       eventId: string;
-      date?: any | null;
+      date?: Date | null;
       criteria?: Array<{
         __typename?: "Criteria";
         id: string;
@@ -3155,12 +3214,12 @@ export type GetAllHotelsQuery = {
   __typename?: "Query";
   getAllHotels: Array<{
     __typename?: "Hotel";
-    createdAt?: any | null;
+    createdAt?: Date | null;
     details?: string | null;
     id: string;
     name: string;
     price: number;
-    updatedAt?: any | null;
+    updatedAt?: Date | null;
   }>;
 };
 
@@ -3209,7 +3268,7 @@ export type GetAllWinnersQuery = {
             __typename?: "Event";
             name: string;
             branch: { __typename?: "Branch"; name: string; id: string };
-            rounds: Array<{ __typename?: "Round"; date?: any | null }>;
+            rounds: Array<{ __typename?: "Round"; date?: Date | null }>;
           };
         }>;
       };
@@ -3217,7 +3276,15 @@ export type GetAllWinnersQuery = {
 
 export type GetAvatarsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetAvatarsQuery = { __typename?: "Query"; getAvatars: string };
+export type GetAvatarsQuery = {
+  __typename?: "Query";
+  getAvatars: Array<{
+    __typename?: "Avatar";
+    id: string;
+    name: string;
+    url: string;
+  }>;
+};
 
 export type BranchesQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -3271,14 +3338,14 @@ export type GetXpLeaderboardQuery = {
         data: Array<{
           __typename?: "XP";
           id: string;
-          createdAt: any;
+          createdAt: Date;
           level: { __typename?: "Level"; id: string; point: number };
           user: {
             __typename?: "User";
             name: string;
             id: string;
             email: string;
-            createdAt: any;
+            createdAt: Date;
             isVerified: boolean;
             phoneNumber?: string | null;
             role: Role;
@@ -3328,7 +3395,6 @@ export type GetScoreSheetJuryQuery = {
               criteriaId: number;
               score: number;
               criteriaName: string;
-              criteriaType: CriteriaType;
             }>;
           }>;
         }>;
@@ -3388,7 +3454,7 @@ export type MeQuery = {
         __typename: "QueryMeSuccess";
         data: {
           __typename?: "User";
-          createdAt: any;
+          createdAt: Date;
           email: string;
           id: string;
           isVerified: boolean;
@@ -3468,7 +3534,7 @@ export type PublishedEventsQuery = {
     branch: { __typename?: "Branch"; name: string; id: string };
     rounds: Array<{
       __typename?: "Round";
-      date?: any | null;
+      date?: Date | null;
       roundNo: number;
       completed: boolean;
     }>;
@@ -3492,7 +3558,7 @@ export type RegisterdEventsQuery = {
           category: EventCategory;
           rounds: Array<{
             __typename?: "Round";
-            date?: any | null;
+            date?: Date | null;
             roundNo: number;
           }>;
           teams: Array<{
@@ -3560,7 +3626,7 @@ export type RoundsByEventQuery = {
   roundsByEvent: Array<{
     __typename?: "Round";
     completed: boolean;
-    date?: any | null;
+    date?: Date | null;
     eventId: string;
     roundNo: number;
   }>;
@@ -3615,7 +3681,7 @@ export type TeamDetailsQuery = {
             __typename?: "TeamMember";
             user: {
               __typename?: "User";
-              createdAt: any;
+              createdAt: Date;
               email: string;
               id: string;
               isVerified: boolean;
@@ -3716,7 +3782,7 @@ export type WinnersByEventQuery = {
               __typename?: "TeamMember";
               user: {
                 __typename?: "User";
-                createdAt: any;
+                createdAt: Date;
                 id: string;
                 email: string;
                 isVerified: boolean;
@@ -3783,7 +3849,7 @@ export const AddAccommodationRequestDocument = {
             kind: "NonNullType",
             type: {
               kind: "NamedType",
-              name: { kind: "Name", value: "String" },
+              name: { kind: "Name", value: "DateTime" },
             },
           },
         },
@@ -3797,7 +3863,7 @@ export const AddAccommodationRequestDocument = {
             kind: "NonNullType",
             type: {
               kind: "NamedType",
-              name: { kind: "Name", value: "String" },
+              name: { kind: "Name", value: "DateTime" },
             },
           },
         },
@@ -5852,7 +5918,7 @@ export const CreateRoundDocument = {
             kind: "NonNullType",
             type: {
               kind: "NamedType",
-              name: { kind: "Name", value: "String" },
+              name: { kind: "Name", value: "DateTime" },
             },
           },
         },
@@ -12980,7 +13046,18 @@ export const GetAvatarsDocument = {
       selectionSet: {
         kind: "SelectionSet",
         selections: [
-          { kind: "Field", name: { kind: "Name", value: "getAvatars" } },
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getAvatars" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "url" } },
+              ],
+            },
+          },
         ],
       },
     },
@@ -13601,13 +13678,6 @@ export const GetScoreSheetJuryDocument = {
                                           name: {
                                             kind: "Name",
                                             value: "criteriaName",
-                                          },
-                                        },
-                                        {
-                                          kind: "Field",
-                                          name: {
-                                            kind: "Name",
-                                            value: "criteriaType",
                                           },
                                         },
                                       ],

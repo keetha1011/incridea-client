@@ -1,8 +1,7 @@
 import gsap from "gsap";
 import Image from "next/image";
 import React, { useLayoutEffect, useRef, useState } from "react";
-import YouTube, { YouTubeProps } from "react-youtube";
-import { Swiper as SwiperType } from "swiper";
+import { type Swiper as SwiperType } from "swiper";
 import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -70,25 +69,6 @@ const GbaComponent = ({ imgArr }: { imgArr: string[] }) => {
 
     return () => ctx.revert();
   }, []);
-
-  const opts: YouTubeProps["opts"] = {
-    height: "100%",
-    width: "100%",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 0,
-      controls: 1,
-      fs: 1,
-    },
-  };
-
-  const youtubePlayerRef = useRef<YouTube | null>(null);
-
-  const handlePlay = (event: any) => {
-    event.target.pauseVideo();
-    setActiveIndex(imgArr.length);
-    setActiveModal(true);
-  };
 
   return (
     <div className="relative flex flex-col gap-y-0">

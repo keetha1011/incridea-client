@@ -1,10 +1,16 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import gsap from "gsap";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  type MouseEventHandler,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
-import { Swiper as SwiperType } from "swiper";
+import { type Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -52,7 +58,7 @@ const Gallery: NextPage = () => {
   }, []);
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+    gsap.context(() => {
       const t1 = gsap.timeline();
       t1.from("#animation", {
         delay: 0.3,
@@ -68,9 +74,9 @@ const Gallery: NextPage = () => {
     });
     window?.addEventListener("deviceorientation", (evt) => {
       const xAng = evt.gamma;
-      xAng ? x.set(xAng / 100) : null;
+      if (xAng) x.set(xAng / 100);
       const yAng = evt.beta;
-      yAng ? y.set(yAng / 100) : null;
+      if (yAng) y.set(yAng / 100);
     });
   }, [activeYear, x, y]);
   const img2019: string[] = generateImagePaths(years[0], imageCounts[0], "jpg");
@@ -93,7 +99,7 @@ const Gallery: NextPage = () => {
     [-1.8, 1.8],
     ["-150deg", "150deg"],
   );
-  const tiltStars = (e: any) => {
+  const tiltStars: MouseEventHandler<HTMLElement> = (e) => {
     const xPct = (e.clientX / window.innerWidth - 0.5) * 0.4;
     const yPct = (e.clientY / window.innerHeight - 0.5) * 0.4;
     x.set(xPct);

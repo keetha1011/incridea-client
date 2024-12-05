@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@apollo/client";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -11,15 +11,17 @@ import { env } from "~/env";
 import { GetXpLeaderboardDocument } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
+const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
+
 const LeaderBoard: NextPage = () => {
-  interface UserTotalPoints {
+  type UserTotalPoints = {
     [userId: string]: {
       levelPoints: number;
       name: string;
       count: number;
-      createdAt: string;
+      createdAt: Date;
     };
-  }
+  };
   const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
     GetXpLeaderboardDocument,
     {},
@@ -34,7 +36,6 @@ const LeaderBoard: NextPage = () => {
     }[]
   >([]);
 
-  const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
   useEffect(() => {
     if (
       Leaderboard?.getXpLeaderboard.__typename ===
@@ -43,11 +44,11 @@ const LeaderBoard: NextPage = () => {
       const userTotalPoints: UserTotalPoints = {};
 
       Leaderboard?.getXpLeaderboard.data.forEach((item) => {
-        const userId: string = item.user.id;
-        const levelPoints: number = item.level.point;
-        const userName: string = item.user.name;
-        const levelCount: number = 1;
-        const createdAt: string = item.createdAt;
+        const userId = item.user.id;
+        const levelPoints = item.level.point;
+        const userName = item.user.name;
+        const levelCount = 1;
+        const createdAt = item.createdAt;
 
         // Check if the user ID is already in the userTotalPoints object
         if (userTotalPoints[userId]) {

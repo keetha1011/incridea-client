@@ -2,11 +2,11 @@ import { useGSAP } from "@gsap/react";
 import { ReactLenis } from "@studio-freight/react-lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { NextPage } from "next";
+import { type NextPage } from "next";
 import React, { useRef, useState } from "react";
 
 import SponsorCard from "~/components/sponsorsCard";
-import sponsors, { Sponsor } from "~/constants/sponsors";
+import sponsors, { type Sponsor } from "~/constants/sponsors";
 
 const sponsorDetails: Sponsor[] = sponsors;
 

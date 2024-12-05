@@ -9,8 +9,9 @@ import createToast from "~/components/toast";
 import {
   CompleteRoundDocument,
   GetTotalScoresDocument,
-  JudgeGetTeamsByRoundSubscription,
-  WinnersByEventQuery,
+  type JudgeGetTeamsByRoundSubscription,
+  type WinnersByEventQuery,
+  WinnerType,
 } from "~/generated/generated";
 import { idToPid, idToTeamId } from "~/utils/id";
 
@@ -74,12 +75,14 @@ const ConfirmRoundModal = ({
 
   const disabled =
     winners?.winnersByEvent.__typename === "QueryWinnersByEventSuccess" &&
-    winners?.winnersByEvent.data.some((winner) => winner.type === "WINNER") &&
     winners?.winnersByEvent.data.some(
-      (winner) => winner.type === "RUNNER_UP",
+      (winner) => winner.type === WinnerType.Winner,
     ) &&
     winners?.winnersByEvent.data.some(
-      (winner) => winner.type === "SECOND_RUNNER_UP",
+      (winner) => winner.type === WinnerType.RunnerUp,
+    ) &&
+    winners?.winnersByEvent.data.some(
+      (winner) => winner.type === WinnerType.SecondRunnerUp,
     );
 
   return (
@@ -190,7 +193,7 @@ const ConfirmRoundModal = ({
                         } text-lg text-white/60`}
                       >
                         {solo
-                          ? idToPid(team.leaderId?.toString()!)
+                          ? idToPid(team.leaderId?.toString() ?? "")
                           : idToTeamId(team.id)}
                       </p>
 
@@ -259,7 +262,7 @@ const ConfirmRoundModal = ({
                       </div>
                       <p className="basis-1/4 text-lg text-white/60">
                         {solo
-                          ? idToPid(winner.team.leaderId?.toString()!)
+                          ? idToPid(winner.team.leaderId?.toString() ?? "")
                           : idToTeamId(winner.team.id)}
                       </p>
                       <div className="basis-1/4">

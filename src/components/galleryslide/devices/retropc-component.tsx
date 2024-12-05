@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { useRef, useState } from "react";
-import YouTube, { YouTubeProps } from "react-youtube";
-import { Swiper as SwiperType } from "swiper";
+import { type Swiper as SwiperType } from "swiper";
 import { Autoplay, Mousewheel, Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -12,12 +11,6 @@ import styles from "~/components/galleryslide/styles/shadow.module.css";
 import { env } from "~/env";
 
 import ToolTip from "./tool-tip";
-
-interface RippleState {
-  x: number;
-  y: number;
-  active: boolean;
-}
 
 const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
   const [isAnimatingRight, setAnimatingRight] = useState(false);
@@ -36,35 +29,13 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
       setAnimatingRight(false);
     }, 400);
   };
-  const [ripple, setRipple] = useState<RippleState>({
-    x: 0,
-    y: 0,
-    active: false,
-  });
+
   const [activeModal, setActiveModal] = useState<boolean>(false);
   const swiperRef = useRef<SwiperType>();
 
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    setRipple({ x, y, active: true });
-
-    setTimeout(() => setRipple({ x: 0, y: 0, active: false }), 800);
-  };
   const [activeIndex, setActiveIndex] = useState(0);
   const thumbnailSrc = "/thumbnails/incridea20.jpg";
-  const opts: YouTubeProps["opts"] = {
-    height: "100%",
-    width: "100%",
-    playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 0,
-      controls: 1,
-      fs: 1,
-    },
-  };
+
   const [portraitImages, setPortraitImages] = useState<{
     [key: number]: boolean;
   }>({});
@@ -81,13 +52,7 @@ const RetroPC = ({ imgArr }: { imgArr: string[] }) => {
       [index]: isPortrait,
     }));
   };
-  const youtubePlayerRef = useRef<YouTube | null>(null);
 
-  const handlePlay = (event: any) => {
-    event.target.pauseVideo();
-    setActiveIndex(imgArr.length);
-    setActiveModal(true);
-  };
   return (
     <div className="relative flex flex-col">
       {/* <h1

@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import "locomotive-scroll/dist/locomotive-scroll.css";
-import { GetStaticProps } from "next";
+import { type GetStaticProps } from "next";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -10,12 +10,17 @@ import { IoTodayOutline } from "react-icons/io5";
 
 import Event from "~/components/event";
 import {
+  EventCategory,
   PublishedEventsDocument,
-  PublishedEventsQuery,
+  type PublishedEventsQuery,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
 
 import styles from "./styles.module.css";
+
+enum AllCategory {
+  ALL = "ALL",
+}
 
 type Props = { data: PublishedEventsQuery["publishedEvents"] };
 
@@ -45,61 +50,19 @@ const getStaticProps: GetStaticProps<Props> = async () => {
 const Page = ({ data }: Props) => {
   const containerRef = useRef(null);
 
-  // TODO: add new branchs
-  const branchFilters = [
-    "All",
-    "CORE",
-    "CSE",
-    "ISE",
-    "AIML",
-    "CCE",
-    "ECE",
-    "EEE",
-    "MECH",
-    "CIVIL",
-    "BTE",
-  ];
-
   const dayFilters = ["All", "DAY 1", "DAY 2", "DAY 3"];
-  const categoryFilters = [
-    "All",
-    "TECHNICAL",
-    "NON_TECHNICAL",
-    "CORE",
-    "SPECIAL",
-  ];
-  const [currentBranchFilter, setCurrentBranchFilter] =
-    useState<(typeof branchFilters)[number]>("All");
+
   const [currentDayFilter, setCurrentDayFilter] =
     useState<(typeof dayFilters)[number]>("All");
-  const [currentCategoryFilter, setCurrentCategoryFilter] =
-    useState<(typeof branchFilters)[number]>("All");
+  const [currentCategoryFilter, setCurrentCategoryFilter] = useState<
+    EventCategory | AllCategory
+  >(AllCategory.ALL);
   const [query, setQuery] = useState("");
 
   const [filteredEvents, setFilteredEvents] = useState(data || []);
 
-  const [showTopButton, setShowTopButton] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowTopButton(true);
-      } else {
-        setShowTopButton(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   useEffect(() => {
     let tempFilteredEvents = data;
-    if (currentBranchFilter !== "All")
-      tempFilteredEvents = tempFilteredEvents.filter(
-        (event) => event.branch.name === currentBranchFilter,
-      );
     if (currentDayFilter !== "All") {
       const filteredDay = new Date(
         currentDayFilter === "DAY 1"
@@ -109,24 +72,21 @@ const Page = ({ data }: Props) => {
             : "2024-02-24",
       ).getDate();
       tempFilteredEvents = tempFilteredEvents.filter((event) =>
-        event.rounds.some(
-          (round) => new Date(round.date).getDate() === filteredDay,
-        ),
+        event.rounds.some((round) => round.date?.getDate() === filteredDay),
       );
     }
-    if (currentCategoryFilter !== "All") {
+    if (currentCategoryFilter !== AllCategory.ALL)
       tempFilteredEvents = tempFilteredEvents.filter(
         (event) => event.category === currentCategoryFilter,
       );
-    }
+
     setFilteredEvents(tempFilteredEvents);
-  }, [currentBranchFilter, currentDayFilter, currentCategoryFilter, data]);
+  }, [currentDayFilter, currentCategoryFilter, data]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
-    setCurrentBranchFilter("All");
     setCurrentDayFilter("All");
-    setCurrentCategoryFilter("All");
+    setCurrentCategoryFilter(AllCategory.ALL);
     if (e.target.value === "") {
       setFilteredEvents(data || []);
     } else {
@@ -136,15 +96,6 @@ const Page = ({ data }: Props) => {
         ),
       );
     }
-  };
-
-  //TODO: Add reset filter button on mobile
-  const resetFilters = () => {
-    setQuery("");
-    setCurrentBranchFilter("All");
-    setCurrentDayFilter("All");
-    setCurrentCategoryFilter("All");
-    setFilteredEvents(data || []);
   };
 
   const backgroundImages = [
@@ -278,7 +229,7 @@ const Page = ({ data }: Props) => {
                       <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
-                            {({ active }) => (
+                            {() => (
                               <button
                                 className={`${
                                   currentDayFilter === filter
@@ -336,7 +287,7 @@ const Page = ({ data }: Props) => {
                       }
                     >
                       <BiCategory size="16" />
-                      {currentCategoryFilter !== "All"
+                      {currentCategoryFilter !== AllCategory.ALL
                         ? currentCategoryFilter
                             .toLowerCase()
                             .replace(/_/g, " ")
@@ -352,28 +303,36 @@ const Page = ({ data }: Props) => {
                       leaveTo="transform scale-95 opacity-0"
                     >
                       <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
-                        {categoryFilters.map((filter) => (
-                          <Menu.Item key={filter}>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  currentCategoryFilter ===
-                                  filter.replace("_", " ")
-                                    ? "bg-white/20"
-                                    : "bg-black/10"
-                                } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
-                                onClick={() => setCurrentCategoryFilter(filter)}
-                              >
-                                {filter
-                                  .replace("_", " ")
-                                  .toLowerCase()
-                                  .replace(/\b\w/g, (char) =>
-                                    char.toUpperCase(),
-                                  )}
-                              </button>
-                            )}
-                          </Menu.Item>
-                        ))}
+                        {[
+                          Object.keys(EventCategory),
+                          Object.keys(AllCategory),
+                        ].map((e, idx) => {
+                          return e.map((filter) => {
+                            return (
+                              <Menu.Item key={idx}>
+                                <button
+                                  className={`${
+                                    currentCategoryFilter === filter
+                                      ? "bg-white/20"
+                                      : "bg-black/10"
+                                  } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                  onClick={() =>
+                                    setCurrentCategoryFilter(
+                                      filter as EventCategory | AllCategory,
+                                    )
+                                  }
+                                >
+                                  {filter
+                                    .replace("_", " ")
+                                    .toLowerCase()
+                                    .replace(/\b\w/g, (char) =>
+                                      char.toUpperCase(),
+                                    )}
+                                </button>
+                              </Menu.Item>
+                            );
+                          });
+                        })}
                       </Menu.Items>
                     </Transition>
                   </Menu>
