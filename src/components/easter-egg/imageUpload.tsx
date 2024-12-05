@@ -1,11 +1,10 @@
 import { useMutation } from "@apollo/client";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import Spinner from "~/components/spinner";
 import { CreateSubmissionDocument } from "~/generated/generated";
-import { UploadButton, UploadDropZone } from "../uploadThingButton";
-import { getSession } from "next-auth/react";
+import { UploadButton } from "../uploadThingButton";
 import toast from "react-hot-toast";
 
 type Props = {
@@ -21,20 +20,9 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
   const [mediaPreview, setMediaPreview] = useState<string>("");
   const [manualLoading, setManualLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const [token, setToken] = useState<string | null>(null);
 
   const [submissionMutation, { data, loading: submissionLoading, error }] =
     useMutation(CreateSubmissionDocument);
-
-  useEffect(() => {
-    const fetchToken = async () => {
-      const session = await getSession();
-      const authToken = session ? `Bearer ${session.accessToken}` : null;
-      setToken(authToken);
-    };
-
-    void fetchToken();
-  }, []);
 
   return (
     <>
@@ -98,9 +86,6 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
       <UploadButton
         endpoint="easterEggUploader"
         className="mt-6"
-        headers={{
-          Authorization: token ?? "",
-        }}
         onBeforeUploadBegin={(files) => {
           setImage(files[0]!);
           setMediaPreview(URL.createObjectURL(files[0]!));

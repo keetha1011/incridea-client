@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { getSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { FC } from "react";
 import { useState, useEffect } from "react";
@@ -39,7 +38,6 @@ const EditEvent: FC<{
   const [banner, setBanner] = useState(event?.image);
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
 
   function handleCloseModal() {
     setShowModal(false);
@@ -83,13 +81,6 @@ const EditEvent: FC<{
   useEffect(() => {
     const description = event?.description;
     try {
-      const fetchToken = async () => {
-        const session = await getSession();
-        const authToken = session ? `Bearer ${session.accessToken}` : null;
-        setToken(authToken);
-      };
-
-      void fetchToken();
       const editorState = JSON.parse(description ?? "");
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
@@ -260,9 +251,6 @@ const EditEvent: FC<{
                 </label>
                 <UploadButton
                   endpoint="eventUploader"
-                  headers={{
-                    Authorization: token ?? "",
-                  }}
                   onUploadBegin={() => {
                     setUploading(true);
                   }}

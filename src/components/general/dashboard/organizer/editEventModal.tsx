@@ -1,6 +1,5 @@
 import { useMutation } from "@apollo/client";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { getSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -44,7 +43,7 @@ export default function EditEventModal({
   const [uploading, setUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [category, setCategory] = useState(event.category);
-  const [token, setToken] = useState<string | null>(null);
+
   function handleCloseModal() {
     setShowModal(false);
   }
@@ -88,14 +87,6 @@ export default function EditEventModal({
 
   useEffect(() => {
     try {
-      const fetchToken = async () => {
-        const session = await getSession();
-        const authToken = session ? `Bearer ${session.accessToken}` : null;
-        setToken(authToken);
-      };
-
-      void fetchToken();
-
       const editorState = JSON.parse(event.description ?? "");
       setEditorState(
         EditorState.createWithContent(convertFromRaw(editorState)),
@@ -283,9 +274,6 @@ export default function EditEventModal({
 
                 <UploadButton
                   endpoint="eventUploader"
-                  headers={{
-                    Authorization: token ?? "wewq",
-                  }}
                   onUploadBegin={() => {
                     setUploading(true);
                   }}

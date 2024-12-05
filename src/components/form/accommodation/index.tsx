@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { Combobox, Transition, Switch } from "@headlessui/react";
-import { getSession } from "next-auth/react";
 import Link from "next/link";
 import {
   useState,
@@ -8,7 +7,6 @@ import {
   FormEventHandler,
   Fragment,
   useRef,
-  useEffect,
 } from "react";
 import { BsChevronExpand } from "react-icons/bs";
 import { IoEye } from "react-icons/io5";
@@ -18,7 +16,6 @@ import { TbArrowBackUp } from "react-icons/tb";
 import Button from "~/components/button";
 import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
 import Spinner from "~/components/spinner";
-import createToast from "~/components/toast";
 import {
   AddAccommodationRequestDocument,
   GetAllHotelsDocument,
@@ -45,20 +42,11 @@ const AccommodationForm: FunctionComponent = () => {
   const [uploading, setUploading] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [token, setToken] = useState<string | null>(null);
 
   const genders = ["Male", "Female", "Other"];
   const [gender, setGender] = useState("");
   const [genderQuery, setGenderQuery] = useState("");
-  useEffect(() => {
-    const fetchToken = async () => {
-      const session = await getSession();
-      const authToken = session ? `Bearer ${session.accessToken}` : null;
-      setToken(authToken);
-    };
 
-    void fetchToken();
-  }, []);
   const filteredGenders =
     genderQuery === ""
       ? genders
@@ -385,9 +373,6 @@ const AccommodationForm: FunctionComponent = () => {
               <label className="mb-2 block text-sm text-white">Upload ID</label>
               <UploadButton
                 endpoint="idUploader"
-                headers={{
-                  Authorization: token ?? "",
-                }}
                 onUploadBegin={() => {
                   setUploading(true);
                 }}

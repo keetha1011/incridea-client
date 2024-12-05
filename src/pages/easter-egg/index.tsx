@@ -23,8 +23,7 @@ const EasterEgg: NextPage = () => {
 
   const getDay = () => {
     const date = new Date();
-    // const day = date.getDate();
-    const day = 26;
+    const day = date.getDate();
     if (day === 26) return "Day1";
     if (day === 27) return "Day2";
     if (day === 28) return "Day3";
