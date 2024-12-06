@@ -48,18 +48,45 @@ const Quiz = () => {
     setQuizTitle(e.target.value);
   };
 
-  const handleAddQuestions = () => {
-    setQuestions((prev) => [
-      ...prev.map((q) => ({ ...q, collapsed: true })),
-      {
+  const handleAddQuestions = (index: number) => {
+    setQuestions((prev) => {
+      const newQuestion = {
         id: generateUUID(),
         questionText: "",
         options: ["", ""],
         ansIndex: 0,
         answer: "",
         collapsed: false,
-      },
-    ]);
+      };
+
+      const updatedQuestions = [
+        ...prev.map((q) => ({ ...q, collapsed: true })),
+      ];
+      updatedQuestions.splice(index + 1, 0, newQuestion);
+      return updatedQuestions;
+    });
+  };
+
+  const handleCopyQuestion = (id: string, index: number) => {
+    const question = questions.find((q) => q.id === id);
+    if (question) {
+      setQuestions((prev) => {
+        const newQuestion = {
+          id: generateUUID(),
+          questionText: question.questionText,
+          options: question.options,
+          ansIndex: question.ansIndex,
+          answer: question.answer,
+          collapsed: false,
+        };
+
+        const updatedQuestions = [
+          ...prev.map((q) => ({ ...q, collapsed: true })),
+        ];
+        updatedQuestions.splice(index + 1, 0, newQuestion);
+        return updatedQuestions;
+      });
+    }
   };
 
   const handleDeleteQuestions = (id: string) => {
@@ -166,23 +193,6 @@ const Quiz = () => {
     }
 
     // toast.error("Not implemented yet");
-  };
-
-  const handleCopyQuestion = (id: string) => {
-    const question = questions.find((q) => q.id === id);
-    if (question) {
-      setQuestions((prev) => [
-        ...prev.map((q) => ({ ...q, collapsed: true })),
-        {
-          id: generateUUID(),
-          questionText: question.questionText,
-          options: question.options,
-          ansIndex: question.ansIndex,
-          answer: question.answer,
-          collapsed: false,
-        },
-      ]);
-    }
   };
 
   return (

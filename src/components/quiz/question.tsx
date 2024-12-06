@@ -22,9 +22,9 @@ interface QuestionProps {
   ) => void;
   handleNewOption: (id: string) => void;
   handleDeleteOption: (id: string) => void;
-  handleAddQuestions: () => void;
+  handleAddQuestions: (index: number) => void;
   handleDeleteQuestions: (id: string) => void;
-  handleCopyQuestion: (id: string) => void;
+  handleCopyQuestion: (id: string, index: number) => void;
 }
 
 const QuestionComp: React.FC<QuestionProps> = (props) => {
@@ -43,11 +43,11 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
           <div className="flex w-40 flex-row items-center justify-around rounded-2xl">
             <CiCirclePlus
               className="text-3xl hover:rounded-lg hover:bg-slate-800 cursor-pointer"
-              onClick={props.handleAddQuestions}
+              onClick={() => props.handleAddQuestions(props.index)}
             />
             <HiOutlineDuplicate
               className="text-3xl hover:rounded-lg hover:bg-slate-800"
-              onClick={() => props.handleCopyQuestion(props.id)}
+              onClick={() => props.handleCopyQuestion(props.id, props.index)}
             />
             <MdDeleteOutline
               className="text-3xl hover:rounded-lg hover:bg-slate-800 cursor-pointer"
