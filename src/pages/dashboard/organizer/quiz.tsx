@@ -172,7 +172,7 @@ const Quiz = () => {
     const question = questions.find((q) => q.id === id);
     if (question) {
       setQuestions((prev) => [
-        ...prev,
+        ...prev.map((q) => ({ ...q, collapsed: true })),
         {
           id: generateUUID(),
           questionText: question.questionText,
