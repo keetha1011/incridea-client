@@ -17,6 +17,7 @@ interface Question {
   options: string[];
   ansIndex: number;
   answer: string;
+  collapsed: boolean;
 }
 
 const Quiz = () => {
@@ -29,8 +30,15 @@ const Quiz = () => {
       options: ["", ""],
       ansIndex: 0,
       answer: "",
+      collapsed: false,
     },
   ]);
+
+  const toggleCollapase = (id: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, collapsed: !q.collapsed } : q)),
+    );
+  };
 
   const [quizTitle, setQuizTitle] = useState<string>("");
 
@@ -42,13 +50,14 @@ const Quiz = () => {
 
   const handleAddQuestions = () => {
     setQuestions((prev) => [
-      ...prev,
+      ...prev.map((q) => ({ ...q, collapsed: true })),
       {
         id: generateUUID(),
         questionText: "",
         options: ["", ""],
         ansIndex: 0,
         answer: "",
+        collapsed: false,
       },
     ]);
   };
@@ -159,6 +168,23 @@ const Quiz = () => {
     // toast.error("Not implemented yet");
   };
 
+  const handleCopyQuestion = (id: string) => {
+    const question = questions.find((q) => q.id === id);
+    if (question) {
+      setQuestions((prev) => [
+        ...prev,
+        {
+          id: generateUUID(),
+          questionText: question.questionText,
+          options: question.options,
+          ansIndex: question.ansIndex,
+          answer: question.answer,
+          collapsed: false,
+        },
+      ]);
+    }
+  };
+
   return (
     <Dashboard>
       <div className="mx-4 flex flex-row align-middle gap-4">
@@ -182,6 +208,8 @@ const Quiz = () => {
             index={index}
             options={q.options}
             ansIndex={q.ansIndex}
+            collapsed={q.collapsed}
+            toggleCollapase={toggleCollapase}
             handleQuestionTextChange={handleQuestionTextChange}
             handleOptionChange={handleOptionChange}
             handleAnswerChange={handleAnswerChange}
@@ -189,9 +217,19 @@ const Quiz = () => {
             handleDeleteOption={handleDeleteOption}
             handleDeleteQuestions={handleDeleteQuestions}
             handleAddQuestions={handleAddQuestions}
-            handlePrint={handlePrint}
+            handleCopyQuestion={handleCopyQuestion}
           />
         ))}
+      </div>
+      <div className="flex mt-4 items-center justify-center">
+        <Button
+          className="my-4 rounded-md mr-6"
+          intent={"success"}
+          size={"large"}
+          onClick={handlePrint}
+        >
+          Submit
+        </Button>
       </div>
     </Dashboard>
   );
