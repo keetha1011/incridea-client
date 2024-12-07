@@ -1,16 +1,15 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import { HiOutlineDuplicate } from "react-icons/hi";
 import { ImRadioUnchecked } from "react-icons/im";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
-import { CiCirclePlus, CiImageOn } from "react-icons/ci";
-import dynamic from "next/dynamic";
+import { CiCirclePlus } from "react-icons/ci";
+// import dynamic from "next/dynamic";
 
-const CollapsibleArrow = dynamic(
-  () => import("~/components/quiz/collapsibleArrow"),
-  { ssr: false },
-);
+// const CollapsibleArrow = dynamic(
+//   () => import("~/components/quiz/collapsibleArrow"),
+//   { ssr: false },
+// );
 
 interface QuestionProps {
   id: string;
@@ -40,22 +39,21 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
       <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/80 p-4 px-8">
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">
-            {/* <h1
-            className="font-gilroy text-xl font-medium cursor-pointer"
-            onClick={() => props.toggleCollapase(props.id)}
-          >
-            {props.collapsed
-              ? `► Question ${props.index + 1}`
-              : `▼ Question ${props.index + 1}`}
-            {arrow} Question {props.index + 1}
-          </h1> */}
+            <h1
+              className="font-gilroy text-xl font-medium cursor-pointer"
+              onClick={() => props.toggleCollapase(props.id)}
+            >
+              {props.collapsed
+                ? `► Question ${props.index + 1}`
+                : `▼ Question ${props.index + 1}`}
+            </h1>
 
-            <CollapsibleArrow
+            {/* <CollapsibleArrow
               id={props.id}
               index={props.index}
               collapsed={props.collapsed}
               toggleCollapase={props.toggleCollapase}
-            />
+            /> */}
 
             {props.collapsed && (
               <h2

@@ -1,15 +1,15 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { CiCirclePlus, CiImageOn } from "react-icons/ci";
-import { HiOutlineDuplicate } from "react-icons/hi";
-import { ImRadioUnchecked } from "react-icons/im";
-import { MdDeleteOutline } from "react-icons/md";
 import { generateUUID } from "three/src/math/MathUtils.js";
 import Button from "~/components/button";
 import Dashboard from "~/components/layout/dashboard";
-import { options } from "prettier-plugin-tailwindcss";
 import toast from "react-hot-toast";
 import QuestionComp from "~/components/quiz/question";
+
+// IMPORTANT NOTE: REMOVE LOCAL STORAGE FUNCTIONALITY TO FIX HYDRATION ERROR
+// DUE TO LOCAL STORAGE HAVING DIFFERENT DATA THAN THE SERVER, WE ARE GETTING HYDRATION ERROR. BUT STILL THE PAGE IS WORKING FINE AS EXPECTED
+// HOPEFULLY, THIS ERROR WON'T BE THERE IN THE FINAL IMPLEMENTATION
+// IF IT IS, WE CAN REMOVE LOCAL STORAGE FUNCTIONALITY
 
 interface Question {
   id: string;
@@ -32,8 +32,6 @@ function loadfromLocalStore<T>(key: string, fallback: T): T | null {
 }
 
 const Quiz = () => {
-  // const [countOptions, setCountOptions] = useState(2);
-  // const [countQuestions, setCountQuestions] = useState(1);
   const [questions, setQuestions] = useState<Question[]>(
     loadfromLocalStore<Question[]>("questions", [
       {
@@ -69,7 +67,7 @@ const Quiz = () => {
     }
   }, [quizTitle]);
 
-  const [errors, setErrors] = useState<string>("");
+  // const [errors, setErrors] = useState<string>("");
 
   const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuizTitle(e.target.value);
@@ -218,12 +216,10 @@ const Quiz = () => {
       console.log("success");
       toast.success("Quiz Submitted Successfully");
     } else {
-      setErrors(errors);
+      // setErrors(errors);
       console.log(questions, quizTitle);
       toast.error(errors);
     }
-
-    // toast.error("Not implemented yet");
   };
 
   return (
