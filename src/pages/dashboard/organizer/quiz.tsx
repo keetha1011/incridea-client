@@ -6,7 +6,10 @@ import Dashboard from "~/components/layout/dashboard";
 import toast from "react-hot-toast";
 import QuestionComp from "~/components/quiz/question";
 
-// IMPORTANT NOTE: REMOVE LOCAL STORAGE FUNCTIONALITY TO FIX HYDRATION ERROR
+// BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
+// BUT STILL KEEPING IT FOR REFERENCE
+
+// NOTE: REMOVE LOCAL STORAGE FUNCTIONALITY TO FIX HYDRATION ERROR
 // DUE TO LOCAL STORAGE HAVING DIFFERENT DATA THAN THE SERVER, WE ARE GETTING HYDRATION ERROR. BUT STILL THE PAGE IS WORKING FINE AS EXPECTED
 // HOPEFULLY, THIS ERROR WON'T BE THERE IN THE FINAL IMPLEMENTATION
 // IF IT IS, WE CAN REMOVE LOCAL STORAGE FUNCTIONALITY
@@ -32,22 +35,13 @@ function loadfromLocalStore<T>(key: string, fallback: T): T | null {
 }
 
 const Quiz = () => {
-  const [questions, setQuestions] = useState<Question[]>(
-    loadfromLocalStore<Question[]>("questions", [
-      {
-        id: generateUUID(),
-        questionText: "",
-        options: ["", ""],
-        ansIndex: 0,
-        answer: "",
-        collapsed: false,
-      },
-    ]) ?? [],
-  );
+  const [questions, setQuestions] = useState<Question[]>([]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      saveToLocalStore<Question[]>("questions", questions);
+      if (questions.length > 0) {
+        saveToLocalStore<Question[]>("questions", questions);
+      }
     }
   }, [questions]);
 
@@ -57,13 +51,13 @@ const Quiz = () => {
     );
   };
 
-  const [quizTitle, setQuizTitle] = useState<string>(
-    loadfromLocalStore<string>("quizTitle", "") ?? "",
-  );
+  const [quizTitle, setQuizTitle] = useState<string>("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      saveToLocalStore<string>("quizTitle", quizTitle);
+      if (quizTitle !== "") {
+        saveToLocalStore<string>("quizTitle", quizTitle);
+      }
     }
   }, [quizTitle]);
 
@@ -72,6 +66,25 @@ const Quiz = () => {
   const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuizTitle(e.target.value);
   };
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const loadedQuestions =
+        loadfromLocalStore<Question[]>("questions", [
+          {
+            id: generateUUID(),
+            questionText: "",
+            options: ["", ""],
+            ansIndex: 0,
+            answer: "",
+            collapsed: false,
+          },
+        ]) ?? [];
+      const loadedQuizTitle = loadfromLocalStore<string>("quizTitle", "") ?? "";
+      setQuestions(loadedQuestions);
+      setQuizTitle(loadedQuizTitle);
+    }
+  }, []);
 
   const handleAddQuestions = (index: number) => {
     setQuestions((prev) => {
