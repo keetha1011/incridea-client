@@ -4,7 +4,8 @@ import { generateUUID } from "three/src/math/MathUtils.js";
 import Button from "~/components/button";
 import Dashboard from "~/components/layout/dashboard";
 import toast from "react-hot-toast";
-import QuestionComp from "~/components/quiz/question";
+import QuestionComp from "~/components/general/dashboard/organizer/quiz/question";
+import { type EventByOrganizerQuery } from "~/generated/generated";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -34,13 +35,26 @@ function loadfromLocalStore<T>(key: string, fallback: T): T | null {
   return value ? (JSON.parse(value) as T) : fallback;
 }
 
-const Quiz = () => {
+const Quiz: React.FC<{
+  event: EventByOrganizerQuery["eventByOrganizer"][0];
+  round: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
+}> = ({ event, round }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  const eventId = event.id.toString();
+  const roundNo = round[0]?.roundNo?.toString() ?? "";
+
+  console.log("Event ID: ", eventId);
+  console.log("Round No: ", roundNo);
+
+  const concatId = eventId + "-" + roundNo;
+  const questionsKey = "questions-" + concatId;
+  const quizTitleKey = "quizTitle-" + concatId;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (questions.length > 0) {
-        saveToLocalStore<Question[]>("questions", questions);
+        saveToLocalStore<Question[]>(questionsKey, questions);
       }
     }
   }, [questions]);
@@ -56,7 +70,7 @@ const Quiz = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (quizTitle !== "") {
-        saveToLocalStore<string>("quizTitle", quizTitle);
+        saveToLocalStore<string>(quizTitleKey, quizTitle);
       }
     }
   }, [quizTitle]);
@@ -70,7 +84,7 @@ const Quiz = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const loadedQuestions =
-        loadfromLocalStore<Question[]>("questions", [
+        loadfromLocalStore<Question[]>(questionsKey, [
           {
             id: generateUUID(),
             questionText: "",
@@ -80,7 +94,8 @@ const Quiz = () => {
             collapsed: false,
           },
         ]) ?? [];
-      const loadedQuizTitle = loadfromLocalStore<string>("quizTitle", "") ?? "";
+      const loadedQuizTitle =
+        loadfromLocalStore<string>(quizTitleKey, "") ?? "";
       setQuestions(loadedQuestions);
       setQuizTitle(loadedQuizTitle);
     }
@@ -236,7 +251,7 @@ const Quiz = () => {
   };
 
   return (
-    <Dashboard>
+    <div className="my-12">
       <div className="mx-4 flex flex-row align-middle gap-4">
         <label className="self-center font-gilroy text-xl" htmlFor="quizTitle">
           Quiz Title:
@@ -281,7 +296,7 @@ const Quiz = () => {
           Submit
         </Button>
       </div>
-    </Dashboard>
+    </div>
   );
 };
 
