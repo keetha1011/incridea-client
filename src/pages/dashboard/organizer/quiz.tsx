@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiCirclePlus, CiImageOn } from "react-icons/ci";
 import { HiOutlineDuplicate } from "react-icons/hi";
 import { ImRadioUnchecked } from "react-icons/im";
@@ -20,19 +20,38 @@ interface Question {
   collapsed: boolean;
 }
 
+function saveToLocalStore<T>(key: string, value: T): void {
+  if (typeof window === "undefined") return;
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function loadfromLocalStore<T>(key: string, fallback: T): T | null {
+  if (typeof window === "undefined") return fallback;
+  const value = localStorage.getItem(key);
+  return value ? (JSON.parse(value) as T) : fallback;
+}
+
 const Quiz = () => {
   // const [countOptions, setCountOptions] = useState(2);
   // const [countQuestions, setCountQuestions] = useState(1);
-  const [questions, setQuestions] = useState<Question[]>([
-    {
-      id: generateUUID(),
-      questionText: "",
-      options: ["", ""],
-      ansIndex: 0,
-      answer: "",
-      collapsed: false,
-    },
-  ]);
+  const [questions, setQuestions] = useState<Question[]>(
+    loadfromLocalStore<Question[]>("questions", [
+      {
+        id: generateUUID(),
+        questionText: "",
+        options: ["", ""],
+        ansIndex: 0,
+        answer: "",
+        collapsed: false,
+      },
+    ]) ?? [],
+  );
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      saveToLocalStore<Question[]>("questions", questions);
+    }
+  }, [questions]);
 
   const toggleCollapase = (id: string) => {
     setQuestions((prev) =>
@@ -40,7 +59,15 @@ const Quiz = () => {
     );
   };
 
-  const [quizTitle, setQuizTitle] = useState<string>("");
+  const [quizTitle, setQuizTitle] = useState<string>(
+    loadfromLocalStore<string>("quizTitle", "") ?? "",
+  );
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      saveToLocalStore<string>("quizTitle", quizTitle);
+    }
+  }, [quizTitle]);
 
   const [errors, setErrors] = useState<string>("");
 
@@ -90,9 +117,13 @@ const Quiz = () => {
   };
 
   const handleDeleteQuestions = (id: string) => {
-    setQuestions((prev) => {
-      return prev.filter((q) => q.id !== id);
-    });
+    if (questions.length > 1) {
+      setQuestions((prev) => {
+        return prev.filter((q) => q.id !== id);
+      });
+    } else {
+      toast.error("Quiz must have at least one question");
+    }
   };
 
   const handleQuestionTextChange = (id: string, value: string) => {
