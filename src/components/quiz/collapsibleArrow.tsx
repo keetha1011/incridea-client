@@ -1,12 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-interface CollapsibleProps {
+type CollapsibleProps = {
   id: string;
   index: number;
   collapsed: boolean;
   toggleCollapase: (id: string) => void;
-}
+};
 
 const CollapsibleArrow: React.FC<CollapsibleProps> = (props) => {
   const [arrow, setArrow] = useState(props.collapsed ? "►" : "▼");

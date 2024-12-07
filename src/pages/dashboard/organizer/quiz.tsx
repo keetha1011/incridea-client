@@ -11,14 +11,14 @@ import QuestionComp from "~/components/quiz/question";
 // HOPEFULLY, THIS ERROR WON'T BE THERE IN THE FINAL IMPLEMENTATION
 // IF IT IS, WE CAN REMOVE LOCAL STORAGE FUNCTIONALITY
 
-interface Question {
+type Question = {
   id: string;
   questionText: string;
   options: string[];
   ansIndex: number;
   answer: string;
   collapsed: boolean;
-}
+};
 
 function saveToLocalStore<T>(key: string, value: T): void {
   if (typeof window === "undefined") return;

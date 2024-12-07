@@ -11,7 +11,7 @@ import { CiCirclePlus } from "react-icons/ci";
 //   { ssr: false },
 // );
 
-interface QuestionProps {
+type QuestionProps = {
   id: string;
   questionText: string;
   options: string[];
@@ -31,7 +31,7 @@ interface QuestionProps {
   handleAddQuestions: (index: number) => void;
   handleDeleteQuestions: (id: string) => void;
   handleCopyQuestion: (id: string, index: number) => void;
-}
+};
 
 const QuestionComp: React.FC<QuestionProps> = (props) => {
   return (
