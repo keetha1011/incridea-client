@@ -8,13 +8,15 @@ import {
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import toast from "react-hot-toast";
 import { AiOutlineEdit } from "react-icons/ai";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
-import { env } from "~/env";
+import { UploadButton } from "~/components/uploadThingButton";
+
 import {
   type EventByOrganizerQuery,
   EventCategory,
@@ -46,6 +48,7 @@ export default function EditEventModal({
   const [uploading, setUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [category, setCategory] = useState(event.category);
+
   function handleCloseModal() {
     setShowModal(false);
   }
@@ -54,34 +57,12 @@ export default function EditEventModal({
     EditorState.createEmpty(),
   );
 
-  const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
-    refetchQueries: ["EventByOrganizer"],
-  });
-
-  const handleUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    const url = `${env.NEXT_PUBLIC_SERVER_URL}/cloudinary/upload/${event.name}`;
-    setUploading(true);
-    const promise = fetch(url, {
-      method: "POST",
-      body: formData,
-      mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => res.json())
-      .then((data: { message: string; url: string }) => {
-        setBanner(data.url);
-        setUploading(false);
-      })
-      .catch((err) => {
-        setUploading(false);
-        console.log(err);
-      });
-    await createToast(promise, "Uploading image...");
-  };
+  const [updateEvent, { data, loading, error }] = useMutation(
+    UpdateEventDocument,
+    {
+      refetchQueries: ["EventByOrganizer"],
+    },
+  );
 
   async function saveHandler() {
     setShowModal(false);
@@ -297,14 +278,22 @@ export default function EditEventModal({
                 <label className="mb-2 block text-sm font-medium text-white">
                   Banner
                 </label>
-                <input
-                  type="file"
-                  id="image"
-                  className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-gray-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
-                  placeholder="Banner..."
-                  onChange={async (e) =>
-                    await handleUpload(e.target.files![0]!)
-                  }
+
+                <UploadButton
+                  endpoint="eventUploader"
+                  onUploadBegin={() => {
+                    setUploading(true);
+                  }}
+                  onClientUploadComplete={(res) => {
+                    setUploading(false);
+                    setBanner(res[0]?.url);
+                    toast.success("Image uploaded", {
+                      position: "bottom-right",
+                    });
+                  }}
+                  onUploadError={(error: Error) => {
+                    alert(`ERROR! ${error.message}`);
+                  }}
                 />
               </div>
               <div className="grow basis-full md:basis-1/3">

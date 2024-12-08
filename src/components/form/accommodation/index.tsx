@@ -15,11 +15,12 @@ import { TbArrowBackUp } from "react-icons/tb";
 import Button from "~/components/button";
 import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
 import Spinner from "~/components/spinner";
-import createToast from "~/components/toast";
 import {
   AddAccommodationRequestDocument,
   AccommodationRequestsByUserDocument,
 } from "~/generated/generated";
+import { UploadButton } from "~/components/uploadThingButton";
+import toast from "react-hot-toast";
 
 const AccommodationForm: FunctionComponent = () => {
   const [addAccommodation, { loading: emailVerificationLoading }] = useMutation(
@@ -40,6 +41,7 @@ const AccommodationForm: FunctionComponent = () => {
   const genders = ["Male", "Female", "Other"];
   const [gender, setGender] = useState("");
   const [genderQuery, setGenderQuery] = useState("");
+
   const filteredGenders =
     genderQuery === ""
       ? genders
@@ -54,30 +56,6 @@ const AccommodationForm: FunctionComponent = () => {
     checkOutTime: new Date(2024, 2, 24, 22, 30),
     id: "",
   });
-
-  const handleUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    const url = `https://incridea-pai3.onrender.com/id/upload`;
-    setUploading(true);
-    const promise = fetch(url, {
-      method: "POST",
-      body: formData,
-      mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => res.json())
-      .then((data: { message: string; url: string }) => {
-        setAccommodationInfo((prevValue) => ({ ...prevValue, id: data.url }));
-        setUploading(false);
-      })
-      .catch(() => {
-        setUploading(false);
-      });
-    await createToast(promise, "Uploading image...");
-  };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -208,12 +186,63 @@ const AccommodationForm: FunctionComponent = () => {
 
             <div>
               <label className="mb-2 block text-sm text-white">Upload ID</label>
+              <UploadButton
+                endpoint="idUploader"
+                onUploadBegin={() => {
+                  setUploading(true);
+                }}
+                onClientUploadComplete={async (res: { url: string }[]) => {
+                  toast.success("Image uploaded", { position: "bottom-right" });
+                  setAccommodationInfo((prevValue) => {
+                    return { ...prevValue, id: res[0]?.url! };
+                  });
+                  setUploading(false);
+                }}
+                onUploadError={(error: Error) => {
+                  alert(`ERROR! ${error.message}`);
+                }}
+              />
+            </div>
+            <div className="w-full">
+              <label htmlFor="checkOutTime" className="mb-2 text-sm block">
+                To Date
+              </label>
               <input
+                ref={checkOutTimeRef}
                 required
-                type="file"
-                id="image"
-                className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-slate-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
-                onChange={async (e) => await handleUpload(e.target.files![0]!)}
+                type="datetime-local"
+                id="checkOutTime"
+                className="w-full mt-1 p-1 bg-inherit border-b border-gray-400 dark:[color-scheme:dark]"
+                value={toISOStringWithTimezone(
+                  new Date(AccommodationInfo.checkOutTime)
+                ).slice(0, 16)}
+                onChange={(e) =>
+                  setAccommodationInfo((prevValue) => {
+                    return {
+                      ...prevValue,
+                      checkOutTime: e.target.value.toString(),
+                    };
+                  })
+                }
+              />
+            </div> */}
+            <div>
+              <label className="mb-2 block text-sm text-white">Upload ID</label>
+              <UploadButton
+                endpoint="idUploader"
+                onUploadBegin={() => {
+                  setUploading(true);
+                }}
+                onClientUploadComplete={async (res: { url: string }[]) => {
+                  toast.success("Image uploaded", { position: "bottom-right" });
+                  setAccommodationInfo((prevValue) => {
+                    return { ...prevValue, id: res[0]?.url! };
+                  });
+                  setUploading(false);
+                }}
+                onUploadError={(error: Error) => {
+                  alert(`ERROR! ${error.message}`);
+                }}
               />
             </div>
             <Button

@@ -24,7 +24,11 @@ const config: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "incridemo.web.app",
+        hostname: "incridea.in",
+      },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
       },
     ],
   },
