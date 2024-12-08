@@ -16,6 +16,7 @@ import {
 import CreateCriteriaModal from "./createCriteriaModal";
 import CreateJudgeModal from "./createJudgeModal";
 import RoundAddModal from "./roundsAddModal";
+import Link from "next/link";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -217,6 +218,56 @@ const RoundsSidebar: FC<{
             ))}
 
             <CreateCriteriaModal eventId={eventId} roundNo={selectedRound} />
+          </div>
+
+          <div className="mx-2 w-full rounded-lg bg-gray-700 p-3">
+            <h1 className="text-xl font-bold">Quiz</h1>
+            {/* List of Criterias for this round */}
+            {rounds.map((round) => (
+              <div key={round.eventId}>
+                {round.roundNo === selectedRound && (
+                  <>
+                    <p>Coming Soon</p>
+                    {/* {round.criteria?.length === 0 ? (
+                      <p className="text-gray-400">No Criterias added yet.</p>
+                    ) : (
+                      round.criteria?.map((criteria) => (
+                        <div
+                          key={round.roundNo}
+                          className="my-2 flex items-center justify-between rounded-lg bg-white bg-opacity-10 bg-clip-padding p-3 backdrop-blur-lg backdrop-filter"
+                        >
+                          <div>
+                            <h1 className="text-lg font-bold">
+                              {criteria.name}
+                            </h1>
+                            <h1 className="text-sm text-gray-400">
+                              {criteria.type}
+                            </h1>
+                          </div>
+                          <Button
+                            intent={"danger"}
+                            size="small"
+                            outline
+                            className="h-8 w-8"
+                            onClick={async () =>
+                              await handleDeleteCriteria(criteria.id)
+                            }
+                            disabled={deleteCriteriaLoading}
+                          >
+                            <BiTrash />
+                          </Button>
+                        </div>
+                      ))
+                    )} */}
+                  </>
+                )}
+              </div>
+            ))}
+
+            {/* <CreateCriteriaModal eventId={eventId} roundNo={selectedRound} /> */}
+            <Link href={`./organizer/quiz/${eventId}-${selectedRound}`}>
+              <Button className="mt-5">Create Quiz</Button>
+            </Link>
           </div>
         </Tab.List>
       </Tab.Group>
