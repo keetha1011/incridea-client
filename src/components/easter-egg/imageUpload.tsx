@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 
 import Spinner from "~/components/spinner";
 import { CreateSubmissionDocument } from "~/generated/generated";
-import { UploadButton } from "../uploadThingButton";
+import { UploadButton } from "../uploadthing/button";
 import toast from "react-hot-toast";
 
 type Props = {
@@ -17,12 +17,13 @@ type Props = {
 const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
   const [highlighted, setHighlighted] = useState(false);
 
-  const [mediaPreview, setMediaPreview] = useState<string >("");
+  const [mediaPreview, setMediaPreview] = useState<string>("");
   const [manualLoading, setManualLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [submissionMutation, { data, loading: submissionLoading, error }] =
-    useMutation(CreateSubmissionDocument);
+  const [submissionMutation, { loading: submissionLoading }] = useMutation(
+    CreateSubmissionDocument,
+  );
 
   return (
     <>
@@ -96,29 +97,36 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
           setManualLoading(true);
         }}
         onClientUploadComplete={async (res) => {
-          setMediaPreview(res[0]?.url??" ");
-          await submissionMutation({
-            variables: {
-              cardId: Number(cardId),
-              image: res[0]?.url ?? "",
-            },
-          })
-            .then((res) => {
-              if (
-                res.data?.createSubmission.__typename !==
-                "MutationCreateSubmissionSuccess"
-              ) {
-                throw new Error("Error uploading submission");
-              }
-              toast.success("Image uploaded", { position: "bottom-right" });
+          if (res[0]) {
+            setMediaPreview(res[0].url);
+            await submissionMutation({
+              variables: {
+                cardId: Number(cardId),
+                image: res[0].url,
+              },
             })
-            .catch((err) => {
-              alert(err);
-            });
+              .then((res) => {
+                if (
+                  res.data?.createSubmission.__typename !==
+                  "MutationCreateSubmissionSuccess"
+                )
+                  throw new Error("Error uploading submission");
+                toast.success("Image uploaded", { position: "bottom-right" });
+              })
+              .catch((err) => {
+                alert(err);
+              });
+            setManualLoading(false);
+          }
+        }}
+        onUploadAborted={() => {
+          toast.error("Image upload aborted", { position: "bottom-right" });
           setManualLoading(false);
         }}
-        onUploadError={(error: Error) => {
-          alert(`ERROR! ${error.message}`);
+        onUploadError={(error) => {
+          console.log(error);
+          toast.error("Image upload failed", { position: "bottom-right" });
+          setManualLoading(false);
         }}
       />
     </>

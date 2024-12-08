@@ -15,7 +15,7 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
-import { UploadButton } from "~/components/uploadThingButton";
+import { UploadButton } from "~/components/uploadthing/button";
 
 import {
   type EventByOrganizerQuery,
@@ -57,12 +57,9 @@ export default function EditEventModal({
     EditorState.createEmpty(),
   );
 
-  const [updateEvent, { data, loading, error }] = useMutation(
-    UpdateEventDocument,
-    {
-      refetchQueries: ["EventByOrganizer"],
-    },
-  );
+  const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
+    refetchQueries: ["EventByOrganizer"],
+  });
 
   async function saveHandler() {
     setShowModal(false);
@@ -285,14 +282,26 @@ export default function EditEventModal({
                     setUploading(true);
                   }}
                   onClientUploadComplete={(res) => {
-                    setUploading(false);
-                    setBanner(res[0]?.url);
-                    toast.success("Image uploaded", {
+                    if (res[0]) {
+                      setUploading(false);
+                      setBanner(res[0].url);
+                      toast.success("Image uploaded", {
+                        position: "bottom-right",
+                      });
+                    }
+                  }}
+                  onUploadAborted={() => {
+                    toast.error("Upload Aborted", {
                       position: "bottom-right",
                     });
+                    setUploading(false);
                   }}
-                  onUploadError={(error: Error) => {
-                    alert(`ERROR! ${error.message}`);
+                  onUploadError={(error) => {
+                    console.log(error);
+                    toast.error("Upload Failed", {
+                      position: "bottom-right",
+                    });
+                    setUploading(false);
                   }}
                 />
               </div>

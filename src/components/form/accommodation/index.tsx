@@ -19,7 +19,7 @@ import {
   AddAccommodationRequestDocument,
   AccommodationRequestsByUserDocument,
 } from "~/generated/generated";
-import { UploadButton } from "~/components/uploadThingButton";
+import { UploadButton } from "~/components/uploadthing/button";
 import toast from "react-hot-toast";
 
 const AccommodationForm: FunctionComponent = () => {
@@ -49,7 +49,7 @@ const AccommodationForm: FunctionComponent = () => {
           return gender.toLowerCase().includes(genderQuery.toLowerCase());
         });
 
-  const [AccommodationInfo, setAccommodationInfo] = useState({
+  const [accommodationInfo, setAccommodationInfo] = useState({
     hotelId: 1,
     gender: "",
     checkInTime: new Date(2024, 2, 22, 9, 30),
@@ -60,7 +60,7 @@ const AccommodationForm: FunctionComponent = () => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     addAccommodation({
-      variables: AccommodationInfo,
+      variables: accommodationInfo,
     }).catch(console.log);
     setFormSubmitted(true);
   };
@@ -191,60 +191,34 @@ const AccommodationForm: FunctionComponent = () => {
                 onUploadBegin={() => {
                   setUploading(true);
                 }}
-                onClientUploadComplete={async (res: { url: string }[]) => {
-                  toast.success("Image uploaded", { position: "bottom-right" });
-                  setAccommodationInfo((prevValue) => {
-                    return { ...prevValue, id: res[0]?.url! };
-                  });
-                  setUploading(false);
-                }}
-                onUploadError={(error: Error) => {
-                  alert(`ERROR! ${error.message}`);
-                }}
-              />
-            </div>
-            <div className="w-full">
-              <label htmlFor="checkOutTime" className="mb-2 text-sm block">
-                To Date
-              </label>
-              <input
-                ref={checkOutTimeRef}
-                required
-                type="datetime-local"
-                id="checkOutTime"
-                className="w-full mt-1 p-1 bg-inherit border-b border-gray-400 dark:[color-scheme:dark]"
-                value={toISOStringWithTimezone(
-                  new Date(AccommodationInfo.checkOutTime)
-                ).slice(0, 16)}
-                onChange={(e) =>
-                  setAccommodationInfo((prevValue) => {
-                    return {
+                onClientUploadComplete={(res) => {
+                  if (res[0]) {
+                    toast.success("Image uploaded", {
+                      position: "bottom-right",
+                    });
+                    setAccommodationInfo((prevValue) => ({
                       ...prevValue,
-                      checkOutTime: e.target.value.toString(),
-                    };
-                  })
-                }
-              />
-            </div> */}
-            <div>
-              <label className="mb-2 block text-sm text-white">Upload ID</label>
-              <UploadButton
-                endpoint="idUploader"
-                onUploadBegin={() => {
-                  setUploading(true);
+                      id: res[0].url,
+                    }));
+                    setUploading(false);
+                  }
                 }}
-                onClientUploadComplete={async (res: { url: string }[]) => {
-                  toast.success("Image uploaded", { position: "bottom-right" });
-                  setAccommodationInfo((prevValue) => {
-                    return { ...prevValue, id: res[0]?.url! };
+                onUploadAborted={() => {
+                  toast.error("Image upload aborted", {
+                    position: "bottom-right",
                   });
                   setUploading(false);
                 }}
-                onUploadError={(error: Error) => {
-                  alert(`ERROR! ${error.message}`);
+                onUploadError={(error) => {
+                  console.log(error);
+                  toast.error("Image upload failed", {
+                    position: "bottom-right",
+                  });
+                  setUploading(false);
                 }}
               />
             </div>
+
             <Button
               intent={"primary"}
               type="submit"

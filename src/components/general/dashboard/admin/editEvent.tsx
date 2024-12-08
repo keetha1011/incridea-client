@@ -16,8 +16,8 @@ import Button from "~/components/button";
 import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
-import { UploadButton } from "~/components/uploadThingButton";
-import { EventsQuery } from "~/generated/generated";
+import { UploadButton } from "~/components/uploadthing/button";
+import { type EventsQuery } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
 
@@ -44,10 +44,6 @@ const EditEvent: FC<{
   const [banner, setBanner] = useState(event?.image);
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
-
-  function handleCloseModal() {
-    setShowModal(false);
-  }
 
   const [editorState, setEditorState] = useState<EditorState>(
     EditorState.createEmpty(),
@@ -119,7 +115,7 @@ const EditEvent: FC<{
         title="Edit Event Details"
         size="medium"
         showModal={showModal}
-        onClose={handleCloseModal}
+        onClose={() => setShowModal(false)}
       >
         <div className="p-5">
           <div className="mt-2">
@@ -258,14 +254,20 @@ const EditEvent: FC<{
                     setUploading(true);
                   }}
                   onClientUploadComplete={(res) => {
-                    toast.success("Image uploaded", {
+                    if (res[0]) {
+                      toast.success("Image uploaded", {
+                        position: "bottom-right",
+                      });
+                      setUploading(false);
+                      setBanner(res[0].url);
+                    }
+                  }}
+                  onUploadError={(error) => {
+                    console.log(error);
+                    toast.error("Image upload failed", {
                       position: "bottom-right",
                     });
                     setUploading(false);
-                    setBanner(res[0]?.url);
-                  }}
-                  onUploadError={(error: Error) => {
-                    alert(`ERROR! ${error.message}`);
                   }}
                 />
               </div>
