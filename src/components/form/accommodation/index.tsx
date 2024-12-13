@@ -15,11 +15,12 @@ import { TbArrowBackUp } from "react-icons/tb";
 import Button from "~/components/button";
 import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
 import Spinner from "~/components/spinner";
-import createToast from "~/components/toast";
 import {
   AddAccommodationRequestDocument,
   AccommodationRequestsByUserDocument,
 } from "~/generated/generated";
+import { UploadButton } from "~/components/uploadthing/button";
+import toast from "react-hot-toast";
 
 const AccommodationForm: FunctionComponent = () => {
   const [addAccommodation, { loading: emailVerificationLoading }] = useMutation(
@@ -40,6 +41,7 @@ const AccommodationForm: FunctionComponent = () => {
   const genders = ["Male", "Female", "Other"];
   const [gender, setGender] = useState("");
   const [genderQuery, setGenderQuery] = useState("");
+
   const filteredGenders =
     genderQuery === ""
       ? genders
@@ -47,7 +49,7 @@ const AccommodationForm: FunctionComponent = () => {
           return gender.toLowerCase().includes(genderQuery.toLowerCase());
         });
 
-  const [AccommodationInfo, setAccommodationInfo] = useState({
+  const [accommodationInfo, setAccommodationInfo] = useState({
     hotelId: 1,
     gender: "",
     checkInTime: new Date(2024, 2, 22, 9, 30),
@@ -55,34 +57,10 @@ const AccommodationForm: FunctionComponent = () => {
     id: "",
   });
 
-  const handleUpload = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    const url = `https://incridea-pai3.onrender.com/id/upload`;
-    setUploading(true);
-    const promise = fetch(url, {
-      method: "POST",
-      body: formData,
-      mode: "cors",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then((res) => res.json())
-      .then((data: { message: string; url: string }) => {
-        setAccommodationInfo((prevValue) => ({ ...prevValue, id: data.url }));
-        setUploading(false);
-      })
-      .catch(() => {
-        setUploading(false);
-      });
-    await createToast(promise, "Uploading image...");
-  };
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     addAccommodation({
-      variables: AccommodationInfo,
+      variables: accommodationInfo,
     }).catch(console.log);
     setFormSubmitted(true);
   };
@@ -208,14 +186,39 @@ const AccommodationForm: FunctionComponent = () => {
 
             <div>
               <label className="mb-2 block text-sm text-white">Upload ID</label>
-              <input
-                required
-                type="file"
-                id="image"
-                className="block w-full rounded-lg border border-gray-600 bg-gray-600 text-sm text-white placeholder-slate-400 ring-gray-500 file:mr-4 file:cursor-pointer file:rounded-md file:rounded-r-none file:border-0 file:bg-blue-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-blue-700 file:transition-colors hover:file:bg-blue-100 focus:outline-none focus:ring-2"
-                onChange={async (e) => await handleUpload(e.target.files![0]!)}
+              <UploadButton
+                endpoint="idUploader"
+                onUploadBegin={() => {
+                  setUploading(true);
+                }}
+                onClientUploadComplete={(res) => {
+                  if (res[0]) {
+                    toast.success("Image uploaded", {
+                      position: "bottom-right",
+                    });
+                    setAccommodationInfo((prevValue) => ({
+                      ...prevValue,
+                      id: res[0].url,
+                    }));
+                    setUploading(false);
+                  }
+                }}
+                onUploadAborted={() => {
+                  toast.error("Image upload aborted", {
+                    position: "bottom-right",
+                  });
+                  setUploading(false);
+                }}
+                onUploadError={(error) => {
+                  console.log(error);
+                  toast.error("Image upload failed", {
+                    position: "bottom-right",
+                  });
+                  setUploading(false);
+                }}
               />
             </div>
+
             <Button
               intent={"primary"}
               type="submit"

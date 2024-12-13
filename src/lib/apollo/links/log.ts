@@ -96,7 +96,11 @@ class LogLink extends ApolloLink {
   }
 
   request(operation: Operation, forward: NextLink) {
-    if (env.NEXT_PUBLIC_LOGGING_DISABLED) return forward(operation);
+    if (
+      env.NEXT_PUBLIC_LOGGING_DISABLED ||
+      env.NEXT_PUBLIC_NODE_ENV === "production"
+    )
+      return forward(operation);
 
     const definition = getOperationAST(
       operation.query,

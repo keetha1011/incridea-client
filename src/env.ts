@@ -37,6 +37,9 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
+    NEXT_PUBLIC_NODE_ENV: z
+      .enum(["development", "test", "production"])
+      .default("development"),
     NEXT_PUBLIC_LOGGING_DISABLED: z
       .string()
       .default(process.env.NODE_ENV === "production" ? "true" : "false")
@@ -57,6 +60,7 @@ export const env = createEnv({
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     SCHEMA_TOKEN: process.env.SCHEMA_TOKEN,
     RAZORPAY_KEY: process.env.RAZORPAY_KEY,
+    NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_LOGGING_DISABLED: process.env.NEXT_PUBLIC_LOGGING_DISABLED,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     NEXT_PUBLIC_BASE_IMAGE_URL: process.env.NEXT_PUBLIC_BASE_IMAGE_URL,

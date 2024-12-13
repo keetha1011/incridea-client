@@ -5,7 +5,7 @@
 //   disable: env.NODE_ENV === "development",
 // });
 
-import { NextConfig } from "next";
+import { type NextConfig } from "next";
 
 /**
  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
@@ -24,7 +24,11 @@ const config: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "incridemo.web.app",
+        hostname: "incridea.in",
+      },
+      {
+        protocol: "https",
+        hostname: "utfs.io",
       },
     ],
   },
