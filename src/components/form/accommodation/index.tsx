@@ -198,7 +198,7 @@ const AccommodationForm: FunctionComponent = () => {
                     });
                     setAccommodationInfo((prevValue) => ({
                       ...prevValue,
-                      id: res[0].url,
+                      id: res[0]!.url,
                     }));
                     setUploading(false);
                   }
