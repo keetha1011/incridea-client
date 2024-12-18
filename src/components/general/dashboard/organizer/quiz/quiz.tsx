@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { generateUUID } from "three/src/math/MathUtils.js";
 import Button from "~/components/button";
-import Dashboard from "~/components/layout/dashboard";
 import toast from "react-hot-toast";
 import QuestionComp from "~/components/general/dashboard/organizer/quiz/question";
 import { type EventByOrganizerQuery } from "~/generated/generated";
@@ -22,6 +21,9 @@ type Question = {
   ansIndex: number;
   answer: string;
   collapsed: boolean;
+  isCode: boolean;
+  description: string;
+  imageUrl: string;
 };
 
 function saveToLocalStore<T>(key: string, value: T): void {
@@ -92,6 +94,9 @@ const Quiz: React.FC<{
             ansIndex: 0,
             answer: "",
             collapsed: false,
+            isCode: false,
+            description: "",
+            imageUrl: "",
           },
         ]) ?? [];
       const loadedQuizTitle =
@@ -110,6 +115,9 @@ const Quiz: React.FC<{
         ansIndex: 0,
         answer: "",
         collapsed: false,
+        isCode: false,
+        description: "",
+        imageUrl: "",
       };
 
       const updatedQuestions = [
@@ -131,6 +139,9 @@ const Quiz: React.FC<{
           ansIndex: question.ansIndex,
           answer: question.answer,
           collapsed: false,
+          isCode: question.isCode,
+          description: question.description,
+          imageUrl: question.imageUrl,
         };
 
         const updatedQuestions = [
@@ -178,6 +189,12 @@ const Quiz: React.FC<{
     );
   };
 
+  const handleImage = (id: string, value: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, imageUrl: value } : q)),
+    );
+  };
+
   const handleAnswerChange = (
     id: string,
     optIndex: number,
@@ -210,6 +227,18 @@ const Quiz: React.FC<{
           ? { ...q, options: q.options.slice(0, -1) }
           : q,
       ),
+    );
+  };
+
+  const handleIsCode = (id: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, isCode: !q.isCode } : q)),
+    );
+  };
+
+  const handleDescriptionChange = (id: string, value: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, description: value } : q)),
     );
   };
 
@@ -274,6 +303,10 @@ const Quiz: React.FC<{
             options={q.options}
             ansIndex={q.ansIndex}
             collapsed={q.collapsed}
+            isCode={q.isCode}
+            description={q.description}
+            imageUrl={q.imageUrl}
+            handleImage={handleImage}
             toggleCollapase={toggleCollapase}
             handleQuestionTextChange={handleQuestionTextChange}
             handleOptionChange={handleOptionChange}
@@ -283,6 +316,8 @@ const Quiz: React.FC<{
             handleDeleteQuestions={handleDeleteQuestions}
             handleAddQuestions={handleAddQuestions}
             handleCopyQuestion={handleCopyQuestion}
+            handleIsCode={handleIsCode}
+            handleDescriptionChange={handleDescriptionChange}
           />
         ))}
       </div>

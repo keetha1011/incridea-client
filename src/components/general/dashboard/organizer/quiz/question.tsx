@@ -4,6 +4,9 @@ import { ImRadioUnchecked } from "react-icons/im";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
 import { CiCirclePlus } from "react-icons/ci";
+import QuizImageUpload from "./quizImageUpload";
+import { url } from "inspector";
+
 // import dynamic from "next/dynamic";
 
 // const CollapsibleArrow = dynamic(
@@ -18,6 +21,10 @@ type QuestionProps = {
   index: number;
   ansIndex: number;
   collapsed: boolean;
+  isCode: boolean;
+  description: string;
+  imageUrl: string;
+  handleImage: (id: string, value: string) => void;
   toggleCollapase: (id: string) => void;
   handleQuestionTextChange: (id: string, value: string) => void;
   handleOptionChange: (id: string, optionIndex: number, value: string) => void;
@@ -31,9 +38,15 @@ type QuestionProps = {
   handleAddQuestions: (index: number) => void;
   handleDeleteQuestions: (id: string) => void;
   handleCopyQuestion: (id: string, index: number) => void;
+  handleIsCode: (id: string) => void;
+  handleDescriptionChange: (id: string, value: string) => void;
 };
 
 const QuestionComp: React.FC<QuestionProps> = (props) => {
+  const handleImageFromUpload = (url: string) => {
+    props.handleImage(props.id, url);
+  };
+
   return (
     <div key={props.id} className="flex pt-8 pb-3">
       <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/80 p-4 px-8">
@@ -57,10 +70,10 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
 
             {props.collapsed && (
               <h2
-                className="font-gilroy text-lg font-medium cursor-pointer"
+                className="font-gilroy text-lg font-medium cursor-pointer truncate max-w-xs"
                 onClick={() => props.toggleCollapase(props.id)}
               >
-                {`${props.questionText.slice(0, 20)}...`}
+                {props.questionText}
               </h2>
             )}
           </div>
@@ -102,6 +115,55 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                 <option value="MMCQ">MMCQ</option>
                 <option value="FITB">FITB</option>
               </select> */}
+            </div>
+            <div className="mt-6 w-40">
+              <label
+                htmlFor={`code-${props.id}`}
+                className="w-full text-sm mr-4 font-semibold dark:text-gray-300"
+              >
+                Is Code?
+              </label>
+              <input
+                required
+                type="checkbox"
+                {...(props.isCode ? { checked: true } : {})}
+                className="mr-2"
+                id="code-${props.id}"
+                onChange={() => props.handleIsCode(props.id)}
+              />
+            </div>
+            <div className="flex gap-12 mt-2 w-full flex-row items-center">
+              <textarea
+                name="desc"
+                id="desc"
+                rows={7}
+                className="h-auto w-[600px] rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
+                placeholder="Description (Or Code)"
+                value={props.description}
+                onChange={(e) =>
+                  props.handleDescriptionChange(props.id, e.target.value)
+                }
+              ></textarea>
+
+              <div
+                className="w-2/5
+               flex gap-4"
+              >
+                <QuizImageUpload
+                  // setImage={(file) => {
+                  //         setSaved(false);
+                  //         setImageFiles((prev) => {
+                  //           const newFiles = [...prev];
+                  //           newFiles[0] = file;
+                  //           return newFiles;
+                  //         });
+                  //       }}
+                  handleImageUpload={handleImageFromUpload}
+                  existingImage={props.imageUrl === "" ? null : props.imageUrl}
+                  loading={false}
+                  cardId={props.id}
+                />
+              </div>
             </div>
             {props.options.map((opt, index2) => (
               <div
