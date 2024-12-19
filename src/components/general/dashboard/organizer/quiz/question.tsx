@@ -161,7 +161,6 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                   handleImageUpload={handleImageFromUpload}
                   existingImage={props.imageUrl === "" ? null : props.imageUrl}
                   loading={false}
-                  cardId={props.id}
                 />
               </div>
             </div>

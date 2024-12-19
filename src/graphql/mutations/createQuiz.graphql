@@ -1,0 +1,14 @@
+mutation CreateQuiz($eventId: String!, $roundId: String!, $name: String!) {
+  createQuiz(eventId: $eventId, name: $name, roundId: $roundId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationCreateQuizSuccess {
+      __typename
+      data {
+        id
+      }
+    }
+  }
+}

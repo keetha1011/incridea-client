@@ -5,6 +5,12 @@ import Button from "~/components/button";
 import toast from "react-hot-toast";
 import QuestionComp from "~/components/general/dashboard/organizer/quiz/question";
 import { type EventByOrganizerQuery } from "~/generated/generated";
+import { CreateQuizDocument } from "~/generated/generated";
+import { CreateQuestionDocument } from "~/generated/generated";
+import { useMutation } from "@apollo/client";
+import createToast from "~/components/toast";
+import { AiOutlinePlus } from "react-icons/ai";
+import { BiLoaderAlt } from "react-icons/bi";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -266,12 +272,82 @@ const Quiz: React.FC<{
     }
   };
 
-  const handlePrint = () => {
+  const [createQuiz, { loading }] = useMutation(CreateQuizDocument, {
+    refetchQueries: ["CreateQuiz"],
+    awaitRefetchQueries: true,
+  });
+
+  const [createQuestion, { loading: questionloading }] = useMutation(
+    CreateQuestionDocument,
+    {
+      refetchQueries: ["CreateQuestion"],
+      awaitRefetchQueries: true,
+    },
+  );
+
+  const handleCreateQuiz = async () => {
+    const promise = createQuiz({
+      variables: {
+        eventId: event.id,
+        roundId: round[0]?.roundNo?.toString() ?? "",
+        name: quizTitle,
+      },
+    }).then((res) => {
+      res.errors?.forEach((error) => {
+        console.error(error);
+      });
+      if (res.data?.createQuiz.__typename !== "MutationCreateQuizSuccess") {
+        return Promise.reject(new Error("Error creating quiz"));
+      }
+      if (res.data?.createQuiz.__typename === "MutationCreateQuizSuccess") {
+        return res.data?.createQuiz.data.id;
+      }
+    });
+    return promise;
+  };
+
+  const handleCreateQuestion = (quizId: string, q: Question) => {
+    createQuestion({
+      variables: {
+        quizId: quizId,
+        question: q.questionText,
+        isCode: q.isCode,
+        options: q.options.map((opt, index) => ({
+          value: opt,
+          isAnswer: index === q.ansIndex,
+        })),
+        description: q.description,
+        image: q.imageUrl,
+      },
+    })
+      .then((res) => {
+        if (
+          res.data?.createQuestion.__typename !==
+          "MutationCreateQuestionSuccess"
+        ) {
+          throw new Error("Error creating question");
+        } else {
+          console.log("Question Created: ", res.data?.createQuestion.data.id);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handlePrint = async () => {
     const errors = validateQuiz();
     if (!errors) {
       console.log("Quiz Submitted:", { quizTitle, questions });
       console.log("success");
       toast.success("Quiz Submitted Successfully");
+      const quizId: string | undefined = await handleCreateQuiz();
+      if (quizId) {
+        console.log("Quiz ID: ", quizId);
+        questions.forEach((q) => {
+          handleCreateQuestion(quizId, q);
+        });
+      }
     } else {
       // setErrors(errors);
       console.log(questions, quizTitle);
@@ -326,9 +402,19 @@ const Quiz: React.FC<{
           className="my-4 rounded-md mr-6"
           intent={"success"}
           size={"large"}
+          disabled={loading}
           onClick={handlePrint}
         >
-          Submit
+          {loading ? (
+            <>
+              <BiLoaderAlt className="animate-spin text-xl" />
+              Creating Quiz...{" "}
+            </>
+          ) : (
+            <>
+              <AiOutlinePlus className="text-xl" /> Create Quiz
+            </>
+          )}
         </Button>
       </div>
     </div>

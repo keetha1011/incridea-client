@@ -14,7 +14,6 @@ type Props = {
   // setImage: (arg1: File | null) => void;
   loading: boolean;
   handleImageUpload: (url: string) => void;
-  cardId: string;
 };
 
 // GONNA TAKE OFF THE MUTATION HERE
@@ -25,7 +24,6 @@ const QuizImageUpload = ({
   existingImage,
   loading,
   handleImageUpload,
-  cardId,
 }: Props) => {
   const [highlighted, setHighlighted] = useState(false);
 
@@ -108,29 +106,13 @@ const QuizImageUpload = ({
         onUploadBegin={() => {
           setManualLoading(true);
         }}
-        onClientUploadComplete={async (res) => {
+        onClientUploadComplete={(res) => {
           if (res[0]) {
             console.log("----");
             console.log(res[0].url);
             setMediaPreview(res[0].url);
-            await submissionMutation({
-              variables: {
-                cardId: Number(cardId),
-                image: res[0].url,
-              },
-            })
-              .then((res) => {
-                if (
-                  res.data?.createSubmission.__typename !==
-                  "MutationCreateSubmissionSuccess"
-                )
-                  throw new Error("Error uploading submission");
-                toast.success("Image uploaded", { position: "bottom-right" });
-              })
-              .catch((err) => {
-                alert(err);
-              });
             setManualLoading(false);
+            toast.success("Image uploaded", { position: "bottom-right" });
             handleImageUpload(res[0].url);
           }
         }}

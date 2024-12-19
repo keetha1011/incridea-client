@@ -1,0 +1,29 @@
+mutation CreateQuestion(
+  $options: [OptionsCreateInput!] = { isAnswer: false, value: "" }
+  $image: String = ""
+  $quizId: String = ""
+  $question: String = ""
+  $description: String = ""
+  $isCode: Boolean = false
+) {
+  createQuestion(
+    points: 10
+    question: $question
+    quizId: $quizId
+    image: $image
+    options: $options
+    isCode: $isCode
+    description: $description
+  ) {
+    ... on MutationCreateQuestionSuccess {
+      __typename
+      data {
+        id
+      }
+    }
+    ... on Error {
+      __typename
+      message
+    }
+  }
+}
