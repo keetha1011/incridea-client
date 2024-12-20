@@ -459,10 +459,12 @@ export type MutationCreateQuestionArgs = {
 
 export type MutationCreateQuizArgs = {
   description?: InputMaybe<Scalars["String"]["input"]>;
-  endTime?: InputMaybe<Scalars["String"]["input"]>;
+  endTime: Scalars["String"]["input"];
   eventId: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
+  questionUpdatedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
   roundId: Scalars["String"]["input"];
+  startTime: Scalars["String"]["input"];
 };
 
 export type MutationCreateRoundArgs = {
@@ -1642,8 +1644,10 @@ export type QueryWinnersByEventSuccess = {
 export type Question = {
   __typename?: "Question";
   LASubmissions: Array<LaSubmission>;
+  description?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   image?: Maybe<Scalars["String"]["output"]>;
+  isCode: Scalars["Boolean"]["output"];
   negativePoint: Scalars["Int"]["output"];
   options: Array<Options>;
   point: Scalars["Int"]["output"];
@@ -1662,14 +1666,16 @@ export enum QuestionType {
 export type Quiz = {
   __typename?: "Quiz";
   description?: Maybe<Scalars["String"]["output"]>;
-  endTime?: Maybe<Scalars["DateTime"]["output"]>;
+  endTime: Scalars["DateTime"]["output"];
   eventId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
+  questionUpdatedAt?: Maybe<Scalars["DateTime"]["output"]>;
   questions: Array<Question>;
   round: Round;
   roundNo: Scalars["Int"]["output"];
-  startTime?: Maybe<Scalars["DateTime"]["output"]>;
+  startTime: Scalars["DateTime"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export enum Role {
@@ -2119,6 +2125,9 @@ export type CreateQuizMutationVariables = Exact<{
   eventId: Scalars["String"]["input"];
   roundId: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
+  description: Scalars["String"]["input"];
+  endTime?: InputMaybe<Scalars["String"]["input"]>;
+  startTime?: InputMaybe<Scalars["String"]["input"]>;
 }>;
 
 export type CreateQuizMutation = {
@@ -3391,6 +3400,42 @@ export type GetXpLeaderboardQuery = {
             phoneNumber?: string | null;
             role: Role;
           };
+        }>;
+      };
+};
+
+export type GetQuizByEventQueryVariables = Exact<{
+  eventId: Scalars["Int"]["input"];
+}>;
+
+export type GetQuizByEventQuery = {
+  __typename?: "Query";
+  getQuizByEvent:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryGetQuizByEventSuccess";
+        data: Array<{
+          __typename?: "Quiz";
+          description?: string | null;
+          endTime: Date;
+          id: string;
+          name: string;
+          roundNo: number;
+          startTime: Date;
+          updatedAt: Date;
+          questionUpdatedAt?: Date | null;
+          questions: Array<{
+            __typename?: "Question";
+            quizId: string;
+            image?: string | null;
+            question: string;
+            options: Array<{
+              __typename?: "Options";
+              id: string;
+              value: string;
+              isAnswer: boolean;
+            }>;
+          }>;
         }>;
       };
 };
@@ -6193,6 +6238,38 @@ export const CreateQuizDocument = {
             },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "description" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "endTime" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "startTime" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -6223,6 +6300,30 @@ export const CreateQuizDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "roundId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "description" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "endTime" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "endTime" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "startTime" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "startTime" },
                 },
               },
             ],
@@ -13807,6 +13908,181 @@ export const GetXpLeaderboardDocument = {
   GetXpLeaderboardQuery,
   GetXpLeaderboardQueryVariables
 >;
+export const GetQuizByEventDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetQuizByEvent" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getQuizByEvent" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "QueryGetQuizByEventSuccess" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "description" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "endTime" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "roundNo" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "startTime" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "questions" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "quizId" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "image" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "options" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "value",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "isAnswer",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "question" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "updatedAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "questionUpdatedAt",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetQuizByEventQuery, GetQuizByEventQueryVariables>;
 export const GetScoreDocument = {
   kind: "Document",
   definitions: [

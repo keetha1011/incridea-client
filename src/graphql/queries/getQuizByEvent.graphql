@@ -1,0 +1,31 @@
+query GetQuizByEvent($eventId: Int!) {
+  getQuizByEvent(eventId: $eventId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetQuizByEventSuccess {
+      __typename
+      data {
+        description
+        endTime
+        id
+        name
+        roundNo
+        startTime
+        questions {
+          quizId
+          image
+          options {
+            id
+            value
+            isAnswer
+          }
+          question
+        }
+        updatedAt
+        questionUpdatedAt
+      }
+    }
+  }
+}

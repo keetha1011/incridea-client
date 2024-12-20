@@ -49,7 +49,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
 
   return (
     <div key={props.id} className="flex pt-8 pb-3">
-      <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/80 p-4 px-8">
+      <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 p-4 px-8">
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">
             <h1

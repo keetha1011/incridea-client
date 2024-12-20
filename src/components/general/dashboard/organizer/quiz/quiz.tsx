@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use } from "react";
 import { useEffect, useState } from "react";
 import { generateUUID } from "three/src/math/MathUtils.js";
 import Button from "~/components/button";
@@ -7,10 +7,15 @@ import QuestionComp from "~/components/general/dashboard/organizer/quiz/question
 import { type EventByOrganizerQuery } from "~/generated/generated";
 import { CreateQuizDocument } from "~/generated/generated";
 import { CreateQuestionDocument } from "~/generated/generated";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import createToast from "~/components/toast";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
+import { Input } from "~/components/ui/input";
+import { CiSettings } from "react-icons/ci";
+import { Settings } from "lucide-react";
+import { Settings2Icon } from "lucide-react";
+import { GetQuizByEventDocument } from "~/generated/generated";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -30,6 +35,14 @@ type Question = {
   isCode: boolean;
   description: string;
   imageUrl: string;
+};
+
+type QuizDetailsType = {
+  quizTitle: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  updatedAt?: Date;
 };
 
 function saveToLocalStore<T>(key: string, value: T): void {
@@ -57,7 +70,7 @@ const Quiz: React.FC<{
 
   const concatId = eventId + "-" + roundNo;
   const questionsKey = "questions-" + concatId;
-  const quizTitleKey = "quizTitle-" + concatId;
+  const quizDetailsKey = "quizDetails-" + concatId;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -73,20 +86,68 @@ const Quiz: React.FC<{
     );
   };
 
-  const [quizTitle, setQuizTitle] = useState<string>("");
+  const [quizDetails, setQuizDetails] = useState<QuizDetailsType>({
+    quizTitle: "",
+    description: "",
+    startTime: "",
+    endTime: "",
+  });
 
   useEffect(() => {
+    const updatedTime = new Date().toISOString();
     if (typeof window !== "undefined") {
-      if (quizTitle !== "") {
-        saveToLocalStore<string>(quizTitleKey, quizTitle);
+      if (quizDetails.quizTitle !== "") {
+        saveToLocalStore<QuizDetailsType>(quizDetailsKey, {
+          ...quizDetails,
+          updatedAt: new Date(updatedTime),
+        });
       }
     }
-  }, [quizTitle]);
+  }, [quizDetails]);
 
   // const [errors, setErrors] = useState<string>("");
 
   const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuizTitle(e.target.value);
+    setQuizDetails((prev) => ({ ...prev, quizTitle: e.target.value }));
+  };
+
+  const handleQuizDescriptionChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
+    setQuizDetails((prev) => ({ ...prev, description: e.target.value }));
+  };
+
+  const handleQuizStartTimeChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setQuizDetails((prev) => ({ ...prev, startTime: e.target.value }));
+  };
+
+  const handleQuizEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuizDetails((prev) => ({ ...prev, endTime: e.target.value }));
+  };
+
+  const { data: quizData, loading: quizLoading } = useQuery(
+    GetQuizByEventDocument,
+    {
+      variables: {
+        eventId: Number(eventId),
+      },
+    },
+  );
+
+  const fetchFromDB = () => {
+    if (quizData) {
+      const quiz = quizData.getQuizByEvent;
+      if (quiz.__typename === "QueryGetQuizByEventSuccess") {
+        if (
+          quiz.data[0]?.updatedAt &&
+          quizDetails.updatedAt &&
+          quiz.data[0].updatedAt < quizDetails.updatedAt
+        ) {
+        }
+      }
+    }
   };
 
   useEffect(() => {
@@ -105,10 +166,17 @@ const Quiz: React.FC<{
             imageUrl: "",
           },
         ]) ?? [];
-      const loadedQuizTitle =
-        loadfromLocalStore<string>(quizTitleKey, "") ?? "";
+      const loadedQuizTitle = loadfromLocalStore<QuizDetailsType>(
+        quizDetailsKey,
+        {
+          quizTitle: "",
+          description: "",
+          startTime: "",
+          endTime: "",
+        },
+      ) ?? { quizTitle: "", description: "", startTime: "", endTime: "" };
       setQuestions(loadedQuestions);
-      setQuizTitle(loadedQuizTitle);
+      setQuizDetails(loadedQuizTitle);
     }
   }, []);
 
@@ -249,8 +317,14 @@ const Quiz: React.FC<{
   };
 
   const validateQuiz = () => {
-    if (quizTitle === "") {
+    if (quizDetails.quizTitle === "") {
       return "Quiz Title cannot be empty";
+    } else if (quizDetails.startTime === "") {
+      return "Start Time cannot be empty";
+    } else if (quizDetails.endTime === "") {
+      return "End Time cannot be empty";
+    } else if (quizDetails.startTime > quizDetails.endTime) {
+      return "Start Time is greater than End Time";
     } else if (questions.length === 0) {
       return "Quiz must have at least one question";
     } else {
@@ -290,7 +364,10 @@ const Quiz: React.FC<{
       variables: {
         eventId: event.id,
         roundId: round[0]?.roundNo?.toString() ?? "",
-        name: quizTitle,
+        name: quizDetails.quizTitle,
+        description: quizDetails.description ?? "",
+        startTime: quizDetails.startTime,
+        endTime: quizDetails.endTime,
       },
     }).then((res) => {
       res.errors?.forEach((error) => {
@@ -338,7 +415,7 @@ const Quiz: React.FC<{
   const handlePrint = async () => {
     const errors = validateQuiz();
     if (!errors) {
-      console.log("Quiz Submitted:", { quizTitle, questions });
+      console.log("Quiz Submitted:", { quizDetails, questions });
       console.log("success");
       toast.success("Quiz Submitted Successfully");
       const quizId: string | undefined = await handleCreateQuiz();
@@ -350,24 +427,71 @@ const Quiz: React.FC<{
       }
     } else {
       // setErrors(errors);
-      console.log(questions, quizTitle);
+      console.log(questions, quizDetails);
       toast.error(errors);
     }
   };
 
   return (
     <div className="my-12">
-      <div className="mx-4 flex flex-row align-middle gap-4">
-        <label className="self-center font-gilroy text-xl" htmlFor="quizTitle">
-          Quiz Title:
-        </label>
-        <input
-          className=" self-center w-60 rounded-2xl bg-gray-900/80 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
-          placeholder="Enter quiz title"
-          id="quizTitle"
-          value={quizTitle}
-          onChange={(e) => handleQuizTitleChange(e)}
-        />
+      {/* <div className="mx-4 flex flex-row align-middle gap-4"> */}
+      <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/90 p-6 px-8">
+        <div className="flex flex-row w-full justify-between">
+          <div className="flex flex-row items-center">
+            <label
+              className="self-center font-gilroy text-xl"
+              htmlFor="quizTitle"
+            >
+              Quiz Title:
+            </label>
+            <input
+              className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
+              placeholder="Enter quiz title"
+              id="quizTitle"
+              value={quizDetails.quizTitle}
+              onChange={(e) => handleQuizTitleChange(e)}
+            />
+          </div>
+
+          <div className="flex flex-row font-gilroy text-xl self-center text-nowrap items-center">
+            <label htmlFor="startTime" className="w-full mr-4">
+              Start Time:
+            </label>
+            <Input
+              type="datetime-local"
+              value={quizDetails.startTime}
+              onChange={(e) => handleQuizStartTimeChange(e)}
+            ></Input>
+            <label htmlFor="startTime" className="w-full ml-6 mr-4">
+              End Time:
+            </label>
+            <Input
+              type="datetime-local"
+              value={quizDetails.endTime}
+              onChange={(e) => handleQuizEndTimeChange(e)}
+            ></Input>
+          </div>
+        </div>
+        <div className="flex flex-row w-full">
+          <textarea
+            name="quizDescription"
+            id="quizDescription"
+            rows={4}
+            className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
+            placeholder="Quiz Description"
+            value={quizDetails.description}
+            onChange={(e) => handleQuizDescriptionChange(e)}
+          ></textarea>
+        </div>
+        <div className="flex self-end">
+          <Button
+            className="mt-4 rounded-md mr-2"
+            intent={"secondary"}
+            size={"medium"}
+          >
+            Advanced Options <Settings2Icon className="text-xl" />
+          </Button>
+        </div>
       </div>
       <div className="flex flex-col min-h-fit">
         {questions.map((q, index) => (
