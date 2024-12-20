@@ -462,7 +462,6 @@ export type MutationCreateQuizArgs = {
   endTime: Scalars["String"]["input"];
   eventId: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
-  questionUpdatedAt?: InputMaybe<Scalars["DateTime"]["input"]>;
   roundId: Scalars["String"]["input"];
   startTime: Scalars["String"]["input"];
 };
@@ -1670,7 +1669,6 @@ export type Quiz = {
   eventId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
-  questionUpdatedAt?: Maybe<Scalars["DateTime"]["output"]>;
   questions: Array<Question>;
   round: Round;
   roundNo: Scalars["Int"]["output"];
@@ -3423,12 +3421,14 @@ export type GetQuizByEventQuery = {
           roundNo: number;
           startTime: Date;
           updatedAt: Date;
-          questionUpdatedAt?: Date | null;
           questions: Array<{
             __typename?: "Question";
             quizId: string;
             image?: string | null;
+            description?: string | null;
+            isCode: boolean;
             question: string;
+            id: string;
             options: Array<{
               __typename?: "Options";
               id: string;
@@ -14026,6 +14026,17 @@ export const GetQuizByEventDocument = {
                                   },
                                   {
                                     kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "description",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "isCode" },
+                                  },
+                                  {
+                                    kind: "Field",
                                     name: { kind: "Name", value: "options" },
                                     selectionSet: {
                                       kind: "SelectionSet",
@@ -14055,19 +14066,16 @@ export const GetQuizByEventDocument = {
                                     kind: "Field",
                                     name: { kind: "Name", value: "question" },
                                   },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
                                 ],
                               },
                             },
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "updatedAt" },
-                            },
-                            {
-                              kind: "Field",
-                              name: {
-                                kind: "Name",
-                                value: "questionUpdatedAt",
-                              },
                             },
                           ],
                         },

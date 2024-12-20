@@ -16,15 +16,17 @@ query GetQuizByEvent($eventId: Int!) {
         questions {
           quizId
           image
+          description
+          isCode
           options {
             id
             value
             isAnswer
           }
           question
+          id
         }
         updatedAt
-        questionUpdatedAt
       }
     }
   }

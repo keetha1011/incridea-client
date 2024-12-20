@@ -42,8 +42,15 @@ type QuizDetailsType = {
   description: string;
   startTime: string;
   endTime: string;
-  updatedAt?: Date;
 };
+
+type timeUpdateType = {
+  time: string;
+};
+
+function appendMilliseconds(localDateString: string): string {
+  return `${localDateString}:00.000Z`;
+}
 
 function saveToLocalStore<T>(key: string, value: T): void {
   if (typeof window === "undefined") return;
@@ -56,27 +63,47 @@ function loadfromLocalStore<T>(key: string, fallback: T): T | null {
   return value ? (JSON.parse(value) as T) : fallback;
 }
 
+function loadupdatedTime(): string | null {
+  if (typeof window === "undefined") return null;
+  const value = localStorage.getItem("updatedAt");
+  // if (value && !isNaN(Date.parse(value))) {
+  //   return new Date(value); // Return the Date object directly
+  // }
+  return value ?? null;
+}
+
 const Quiz: React.FC<{
   event: EventByOrganizerQuery["eventByOrganizer"][0];
   round: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
 }> = ({ event, round }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [doneFetch, setDoneFetch] = useState(false);
+  const [doneFirstSave1, setDoneSave1] = useState(false);
+  const [doneFirstSave2, setDoneSave2] = useState(false);
+  const [isInitialized1, setIsInitialized1] = useState(false);
+  const [isInitialized2, setIsInitialized2] = useState(false);
 
   const eventId = event.id.toString();
   const roundNo = round[0]?.roundNo?.toString() ?? "";
-
-  console.log("Event ID: ", eventId);
-  console.log("Round No: ", roundNo);
 
   const concatId = eventId + "-" + roundNo;
   const questionsKey = "questions-" + concatId;
   const quizDetailsKey = "quizDetails-" + concatId;
 
   useEffect(() => {
+    if (!isInitialized1) {
+      setIsInitialized1(true);
+      return;
+    }
     if (typeof window !== "undefined") {
       if (questions.length > 0) {
         saveToLocalStore<Question[]>(questionsKey, questions);
+        if (doneFirstSave1) {
+          setUpdatedTime({ time: new Date().toISOString() });
+          saveToLocalStore<timeUpdateType>("updatedAt", updatedTime);
+        }
       }
+      setDoneSave1(true);
     }
   }, [questions]);
 
@@ -86,22 +113,32 @@ const Quiz: React.FC<{
     );
   };
 
-  const [quizDetails, setQuizDetails] = useState<QuizDetailsType>({
-    quizTitle: "",
-    description: "",
-    startTime: "",
-    endTime: "",
+  const [quizDetails, setQuizDetails] =
+    useState<QuizDetailsType>({
+      quizTitle: "",
+      description: "",
+      startTime: new Date().toISOString().slice(0, 16),
+      endTime: new Date().toISOString().slice(0, 16),
+    }) ?? [];
+
+  const [updatedTime, setUpdatedTime] = useState<timeUpdateType>({
+    time: "",
   });
 
   useEffect(() => {
-    const updatedTime = new Date().toISOString();
+    if (!isInitialized2) {
+      setIsInitialized2(true);
+      return;
+    }
     if (typeof window !== "undefined") {
       if (quizDetails.quizTitle !== "") {
-        saveToLocalStore<QuizDetailsType>(quizDetailsKey, {
-          ...quizDetails,
-          updatedAt: new Date(updatedTime),
-        });
+        saveToLocalStore<QuizDetailsType>(quizDetailsKey, quizDetails);
+        if (doneFirstSave2) {
+          setUpdatedTime({ time: new Date().toISOString() });
+          saveToLocalStore<timeUpdateType>("updatedAt", updatedTime);
+        }
       }
+      setDoneSave2(true);
     }
   }, [quizDetails]);
 
@@ -136,21 +173,8 @@ const Quiz: React.FC<{
     },
   );
 
-  const fetchFromDB = () => {
-    if (quizData) {
-      const quiz = quizData.getQuizByEvent;
-      if (quiz.__typename === "QueryGetQuizByEventSuccess") {
-        if (
-          quiz.data[0]?.updatedAt &&
-          quizDetails.updatedAt &&
-          quiz.data[0].updatedAt < quizDetails.updatedAt
-        ) {
-        }
-      }
-    }
-  };
-
-  useEffect(() => {
+  const fetchFromLocal = () => {
+    console.log("Fetching from Local222222222222222222");
     if (typeof window !== "undefined") {
       const loadedQuestions =
         loadfromLocalStore<Question[]>(questionsKey, [
@@ -171,14 +195,130 @@ const Quiz: React.FC<{
         {
           quizTitle: "",
           description: "",
-          startTime: "",
-          endTime: "",
+          startTime: new Date().toISOString().slice(0, 16),
+          endTime: new Date().toISOString().slice(0, 16),
         },
-      ) ?? { quizTitle: "", description: "", startTime: "", endTime: "" };
+      ) ?? {
+        quizTitle: "",
+        description: "",
+        startTime: new Date().toISOString().slice(0, 16),
+        endTime: new Date().toISOString().slice(0, 16),
+      };
       setQuestions(loadedQuestions);
       setQuizDetails(loadedQuizTitle);
     }
-  }, []);
+    setDoneFetch(true);
+    console.log("DONE FETCH CHANGED 2222");
+  };
+
+  const fetchFromDB = () => {
+    fetchFromLocal();
+    console.log("Fetching from DB1111111111111111111");
+    if (quizData) {
+      const quiz = quizData.getQuizByEvent;
+      if (quiz.__typename === "QueryGetQuizByEventSuccess") {
+        const quizIndex = quiz.data.findIndex(
+          (q) => q.roundNo === Number(roundNo),
+        );
+        const quizSuccess = quiz.data[quizIndex];
+        if (quizSuccess) {
+          const loadedQuestions: Question[] =
+            quizSuccess.questions.map((q) => {
+              const qs: Question = {
+                id: q.id,
+                questionText: q.question,
+                options: q.options.map((opt) => {
+                  return opt.value;
+                }),
+                ansIndex: q.options.findIndex((opt) => opt.isAnswer),
+                answer: q.options.find((opt) => opt.isAnswer)?.value ?? "",
+                collapsed: false,
+                isCode: q.isCode,
+                description: q.description ?? "",
+                imageUrl: q.image ?? "",
+              };
+              return qs;
+            }) ?? [];
+
+          console.log(new Date(quizSuccess?.startTime).toUTCString());
+          console.log(new Date(quizSuccess?.startTime).toISOString());
+          console.log(new Date(quizSuccess?.startTime).toLocaleDateString());
+
+          const loadedQuizTitle: QuizDetailsType = {
+            quizTitle: quizSuccess?.name ?? "",
+            description: quizSuccess?.description ?? "",
+            startTime: new Date(quizSuccess?.startTime)
+              .toISOString()
+              .slice(0, 16),
+            endTime: new Date(quizSuccess?.endTime).toISOString().slice(0, 16),
+          };
+          setQuestions(loadedQuestions);
+          setQuizDetails(loadedQuizTitle);
+        } else {
+          fetchFromLocal();
+        }
+      }
+    }
+    setDoneFetch(true);
+    console.log("DONE FETCH CHANGED 2222");
+  };
+
+  useEffect(() => {
+    const updatedAt2 = loadfromLocalStore<timeUpdateType>("updatedAt", {
+      time: "",
+    });
+    const updatedAt = updatedAt2?.time;
+    if (quizData) {
+      const quiz = quizData.getQuizByEvent;
+      if (quiz.__typename === "QueryGetQuizByEventSuccess") {
+        const quizIndex = quiz.data.findIndex(
+          (q) => q.roundNo === Number(roundNo),
+        );
+        const quizSuccess = quiz.data[quizIndex];
+        console.log(quizSuccess?.updatedAt);
+        if (quizSuccess) {
+          const dbUpdatedAt = new Date(
+            quizSuccess?.updatedAt ?? "",
+          ).toISOString();
+          console.log("-------------------");
+          console.log(`dbUpdatedAt: ${new Date(dbUpdatedAt).toLocaleString()}`);
+          console.log(
+            `updatedAt: ${new Date(updatedAt?.toString() ?? "").toLocaleString()}`,
+          );
+          console.log(`DB > LOCAL: ${updatedAt && dbUpdatedAt > updatedAt}`);
+          console.log(`DB < LOCAL: ${updatedAt && dbUpdatedAt < updatedAt}`);
+          console.log("-------------------");
+          if (quizSuccess.updatedAt && updatedAt && dbUpdatedAt < updatedAt) {
+            console.log("FETCHING FROM LOCAL 1");
+            fetchFromLocal();
+          } else if (
+            quizSuccess.updatedAt &&
+            updatedAt &&
+            dbUpdatedAt > updatedAt
+          ) {
+            console.log("FETCHING FROM DB 1");
+            fetchFromDB();
+          } else if (quizSuccess.updatedAt && !updatedAt) {
+            console.log(quizDetails);
+            console.log("FETCHING FROM DB 2");
+            fetchFromDB();
+          } else if (!quizSuccess.updatedAt && updatedAt) {
+            console.log("FETCHING FROM LOCAL 2");
+            fetchFromLocal();
+          } else {
+            console.log("3333");
+            fetchFromLocal();
+          }
+        } else {
+          fetchFromLocal();
+        }
+      } else {
+        fetchFromLocal();
+      }
+    } else {
+      console.log("BRO NOT YET FETCHED");
+    }
+  }, [quizData]);
 
   const handleAddQuestions = (index: number) => {
     setQuestions((prev) => {
@@ -319,9 +459,9 @@ const Quiz: React.FC<{
   const validateQuiz = () => {
     if (quizDetails.quizTitle === "") {
       return "Quiz Title cannot be empty";
-    } else if (quizDetails.startTime === "") {
+    } else if (quizDetails.startTime === undefined) {
       return "Start Time cannot be empty";
-    } else if (quizDetails.endTime === "") {
+    } else if (quizDetails.endTime === undefined) {
       return "End Time cannot be empty";
     } else if (quizDetails.startTime > quizDetails.endTime) {
       return "Start Time is greater than End Time";
@@ -366,8 +506,8 @@ const Quiz: React.FC<{
         roundId: round[0]?.roundNo?.toString() ?? "",
         name: quizDetails.quizTitle,
         description: quizDetails.description ?? "",
-        startTime: quizDetails.startTime,
-        endTime: quizDetails.endTime,
+        startTime: appendMilliseconds(quizDetails.startTime),
+        endTime: appendMilliseconds(quizDetails.endTime),
       },
     }).then((res) => {
       res.errors?.forEach((error) => {
