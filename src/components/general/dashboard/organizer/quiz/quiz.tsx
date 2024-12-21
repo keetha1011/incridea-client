@@ -13,9 +13,11 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { Input } from "~/components/ui/input";
 import { CiSettings } from "react-icons/ci";
-import { Settings } from "lucide-react";
+import { Save, Settings } from "lucide-react";
 import { Settings2Icon } from "lucide-react";
 import { GetQuizByEventDocument } from "~/generated/generated";
+import { IoCreate } from "react-icons/io5";
+import { IoMdCreate } from "react-icons/io";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -661,10 +663,10 @@ const Quiz: React.FC<{
           />
         ))}
       </div>
-      <div className="flex mt-4 items-center justify-center">
+      <div className="flex mt-4 items-center justify-between">
         <Button
           className="my-4 rounded-md mr-6"
-          intent={"success"}
+          intent={"info"}
           size={"large"}
           disabled={loading}
           onClick={handlePrint}
@@ -672,7 +674,25 @@ const Quiz: React.FC<{
           {loading ? (
             <>
               <BiLoaderAlt className="animate-spin text-xl" />
-              Creating Quiz...{" "}
+              Saving Draft...{" "}
+            </>
+          ) : (
+            <>
+              <Save className="text-xl" /> Save Draft
+            </>
+          )}
+        </Button>
+        <Button
+          className="my-4 rounded-md mr-6"
+          intent={"success"}
+          size={"large"}
+          disabled={true}
+          // onClick={handlePrint}
+        >
+          {loading ? (
+            <>
+              <BiLoaderAlt className="animate-spin text-xl" />
+              Saving Draft...{" "}
             </>
           ) : (
             <>
