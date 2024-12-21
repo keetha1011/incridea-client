@@ -98,6 +98,21 @@ const Quiz: React.FC<{
       return;
     }
     if (typeof window !== "undefined") {
+      if (questions.length === 0) {
+        saveToLocalStore<Question[]>(questionsKey, [
+          {
+            id: generateUUID(),
+            questionText: "",
+            options: ["", ""],
+            ansIndex: 0,
+            answer: "",
+            collapsed: false,
+            isCode: false,
+            description: "",
+            imageUrl: "",
+          },
+        ]);
+      }
       if (questions.length > 0) {
         saveToLocalStore<Question[]>(questionsKey, questions);
         if (doneFirstSave1) {
@@ -493,23 +508,34 @@ const Quiz: React.FC<{
     awaitRefetchQueries: true,
   });
 
-  const [createQuestion, { loading: questionloading }] = useMutation(
-    CreateQuestionDocument,
-    {
-      refetchQueries: ["CreateQuestion"],
-      awaitRefetchQueries: true,
-    },
-  );
+  // const [createQuestion, { loading: questionloading }] = useMutation(
+  //   CreateQuestionDocument,
+  //   {
+  //     refetchQueries: ["CreateQuestion"],
+  //     awaitRefetchQueries: true,
+  //   },
+  // );
 
-  const handleCreateQuiz = async () => {
+  const handleCreateQuiz = async (q: Question[]) => {
     const promise = createQuiz({
       variables: {
         eventId: event.id,
         roundId: round[0]?.roundNo?.toString() ?? "",
-        name: quizDetails.quizTitle,
-        description: quizDetails.description ?? "",
+        quizTitle: quizDetails.quizTitle,
+        quizDescription: quizDetails.description ?? "",
         startTime: appendMilliseconds(quizDetails.startTime),
         endTime: appendMilliseconds(quizDetails.endTime),
+        questions: q.map((question) => ({
+          question: question.questionText,
+          isCode: question.isCode,
+          points: 10,
+          options: question.options.map((opt, index) => ({
+            value: opt,
+            isAnswer: index === question.ansIndex,
+          })),
+          description: question.description,
+          image: question.imageUrl,
+        })),
       },
     }).then((res) => {
       res.errors?.forEach((error) => {
@@ -525,34 +551,34 @@ const Quiz: React.FC<{
     return promise;
   };
 
-  const handleCreateQuestion = (quizId: string, q: Question) => {
-    createQuestion({
-      variables: {
-        quizId: quizId,
-        question: q.questionText,
-        isCode: q.isCode,
-        options: q.options.map((opt, index) => ({
-          value: opt,
-          isAnswer: index === q.ansIndex,
-        })),
-        description: q.description,
-        image: q.imageUrl,
-      },
-    })
-      .then((res) => {
-        if (
-          res.data?.createQuestion.__typename !==
-          "MutationCreateQuestionSuccess"
-        ) {
-          throw new Error("Error creating question");
-        } else {
-          console.log("Question Created: ", res.data?.createQuestion.data.id);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
+  // const handleCreateQuestion = (quizId: string, q: Question) => {
+  //   createQuestion({
+  //     variables: {
+  //       quizId: quizId,
+  //       question: q.questionText,
+  //       isCode: q.isCode,
+  //       options: q.options.map((opt, index) => ({
+  //         value: opt,
+  //         isAnswer: index === q.ansIndex,
+  //       })),
+  //       description: q.description,
+  //       image: q.imageUrl,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (
+  //         res.data?.createQuestion.__typename !==
+  //         "MutationCreateQuestionSuccess"
+  //       ) {
+  //         throw new Error("Error creating question");
+  //       } else {
+  //         console.log("Question Created: ", res.data?.createQuestion.data.id);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.error(error);
+  //     });
+  // };
 
   const handlePrint = async () => {
     const errors = validateQuiz();
@@ -560,13 +586,13 @@ const Quiz: React.FC<{
       console.log("Quiz Submitted:", { quizDetails, questions });
       console.log("success");
       toast.success("Quiz Submitted Successfully");
-      const quizId: string | undefined = await handleCreateQuiz();
-      if (quizId) {
-        console.log("Quiz ID: ", quizId);
-        questions.forEach((q) => {
-          handleCreateQuestion(quizId, q);
-        });
-      }
+      const quizId: string | undefined = await handleCreateQuiz(questions);
+      // if (quizId) {
+      //   console.log("Quiz ID: ", quizId);
+      //   questions.forEach((q) => {
+      //     handleCreateQuestion(quizId, q);
+      //   });
+      // }
     } else {
       // setErrors(errors);
       console.log(questions, quizDetails);

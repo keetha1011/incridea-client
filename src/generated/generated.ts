@@ -450,7 +450,7 @@ export type MutationCreateQuestionArgs = {
   image?: InputMaybe<Scalars["String"]["input"]>;
   isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
   negativePoint?: InputMaybe<Scalars["Int"]["input"]>;
-  options?: InputMaybe<Array<OptionsCreateInput>>;
+  options?: InputMaybe<Array<OptionsCreateInput2>>;
   points: Scalars["Int"]["input"];
   question: Scalars["String"]["input"];
   quizId: Scalars["String"]["input"];
@@ -462,6 +462,7 @@ export type MutationCreateQuizArgs = {
   endTime: Scalars["String"]["input"];
   eventId: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
+  questions: Array<QuestionsCreateInput>;
   roundId: Scalars["String"]["input"];
   startTime: Scalars["String"]["input"];
 };
@@ -1171,6 +1172,11 @@ export type OptionsCreateInput = {
   value: Scalars["String"]["input"];
 };
 
+export type OptionsCreateInput2 = {
+  isAnswer: Scalars["Boolean"]["input"];
+  value: Scalars["String"]["input"];
+};
+
 export enum OrderType {
   EventRegistration = "EVENT_REGISTRATION",
   FestRegistration = "FEST_REGISTRATION",
@@ -1662,6 +1668,16 @@ export enum QuestionType {
   Mcq = "MCQ",
 }
 
+export type QuestionsCreateInput = {
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  image?: InputMaybe<Scalars["String"]["input"]>;
+  isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
+  negativePoints?: InputMaybe<Scalars["Int"]["input"]>;
+  options?: InputMaybe<Array<OptionsCreateInput>>;
+  points?: InputMaybe<Scalars["Int"]["input"]>;
+  question: Scalars["String"]["input"];
+};
+
 export type Quiz = {
   __typename?: "Quiz";
   description?: Maybe<Scalars["String"]["output"]>;
@@ -2101,7 +2117,7 @@ export type CreateJudgeMutation = {
 };
 
 export type CreateQuestionMutationVariables = Exact<{
-  options?: InputMaybe<Array<OptionsCreateInput> | OptionsCreateInput>;
+  options?: InputMaybe<Array<OptionsCreateInput2> | OptionsCreateInput2>;
   image?: InputMaybe<Scalars["String"]["input"]>;
   quizId?: InputMaybe<Scalars["String"]["input"]>;
   question?: InputMaybe<Scalars["String"]["input"]>;
@@ -2120,12 +2136,13 @@ export type CreateQuestionMutation = {
 };
 
 export type CreateQuizMutationVariables = Exact<{
-  eventId: Scalars["String"]["input"];
-  roundId: Scalars["String"]["input"];
-  name: Scalars["String"]["input"];
-  description: Scalars["String"]["input"];
+  quizDescription?: InputMaybe<Scalars["String"]["input"]>;
   endTime?: InputMaybe<Scalars["String"]["input"]>;
+  eventId?: InputMaybe<Scalars["String"]["input"]>;
+  quizTitle?: InputMaybe<Scalars["String"]["input"]>;
   startTime?: InputMaybe<Scalars["String"]["input"]>;
+  roundId?: InputMaybe<Scalars["String"]["input"]>;
+  questions?: InputMaybe<Array<QuestionsCreateInput> | QuestionsCreateInput>;
 }>;
 
 export type CreateQuizMutation = {
@@ -5998,7 +6015,7 @@ export const CreateQuestionDocument = {
               kind: "NonNullType",
               type: {
                 kind: "NamedType",
-                name: { kind: "Name", value: "OptionsCreateInput" },
+                name: { kind: "Name", value: "OptionsCreateInput2" },
               },
             },
           },
@@ -6203,54 +6220,10 @@ export const CreateQuizDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "eventId" },
+            name: { kind: "Name", value: "quizDescription" },
           },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "roundId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: { kind: "Variable", name: { kind: "Name", value: "name" } },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "description" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
         },
         {
           kind: "VariableDefinition",
@@ -6265,10 +6238,103 @@ export const CreateQuizDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizTitle" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
             name: { kind: "Name", value: "startTime" },
           },
           type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
           defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "roundId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "questions" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: {
+                kind: "NamedType",
+                name: { kind: "Name", value: "QuestionsCreateInput" },
+              },
+            },
+          },
+          defaultValue: {
+            kind: "ObjectValue",
+            fields: [
+              {
+                kind: "ObjectField",
+                name: { kind: "Name", value: "points" },
+                value: { kind: "IntValue", value: "10" },
+              },
+              {
+                kind: "ObjectField",
+                name: { kind: "Name", value: "question" },
+                value: { kind: "StringValue", value: "", block: false },
+              },
+              {
+                kind: "ObjectField",
+                name: { kind: "Name", value: "description" },
+                value: { kind: "StringValue", value: "", block: false },
+              },
+              {
+                kind: "ObjectField",
+                name: { kind: "Name", value: "image" },
+                value: { kind: "StringValue", value: "", block: false },
+              },
+              {
+                kind: "ObjectField",
+                name: { kind: "Name", value: "isCode" },
+                value: { kind: "BooleanValue", value: false },
+              },
+              {
+                kind: "ObjectField",
+                name: { kind: "Name", value: "options" },
+                value: {
+                  kind: "ObjectValue",
+                  fields: [
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "isAnswer" },
+                      value: { kind: "BooleanValue", value: false },
+                    },
+                    {
+                      kind: "ObjectField",
+                      name: { kind: "Name", value: "value" },
+                      value: { kind: "StringValue", value: "", block: false },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
         },
       ],
       selectionSet: {
@@ -6278,6 +6344,14 @@ export const CreateQuizDocument = {
             kind: "Field",
             name: { kind: "Name", value: "createQuiz" },
             arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "endTime" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "endTime" },
+                },
+              },
               {
                 kind: "Argument",
                 name: { kind: "Name", value: "eventId" },
@@ -6291,7 +6365,7 @@ export const CreateQuizDocument = {
                 name: { kind: "Name", value: "name" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "name" },
+                  name: { kind: "Name", value: "quizTitle" },
                 },
               },
               {
@@ -6304,26 +6378,26 @@ export const CreateQuizDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "description" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "description" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "endTime" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "endTime" },
-                },
-              },
-              {
-                kind: "Argument",
                 name: { kind: "Name", value: "startTime" },
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "startTime" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "description" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizDescription" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "questions" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "questions" },
                 },
               },
             ],

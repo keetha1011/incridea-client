@@ -1,18 +1,56 @@
+# mutation CreateQuiz(
+#   $eventId: String!
+#   $roundId: String!
+#   $name: String!
+#   $description: String!
+#   $endTime: String = ""
+#   $startTime: String = ""
+# ) {
+#   createQuiz(
+#     eventId: $eventId
+#     name: $name
+#     roundId: $roundId
+#     description: $description
+#     endTime: $endTime
+#     startTime: $startTime
+#   ) {
+#     ... on Error {
+#       __typename
+#       message
+#     }
+#     ... on MutationCreateQuizSuccess {
+#       __typename
+#       data {
+#         id
+#       }
+#     }
+#   }
+# }
+
 mutation CreateQuiz(
-  $eventId: String!
-  $roundId: String!
-  $name: String!
-  $description: String!
+  $quizDescription: String = ""
   $endTime: String = ""
+  $eventId: String = ""
+  $quizTitle: String = ""
   $startTime: String = ""
+  $roundId: String = ""
+  $questions: [QuestionsCreateInput!] = {
+    points: 10
+    question: ""
+    description: ""
+    image: ""
+    isCode: false
+    options: { isAnswer: false, value: "" }
+  }
 ) {
   createQuiz(
-    eventId: $eventId
-    name: $name
-    roundId: $roundId
-    description: $description
     endTime: $endTime
+    eventId: $eventId
+    name: $quizTitle
+    roundId: $roundId
     startTime: $startTime
+    description: $quizDescription
+    questions: $questions
   ) {
     ... on Error {
       __typename

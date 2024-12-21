@@ -1,5 +1,5 @@
 mutation CreateQuestion(
-  $options: [OptionsCreateInput!] = { isAnswer: false, value: "" }
+  $options: [OptionsCreateInput2!] = { isAnswer: false, value: "" }
   $image: String = ""
   $quizId: String = ""
   $question: String = ""
