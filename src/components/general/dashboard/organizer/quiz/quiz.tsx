@@ -6,18 +6,13 @@ import toast from "react-hot-toast";
 import QuestionComp from "~/components/general/dashboard/organizer/quiz/question";
 import { type EventByOrganizerQuery } from "~/generated/generated";
 import { CreateQuizDocument } from "~/generated/generated";
-import { CreateQuestionDocument } from "~/generated/generated";
 import { useMutation, useQuery } from "@apollo/client";
-import createToast from "~/components/toast";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { Input } from "~/components/ui/input";
-import { CiSettings } from "react-icons/ci";
 import { Save, Settings } from "lucide-react";
 import { Settings2Icon } from "lucide-react";
 import { GetQuizByEventDocument } from "~/generated/generated";
-import { IoCreate } from "react-icons/io5";
-import { IoMdCreate } from "react-icons/io";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -63,15 +58,6 @@ function loadfromLocalStore<T>(key: string, fallback: T): T | null {
   if (typeof window === "undefined") return fallback;
   const value = localStorage.getItem(key);
   return value ? (JSON.parse(value) as T) : fallback;
-}
-
-function loadupdatedTime(): string | null {
-  if (typeof window === "undefined") return null;
-  const value = localStorage.getItem("updatedAt");
-  // if (value && !isNaN(Date.parse(value))) {
-  //   return new Date(value); // Return the Date object directly
-  // }
-  return value ?? null;
 }
 
 const Quiz: React.FC<{
@@ -551,35 +537,6 @@ const Quiz: React.FC<{
     return promise;
   };
 
-  // const handleCreateQuestion = (quizId: string, q: Question) => {
-  //   createQuestion({
-  //     variables: {
-  //       quizId: quizId,
-  //       question: q.questionText,
-  //       isCode: q.isCode,
-  //       options: q.options.map((opt, index) => ({
-  //         value: opt,
-  //         isAnswer: index === q.ansIndex,
-  //       })),
-  //       description: q.description,
-  //       image: q.imageUrl,
-  //     },
-  //   })
-  //     .then((res) => {
-  //       if (
-  //         res.data?.createQuestion.__typename !==
-  //         "MutationCreateQuestionSuccess"
-  //       ) {
-  //         throw new Error("Error creating question");
-  //       } else {
-  //         console.log("Question Created: ", res.data?.createQuestion.data.id);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //     });
-  // };
-
   const handlePrint = async () => {
     const errors = validateQuiz();
     if (!errors) {
@@ -587,12 +544,6 @@ const Quiz: React.FC<{
       console.log("success");
       toast.success("Quiz Submitted Successfully");
       const quizId: string | undefined = await handleCreateQuiz(questions);
-      // if (quizId) {
-      //   console.log("Quiz ID: ", quizId);
-      //   questions.forEach((q) => {
-      //     handleCreateQuestion(quizId, q);
-      //   });
-      // }
     } else {
       // setErrors(errors);
       console.log(questions, quizDetails);

@@ -1,32 +1,3 @@
-# mutation CreateQuiz(
-#   $eventId: String!
-#   $roundId: String!
-#   $name: String!
-#   $description: String!
-#   $endTime: String = ""
-#   $startTime: String = ""
-# ) {
-#   createQuiz(
-#     eventId: $eventId
-#     name: $name
-#     roundId: $roundId
-#     description: $description
-#     endTime: $endTime
-#     startTime: $startTime
-#   ) {
-#     ... on Error {
-#       __typename
-#       message
-#     }
-#     ... on MutationCreateQuizSuccess {
-#       __typename
-#       data {
-#         id
-#       }
-#     }
-#   }
-# }
-
 mutation CreateQuiz(
   $quizDescription: String = ""
   $endTime: String = ""

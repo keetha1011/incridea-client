@@ -1,3 +1,5 @@
+# NOT USED ANYMORE
+
 mutation CreateQuestion(
   $options: [OptionsCreateInput2!] = { isAnswer: false, value: "" }
   $image: String = ""
