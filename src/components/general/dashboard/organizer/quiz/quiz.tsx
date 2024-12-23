@@ -5,13 +5,12 @@ import Button from "~/components/button";
 import toast from "react-hot-toast";
 import QuestionComp from "~/components/general/dashboard/organizer/quiz/question";
 import { type EventByOrganizerQuery } from "~/generated/generated";
-import { CreateQuizDocument } from "~/generated/generated";
+import { CreateQuizDocument, UpdateQuizDocument } from "~/generated/generated";
 import { useMutation, useQuery } from "@apollo/client";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { Input } from "~/components/ui/input";
 import { Save } from "lucide-react";
-import { Settings2Icon } from "lucide-react";
 import { GetQuizByEventRoundDocument } from "~/generated/generated";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
@@ -32,6 +31,7 @@ type Question = {
   isCode: boolean;
   description: string;
   imageUrl: string;
+  mode: "view" | "edit" | "new" | "delete";
 };
 
 type QuizDetailsType = {
@@ -39,6 +39,7 @@ type QuizDetailsType = {
   description: string;
   startTime: string;
   endTime: string;
+  password: string;
 };
 
 type timeUpdateType = {
@@ -57,7 +58,11 @@ function saveToLocalStore<T>(key: string, value: T): void {
 function loadfromLocalStore<T>(key: string, fallback: T): T | null {
   if (typeof window === "undefined") return fallback;
   const value = localStorage.getItem(key);
-  return value ? (JSON.parse(value) as T) : fallback;
+  if (value) return JSON.parse(value) as T;
+  else {
+    saveToLocalStore<T>(key, fallback);
+    return fallback;
+  }
 }
 
 const Quiz: React.FC<{
@@ -66,49 +71,47 @@ const Quiz: React.FC<{
 }> = ({ event, round }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [doneFetch, setDoneFetch] = useState(false);
-  const [doneFirstSave1, setDoneSave1] = useState(false);
-  const [doneFirstSave2, setDoneSave2] = useState(false);
-  const [isInitialized1, setIsInitialized1] = useState(false);
-  const [isInitialized2, setIsInitialized2] = useState(false);
+  // const [doneFirstSave1, setDoneSave1] = useState(false);
+  // const [isInitialized1, setIsInitialized1] = useState(false);
 
   const eventId = event.id.toString();
   const roundNo = round[0]?.roundNo?.toString() ?? "";
 
   const concatId = eventId + "-" + roundNo;
   const questionsKey = "questions-" + concatId;
-  const quizDetailsKey = "quizDetails-" + concatId;
 
-  useEffect(() => {
-    if (!isInitialized1) {
-      setIsInitialized1(true);
-      return;
-    }
-    if (typeof window !== "undefined") {
-      if (questions.length === 0) {
-        saveToLocalStore<Question[]>(questionsKey, [
-          {
-            id: generateUUID(),
-            questionText: "",
-            options: ["", ""],
-            ansIndex: 0,
-            answer: "",
-            collapsed: false,
-            isCode: false,
-            description: "",
-            imageUrl: "",
-          },
-        ]);
-      }
-      if (questions.length > 0) {
-        saveToLocalStore<Question[]>(questionsKey, questions);
-        if (doneFirstSave1) {
-          setUpdatedTime({ time: new Date().toISOString() });
-          saveToLocalStore<timeUpdateType>("updatedAt", updatedTime);
-        }
-      }
-      setDoneSave1(true);
-    }
-  }, [questions]);
+  // useEffect(() => {
+  //   if (!isInitialized1) {
+  //     setIsInitialized1(true);
+  //     return;
+  //   }
+  //   if (typeof window !== "undefined") {
+  //     if (questions.length === 0) {
+  //       saveToLocalStore<Question[]>(questionsKey, [
+  //         {
+  //           id: generateUUID(),
+  //           questionText: "",
+  //           options: ["", ""],
+  //           ansIndex: 0,
+  //           answer: "",
+  //           collapsed: false,
+  //           isCode: false,
+  //           description: "",
+  //           imageUrl: "",
+  //           mode: "view",
+  //         },
+  //       ]);
+  //     }
+  //     if (questions.length > 0) {
+  //       saveToLocalStore<Question[]>(questionsKey, questions);
+  //       if (doneFirstSave1) {
+  //         setUpdatedTime({ time: new Date().toISOString() });
+  //         saveToLocalStore<timeUpdateType>("updatedAt", updatedTime);
+  //       }
+  //     }
+  //     setDoneSave1(true);
+  //   }
+  // }, [questions]);
 
   const toggleCollapase = (id: string) => {
     setQuestions((prev) =>
@@ -120,52 +123,14 @@ const Quiz: React.FC<{
     useState<QuizDetailsType>({
       quizTitle: "",
       description: "",
-      startTime: new Date().toISOString().slice(0, 16),
-      endTime: new Date().toISOString().slice(0, 16),
-    }) ?? [];
+      startTime: new Date().toLocaleString(),
+      endTime: new Date().toLocaleString(),
+      password: "",
+    }) ?? {};
 
   const [updatedTime, setUpdatedTime] = useState<timeUpdateType>({
     time: "",
   });
-
-  useEffect(() => {
-    if (!isInitialized2) {
-      setIsInitialized2(true);
-      return;
-    }
-    if (typeof window !== "undefined") {
-      if (quizDetails.quizTitle !== "") {
-        saveToLocalStore<QuizDetailsType>(quizDetailsKey, quizDetails);
-        if (doneFirstSave2) {
-          setUpdatedTime({ time: new Date().toISOString() });
-          saveToLocalStore<timeUpdateType>("updatedAt", updatedTime);
-        }
-      }
-      setDoneSave2(true);
-    }
-  }, [quizDetails]);
-
-  // const [errors, setErrors] = useState<string>("");
-
-  const handleQuizTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuizDetails((prev) => ({ ...prev, quizTitle: e.target.value }));
-  };
-
-  const handleQuizDescriptionChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    setQuizDetails((prev) => ({ ...prev, description: e.target.value }));
-  };
-
-  const handleQuizStartTimeChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setQuizDetails((prev) => ({ ...prev, startTime: e.target.value }));
-  };
-
-  const handleQuizEndTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuizDetails((prev) => ({ ...prev, endTime: e.target.value }));
-  };
 
   const { data: quizData, loading: quizLoading } = useQuery(
     GetQuizByEventRoundDocument,
@@ -178,7 +143,7 @@ const Quiz: React.FC<{
   );
 
   const fetchFromLocal = () => {
-    console.log("Fetching from Local222222222222222222");
+    console.log("Fetching from Local");
     if (typeof window !== "undefined") {
       const loadedQuestions =
         loadfromLocalStore<Question[]>(questionsKey, [
@@ -192,38 +157,29 @@ const Quiz: React.FC<{
             isCode: false,
             description: "",
             imageUrl: "",
+            mode: "new",
           },
         ]) ?? [];
-      const loadedQuizTitle = loadfromLocalStore<QuizDetailsType>(
-        quizDetailsKey,
-        {
-          quizTitle: "",
-          description: "",
-          startTime: new Date().toISOString().slice(0, 16),
-          endTime: new Date().toISOString().slice(0, 16),
-        },
-      ) ?? {
-        quizTitle: "",
-        description: "",
-        startTime: new Date().toISOString().slice(0, 16),
-        endTime: new Date().toISOString().slice(0, 16),
-      };
-      setQuestions(loadedQuestions);
-      setQuizDetails(loadedQuizTitle);
+      loadedQuestions.map((q) => {
+        if (questions.findIndex((qq) => qq.id === q.id) === -1)
+          setQuestions((prev) => [...prev, q]);
+        else {
+          setQuestions((prev) => prev.map((qq) => (qq.id === q.id ? q : qq)));
+        }
+      });
     }
     setDoneFetch(true);
     console.log("DONE FETCH CHANGED 2222");
   };
 
   const fetchFromDB = () => {
-    fetchFromLocal();
-    console.log("Fetching from DB1111111111111111111");
+    console.log("Fetching from DB");
     if (quizData) {
       const quiz = quizData.getQuizByEventRound;
       if (quiz.__typename === "QueryGetQuizByEventRoundSuccess") {
         if (quiz) {
           const loadedQuestions: Question[] =
-            quiz.data.questions.map((q) => {
+            quiz.data.questions?.map((q) => {
               const qs: Question = {
                 id: q.id,
                 questionText: q.question,
@@ -236,26 +192,20 @@ const Quiz: React.FC<{
                 isCode: q.isCode,
                 description: q.description ?? "",
                 imageUrl: q.image ?? "",
+                mode: "view",
               };
               return qs;
             }) ?? [];
 
-          console.log(new Date(quiz.data?.startTime).toUTCString());
-          console.log(new Date(quiz.data?.startTime).toISOString());
-          console.log(new Date(quiz.data?.startTime).toLocaleDateString());
-
           const loadedQuizTitle: QuizDetailsType = {
             quizTitle: quiz.data?.name ?? "",
             description: quiz.data?.description ?? "",
-            startTime: new Date(quiz.data?.startTime)
-              .toISOString()
-              .slice(0, 16),
-            endTime: new Date(quiz.data?.endTime).toISOString().slice(0, 16),
+            startTime: new Date(quiz.data?.startTime).toLocaleString(),
+            endTime: new Date(quiz.data?.endTime).toLocaleString(),
+            password: quiz.data.password ?? "",
           };
           setQuestions(loadedQuestions);
           setQuizDetails(loadedQuizTitle);
-        } else {
-          fetchFromLocal();
         }
       }
     }
@@ -263,62 +213,68 @@ const Quiz: React.FC<{
     console.log("DONE FETCH CHANGED 2222");
   };
 
+  // useEffect(() => {
+  //   const updatedAt2 = loadfromLocalStore<timeUpdateType>("updatedAt", {
+  //     time: "",
+  //   });
+  //   const updatedAt = updatedAt2?.time;
+  //   if (quizData) {
+  //     const quiz = quizData.getQuizByEventRound;
+  //     if (quiz.__typename === "QueryGetQuizByEventRoundSuccess") {
+  //       console.log(quiz.data?.updatedAt);
+  //       if (quiz) {
+  //         const dbUpdatedAt = new Date(
+  //           quiz.data?.updatedAt ?? "",
+  //         ).toLocaleString();
+  //         console.log("-------------------");
+  //         console.log(`dbUpdatedAt: ${new Date(dbUpdatedAt).toLocaleString()}`);
+  //         console.log(
+  //           `updatedAt: ${new Date(updatedAt?.toString() ?? "").toLocaleString()}`,
+  //         );
+  //         console.log(`DB > LOCAL: ${updatedAt && dbUpdatedAt > updatedAt}`);
+  //         console.log(`DB < LOCAL: ${updatedAt && dbUpdatedAt < updatedAt}`);
+  //         console.log("-------------------");
+  //         if (quiz.data.updatedAt && updatedAt && dbUpdatedAt < updatedAt) {
+  //           console.log("FETCHING FROM LOCAL 1");
+  //           fetchFromLocal();
+  //         } else if (
+  //           quiz.data.updatedAt &&
+  //           updatedAt &&
+  //           dbUpdatedAt > updatedAt
+  //         ) {
+  //           console.log("FETCHING FROM DB 1");
+  //           fetchFromDB();
+  //         } else if (quiz.data.updatedAt && !updatedAt) {
+  //           console.log(quizDetails);
+  //           console.log("FETCHING FROM DB 2");
+  //           fetchFromDB();
+  //         } else if (!quiz.data.updatedAt && updatedAt) {
+  //           console.log("FETCHING FROM LOCAL 2");
+  //           fetchFromLocal();
+  //         } else {
+  //           console.log("3333");
+  //           fetchFromLocal();
+  //         }
+  //       } else {
+  //         fetchFromLocal();
+  //       }
+  //     } else {
+  //       fetchFromLocal();
+  //     }
+  //   } else {
+  //     console.log("BRO NOT YET FETCHED");
+  //   }
+  // }, [quizData]);
+
   useEffect(() => {
-    const updatedAt2 = loadfromLocalStore<timeUpdateType>("updatedAt", {
-      time: "",
-    });
-    const updatedAt = updatedAt2?.time;
-    if (quizData) {
-      const quiz = quizData.getQuizByEventRound;
-      if (quiz.__typename === "QueryGetQuizByEventRoundSuccess") {
-        console.log(quiz.data?.updatedAt);
-        if (quiz) {
-          const dbUpdatedAt = new Date(
-            quiz.data?.updatedAt ?? "",
-          ).toISOString();
-          console.log("-------------------");
-          console.log(`dbUpdatedAt: ${new Date(dbUpdatedAt).toLocaleString()}`);
-          console.log(
-            `updatedAt: ${new Date(updatedAt?.toString() ?? "").toLocaleString()}`,
-          );
-          console.log(`DB > LOCAL: ${updatedAt && dbUpdatedAt > updatedAt}`);
-          console.log(`DB < LOCAL: ${updatedAt && dbUpdatedAt < updatedAt}`);
-          console.log("-------------------");
-          if (quiz.data.updatedAt && updatedAt && dbUpdatedAt < updatedAt) {
-            console.log("FETCHING FROM LOCAL 1");
-            fetchFromLocal();
-          } else if (
-            quiz.data.updatedAt &&
-            updatedAt &&
-            dbUpdatedAt > updatedAt
-          ) {
-            console.log("FETCHING FROM DB 1");
-            fetchFromDB();
-          } else if (quiz.data.updatedAt && !updatedAt) {
-            console.log(quizDetails);
-            console.log("FETCHING FROM DB 2");
-            fetchFromDB();
-          } else if (!quiz.data.updatedAt && updatedAt) {
-            console.log("FETCHING FROM LOCAL 2");
-            fetchFromLocal();
-          } else {
-            console.log("3333");
-            fetchFromLocal();
-          }
-        } else {
-          fetchFromLocal();
-        }
-      } else {
-        fetchFromLocal();
-      }
-    } else {
-      console.log("BRO NOT YET FETCHED");
-    }
+    fetchFromDB();
+    fetchFromLocal();
+    console.log(questions);
   }, [quizData]);
 
   const handleAddQuestions = (index: number) => {
     setQuestions((prev) => {
-      const newQuestion = {
+      const newQuestion: Question = {
         id: generateUUID(),
         questionText: "",
         options: ["", ""],
@@ -328,11 +284,16 @@ const Quiz: React.FC<{
         isCode: false,
         description: "",
         imageUrl: "",
+        mode: "new",
       };
 
       const updatedQuestions = [
         ...prev.map((q) => ({ ...q, collapsed: true })),
       ];
+      const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+      localQuestions?.push(newQuestion);
+      if (localQuestions)
+        saveToLocalStore<Question[]>(questionsKey, localQuestions);
       updatedQuestions.splice(index + 1, 0, newQuestion);
       return updatedQuestions;
     });
@@ -342,7 +303,7 @@ const Quiz: React.FC<{
     const question = questions.find((q) => q.id === id);
     if (question) {
       setQuestions((prev) => {
-        const newQuestion = {
+        const newQuestion: Question = {
           id: generateUUID(),
           questionText: question.questionText,
           options: question.options,
@@ -352,11 +313,16 @@ const Quiz: React.FC<{
           isCode: question.isCode,
           description: question.description,
           imageUrl: question.imageUrl,
+          mode: "new",
         };
 
         const updatedQuestions = [
           ...prev.map((q) => ({ ...q, collapsed: true })),
         ];
+        const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+        localQuestions?.push(newQuestion);
+        if (localQuestions)
+          saveToLocalStore<Question[]>(questionsKey, localQuestions);
         updatedQuestions.splice(index + 1, 0, newQuestion);
         return updatedQuestions;
       });
@@ -365,6 +331,26 @@ const Quiz: React.FC<{
 
   const handleDeleteQuestions = (id: string) => {
     if (questions.length > 1) {
+      const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+      const question = localQuestions?.find((q) => q.id === id);
+      const dbQuestion = questions.find((q) => q.id === id);
+      if (dbQuestion) {
+        if (question && question.mode === "new")
+          saveToLocalStore<Question[]>(
+            questionsKey,
+            localQuestions?.filter((q) => q.id !== id) ?? [],
+          );
+        else {
+          if (dbQuestion?.id)
+            localQuestions?.push({ ...dbQuestion, mode: "delete" });
+          saveToLocalStore<Question[]>(
+            questionsKey,
+            localQuestions?.map((q) =>
+              q.id === id ? { ...q, mode: "delete" } : q,
+            ) ?? [],
+          );
+        }
+      }
       setQuestions((prev) => {
         return prev.filter((q) => q.id !== id);
       });
@@ -377,6 +363,22 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, questionText: value } : q)),
     );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id ? { ...q, questionText: value } : q,
+        ) ?? [],
+      );
+    else {
+      const dbQuestion = questions.find((q) => q.id === id);
+      if (dbQuestion)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          { ...dbQuestion, mode: "edit" },
+        ]);
+    }
   };
 
   const handleOptionChange = (
@@ -397,6 +399,31 @@ const Quiz: React.FC<{
           : q,
       ),
     );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      if (localQuestions)
+        saveToLocalStore<Question[]>(
+          questionsKey,
+          localQuestions.map((q) =>
+            q.id === id
+              ? {
+                  ...q,
+                  options: q.options.map((opt, i) =>
+                    i === optionIndex ? value : opt,
+                  ),
+                  answer: q.ansIndex === optionIndex ? value : q.answer,
+                }
+              : q,
+          ),
+        );
+      else {
+        const dbQuestion = questions.find((q) => q.id === id);
+        if (dbQuestion)
+          saveToLocalStore<Question[]>(questionsKey, [
+            ...(localQuestions ?? []),
+            { ...dbQuestion, mode: "edit" },
+          ]);
+      }
   };
 
   const handleImage = (id: string, value: string) => {
@@ -420,6 +447,30 @@ const Quiz: React.FC<{
       ),
     );
     console.log("Answer Changed: ", questions);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      if (localQuestions)
+        saveToLocalStore<Question[]>(
+          questionsKey,
+          localQuestions?.map(
+            (q) =>
+              (q.id === id
+                ? {
+                    ...q,
+                    ansIndex: optIndex,
+                    answer: q.options[optIndex] ?? "",
+                  }
+                : q) ?? [],
+          ),
+        );
+      else {
+        const dbQuestion = questions.find((q) => q.id === id);
+        if (dbQuestion)
+          saveToLocalStore<Question[]>(questionsKey, [
+            ...(localQuestions ?? []),
+            { ...dbQuestion, mode: "edit" },
+          ]);
+      }
   };
 
   const handleNewOption = (id: string) => {
@@ -428,6 +479,22 @@ const Quiz: React.FC<{
         q.id === id ? { ...q, options: [...q.options, ""] } : q,
       ),
     );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id ? { ...q, options: [...q.options, ""] } : q,
+        ) ?? [],
+      );
+    else {
+      const dbQuestion = questions.find((q) => q.id === id);
+      if (dbQuestion)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          { ...dbQuestion, options: [...dbQuestion.options, ""], mode: "edit" },
+        ]);
+    }
   };
 
   const handleDeleteOption = (id: string) => {
@@ -438,30 +505,73 @@ const Quiz: React.FC<{
           : q,
       ),
     );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      if (localQuestions)
+        saveToLocalStore<Question[]>(
+          questionsKey,
+          localQuestions.map((q) =>
+            q.id === id && q.options.length > 2
+              ? { ...q, options: q.options.slice(0, -1) }
+              : q,
+          ),
+        );
+      else {
+        const dbQuestion = questions.find((q) => q.id === id);
+        if (dbQuestion)
+          saveToLocalStore<Question[]>(questionsKey, [
+            ...(localQuestions ?? []),
+            { ...dbQuestion, mode: "edit" },
+          ]);
+      }
   };
 
   const handleIsCode = (id: string) => {
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, isCode: !q.isCode } : q)),
     );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id ? { ...q, isCode: !q.isCode } : q,
+        ) ?? [],
+      );
+    else {
+      const dbQuestion = questions.find((q) => q.id === id);
+      if (dbQuestion)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          { ...dbQuestion, mode: "edit" },
+        ]);
+    }
   };
 
   const handleDescriptionChange = (id: string, value: string) => {
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, description: value } : q)),
     );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id ? { ...q, description: value } : q,
+        ) ?? [],
+      );
+    else {
+      const dbQuestion = questions.find((q) => q.id === id);
+      if (dbQuestion)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          { ...dbQuestion, mode: "edit" },
+        ]);
+    }
   };
 
   const validateQuiz = () => {
-    if (quizDetails.quizTitle === "") {
-      return "Quiz Title cannot be empty";
-    } else if (quizDetails.startTime === undefined) {
-      return "Start Time cannot be empty";
-    } else if (quizDetails.endTime === undefined) {
-      return "End Time cannot be empty";
-    } else if (quizDetails.startTime > quizDetails.endTime) {
-      return "Start Time is greater than End Time";
-    } else if (questions.length === 0) {
+    if (questions.length === 0) {
       return "Quiz must have at least one question";
     } else {
       for (let i = 0; i < questions.length; i++) {
@@ -486,14 +596,6 @@ const Quiz: React.FC<{
     refetchQueries: ["CreateQuiz"],
     awaitRefetchQueries: true,
   });
-
-  // const [createQuestion, { loading: questionloading }] = useMutation(
-  //   CreateQuestionDocument,
-  //   {
-  //     refetchQueries: ["CreateQuestion"],
-  //     awaitRefetchQueries: true,
-  //   },
-  // );
 
   const handleCreateQuiz = async (q: Question[]) => {
     const promise = createQuiz({
@@ -530,13 +632,67 @@ const Quiz: React.FC<{
     return promise;
   };
 
+  const [updateQuiz, { loading: updateQuizLoading }] = useMutation(
+    UpdateQuizDocument,
+    {
+      refetchQueries: ["UpdateQuiz"],
+      awaitRefetchQueries: true,
+    },
+  );
+
+  const handleQuizUpdation = async () => {
+    let quizId;
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    if (
+      quizData?.getQuizByEventRound.__typename ===
+      "QueryGetQuizByEventRoundSuccess"
+    )
+      quizId = quizData.getQuizByEventRound.data.id;
+    const promise = updateQuiz({
+      variables: {
+        quizId: quizId,
+        questions: localQuestions
+          ? localQuestions.map((question) => ({
+              id: question.id,
+              question: question.questionText,
+              isCode: question.isCode,
+              points: 10,
+              options: question.options.map((opt, index) => ({
+                value: opt,
+                isAnswer: index === question.ansIndex,
+              })),
+              description: question.description,
+              image: question.imageUrl,
+              mode: question.mode,
+            }))
+          : [],
+      },
+    }).then((res) => {
+      res.errors?.forEach((error) => {
+        console.error(error);
+      });
+      if (res.data?.updateQuiz.__typename !== "MutationUpdateQuizSuccess") {
+        return Promise.reject(new Error("Error creating quiz"));
+      }
+      if (res.data?.updateQuiz.__typename === "MutationUpdateQuizSuccess") {
+        localStorage.removeItem(questionsKey);
+        return res.data?.updateQuiz.data.id;
+      }
+    });
+    return promise;
+  };
+
   const handlePrint = async () => {
     const errors = validateQuiz();
     if (!errors) {
-      console.log("Quiz Submitted:", { quizDetails, questions });
-      console.log("success");
-      toast.success("Quiz Submitted Successfully");
-      const quizId: string | undefined = await handleCreateQuiz(questions);
+      const quizId: string | undefined = await handleQuizUpdation();
+      if (quizId) {
+        console.log("Quiz Submitted:", { quizDetails, questions });
+        console.log("success");
+        toast.success("Quiz Submitted Successfully");
+      } else {
+        toast.error("Error updating quiz");
+      }
     } else {
       // setErrors(errors);
       console.log(questions, quizDetails);
@@ -561,48 +717,60 @@ const Quiz: React.FC<{
               placeholder="Enter quiz title"
               id="quizTitle"
               value={quizDetails.quizTitle}
-              onChange={(e) => handleQuizTitleChange(e)}
+              readOnly
             />
           </div>
 
           <div className="flex flex-row font-gilroy text-xl self-center text-nowrap items-center">
-            <label htmlFor="startTime" className="w-full mr-4">
+            <label htmlFor="startTime" className="w-full">
               Start Time:
             </label>
-            <Input
-              type="datetime-local"
+            <input
+              className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
+              placeholder="Quiz Start Time"
+              id="startTime"
               value={quizDetails.startTime}
-              onChange={(e) => handleQuizStartTimeChange(e)}
-            ></Input>
-            <label htmlFor="startTime" className="w-full ml-6 mr-4">
+              readOnly
+            />
+            <label htmlFor="startTime" className="w-full ml-12">
               End Time:
             </label>
-            <Input
-              type="datetime-local"
+            <input
+              className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
+              placeholder="Quiz End Time"
+              id="endTime"
               value={quizDetails.endTime}
-              onChange={(e) => handleQuizEndTimeChange(e)}
-            ></Input>
+              readOnly
+            />
           </div>
         </div>
-        <div className="flex flex-row w-full">
-          <textarea
-            name="quizDescription"
-            id="quizDescription"
-            rows={4}
-            className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
-            placeholder="Quiz Description"
-            value={quizDetails.description}
-            onChange={(e) => handleQuizDescriptionChange(e)}
-          ></textarea>
-        </div>
-        <div className="flex self-end">
-          <Button
-            className="mt-4 rounded-md mr-2"
-            intent={"secondary"}
-            size={"medium"}
+        {quizDetails.description && (
+          <div className="flex flex-row w-full">
+            <textarea
+              name="quizDescription"
+              id="quizDescription"
+              rows={4}
+              readOnly
+              className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
+              placeholder="Quiz Description"
+              value={quizDetails.description}
+            ></textarea>
+          </div>
+        )}
+        <div className="flex flex-row items-center mt-4">
+          <label
+            className="self-center font-gilroy text-xl"
+            htmlFor="quizPassword"
           >
-            Advanced Options <Settings2Icon className="text-xl" />
-          </Button>
+            Quiz Password:
+          </label>
+          <input
+            className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
+            placeholder="Enter quiz title"
+            id="quizTitle"
+            value={quizDetails.password}
+            readOnly
+          />
         </div>
       </div>
       <div className="flex flex-col min-h-fit">
