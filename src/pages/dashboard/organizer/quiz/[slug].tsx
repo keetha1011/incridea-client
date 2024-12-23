@@ -11,7 +11,11 @@ const QuizPage = () => {
   const router = useRouter();
   const { user, loading: loading2 } = useAuth();
   const { slug } = router.query;
-  if (user && user.role !== Role.Organizer) void router.push("/profile");
+  if (user && user.role !== Role.Organizer) {
+    router.push("/profile").catch((err) => {
+      console.error("Failed to redirect to profile", err);
+    });
+  }
   const { data, loading } = useQuery(EventByOrganizerDocument, {
     variables: {
       organizerId: user?.id ?? "0",
