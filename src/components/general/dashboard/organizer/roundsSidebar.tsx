@@ -1,22 +1,51 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import { type FC, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
 import {
+  GetQuizByEventRoundDocument,
   DeleteCriteriaDocument,
   DeleteJudgeDocument,
   DeleteRoundDocument,
   type EventByOrganizerQuery,
+  type Quiz,
 } from "~/generated/generated";
 
 import CreateCriteriaModal from "./createCriteriaModal";
 import CreateJudgeModal from "./createJudgeModal";
 import RoundAddModal from "./roundsAddModal";
 import Link from "next/link";
+import CreateQuizModal from "./createQuizModal";
+
+interface QuizData {
+  __typename?: "Quiz";
+  description?: string | null;
+  endTime: Date;
+  id: string;
+  name: string;
+  password: string;
+  roundNo: number;
+  startTime: Date;
+  updatedAt: Date;
+  questions: Array<{
+    __typename?: "Question";
+    image?: string | null;
+    description?: string | null;
+    isCode: boolean;
+    question: string;
+    id: string;
+    options: Array<{
+      __typename?: "Options";
+      id: string;
+      value: string;
+      isAnswer: boolean;
+    }>;
+  }>;
+}
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -50,7 +79,27 @@ const RoundsSidebar: FC<{
     },
   );
 
+  const [quiz, setQuiz] = useState<QuizData | null>(null);
   const [selectedRound, setSelectedRound] = useState(1);
+
+  const { data: quizData, loading: quizLoading } = useQuery(
+    GetQuizByEventRoundDocument,
+    {
+      variables: {
+        eventId: Number(eventId),
+        roundId: selectedRound,
+      },
+    },
+  );
+
+  useEffect(() => {
+    if (
+      quizData?.getQuizByEventRound.__typename ===
+      "QueryGetQuizByEventRoundSuccess"
+    ) {
+      setQuiz(quizData.getQuizByEventRound.data ?? null);
+    }
+  }, [quizData, selectedRound]);
 
   const handleDeleteRound = async () => {
     const promise = deleteRound();
@@ -222,52 +271,34 @@ const RoundsSidebar: FC<{
 
           <div className="mx-2 w-full rounded-lg bg-gray-700 p-3">
             <h1 className="text-xl font-bold">Quiz</h1>
-            {/* List of Criterias for this round */}
             {rounds.map((round) => (
               <div key={round.eventId}>
                 {round.roundNo === selectedRound && (
                   <>
                     <p>Coming Soon</p>
-                    {/* {round.criteria?.length === 0 ? (
-                      <p className="text-gray-400">No Criterias added yet.</p>
-                    ) : (
-                      round.criteria?.map((criteria) => (
-                        <div
-                          key={round.roundNo}
-                          className="my-2 flex items-center justify-between rounded-lg bg-white bg-opacity-10 bg-clip-padding p-3 backdrop-blur-lg backdrop-filter"
-                        >
-                          <div>
-                            <h1 className="text-lg font-bold">
-                              {criteria.name}
-                            </h1>
-                            <h1 className="text-sm text-gray-400">
-                              {criteria.type}
-                            </h1>
-                          </div>
-                          <Button
-                            intent={"danger"}
-                            size="small"
-                            outline
-                            className="h-8 w-8"
-                            onClick={async () =>
-                              await handleDeleteCriteria(criteria.id)
-                            }
-                            disabled={deleteCriteriaLoading}
-                          >
-                            <BiTrash />
-                          </Button>
-                        </div>
-                      ))
-                    )} */}
                   </>
                 )}
               </div>
             ))}
 
             {/* <CreateCriteriaModal eventId={eventId} roundNo={selectedRound} /> */}
-            <Link href={`./organizer/quiz/${eventId}-${selectedRound}`}>
+            {/* <Link href={`./organizer/quiz/${eventId}-${selectedRound}`}>
               <Button className="mt-5">Create Quiz</Button>
-            </Link>
+            </Link> */}
+            {quiz ? (
+              <>
+                <Link href={`./organizer/quiz/${eventId}-${selectedRound}`}>
+                  <Button className="mt-5" intent={"dark"}>
+                    Edit Quiz
+                  </Button>
+                </Link>
+                <Button className="mt-5" intent={"success"}>
+                  Publish Quiz
+                </Button>
+              </>
+            ) : (
+              <CreateQuizModal eventId={eventId} roundNo={selectedRound} />
+            )}
           </div>
         </Tab.List>
       </Tab.Group>

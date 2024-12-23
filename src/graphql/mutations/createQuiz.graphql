@@ -5,14 +5,7 @@ mutation CreateQuiz(
   $quizTitle: String = ""
   $startTime: String = ""
   $roundId: String = ""
-  $questions: [QuestionsCreateInput!] = {
-    points: 10
-    question: ""
-    description: ""
-    image: ""
-    isCode: false
-    options: { isAnswer: false, value: "" }
-  }
+  $password: String = ""
 ) {
   createQuiz(
     endTime: $endTime
@@ -21,7 +14,7 @@ mutation CreateQuiz(
     roundId: $roundId
     startTime: $startTime
     description: $quizDescription
-    questions: $questions
+    password: $password
   ) {
     ... on Error {
       __typename
@@ -30,7 +23,15 @@ mutation CreateQuiz(
     ... on MutationCreateQuizSuccess {
       __typename
       data {
+        description
+        endTime
+        eventId
         id
+        name
+        roundNo
+        startTime
+        updatedAt
+        password
       }
     }
   }

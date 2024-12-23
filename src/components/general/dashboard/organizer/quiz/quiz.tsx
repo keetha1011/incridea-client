@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import { useEffect, useState } from "react";
 import { generateUUID } from "three/src/math/MathUtils.js";
 import Button from "~/components/button";
@@ -10,9 +10,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { Input } from "~/components/ui/input";
-import { Save, Settings } from "lucide-react";
+import { Save } from "lucide-react";
 import { Settings2Icon } from "lucide-react";
-import { GetQuizByEventDocument } from "~/generated/generated";
+import { GetQuizByEventRoundDocument } from "~/generated/generated";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -168,10 +168,11 @@ const Quiz: React.FC<{
   };
 
   const { data: quizData, loading: quizLoading } = useQuery(
-    GetQuizByEventDocument,
+    GetQuizByEventRoundDocument,
     {
       variables: {
         eventId: Number(eventId),
+        roundId: Number(roundNo),
       },
     },
   );
@@ -218,15 +219,11 @@ const Quiz: React.FC<{
     fetchFromLocal();
     console.log("Fetching from DB1111111111111111111");
     if (quizData) {
-      const quiz = quizData.getQuizByEvent;
-      if (quiz.__typename === "QueryGetQuizByEventSuccess") {
-        const quizIndex = quiz.data.findIndex(
-          (q) => q.roundNo === Number(roundNo),
-        );
-        const quizSuccess = quiz.data[quizIndex];
-        if (quizSuccess) {
+      const quiz = quizData.getQuizByEventRound;
+      if (quiz.__typename === "QueryGetQuizByEventRoundSuccess") {
+        if (quiz) {
           const loadedQuestions: Question[] =
-            quizSuccess.questions.map((q) => {
+            quiz.data.questions.map((q) => {
               const qs: Question = {
                 id: q.id,
                 questionText: q.question,
@@ -243,17 +240,17 @@ const Quiz: React.FC<{
               return qs;
             }) ?? [];
 
-          console.log(new Date(quizSuccess?.startTime).toUTCString());
-          console.log(new Date(quizSuccess?.startTime).toISOString());
-          console.log(new Date(quizSuccess?.startTime).toLocaleDateString());
+          console.log(new Date(quiz.data?.startTime).toUTCString());
+          console.log(new Date(quiz.data?.startTime).toISOString());
+          console.log(new Date(quiz.data?.startTime).toLocaleDateString());
 
           const loadedQuizTitle: QuizDetailsType = {
-            quizTitle: quizSuccess?.name ?? "",
-            description: quizSuccess?.description ?? "",
-            startTime: new Date(quizSuccess?.startTime)
+            quizTitle: quiz.data?.name ?? "",
+            description: quiz.data?.description ?? "",
+            startTime: new Date(quiz.data?.startTime)
               .toISOString()
               .slice(0, 16),
-            endTime: new Date(quizSuccess?.endTime).toISOString().slice(0, 16),
+            endTime: new Date(quiz.data?.endTime).toISOString().slice(0, 16),
           };
           setQuestions(loadedQuestions);
           setQuizDetails(loadedQuizTitle);
@@ -272,16 +269,12 @@ const Quiz: React.FC<{
     });
     const updatedAt = updatedAt2?.time;
     if (quizData) {
-      const quiz = quizData.getQuizByEvent;
-      if (quiz.__typename === "QueryGetQuizByEventSuccess") {
-        const quizIndex = quiz.data.findIndex(
-          (q) => q.roundNo === Number(roundNo),
-        );
-        const quizSuccess = quiz.data[quizIndex];
-        console.log(quizSuccess?.updatedAt);
-        if (quizSuccess) {
+      const quiz = quizData.getQuizByEventRound;
+      if (quiz.__typename === "QueryGetQuizByEventRoundSuccess") {
+        console.log(quiz.data?.updatedAt);
+        if (quiz) {
           const dbUpdatedAt = new Date(
-            quizSuccess?.updatedAt ?? "",
+            quiz.data?.updatedAt ?? "",
           ).toISOString();
           console.log("-------------------");
           console.log(`dbUpdatedAt: ${new Date(dbUpdatedAt).toLocaleString()}`);
@@ -291,21 +284,21 @@ const Quiz: React.FC<{
           console.log(`DB > LOCAL: ${updatedAt && dbUpdatedAt > updatedAt}`);
           console.log(`DB < LOCAL: ${updatedAt && dbUpdatedAt < updatedAt}`);
           console.log("-------------------");
-          if (quizSuccess.updatedAt && updatedAt && dbUpdatedAt < updatedAt) {
+          if (quiz.data.updatedAt && updatedAt && dbUpdatedAt < updatedAt) {
             console.log("FETCHING FROM LOCAL 1");
             fetchFromLocal();
           } else if (
-            quizSuccess.updatedAt &&
+            quiz.data.updatedAt &&
             updatedAt &&
             dbUpdatedAt > updatedAt
           ) {
             console.log("FETCHING FROM DB 1");
             fetchFromDB();
-          } else if (quizSuccess.updatedAt && !updatedAt) {
+          } else if (quiz.data.updatedAt && !updatedAt) {
             console.log(quizDetails);
             console.log("FETCHING FROM DB 2");
             fetchFromDB();
-          } else if (!quizSuccess.updatedAt && updatedAt) {
+          } else if (!quiz.data.updatedAt && updatedAt) {
             console.log("FETCHING FROM LOCAL 2");
             fetchFromLocal();
           } else {
@@ -511,17 +504,17 @@ const Quiz: React.FC<{
         quizDescription: quizDetails.description ?? "",
         startTime: appendMilliseconds(quizDetails.startTime),
         endTime: appendMilliseconds(quizDetails.endTime),
-        questions: q.map((question) => ({
-          question: question.questionText,
-          isCode: question.isCode,
-          points: 10,
-          options: question.options.map((opt, index) => ({
-            value: opt,
-            isAnswer: index === question.ansIndex,
-          })),
-          description: question.description,
-          image: question.imageUrl,
-        })),
+        // questions: q.map((question) => ({
+        //   question: question.questionText,
+        //   isCode: question.isCode,
+        //   points: 10,
+        //   options: question.options.map((opt, index) => ({
+        //     value: opt,
+        //     isAnswer: index === question.ansIndex,
+        //   })),
+        //   description: question.description,
+        //   image: question.imageUrl,
+        // })),
       },
     }).then((res) => {
       res.errors?.forEach((error) => {
