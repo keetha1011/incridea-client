@@ -30,7 +30,7 @@ const Quiz = ({ quizId }: { quizId: string }) => {
       case 2:
         return <QuizPage onComplete={() => setCurrentStep(3)} />;
       case 3:
-        return <ResultsPage onNext={() => setCurrentStep(1)} />;
+        return <ResultsPage />;
       default:
         return null;
     }
