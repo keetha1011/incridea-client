@@ -1,10 +1,12 @@
 import { useMutation } from "@apollo/client";
+import { Toast } from "@radix-ui/react-toast";
 import { type FC, useState } from "react";
 import Button from "~/components/button";
 import { TextInput, DateTimeInput } from "~/components/input";
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
+import toast from "react-hot-toast";
 import { CreateQuizDocument } from "~/generated/generated";
 
 const CreateQuizModal: FC<{
@@ -29,10 +31,14 @@ const CreateQuizModal: FC<{
     e.preventDefault();
 
     if (!name || !startTime || !endTime) {
-      await createToast(
-        Promise.reject(new Error("All fields are required")),
-        "Validation failed",
-      );
+      toast.error("Please fill all the fields", { duration: 5000 });
+      return;
+    }
+
+    if (new Date(startTime) > new Date(endTime)) {
+      toast.error("Start time cannot be greater than end time", {
+        duration: 5000,
+      });
       return;
     }
 

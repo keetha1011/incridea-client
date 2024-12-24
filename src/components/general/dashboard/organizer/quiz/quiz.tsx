@@ -70,7 +70,6 @@ const Quiz: React.FC<{
   round: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
 }> = ({ event, round }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [doneFetch, setDoneFetch] = useState(false);
   // const [doneFirstSave1, setDoneSave1] = useState(false);
   // const [isInitialized1, setIsInitialized1] = useState(false);
 
@@ -79,6 +78,10 @@ const Quiz: React.FC<{
 
   const concatId = eventId + "-" + roundNo;
   const questionsKey = "questions-" + concatId;
+
+  const [doneFetchLocal, setDoneFetchLocal] = useState(false);
+  const [doneFetchDB, setDoneFetchDB] = useState(false);
+  const [doneInitial, setDoneInitial] = useState(false);
 
   // useEffect(() => {
   //   if (!isInitialized1) {
@@ -128,10 +131,6 @@ const Quiz: React.FC<{
       password: "",
     }) ?? {};
 
-  const [updatedTime, setUpdatedTime] = useState<timeUpdateType>({
-    time: "",
-  });
-
   const { data: quizData, loading: quizLoading } = useQuery(
     GetQuizByEventRoundDocument,
     {
@@ -168,8 +167,8 @@ const Quiz: React.FC<{
         }
       });
     }
-    setDoneFetch(true);
     console.log("DONE FETCH CHANGED 2222");
+    setDoneFetchLocal(true);
   };
 
   const fetchFromDB = () => {
@@ -209,8 +208,8 @@ const Quiz: React.FC<{
         }
       }
     }
-    setDoneFetch(true);
     console.log("DONE FETCH CHANGED 2222");
+    setDoneFetchDB(true);
   };
 
   // useEffect(() => {
@@ -269,8 +268,30 @@ const Quiz: React.FC<{
   useEffect(() => {
     fetchFromDB();
     fetchFromLocal();
-    console.log(questions);
   }, [quizData]);
+
+  useEffect(() => {
+    if (doneFetchLocal && doneFetchDB && !doneInitial) {
+      console.log("NOT WORKING BRO");
+      if (questions.length === 0) {
+        setQuestions([
+          {
+            id: generateUUID(),
+            questionText: "",
+            options: ["", ""],
+            ansIndex: 0,
+            answer: "",
+            collapsed: false,
+            isCode: false,
+            description: "",
+            imageUrl: "",
+            mode: "new",
+          },
+        ]);
+      }
+      setDoneInitial(true);
+    }
+  }, [doneFetchLocal, doneFetchDB]);
 
   const handleAddQuestions = (index: number) => {
     setQuestions((prev) => {
