@@ -10,7 +10,8 @@ import { CreateQuizDocument } from "~/generated/generated";
 const CreateQuizModal: FC<{
   eventId: string;
   roundNo: number;
-}> = ({ eventId, roundNo }) => {
+  refetch: () => void;
+}> = ({ eventId, roundNo, refetch }) => {
   const [showModal, setShowModal] = useState(false);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -18,7 +19,11 @@ const CreateQuizModal: FC<{
   const [endTime, setEndTime] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const [createQuiz, { loading }] = useMutation(CreateQuizDocument);
+  const [createQuiz, { loading }] = useMutation(CreateQuizDocument, {
+    onCompleted: () => {
+      refetch();
+    },
+  });
 
   const handleCreateQuiz = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
