@@ -1643,6 +1643,7 @@ export type Question = {
 };
 
 export type QuestionsCreateInput = {
+  createdAt?: InputMaybe<Scalars["String"]["input"]>;
   description?: InputMaybe<Scalars["String"]["input"]>;
   id?: InputMaybe<Scalars["String"]["input"]>;
   image?: InputMaybe<Scalars["String"]["input"]>;
@@ -2836,6 +2837,7 @@ export type UpdateQuizMutation = {
             image?: string | null;
             isCode: boolean;
             question: string;
+            createdAt: Date;
             options: Array<{
               __typename?: "Options";
               id: string;
@@ -11694,6 +11696,10 @@ export const UpdateQuizDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "question" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
                                   },
                                   {
                                     kind: "Field",
