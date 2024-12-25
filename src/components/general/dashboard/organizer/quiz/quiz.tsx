@@ -688,7 +688,10 @@ const Quiz: React.FC<{
 
   const handleQuizUpdation = async () => {
     let quizId;
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
+    const localUnfilteredQuestions =
+      loadfromLocalStore<Question[]>(questionsKey);
+    const localQuestions =
+      localUnfilteredQuestions?.filter((q) => q.questionText !== "") ?? [];
     if (
       quizData?.getQuizByEventRound.__typename ===
       "QueryGetQuizByEventRoundSuccess"
