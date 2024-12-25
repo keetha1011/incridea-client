@@ -1,26 +1,24 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Tab } from "@headlessui/react";
-import { type FC, useEffect, useState } from "react";
+import { type FC, useState } from "react";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
 import {
-  GetQuizByEventDocument,
+  CreateQuizDocument,
   DeleteCriteriaDocument,
   DeleteJudgeDocument,
   DeleteRoundDocument,
-  type GetQuizByEventQuery,
   type EventByOrganizerQuery,
 } from "~/generated/generated";
 
 import CreateCriteriaModal from "./createCriteriaModal";
 import CreateJudgeModal from "./createJudgeModal";
+import CreateQuizModal from "./createQuizModal";
 import RoundAddModal from "./roundsAddModal";
 import Link from "next/link";
-import CreateQuizModal from "./createQuizModal";
-import { SettingsIcon } from "lucide-react";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -38,17 +36,6 @@ const RoundsSidebar: FC<{
     },
   );
 
-  const {
-    data: quizData,
-    loading: quizLoading,
-    refetch,
-  } = useQuery(GetQuizByEventDocument, {
-    variables: {
-      eventId: Number(eventId),
-    },
-    fetchPolicy: "network-only",
-  });
-
   const [deleteJudge, { loading: deleteJudgeLoading }] = useMutation(
     DeleteJudgeDocument,
     {
@@ -65,17 +52,15 @@ const RoundsSidebar: FC<{
     },
   );
 
-  const [selectedRound, setSelectedRound] = useState(1);
+  const [createQuiz, { loading: createQuizLoading }] = useMutation(
+    CreateQuizDocument,
+    {
+      refetchQueries: ["EventByOrganizer"],
+      awaitRefetchQueries: true,
+    },
+  );
 
-  useEffect(() => {
-    refetch()
-      .then(() => {
-        console.log("Refetched");
-      })
-      .catch((err) => {
-        console.error("Failed to refetch", err);
-      });
-  }, [selectedRound]);
+  const [selectedRound, setSelectedRound] = useState(1);
 
   const handleDeleteRound = async () => {
     const promise = deleteRound();
@@ -102,6 +87,42 @@ const RoundsSidebar: FC<{
       },
     });
     await createToast(promise, "Deleting criteria...");
+  };
+
+  const handlePublishQuiz = async (
+    quiz: {
+      name: string;
+      description: string;
+      password: string;
+      startTime: string;
+      endTime: string;
+    },
+    allowAttempts: boolean,
+  ) => {
+    const promise = createQuiz({
+      variables: {
+        eventId: eventId,
+        roundId: String(selectedRound),
+        quizTitle: quiz.name,
+        quizDescription: quiz.description,
+        password: quiz.password,
+        startTime: quiz.startTime,
+        endTime: quiz.endTime,
+        allowAttempts: allowAttempts,
+      },
+    })
+      .then((res) => {
+        if (res.data?.createQuiz.__typename !== "MutationCreateQuizSuccess")
+          throw new Error(
+            res.data?.createQuiz.message ?? "Error publishing quiz",
+          );
+      })
+      .catch(async (err) => {
+        const error = err instanceof Error ? err : new Error(String(err));
+        await createToast(Promise.reject(error), "Failed to publish quiz");
+      });
+
+    await createToast(promise, "Publishing quiz...");
   };
 
   return (
@@ -152,7 +173,7 @@ const RoundsSidebar: FC<{
           </div>
         </Tab.List>
 
-        <Tab.List className="flex flex-col lg:flex-row">
+        <Tab.List className="flex flex-col lg:flex-row mt-2">
           <div className="mx-2 mb-2 w-full rounded-lg bg-gray-700 p-3 lg:mb-0">
             <h1 className="text-xl font-bold">Judges</h1>
             {/* List of judges for this round */}
@@ -199,7 +220,7 @@ const RoundsSidebar: FC<{
             <CreateJudgeModal eventId={eventId} roundNo={selectedRound} />
           </div>
 
-          <div className="mx-2 w-full rounded-lg bg-gray-700 p-3">
+          <div className="mx-2 mb-2 w-full rounded-lg bg-gray-700 p-3 lg:mb-0">
             <h1 className="text-xl font-bold">Criterias</h1>
             {/* List of Criterias for this round */}
             {rounds.map((round) => (
@@ -245,62 +266,75 @@ const RoundsSidebar: FC<{
             <CreateCriteriaModal eventId={eventId} roundNo={selectedRound} />
           </div>
 
-          <div className="mx-2 w-full rounded-lg bg-gray-700 p-3">
-            <div className="flex flex-row items-center justify-between">
-              <h1 className="text-xl font-bold">Quiz</h1>
-              <SettingsIcon />
-            </div>
-            {/* List of Criterias for this round */}
-            <div className="flex flex-col mt-4">
-              {rounds.map((round) => (
-                <div key={round.eventId}>
-                  {round.roundNo === selectedRound && (
-                    <div key={selectedRound}>
-                      {quizLoading ? (
-                        <div className="flex h-screen w-screen justify-center">
-                          <BiLoaderAlt className="animate-spin text-3xl" />
-                        </div>
-                      ) : // quizData?.getQuizByEvent.__typename === "QueryGetQuizByEventSuccess"?{
-                      quizData?.getQuizByEvent.__typename ===
-                        "QueryGetQuizByEventSuccess" ? (
-                        quizData.getQuizByEvent.data[selectedRound - 1]
-                          ?.roundNo === selectedRound ? (
-                          (console.log(
-                            quizData.getQuizByEvent.data[selectedRound - 1],
-                          ),
-                          (
-                            <>
-                              <Link
-                                href={`./organizer/quiz/${eventId}-${selectedRound}`}
-                              >
-                                <Button className="mt-5" intent={"dark"}>
-                                  Edit Quiz
-                                </Button>
-                              </Link>
-                              <Button className="mt-5" intent={"success"}>
-                                Publish Quiz
-                              </Button>
-                            </>
-                          ))
-                        ) : (
-                          <CreateQuizModal
-                            eventId={eventId}
-                            roundNo={selectedRound}
-                            refetch={refetch}
-                          />
-                        )
-                      ) : (
-                        <CreateQuizModal
-                          eventId={eventId}
-                          roundNo={selectedRound}
-                          refetch={refetch}
-                        />
-                      )}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
+          <div className="mx-2 w-full rounded-lg bg-gray-700 p-3 relative">
+            <h1 className="text-xl font-bold">Quiz</h1>
+            {rounds.map((round) => (
+              <div key={round.eventId}>
+                {round.roundNo === selectedRound && (
+                  <>
+                    {round.quiz ? (
+                      <div className="space-y-2 mt-2">
+                        {!round.quiz.allowAttempts && (
+                          <Button intent={"dark"} className="w-auto">
+                            <Link
+                              href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                            >
+                              Edit Quiz
+                            </Link>
+                          </Button>
+                        )}
+                        <Button
+                          intent={
+                            round.quiz.allowAttempts ? "danger" : "success"
+                          }
+                          className="w-auto"
+                          onClick={() =>
+                            handlePublishQuiz(
+                              {
+                                name: round.quiz?.name ?? "",
+                                description: round.quiz?.description ?? "",
+                                password: round.quiz?.password ?? "",
+                                startTime: new Date(
+                                  round.quiz?.startTime ?? "",
+                                ).toISOString(),
+                                endTime: new Date(
+                                  round.quiz?.endTime ?? "",
+                                ).toISOString(),
+                              },
+                              !round.quiz?.allowAttempts,
+                            )
+                          }
+                        >
+                          {round.quiz.allowAttempts ? "Unpublish" : "Publish"}{" "}
+                          Quiz
+                        </Button>
+                      </div>
+                    ) : (
+                      <p className="text-gray-400">No Quiz added yet.</p>
+                    )}
+                    {!round.quiz?.allowAttempts && (
+                      <CreateQuizModal
+                        eventId={eventId}
+                        roundNo={selectedRound}
+                        quizDetails={
+                          round.quiz && {
+                            name: round.quiz.name,
+                            description: round.quiz.description ?? "",
+                            password: round.quiz.password,
+                            startTime: new Date(round.quiz.startTime)
+                              .toISOString()
+                              .slice(0, 16),
+                            endTime: new Date(round.quiz.endTime)
+                              .toISOString()
+                              .slice(0, 16),
+                          }
+                        }
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         </Tab.List>
       </Tab.Group>

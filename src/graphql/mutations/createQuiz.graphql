@@ -6,6 +6,7 @@ mutation CreateQuiz(
   $startTime: String = ""
   $roundId: String = ""
   $password: String = ""
+  $allowAttempts: Boolean = false
 ) {
   createQuiz(
     endTime: $endTime
@@ -15,6 +16,7 @@ mutation CreateQuiz(
     startTime: $startTime
     description: $quizDescription
     password: $password
+    allowAttempts: $allowAttempts
   ) {
     ... on Error {
       __typename

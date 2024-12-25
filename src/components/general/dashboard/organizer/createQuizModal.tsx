@@ -1,8 +1,8 @@
 import { useMutation } from "@apollo/client";
-import { Toast } from "@radix-ui/react-toast";
 import { type FC, useState } from "react";
 import Button from "~/components/button";
 import { TextInput, DateTimeInput } from "~/components/input";
+import { SettingsIcon } from "lucide-react";
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
@@ -12,30 +12,55 @@ import { CreateQuizDocument } from "~/generated/generated";
 const CreateQuizModal: FC<{
   eventId: string;
   roundNo: number;
-  refetch: () => void;
-}> = ({ eventId, roundNo, refetch }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [name, setName] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [startTime, setStartTime] = useState<string>("");
-  const [endTime, setEndTime] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  quizDetails?: {
+    name: string;
+    description: string;
+    startTime: string;
+    endTime: string;
+    password: string;
+  } | null;
+}> = ({ eventId, roundNo, quizDetails }) => {
+  const formatDate = (date: string): string => {
+    const gmtDate = new Date(date + "Z");
+    const localYear = gmtDate.getFullYear();
+    const localMonth = String(gmtDate.getMonth() + 1).padStart(2, "0");
+    const localDate = String(gmtDate.getDate()).padStart(2, "0");
+    const localHours = String(gmtDate.getHours()).padStart(2, "0");
+    const localMinutes = String(gmtDate.getMinutes()).padStart(2, "0");
+    return `${localYear}-${localMonth}-${localDate}T${localHours}:${localMinutes}`;
+  };
 
-  const [createQuiz, { loading }] = useMutation(CreateQuizDocument, {
-    onCompleted: () => {
-      refetch();
-    },
+  const [showModal, setShowModal] = useState(false);
+  const [quizInfo, setQuizInfo] = useState({
+    name: quizDetails?.name ?? "",
+    description: quizDetails?.description ?? "",
+    startTime: quizDetails?.startTime ? formatDate(quizDetails?.startTime) : "",
+    endTime: quizDetails?.endTime ? formatDate(quizDetails?.endTime) : "",
+    password: quizDetails?.password ?? "",
   });
+
+  const [createQuiz, { loading }] = useMutation(CreateQuizDocument);
+
+  const isFormChanged = quizDetails
+    ? JSON.stringify(quizInfo) !==
+      JSON.stringify({
+        name: quizDetails.name,
+        description: quizDetails.description,
+        startTime: formatDate(quizDetails.startTime),
+        endTime: formatDate(quizDetails.endTime),
+        password: quizDetails.password,
+      })
+    : !!quizInfo.name &&
+      !!quizInfo.startTime &&
+      !!quizInfo.endTime &&
+      !!quizInfo.password;
+
+  const disabled = loading || !isFormChanged;
 
   const handleCreateQuiz = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!name || !startTime || !endTime) {
-      toast.error("Please fill all the fields", { duration: 5000 });
-      return;
-    }
-
-    if (new Date(startTime) > new Date(endTime)) {
+    if (new Date(quizInfo.startTime) > new Date(quizInfo.endTime)) {
       toast.error("Start time cannot be greater than end time", {
         duration: 5000,
       });
@@ -44,22 +69,20 @@ const CreateQuizModal: FC<{
 
     const promise = createQuiz({
       variables: {
-        quizDescription: description,
-        endTime,
+        quizDescription: quizInfo.description,
+        endTime: quizInfo.endTime,
         eventId,
-        quizTitle: name,
-        startTime,
+        quizTitle: quizInfo.name,
+        startTime: quizInfo.startTime,
         roundId: String(roundNo),
-        password,
+        password: quizInfo.password,
       },
       refetchQueries: ["EventByOrganizer"],
       awaitRefetchQueries: true,
     })
       .then((res) => {
         if (res.data?.createQuiz.__typename === "MutationCreateQuizSuccess") {
-          setName("");
-          setDescription("");
-          handleCloseModal();
+          setShowModal(false);
         } else {
           throw new Error(
             res.data?.createQuiz.message ?? "Error creating quiz",
@@ -71,26 +94,32 @@ const CreateQuizModal: FC<{
         await createToast(Promise.reject(error), "Failed to create quiz");
       });
 
-    await createToast(promise, `Adding quiz...`);
+    await createToast(
+      promise,
+      quizDetails ? "Editing Quiz..." : "Adding Quiz...",
+    );
   };
 
-  function handleCloseModal() {
-    setShowModal(false);
-  }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuizInfo({ ...quizInfo, [e.target.name]: e.target.value });
+  };
 
   return (
     <div className="mt-5">
-      <Button
-        onClick={() => {
-          setShowModal(true);
-        }}
-      >
-        Create Quiz
-      </Button>
+      {quizDetails ? (
+        <SettingsIcon
+          onClick={() => setShowModal(true)}
+          className="absolute right-0 top-0 m-4 cursor-pointer"
+        />
+      ) : (
+        <Button onClick={() => setShowModal(true)} className="mt-5">
+          Create Quiz
+        </Button>
+      )}
       <Modal
         title={`Create Quiz`}
         showModal={showModal}
-        onClose={handleCloseModal}
+        onClose={() => setShowModal(false)}
         size="medium"
       >
         <div
@@ -104,50 +133,52 @@ const CreateQuizModal: FC<{
               <TextInput
                 name="name"
                 placeholder="Enter quiz name"
-                value={name}
+                value={quizInfo.name}
                 disabled={loading}
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleChange}
               />
               <label htmlFor="description">Quiz Description (Optional)</label>
               <TextInput
                 name="description"
                 placeholder="Enter quiz description"
-                value={description}
+                value={quizInfo.description}
                 disabled={loading}
-                onChange={(e) => setDescription(e.target.value)}
+                onChange={handleChange}
               />
               <label htmlFor="password">Quiz Password</label>
               <TextInput
                 name="password"
                 placeholder="Enter quiz password"
-                value={password}
+                value={quizInfo.password}
                 disabled={loading}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={handleChange}
               />
               <label htmlFor="startTime">Start Time</label>
               <DateTimeInput
                 name="startTime"
                 placeholder="Start Time"
-                value={startTime}
+                value={quizInfo.startTime}
                 disabled={loading}
-                onChange={(e) => setStartTime(e.target.value)}
+                onChange={handleChange}
               />
               <label htmlFor="endTime">End Time</label>
               <DateTimeInput
                 name="endTime"
                 placeholder="End Time"
-                value={endTime}
+                value={quizInfo.endTime}
                 disabled={loading}
-                onChange={(e) => setEndTime(e.target.value)}
+                onChange={handleChange}
               />
             </div>
             <div className="flex justify-end">
-              <Button className="rounded-lg" type="submit" disabled={loading}>
+              <Button className="rounded-lg" type="submit" disabled={disabled}>
                 {loading ? (
                   <>
                     <Spinner intent={"white"} size={"small"} />
-                    Creating...
+                    {quizDetails ? "Editing..." : "Creating..."}
                   </>
+                ) : quizDetails ? (
+                  "Edit"
                 ) : (
                   "Create"
                 )}
