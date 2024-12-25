@@ -34,6 +34,7 @@ mutation UpdateQuiz(
           image
           isCode
           question
+          createdAt
           options {
             id
             isAnswer

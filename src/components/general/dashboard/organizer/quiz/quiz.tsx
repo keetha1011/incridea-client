@@ -33,6 +33,7 @@ type Question = {
   description: string;
   imageUrl: string;
   mode: "view" | "edit" | "new" | "delete";
+  createdAt: string;
 };
 
 type QuizDetailsType = {
@@ -56,13 +57,13 @@ function saveToLocalStore<T>(key: string, value: T): void {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
-function loadfromLocalStore<T>(key: string, fallback: T): T | null {
-  if (typeof window === "undefined") return fallback;
+function loadfromLocalStore<T>(key: string): T | null {
+  if (typeof window === "undefined") return null;
   const value = localStorage.getItem(key);
   if (value) return JSON.parse(value) as T;
   else {
-    saveToLocalStore<T>(key, fallback);
-    return fallback;
+    saveToLocalStore<T>(key, [] as T);
+    return null;
   }
 }
 
@@ -150,20 +151,7 @@ const Quiz: React.FC<{
     console.log("Fetching from Local");
     if (typeof window !== "undefined") {
       const loadedQuestions =
-        loadfromLocalStore<Question[]>(questionsKey, [
-          {
-            id: generateUUID(),
-            questionText: "",
-            options: ["", ""],
-            ansIndex: 0,
-            answer: "",
-            collapsed: false,
-            isCode: false,
-            description: "",
-            imageUrl: "",
-            mode: "new",
-          },
-        ]) ?? [];
+        loadfromLocalStore<Question[]>(questionsKey) ?? [];
       loadedQuestions.map((q) => {
         if (questions.findIndex((qq) => qq.id === q.id) === -1) {
           console.log("THE FIRST");
@@ -204,11 +192,12 @@ const Quiz: React.FC<{
                 }),
                 ansIndex: q.options.findIndex((opt) => opt.isAnswer),
                 answer: q.options.find((opt) => opt.isAnswer)?.value ?? "",
-                collapsed: false,
+                collapsed: true,
                 isCode: q.isCode,
                 description: q.description ?? "",
                 imageUrl: q.image ?? "",
                 mode: "view",
+                createdAt: new Date(q.createdAt).toISOString() ?? "",
               };
               return qs;
             }) ?? [];
@@ -337,16 +326,19 @@ const Quiz: React.FC<{
         description: "",
         imageUrl: "",
         mode: "new",
+        createdAt: new Date().toISOString(),
       };
 
       const updatedQuestions = [
         ...prev.map((q) => ({ ...q, collapsed: true })),
       ];
-      const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+      const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
       localQuestions?.push(newQuestion);
       if (localQuestions)
         saveToLocalStore<Question[]>(questionsKey, localQuestions);
+
       updatedQuestions.splice(index + 1, 0, newQuestion);
+      console.log("ADDED QUESTION: ", updatedQuestions);
       return updatedQuestions;
     });
   };
@@ -366,12 +358,13 @@ const Quiz: React.FC<{
           description: question.description,
           imageUrl: question.imageUrl,
           mode: "new",
+          createdAt: question.createdAt,
         };
 
         const updatedQuestions = [
           ...prev.map((q) => ({ ...q, collapsed: true })),
         ];
-        const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+        const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
         localQuestions?.push(newQuestion);
         if (localQuestions)
           saveToLocalStore<Question[]>(questionsKey, localQuestions);
@@ -383,7 +376,7 @@ const Quiz: React.FC<{
 
   const handleDeleteQuestions = (id: string) => {
     if (questions.length > 1) {
-      const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+      const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
       const question = localQuestions?.find((q) => q.id === id);
       const dbQuestion = questions.find((q) => q.id === id);
       if (dbQuestion) {
@@ -415,7 +408,7 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, questionText: value } : q)),
     );
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       saveToLocalStore<Question[]>(
         questionsKey,
@@ -424,7 +417,7 @@ const Quiz: React.FC<{
         ) ?? [],
       );
     else {
-      const dbQuestion = questions.find((q) => q.id === id);
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
@@ -452,7 +445,7 @@ const Quiz: React.FC<{
       ),
     );
 
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       if (localQuestions)
         saveToLocalStore<Question[]>(
@@ -500,7 +493,7 @@ const Quiz: React.FC<{
       ),
     );
     console.log("Answer Changed: ", questions);
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       if (localQuestions)
         saveToLocalStore<Question[]>(
@@ -532,7 +525,7 @@ const Quiz: React.FC<{
         q.id === id ? { ...q, options: [...q.options, ""] } : q,
       ),
     );
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       saveToLocalStore<Question[]>(
         questionsKey,
@@ -558,7 +551,7 @@ const Quiz: React.FC<{
           : q,
       ),
     );
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       if (localQuestions)
         saveToLocalStore<Question[]>(
@@ -583,7 +576,7 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, isCode: !q.isCode } : q)),
     );
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       saveToLocalStore<Question[]>(
         questionsKey,
@@ -605,7 +598,7 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, description: value } : q)),
     );
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       saveToLocalStore<Question[]>(
         questionsKey,
@@ -695,7 +688,7 @@ const Quiz: React.FC<{
 
   const handleQuizUpdation = async () => {
     let quizId;
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (
       quizData?.getQuizByEventRound.__typename ===
       "QueryGetQuizByEventRoundSuccess"
@@ -714,6 +707,7 @@ const Quiz: React.FC<{
                 value: opt,
                 isAnswer: index === question.ansIndex,
               })),
+              createdAt: question.createdAt,
               description: question.description,
               image: question.imageUrl,
               mode: question.mode,
@@ -732,6 +726,9 @@ const Quiz: React.FC<{
         refetch()
           .then(() => {
             console.log("REFETCHED");
+            setQuestions((prev) => {
+              return prev.map((q) => ({ ...q, collapsed: true }));
+            });
           })
           .catch((err) => {
             console.log("ERROR REFETCHING");
@@ -768,6 +765,10 @@ const Quiz: React.FC<{
       (question, index, self) =>
         index === self.findIndex((q) => q.id === question.id),
     );
+    const uniqueSortedQuestions = uniqueQuestions.sort(
+      (a, b) =>
+        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    );
     console.log("DB QUESTIONS: ", dbQuestions);
     console.log("LOCAL QUESTIONS: ", localQuestions);
     if (uniqueQuestions.length === 0 && doneFetchLocal && doneFetchDB) {
@@ -786,11 +787,12 @@ const Quiz: React.FC<{
           description: "",
           imageUrl: "",
           mode: "new",
+          createdAt: new Date().toISOString(),
         },
       ]);
       return;
     }
-    setQuestions(uniqueQuestions);
+    setQuestions(uniqueSortedQuestions);
   }, [localQuestions, dbQuestions]);
 
   return (

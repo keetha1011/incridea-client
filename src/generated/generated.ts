@@ -1629,6 +1629,7 @@ export type QueryWinnersByEventSuccess = {
 
 export type Question = {
   __typename?: "Question";
+  createdAt: Scalars["DateTime"]["output"];
   description?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   image?: Maybe<Scalars["String"]["output"]>;
@@ -3522,6 +3523,7 @@ export type GetQuizByEventRoundQuery = {
             isCode: boolean;
             question: string;
             id: string;
+            createdAt: Date;
             options: Array<{
               __typename?: "Options";
               id: string;
@@ -14668,6 +14670,10 @@ export const GetQuizByEventRoundDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
                                   },
                                 ],
                               },

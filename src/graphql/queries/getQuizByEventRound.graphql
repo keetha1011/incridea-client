@@ -25,6 +25,7 @@ query GetQuizByEventRound($eventId: Int!, $roundId: Int!) {
           }
           question
           id
+          createdAt
         }
         updatedAt
       }
