@@ -12,6 +12,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { Input } from "~/components/ui/input";
 import { Save } from "lucide-react";
 import { GetQuizByEventRoundDocument } from "~/generated/generated";
+import { set } from "zod";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -70,6 +71,8 @@ const Quiz: React.FC<{
   round: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
 }> = ({ event, round }) => {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [localQuestions, setLocalQuestions] = useState<Question[]>([]);
+  const [dbQuestions, setDbQuestions] = useState<Question[]>([]);
   // const [doneFirstSave1, setDoneSave1] = useState(false);
   // const [isInitialized1, setIsInitialized1] = useState(false);
 
@@ -131,15 +134,17 @@ const Quiz: React.FC<{
       password: "",
     }) ?? {};
 
-  const { data: quizData, loading: quizLoading } = useQuery(
-    GetQuizByEventRoundDocument,
-    {
-      variables: {
-        eventId: Number(eventId),
-        roundId: Number(roundNo),
-      },
+  const {
+    data: quizData,
+    loading: quizLoading,
+    refetch,
+  } = useQuery(GetQuizByEventRoundDocument, {
+    variables: {
+      eventId: Number(eventId),
+      roundId: Number(roundNo),
     },
-  );
+    fetchPolicy: "network-only",
+  });
 
   const fetchFromLocal = () => {
     console.log("Fetching from Local");
@@ -160,14 +165,26 @@ const Quiz: React.FC<{
           },
         ]) ?? [];
       loadedQuestions.map((q) => {
-        if (questions.findIndex((qq) => qq.id === q.id) === -1)
-          setQuestions((prev) => [...prev, q]);
-        else {
-          setQuestions((prev) => prev.map((qq) => (qq.id === q.id ? q : qq)));
+        if (questions.findIndex((qq) => qq.id === q.id) === -1) {
+          console.log("THE FIRST");
+          setLocalQuestions((prev) => [...prev, q]);
+        } else {
+          console.log("THE second");
+          // setQuestions((prev) => prev.map((qq) => (qq.id === q.id ? q : qq)));
+          setLocalQuestions((prev) =>
+            prev.map((qq) => {
+              console.log("========================");
+              console.log(prev);
+              const newer = qq.id === q.id ? q : qq;
+              console.log(newer);
+              console.log("========================");
+              return newer;
+            }),
+          );
         }
       });
     }
-    console.log("DONE FETCH CHANGED 2222");
+    console.log("DONE FETCH CHANGED 1211");
     setDoneFetchLocal(true);
   };
 
@@ -203,7 +220,7 @@ const Quiz: React.FC<{
             endTime: new Date(quiz.data?.endTime).toLocaleString(),
             password: quiz.data.password ?? "",
           };
-          setQuestions(loadedQuestions);
+          setDbQuestions(loadedQuestions);
           setQuizDetails(loadedQuizTitle);
         }
       }
@@ -266,32 +283,46 @@ const Quiz: React.FC<{
   // }, [quizData]);
 
   useEffect(() => {
+    console.log("FETCHING FROM DB AND LOCAL");
     fetchFromDB();
     fetchFromLocal();
   }, [quizData]);
 
-  useEffect(() => {
-    if (doneFetchLocal && doneFetchDB && !doneInitial) {
-      console.log("NOT WORKING BRO");
-      if (questions.length === 0) {
-        setQuestions([
-          {
-            id: generateUUID(),
-            questionText: "",
-            options: ["", ""],
-            ansIndex: 0,
-            answer: "",
-            collapsed: false,
-            isCode: false,
-            description: "",
-            imageUrl: "",
-            mode: "new",
-          },
-        ]);
-      }
-      setDoneInitial(true);
-    }
-  }, [doneFetchLocal, doneFetchDB]);
+  // useEffect(() => {
+  //   console.log(questions);
+  //   const uniqueQuestions = questions.filter(
+  //     (question, index, self) =>
+  //       index === self.findIndex((q) => q.id === question.id)
+  //   );
+  //   if (uniqueQuestions.length !== questions.length) {
+  //     setQuestions(uniqueQuestions);
+  //   }
+  // }, [questions.length]);
+
+  // useEffect(() => {
+  //   if (doneFetchLocal && doneFetchDB && !doneInitial) {
+  //     console.log("NOT WORKING BRO");
+  //     if (questions.length === 0) {
+  //       console.log("000000000000000000000000000001");
+  //       console.log("i did this");
+  //       setQuestions([
+  //         {
+  //           id: generateUUID(),
+  //           questionText: "",
+  //           options: ["", ""],
+  //           ansIndex: 0,
+  //           answer: "",
+  //           collapsed: false,
+  //           isCode: false,
+  //           description: "",
+  //           imageUrl: "",
+  //           mode: "new",
+  //         },
+  //       ]);
+  //     }
+  //     setDoneInitial(true);
+  //   }
+  // }, [doneFetchLocal, doneFetchDB]);
 
   const handleAddQuestions = (index: number) => {
     setQuestions((prev) => {
@@ -420,6 +451,7 @@ const Quiz: React.FC<{
           : q,
       ),
     );
+
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey, []);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1)
       if (localQuestions)
@@ -697,6 +729,15 @@ const Quiz: React.FC<{
       }
       if (res.data?.updateQuiz.__typename === "MutationUpdateQuizSuccess") {
         localStorage.removeItem(questionsKey);
+        refetch()
+          .then(() => {
+            console.log("REFETCHED");
+          })
+          .catch((err) => {
+            console.log("ERROR REFETCHING");
+          });
+        // fetchFromLocal();
+        setLocalQuestions([]);
         return res.data?.updateQuiz.data.id;
       }
     });
@@ -720,6 +761,37 @@ const Quiz: React.FC<{
       toast.error(errors);
     }
   };
+
+  useEffect(() => {
+    const combinedQuestions = [...localQuestions, ...dbQuestions];
+    const uniqueQuestions = combinedQuestions.filter(
+      (question, index, self) =>
+        index === self.findIndex((q) => q.id === question.id),
+    );
+    console.log("DB QUESTIONS: ", dbQuestions);
+    console.log("LOCAL QUESTIONS: ", localQuestions);
+    if (uniqueQuestions.length === 0 && doneFetchLocal && doneFetchDB) {
+      console.log(
+        "44444444444444444444444444444444444444444444444444444444444444444444444444444444444",
+      );
+      setQuestions([
+        {
+          id: generateUUID(),
+          questionText: "",
+          options: ["", ""],
+          ansIndex: 0,
+          answer: "",
+          collapsed: false,
+          isCode: false,
+          description: "",
+          imageUrl: "",
+          mode: "new",
+        },
+      ]);
+      return;
+    }
+    setQuestions(uniqueQuestions);
+  }, [localQuestions, dbQuestions]);
 
   return (
     <div className="my-12">
