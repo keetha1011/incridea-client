@@ -418,11 +418,18 @@ const Quiz: React.FC<{
       );
     else {
       const dbQuestion = dbQuestions.find((q) => q.id === id);
-      if (dbQuestion)
+      if (dbQuestion) {
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
           { ...dbQuestion, mode: "edit" },
         ]);
+      }
+      //   else if (questions.find((q) => q.id === id)) {
+      //     saveToLocalStore<Question[]>(questionsKey, [
+      //       ...(questions ?? []),
+      //       { ...questions.find((q) => q.id === id)!, mode: "new" },
+      //     ]);
+      // }
     }
   };
 
@@ -463,7 +470,7 @@ const Quiz: React.FC<{
           ),
         );
       else {
-        const dbQuestion = questions.find((q) => q.id === id);
+        const dbQuestion = dbQuestions.find((q) => q.id === id);
         if (dbQuestion)
           saveToLocalStore<Question[]>(questionsKey, [
             ...(localQuestions ?? []),
@@ -510,7 +517,7 @@ const Quiz: React.FC<{
           ),
         );
       else {
-        const dbQuestion = questions.find((q) => q.id === id);
+        const dbQuestion = dbQuestions.find((q) => q.id === id);
         if (dbQuestion)
           saveToLocalStore<Question[]>(questionsKey, [
             ...(localQuestions ?? []),
@@ -534,7 +541,7 @@ const Quiz: React.FC<{
         ) ?? [],
       );
     else {
-      const dbQuestion = questions.find((q) => q.id === id);
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
@@ -563,7 +570,7 @@ const Quiz: React.FC<{
           ),
         );
       else {
-        const dbQuestion = questions.find((q) => q.id === id);
+        const dbQuestion = dbQuestions.find((q) => q.id === id);
         if (dbQuestion)
           saveToLocalStore<Question[]>(questionsKey, [
             ...(localQuestions ?? []),
@@ -585,7 +592,7 @@ const Quiz: React.FC<{
         ) ?? [],
       );
     else {
-      const dbQuestion = questions.find((q) => q.id === id);
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
@@ -607,7 +614,7 @@ const Quiz: React.FC<{
         ) ?? [],
       );
     else {
-      const dbQuestion = questions.find((q) => q.id === id);
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
@@ -778,21 +785,21 @@ const Quiz: React.FC<{
       console.log(
         "44444444444444444444444444444444444444444444444444444444444444444444444444444444444",
       );
-      setQuestions([
-        {
-          id: generateUUID(),
-          questionText: "",
-          options: ["", ""],
-          ansIndex: 0,
-          answer: "",
-          collapsed: false,
-          isCode: false,
-          description: "",
-          imageUrl: "",
-          mode: "new",
-          createdAt: new Date().toISOString(),
-        },
-      ]);
+      const newQuestion: Question = {
+        id: generateUUID(),
+        questionText: "",
+        options: ["", ""],
+        ansIndex: 0,
+        answer: "",
+        collapsed: false,
+        isCode: false,
+        description: "",
+        imageUrl: "",
+        mode: "new",
+        createdAt: new Date().toISOString(),
+      };
+      setQuestions([newQuestion]);
+      saveToLocalStore<Question[]>(questionsKey, [newQuestion]);
       return;
     }
     setQuestions(uniqueSortedQuestions);

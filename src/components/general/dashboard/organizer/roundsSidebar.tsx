@@ -20,6 +20,7 @@ import CreateJudgeModal from "./createJudgeModal";
 import RoundAddModal from "./roundsAddModal";
 import Link from "next/link";
 import CreateQuizModal from "./createQuizModal";
+import { SettingsIcon } from "lucide-react";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -245,56 +246,61 @@ const RoundsSidebar: FC<{
           </div>
 
           <div className="mx-2 w-full rounded-lg bg-gray-700 p-3">
-            <h1 className="text-xl font-bold">Quiz</h1>
+            <div className="flex flex-row items-center justify-between">
+              <h1 className="text-xl font-bold">Quiz</h1>
+              <SettingsIcon />
+            </div>
             {/* List of Criterias for this round */}
-            {rounds.map((round) => (
-              <div key={round.eventId}>
-                {round.roundNo === selectedRound && (
-                  <div key={selectedRound}>
-                    {quizLoading ? (
-                      <div className="flex h-screen w-screen justify-center">
-                        <BiLoaderAlt className="animate-spin text-3xl" />
-                      </div>
-                    ) : // quizData?.getQuizByEvent.__typename === "QueryGetQuizByEventSuccess"?{
-                    quizData?.getQuizByEvent.__typename ===
-                      "QueryGetQuizByEventSuccess" ? (
-                      quizData.getQuizByEvent.data[selectedRound - 1]
-                        ?.roundNo === selectedRound ? (
-                        (console.log(
-                          quizData.getQuizByEvent.data[selectedRound - 1],
-                        ),
-                        (
-                          <>
-                            <Link
-                              href={`./organizer/quiz/${eventId}-${selectedRound}`}
-                            >
-                              <Button className="mt-5" intent={"dark"}>
-                                Edit Quiz
+            <div className="flex flex-col mt-4">
+              {rounds.map((round) => (
+                <div key={round.eventId}>
+                  {round.roundNo === selectedRound && (
+                    <div key={selectedRound}>
+                      {quizLoading ? (
+                        <div className="flex h-screen w-screen justify-center">
+                          <BiLoaderAlt className="animate-spin text-3xl" />
+                        </div>
+                      ) : // quizData?.getQuizByEvent.__typename === "QueryGetQuizByEventSuccess"?{
+                      quizData?.getQuizByEvent.__typename ===
+                        "QueryGetQuizByEventSuccess" ? (
+                        quizData.getQuizByEvent.data[selectedRound - 1]
+                          ?.roundNo === selectedRound ? (
+                          (console.log(
+                            quizData.getQuizByEvent.data[selectedRound - 1],
+                          ),
+                          (
+                            <>
+                              <Link
+                                href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                              >
+                                <Button className="mt-5" intent={"dark"}>
+                                  Edit Quiz
+                                </Button>
+                              </Link>
+                              <Button className="mt-5" intent={"success"}>
+                                Publish Quiz
                               </Button>
-                            </Link>
-                            <Button className="mt-5" intent={"success"}>
-                              Publish Quiz
-                            </Button>
-                          </>
-                        ))
+                            </>
+                          ))
+                        ) : (
+                          <CreateQuizModal
+                            eventId={eventId}
+                            roundNo={selectedRound}
+                            refetch={refetch}
+                          />
+                        )
                       ) : (
                         <CreateQuizModal
                           eventId={eventId}
                           roundNo={selectedRound}
                           refetch={refetch}
                         />
-                      )
-                    ) : (
-                      <CreateQuizModal
-                        eventId={eventId}
-                        roundNo={selectedRound}
-                        refetch={refetch}
-                      />
-                    )}
-                  </div>
-                )}
-              </div>
-            ))}
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </Tab.List>
       </Tab.Group>
