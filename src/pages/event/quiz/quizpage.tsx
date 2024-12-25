@@ -10,6 +10,7 @@ import { Navigation } from "swiper/modules";
 import {
   IconArrowLeft,
   IconArrowRight,
+  IconCheck,
   IconCircleCaretLeft,
   IconCircleCaretRight,
   IconStopwatch,
@@ -238,7 +239,7 @@ const QuizPage = ({ onComplete }: { onComplete: () => void }) => {
   return (
     <div className="relative md:static w-[90%] mx-auto mt-16 flex flex-col justify-center md:flex-row bg-gradient-to-br from-pink-50 via-white to-pink-100">
       {/* Quiz Content */}
-      <div className="flex flex-col w-full md:w-3/4">
+      <div className="flex flex-col w-full md:w-[70%] lg:w-3/4">
         {/* Header */}
         <header className="w-full sticky top-0 bg-gradient-to-br from-primary-400 to-primary-600  bg-opacity-70 backdrop-blur-lg shadow-md p-4 z-10 flex justify-between items-center">
           <h1 className="text-xl md:text-2xl font-bold text-white font-sora">
@@ -365,18 +366,29 @@ const QuizPage = ({ onComplete }: { onComplete: () => void }) => {
         </button>
       </aside>
       {isReviewOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-blur-sm z-50 flex flex-col justify-center items-center">
-          <h2 className="text-2xl lg:text-3xl font-bold text-gray-200 mb-6 text-center">
-            Review Your Answers
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-20 backdrop-blur-sm z-50 flex flex-col justify-center items-center">
+          <h2 className="p-2 text-lg md:text-2xl xl:text-3xl font-extrabold bg-gradient-to-tl from-primary-200 via-secondary-500 to-secondary-500 bg-clip-text text-transparent mb-6 tracking-wide text-center">
+            Take a Final Look at Your Answers!
+            <span className="block text-sm md:text-lg font-semibold text-gray-100 mt-2">
+              Double-check your responses before submitting the quiz for
+              evaluation.
+            </span>
           </h2>
-          <div className="relative bg-glassy bg-opacity-80 p-8 w-3/4 md:w-1/2 h-[80%] overflow-y-auto rounded-3xl shadow-2xl">
+
+          <div className="relative bg-glassy bg-opacity-80 p-4 md:p-6 w-3/4 md:w-1/2 h-[80%] overflow-y-auto rounded-3xl shadow-2xl">
             <div className="space-y-6 mb-6">
-              {quizData.questions.map((question) => (
+              {quizData.questions.map((question, index) => (
                 <div
                   key={question.id}
-                  className="p-4 rounded-lg shadow-md bg-white bg-opacity-90"
+                  className="p-3 rounded-lg shadow-md bg-white bg-opacity-90 relative"
                 >
-                  <h3 className="font-semibold text-gray-700 mb-2">
+                  {/* Badge for Question Number */}
+                  <span className="absolute top-3 left-2 text-xs md:text-sm font-bold text-white px-2 py-1 rounded-full bg-gradient-to-r from-purple-500 to-pink-400 shadow-lg">
+                    Q{index + 1}
+                  </span>
+                  <h3
+                    className={`font-semibold text-gray-700 mb-4 pl-10 text-sm md:text-lg ${index >= 9 && "mx-2"}`}
+                  >
                     {question.mainQuestion}
                   </h3>
                   <div className="space-y-2">
@@ -396,18 +408,20 @@ const QuizPage = ({ onComplete }: { onComplete: () => void }) => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-center gap-24">
-              <button
-                onClick={handleFinalSubmit}
-                className="px-6 py-3 rounded-lg text-white font-semibold  bg-gradient-to-tr from-primary-300 to-primary-200 hover:from-primary-300 hover:via-primary-200 hover:to-primary-300 transition duration-200 "
-              >
-                Submit Quiz
-              </button>
+
+            {/* Buttons Section */}
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4 mt-6">
               <button
                 onClick={closeReviewDialog}
-                className="px-6 py-3 rounded-lg text-white font-semibold bg-gradient-to-tr  from-secondary-500 to-secondary-700 hover:from-secondary-200 hover:via-secondary-700 hover:to-secondary-500"
+                className="w-3/4 md:w-auto px-6 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-tr from-secondary-500 to-secondary-700 hover:from-secondary-600 hover:to-secondary-500 transition duration-200 shadow-md hover:shadow-lg"
               >
                 Return to Quiz
+              </button>
+              <button
+                onClick={handleFinalSubmit}
+                className="w-3/4 md:w-auto px-6 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-tr from-primary-300 to-primary-200 hover:from-primary-400 hover:to-primary-300 transition duration-200 shadow-md hover:shadow-lg"
+              >
+                Submit Quiz
               </button>
             </div>
           </div>
