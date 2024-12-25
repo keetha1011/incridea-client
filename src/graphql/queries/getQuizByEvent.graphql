@@ -1,20 +1,20 @@
-query GetQuizByEventRound($eventId: Int!, $roundId: Int!) {
-  getQuizByEventRound(eventId: $eventId, roundId: $roundId) {
+query GetQuizByEvent($eventId: Int!) {
+  getQuizByEvent(eventId: $eventId) {
     ... on Error {
       __typename
       message
     }
-    ... on QueryGetQuizByEventRoundSuccess {
+    ... on QueryGetQuizByEventSuccess {
       __typename
       data {
         description
         endTime
         id
         name
-        password
         roundNo
         startTime
         questions {
+          quizId
           image
           description
           isCode
@@ -25,7 +25,6 @@ query GetQuizByEventRound($eventId: Int!, $roundId: Int!) {
           }
           question
           id
-          createdAt
         }
         updatedAt
       }
