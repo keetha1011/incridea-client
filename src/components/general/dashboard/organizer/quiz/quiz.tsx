@@ -12,6 +12,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { Input } from "~/components/ui/input";
 import { Save } from "lucide-react";
 import { GetQuizByEventRoundDocument } from "~/generated/generated";
+import { CiCirclePlus } from "react-icons/ci";
 import { set } from "zod";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
@@ -71,6 +72,15 @@ const Quiz: React.FC<{
   event: EventByOrganizerQuery["eventByOrganizer"][0];
   round: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
 }> = ({ event, round }) => {
+  const scrollToBottom = (divId: string) => {
+    const targetdiv = document.getElementById(divId);
+    if (targetdiv) {
+      targetdiv.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
   const [questions, setQuestions] = useState<Question[]>([]);
   const [localQuestions, setLocalQuestions] = useState<Question[]>([]);
   const [dbQuestions, setDbQuestions] = useState<Question[]>([]);
@@ -172,7 +182,7 @@ const Quiz: React.FC<{
         }
       });
     }
-    console.log("DONE FETCH CHANGED 1211");
+    console.log("DONE FETCH CHANGED 2222");
     setDoneFetchLocal(true);
   };
 
@@ -214,7 +224,7 @@ const Quiz: React.FC<{
         }
       }
     }
-    console.log("DONE FETCH CHANGED 2222");
+    console.log("DONE FETCH CHANGED 11");
     setDoneFetchDB(true);
   };
 
@@ -313,7 +323,7 @@ const Quiz: React.FC<{
   //   }
   // }, [doneFetchLocal, doneFetchDB]);
 
-  const handleAddQuestions = (index: number) => {
+  const handleAddQuestions = () => {
     setQuestions((prev) => {
       const newQuestion: Question = {
         id: generateUUID(),
@@ -337,7 +347,7 @@ const Quiz: React.FC<{
       if (localQuestions)
         saveToLocalStore<Question[]>(questionsKey, localQuestions);
 
-      updatedQuestions.splice(index + 1, 0, newQuestion);
+      updatedQuestions.splice(questions.length, 0, newQuestion);
       console.log("ADDED QUESTION: ", updatedQuestions);
       return updatedQuestions;
     });
@@ -346,7 +356,7 @@ const Quiz: React.FC<{
   const handleCopyQuestion = (id: string, index: number) => {
     const question = questions.find((q) => q.id === id);
     if (question) {
-      setQuestions((prev) => {
+      setLocalQuestions((prev) => {
         const newQuestion: Question = {
           id: generateUUID(),
           questionText: question.questionText,
@@ -358,17 +368,17 @@ const Quiz: React.FC<{
           description: question.description,
           imageUrl: question.imageUrl,
           mode: "new",
-          createdAt: question.createdAt,
+          createdAt: new Date().toISOString(),
         };
 
         const updatedQuestions = [
           ...prev.map((q) => ({ ...q, collapsed: true })),
         ];
-        const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-        localQuestions?.push(newQuestion);
-        if (localQuestions)
-          saveToLocalStore<Question[]>(questionsKey, localQuestions);
-        updatedQuestions.splice(index + 1, 0, newQuestion);
+
+        updatedQuestions.splice(questions.length, 0, newQuestion);
+        scrollToBottom(questions[questions.length - 1]!.id);
+        const questionIndex = questions.findIndex((q) => q.id === id);
+        toast.success(`Question ${questionIndex + 1} copied`);
         return updatedQuestions;
       });
     }
@@ -378,22 +388,16 @@ const Quiz: React.FC<{
     if (questions.length > 1) {
       const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
       const question = localQuestions?.find((q) => q.id === id);
-      const dbQuestion = questions.find((q) => q.id === id);
-      if (dbQuestion) {
-        if (question && question.mode === "new")
-          saveToLocalStore<Question[]>(
-            questionsKey,
-            localQuestions?.filter((q) => q.id !== id) ?? [],
-          );
-        else {
-          if (dbQuestion?.id)
-            localQuestions?.push({ ...dbQuestion, mode: "delete" });
-          saveToLocalStore<Question[]>(
-            questionsKey,
-            localQuestions?.map((q) =>
-              q.id === id ? { ...q, mode: "delete" } : q,
-            ) ?? [],
-          );
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
+      if (question && question.mode === "new") {
+        saveToLocalStore<Question[]>(
+          questionsKey,
+          localQuestions?.filter((q) => q.id !== id) ?? [],
+        );
+      } else {
+        if (dbQuestion?.id) {
+          localQuestions?.push({ ...dbQuestion, mode: "delete" });
+          saveToLocalStore<Question[]>(questionsKey, localQuestions ?? []);
         }
       }
       setQuestions((prev) => {
@@ -430,6 +434,29 @@ const Quiz: React.FC<{
       //       { ...questions.find((q) => q.id === id)!, mode: "new" },
       //     ]);
       // }
+    }
+  };
+
+  const handleImage = (id: string, value: string) => {
+    setQuestions((prev) =>
+      prev.map((q) => (q.id === id ? { ...q, imageUrl: value } : q)),
+    );
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id ? { ...q, imageUrl: value } : q,
+        ) ?? [],
+      );
+    else {
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
+      if (dbQuestion) {
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          { ...dbQuestion, mode: "edit" },
+        ]);
+      }
     }
   };
 
@@ -477,12 +504,6 @@ const Quiz: React.FC<{
             { ...dbQuestion, mode: "edit" },
           ]);
       }
-  };
-
-  const handleImage = (id: string, value: string) => {
-    setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, imageUrl: value } : q)),
-    );
   };
 
   const handleAnswerChange = (
@@ -732,7 +753,7 @@ const Quiz: React.FC<{
         return Promise.reject(new Error("Error creating quiz"));
       }
       if (res.data?.updateQuiz.__typename === "MutationUpdateQuizSuccess") {
-        localStorage.removeItem(questionsKey);
+        saveToLocalStore<Question[]>(questionsKey, []);
         refetch()
           .then(() => {
             console.log("REFETCHED");
@@ -769,7 +790,35 @@ const Quiz: React.FC<{
     }
   };
 
+  // useEffect(()=>{
+  //   if (questions.length === 0 && doneFetchLocal && doneFetchDB) {
+  //     console.log(
+  //       "44444444444444444444444444444444444444444444444444444444444444444444444444444444444",
+  //     );
+  //     const newQuestion: Question = {
+  //       id: generateUUID(),
+  //       questionText: "",
+  //       options: ["", ""],
+  //       ansIndex: 0,
+  //       answer: "",
+  //       collapsed: false,
+  //       isCode: false,
+  //       description: "",
+  //       imageUrl: "",
+  //       mode: "new",
+  //       createdAt: new Date().toISOString(),
+  //     };
+  //     setQuestions([newQuestion]);
+  //     saveToLocalStore<Question[]>(questionsKey, [newQuestion]);
+  //     return;
+  //   }
+  // }, [doneFetchDB, doneFetchLocal])
+
   useEffect(() => {
+    console.log("3333333333333333333333333");
+    console.log(doneFetchDB);
+    console.log(doneFetchLocal);
+
     const combinedQuestions = [...localQuestions, ...dbQuestions];
     const uniqueQuestions = combinedQuestions.filter(
       (question, index, self) =>
@@ -779,30 +828,23 @@ const Quiz: React.FC<{
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     );
+
+    const filteredQuestions = uniqueSortedQuestions.filter(
+      (question) => question.mode !== "delete",
+    );
+
+    console.log(combinedQuestions);
+
+    const uniqueLocalQuestions = combinedQuestions.filter((q) => {
+      return q.mode !== "view";
+    });
+
+    saveToLocalStore<Question[]>(questionsKey, uniqueLocalQuestions);
+    console.log("UNIQUE", uniqueLocalQuestions);
     console.log("DB QUESTIONS: ", dbQuestions);
     console.log("LOCAL QUESTIONS: ", localQuestions);
-    if (uniqueQuestions.length === 0 && doneFetchLocal && doneFetchDB) {
-      console.log(
-        "44444444444444444444444444444444444444444444444444444444444444444444444444444444444",
-      );
-      const newQuestion: Question = {
-        id: generateUUID(),
-        questionText: "",
-        options: ["", ""],
-        ansIndex: 0,
-        answer: "",
-        collapsed: false,
-        isCode: false,
-        description: "",
-        imageUrl: "",
-        mode: "new",
-        createdAt: new Date().toISOString(),
-      };
-      setQuestions([newQuestion]);
-      saveToLocalStore<Question[]>(questionsKey, [newQuestion]);
-      return;
-    }
-    setQuestions(uniqueSortedQuestions);
+
+    setQuestions(filteredQuestions);
   }, [localQuestions, dbQuestions]);
 
   return (
@@ -906,15 +948,15 @@ const Quiz: React.FC<{
           />
         ))}
       </div>
-      <div className="flex mt-4 items-center justify-between">
+      <div className="flex mt-4 items-center">
         <Button
           className="my-4 rounded-md mr-6"
           intent={"info"}
           size={"large"}
-          disabled={loading}
+          disabled={updateQuizLoading}
           onClick={handlePrint}
         >
-          {loading ? (
+          {updateQuizLoading ? (
             <>
               <BiLoaderAlt className="animate-spin text-xl" />
               Saving Draft...{" "}
@@ -925,25 +967,14 @@ const Quiz: React.FC<{
             </>
           )}
         </Button>
-        <Button
-          className="my-4 rounded-md mr-6"
-          intent={"success"}
-          size={"large"}
-          disabled={true}
-          // onClick={handlePrint}
-        >
-          {loading ? (
-            <>
-              <BiLoaderAlt className="animate-spin text-xl" />
-              Saving Draft...{" "}
-            </>
-          ) : (
-            <>
-              <AiOutlinePlus className="text-xl" /> Create Quiz
-            </>
-          )}
-        </Button>
       </div>
+      <Button
+        intent={"success"}
+        onClick={handleAddQuestions}
+        className="fixed bottom-12 font-bold right-12 h-14 w-auto bg-blue-500 text-white hover:bg-blue-600 z-50"
+      >
+        Add Question +
+      </Button>
     </div>
   );
 };

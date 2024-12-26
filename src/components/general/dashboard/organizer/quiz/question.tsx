@@ -3,7 +3,6 @@ import { HiOutlineDuplicate } from "react-icons/hi";
 import { ImRadioUnchecked } from "react-icons/im";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
-import { CiCirclePlus } from "react-icons/ci";
 import QuizImageUpload from "./quizImageUpload";
 import { url } from "inspector";
 
@@ -48,7 +47,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
   };
 
   return (
-    <div key={props.id} className="flex pt-8 pb-3">
+    <div key={props.id} id={props.id} className="flex pt-8 pb-3">
       <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 p-4 px-8">
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">
@@ -78,11 +77,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
             )}
           </div>
 
-          <div className="flex w-40 flex-row items-center justify-around rounded-2xl">
-            <CiCirclePlus
-              className="text-3xl hover:rounded-lg hover:bg-slate-800 cursor-pointer"
-              onClick={() => props.handleAddQuestions(props.index)}
-            />
+          <div className="flex w-40 flex-row items-center justify-around rounded-2xl cursor-pointer">
             <HiOutlineDuplicate
               className="text-3xl hover:rounded-lg hover:bg-slate-800"
               onClick={() => props.handleCopyQuestion(props.id, props.index)}
@@ -146,7 +141,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
               ></textarea>
 
               <div
-                className="w-2/5
+                className="
                flex gap-4"
               >
                 <QuizImageUpload
