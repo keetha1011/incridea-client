@@ -533,8 +533,6 @@ const Quiz: React.FC<{
       return updatedQuestions;
     });
 
-    console.log("Description Changed: ", questions);
-    console.log("value: ", value);
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
       saveToLocalStore<Question[]>(
@@ -551,12 +549,7 @@ const Quiz: React.FC<{
           { ...dbQuestion, description: value, mode: "edit" },
         ]);
     }
-    console.log("Description Changed: ", questions);
   };
-
-  useEffect(() => {
-    console.log("Questions updated:", questions);
-  }, [questions]);
 
   const validateQuiz = () => {
     if (questions.length === 0) {
