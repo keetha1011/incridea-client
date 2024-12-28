@@ -5,15 +5,11 @@ import Button from "~/components/button";
 import toast from "react-hot-toast";
 import QuestionComp from "~/components/general/dashboard/organizer/quiz/question";
 import { type EventByOrganizerQuery } from "~/generated/generated";
-import { CreateQuizDocument, UpdateQuizDocument } from "~/generated/generated";
+import { UpdateQuizDocument } from "~/generated/generated";
 import { useMutation, useQuery } from "@apollo/client";
-import { AiOutlinePlus } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
-import { Input } from "~/components/ui/input";
 import { Save } from "lucide-react";
 import { GetQuizByEventRoundDocument } from "~/generated/generated";
-import { CiCirclePlus } from "react-icons/ci";
-import { set } from "zod";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -43,10 +39,6 @@ type QuizDetailsType = {
   startTime: string;
   endTime: string;
   password: string;
-};
-
-type timeUpdateType = {
-  time: string;
 };
 
 function appendMilliseconds(localDateString: string): string {
@@ -85,8 +77,6 @@ const Quiz: React.FC<{
   const [localQuestions, setLocalQuestions] = useState<Question[]>([]);
   const [dbQuestions, setDbQuestions] = useState<Question[]>([]);
   const [saved, setSave] = useState(true);
-  // const [doneFirstSave1, setDoneSave1] = useState(false);
-  // const [isInitialized1, setIsInitialized1] = useState(false);
 
   const eventId = event.id.toString();
   const roundNo = round[0]?.roundNo?.toString() ?? "";
@@ -96,40 +86,6 @@ const Quiz: React.FC<{
 
   const [doneFetchLocal, setDoneFetchLocal] = useState(false);
   const [doneFetchDB, setDoneFetchDB] = useState(false);
-  const [doneInitial, setDoneInitial] = useState(false);
-
-  // useEffect(() => {
-  //   if (!isInitialized1) {
-  //     setIsInitialized1(true);
-  //     return;
-  //   }
-  //   if (typeof window !== "undefined") {
-  //     if (questions.length === 0) {
-  //       saveToLocalStore<Question[]>(questionsKey, [
-  //         {
-  //           id: generateUUID(),
-  //           questionText: "",
-  //           options: ["", ""],
-  //           ansIndex: 0,
-  //           answer: "",
-  //           collapsed: false,
-  //           isCode: false,
-  //           description: "",
-  //           imageUrl: "",
-  //           mode: "view",
-  //         },
-  //       ]);
-  //     }
-  //     if (questions.length > 0) {
-  //       saveToLocalStore<Question[]>(questionsKey, questions);
-  //       if (doneFirstSave1) {
-  //         setUpdatedTime({ time: new Date().toISOString() });
-  //         saveToLocalStore<timeUpdateType>("updatedAt", updatedTime);
-  //       }
-  //     }
-  //     setDoneSave1(true);
-  //   }
-  // }, [questions]);
 
   const toggleCollapase = (id: string) => {
     setQuestions((prev) =>
@@ -169,14 +125,9 @@ const Quiz: React.FC<{
           setLocalQuestions((prev) => [...prev, q]);
         } else {
           console.log("THE second");
-          // setQuestions((prev) => prev.map((qq) => (qq.id === q.id ? q : qq)));
           setLocalQuestions((prev) =>
             prev.map((qq) => {
-              console.log("========================");
-              console.log(prev);
               const newer = qq.id === q.id ? q : qq;
-              console.log(newer);
-              console.log("========================");
               return newer;
             }),
           );
@@ -186,12 +137,6 @@ const Quiz: React.FC<{
     console.log("DONE FETCH CHANGED 2222");
     setDoneFetchLocal(true);
   };
-
-  // useEffect(()=>{
-  //   questions.forEach((q)=>{
-
-  //   })
-  // }, [questions])
 
   const fetchFromDB = () => {
     console.log("Fetching from DB");
@@ -242,104 +187,11 @@ const Quiz: React.FC<{
     setDoneFetchDB(true);
   };
 
-  // useEffect(() => {
-  //   setSave(false);
-  // }, [questions]);
-
-  // useEffect(() => {
-  //   const updatedAt2 = loadfromLocalStore<timeUpdateType>("updatedAt", {
-  //     time: "",
-  //   });
-  //   const updatedAt = updatedAt2?.time;
-  //   if (quizData) {
-  //     const quiz = quizData.getQuizByEventRound;
-  //     if (quiz.__typename === "QueryGetQuizByEventRoundSuccess") {
-  //       console.log(quiz.data?.updatedAt);
-  //       if (quiz) {
-  //         const dbUpdatedAt = new Date(
-  //           quiz.data?.updatedAt ?? "",
-  //         ).toLocaleString();
-  //         console.log("-------------------");
-  //         console.log(`dbUpdatedAt: ${new Date(dbUpdatedAt).toLocaleString()}`);
-  //         console.log(
-  //           `updatedAt: ${new Date(updatedAt?.toString() ?? "").toLocaleString()}`,
-  //         );
-  //         console.log(`DB > LOCAL: ${updatedAt && dbUpdatedAt > updatedAt}`);
-  //         console.log(`DB < LOCAL: ${updatedAt && dbUpdatedAt < updatedAt}`);
-  //         console.log("-------------------");
-  //         if (quiz.data.updatedAt && updatedAt && dbUpdatedAt < updatedAt) {
-  //           console.log("FETCHING FROM LOCAL 1");
-  //           fetchFromLocal();
-  //         } else if (
-  //           quiz.data.updatedAt &&
-  //           updatedAt &&
-  //           dbUpdatedAt > updatedAt
-  //         ) {
-  //           console.log("FETCHING FROM DB 1");
-  //           fetchFromDB();
-  //         } else if (quiz.data.updatedAt && !updatedAt) {
-  //           console.log(quizDetails);
-  //           console.log("FETCHING FROM DB 2");
-  //           fetchFromDB();
-  //         } else if (!quiz.data.updatedAt && updatedAt) {
-  //           console.log("FETCHING FROM LOCAL 2");
-  //           fetchFromLocal();
-  //         } else {
-  //           console.log("3333");
-  //           fetchFromLocal();
-  //         }
-  //       } else {
-  //         fetchFromLocal();
-  //       }
-  //     } else {
-  //       fetchFromLocal();
-  //     }
-  //   } else {
-  //     console.log("BRO NOT YET FETCHED");
-  //   }
-  // }, [quizData]);
-
   useEffect(() => {
     console.log("FETCHING FROM DB AND LOCAL");
     fetchFromDB();
     fetchFromLocal();
   }, [quizData]);
-
-  // useEffect(() => {
-  //   console.log(questions);
-  //   const uniqueQuestions = questions.filter(
-  //     (question, index, self) =>
-  //       index === self.findIndex((q) => q.id === question.id)
-  //   );
-  //   if (uniqueQuestions.length !== questions.length) {
-  //     setQuestions(uniqueQuestions);
-  //   }
-  // }, [questions.length]);
-
-  // useEffect(() => {
-  //   if (doneFetchLocal && doneFetchDB && !doneInitial) {
-  //     console.log("NOT WORKING BRO");
-  //     if (questions.length === 0) {
-  //       console.log("000000000000000000000000000001");
-  //       console.log("i did this");
-  //       setQuestions([
-  //         {
-  //           id: generateUUID(),
-  //           questionText: "",
-  //           options: ["", ""],
-  //           ansIndex: 0,
-  //           answer: "",
-  //           collapsed: false,
-  //           isCode: false,
-  //           description: "",
-  //           imageUrl: "",
-  //           mode: "new",
-  //         },
-  //       ]);
-  //     }
-  //     setDoneInitial(true);
-  //   }
-  // }, [doneFetchLocal, doneFetchDB]);
 
   const handleAddQuestions = () => {
     setSave(false);
@@ -377,7 +229,6 @@ const Quiz: React.FC<{
     setSave(false);
 
     const question = questions.find((q) => q.id === id)!;
-    console.log(question);
 
     const newQuestion: Question = {
       id: generateUUID(),
@@ -395,7 +246,6 @@ const Quiz: React.FC<{
 
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey) ?? [];
     localQuestions.push(newQuestion);
-    console.log("chck ehck", localQuestions);
     saveToLocalStore<Question[]>(questionsKey, localQuestions);
 
     setQuestions((prev) => {
@@ -404,11 +254,7 @@ const Quiz: React.FC<{
       ];
 
       updatedQuestions.splice(questions.length, 0, newQuestion);
-
-      console.log(" QUESTION: ", updatedQuestions);
-
       scrollToBottom(questions[questions.length - 1]!.id);
-
       return updatedQuestions;
     });
     const questionIndex = questions.findIndex((q) => q.id === id);
@@ -463,12 +309,6 @@ const Quiz: React.FC<{
           { ...dbQuestion, mode: "edit" },
         ]);
       }
-      //   else if (questions.find((q) => q.id === id)) {
-      //     saveToLocalStore<Question[]>(questionsKey, [
-      //       ...(questions ?? []),
-      //       { ...questions.find((q) => q.id === id)!, mode: "new" },
-      //     ]);
-      // }
     }
   };
 
@@ -714,46 +554,6 @@ const Quiz: React.FC<{
     }
   };
 
-  const [createQuiz, { loading }] = useMutation(CreateQuizDocument, {
-    refetchQueries: ["CreateQuiz"],
-    awaitRefetchQueries: true,
-  });
-
-  const handleCreateQuiz = async (q: Question[]) => {
-    const promise = createQuiz({
-      variables: {
-        eventId: event.id,
-        roundId: round[0]?.roundNo?.toString() ?? "",
-        quizTitle: quizDetails.quizTitle,
-        quizDescription: quizDetails.description ?? "",
-        startTime: appendMilliseconds(quizDetails.startTime),
-        endTime: appendMilliseconds(quizDetails.endTime),
-        // questions: q.map((question) => ({
-        //   question: question.questionText,
-        //   isCode: question.isCode,
-        //   points: 10,
-        //   options: question.options.map((opt, index) => ({
-        //     value: opt,
-        //     isAnswer: index === question.ansIndex,
-        //   })),
-        //   description: question.description,
-        //   image: question.imageUrl,
-        // })),
-      },
-    }).then((res) => {
-      res.errors?.forEach((error) => {
-        console.error(error);
-      });
-      if (res.data?.createQuiz.__typename !== "MutationCreateQuizSuccess") {
-        return Promise.reject(new Error("Error creating quiz"));
-      }
-      if (res.data?.createQuiz.__typename === "MutationCreateQuizSuccess") {
-        return res.data?.createQuiz.data.id;
-      }
-    });
-    return promise;
-  };
-
   const [updateQuiz, { loading: updateQuizLoading }] = useMutation(
     UpdateQuizDocument,
     {
@@ -833,46 +633,19 @@ const Quiz: React.FC<{
         toast.error("Error updating quiz");
       }
     } else {
-      // setErrors(errors);
       console.log(questions, quizDetails);
       toast.error(errors);
     }
   };
 
-  // useEffect(()=>{
-  //   if (questions.length === 0 && doneFetchLocal && doneFetchDB) {
-  //     console.log(
-  //       "44444444444444444444444444444444444444444444444444444444444444444444444444444444444",
-  //     );
-  //     const newQuestion: Question = {
-  //       id: generateUUID(),
-  //       questionText: "",
-  //       options: ["", ""],
-  //       ansIndex: 0,
-  //       answer: "",
-  //       collapsed: false,
-  //       isCode: false,
-  //       description: "",
-  //       imageUrl: "",
-  //       mode: "new",
-  //       createdAt: new Date().toISOString(),
-  //     };
-  //     setQuestions([newQuestion]);
-  //     saveToLocalStore<Question[]>(questionsKey, [newQuestion]);
-  //     return;
-  //   }
-  // }, [doneFetchDB, doneFetchLocal])
-
   useEffect(() => {
-    console.log("3333333333333333333333333");
-    console.log(doneFetchDB);
-    console.log(doneFetchLocal);
-
     const combinedQuestions = [...localQuestions, ...dbQuestions];
+
     const uniqueQuestions = combinedQuestions.filter(
       (question, index, self) =>
         index === self.findIndex((q) => q.id === question.id),
     );
+
     const uniqueSortedQuestions = uniqueQuestions.sort(
       (a, b) =>
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
@@ -882,23 +655,17 @@ const Quiz: React.FC<{
       (question) => question.mode !== "delete",
     );
 
-    console.log(combinedQuestions);
-
     const uniqueLocalQuestions = combinedQuestions.filter((q) => {
       return q.mode !== "view";
     });
 
     saveToLocalStore<Question[]>(questionsKey, uniqueLocalQuestions);
-    console.log("UNIQUE", uniqueLocalQuestions);
-    console.log("DB QUESTIONS: ", dbQuestions);
-    console.log("LOCAL QUESTIONS: ", localQuestions);
 
     setQuestions(filteredQuestions);
   }, [localQuestions, dbQuestions]);
 
   return (
     <div className="my-12">
-      {/* <div className="mx-4 flex flex-row align-middle gap-4"> */}
       <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/90 p-6 px-8">
         <div className="flex flex-row w-full justify-between">
           <div className="flex flex-row items-center">

@@ -4,14 +4,6 @@ import { ImRadioUnchecked } from "react-icons/im";
 import { MdDeleteOutline } from "react-icons/md";
 import Button from "~/components/button";
 import QuizImageUpload from "./quizImageUpload";
-import { url } from "inspector";
-
-// import dynamic from "next/dynamic";
-
-// const CollapsibleArrow = dynamic(
-//   () => import("~/components/quiz/collapsibleArrow"),
-//   { ssr: false },
-// );
 
 type QuestionProps = {
   id: string;
@@ -60,13 +52,6 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                 : `▼ Question ${props.index + 1}`}
             </h1>
 
-            {/* <CollapsibleArrow
-              id={props.id}
-              index={props.index}
-              collapsed={props.collapsed}
-              toggleCollapase={props.toggleCollapase}
-            /> */}
-
             {props.collapsed && (
               <h2
                 className="font-gilroy text-lg font-medium cursor-pointer truncate max-w-xs"
@@ -100,16 +85,6 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                   props.handleQuestionTextChange(props.id, e.target.value)
                 }
               ></input>
-              {/* <CiImageOn className="mx-8 text-3xl" /> */}
-              {/* <select
-                name="type"
-                className="block rounded-lg border-0 border-gray-900 bg-slate-700 bg-opacity-60 bg-clip-padding px-8 py-2 text-sm text-white placeholder-gray-800 ring-gray-500 backdrop-blur-3xl backdrop-filter focus:outline-none focus:ring-2"
-                id=""
-              >
-                <option value="MCQ">MCQ</option>
-                <option value="MMCQ">MMCQ</option>
-                <option value="FITB">FITB</option>
-              </select> */}
             </div>
             <div className="mt-6 w-40">
               <label
@@ -194,12 +169,9 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                   >
                     Is Answer?
                   </label>
-                  {/* text-gray-900 */}
                 </div>
               </div>
             ))}
-
-            {/* <CiImageOn className="mx-8 cursor-pointer text-3xl" /> */}
 
             <div className="flex flex-row w-full justify-between">
               <div className="flex flex-row">
