@@ -186,6 +186,12 @@ const Quiz: React.FC<{
     setDoneFetchLocal(true);
   };
 
+  // useEffect(()=>{
+  //   questions.forEach((q)=>{
+
+  //   })
+  // }, [questions])
+
   const fetchFromDB = () => {
     console.log("Fetching from DB");
     if (quizData) {
@@ -219,6 +225,13 @@ const Quiz: React.FC<{
             endTime: new Date(quiz.data?.endTime).toLocaleString(),
             password: quiz.data.password ?? "",
           };
+
+          const loadedQuizId = loadfromLocalStore("quizId");
+          if (loadedQuizId !== quiz.data.id) {
+            saveToLocalStore<Question[]>(questionsKey, []);
+            saveToLocalStore("quizId", quiz.data.id);
+          }
+
           setDbQuestions(loadedQuestions);
           setQuizDetails(loadedQuizTitle);
         }
@@ -324,64 +337,73 @@ const Quiz: React.FC<{
   // }, [doneFetchLocal, doneFetchDB]);
 
   const handleAddQuestions = () => {
-    setQuestions((prev) => {
-      const newQuestion: Question = {
-        id: generateUUID(),
-        questionText: "",
-        options: ["", ""],
-        ansIndex: 0,
-        answer: "",
-        collapsed: false,
-        isCode: false,
-        description: "",
-        imageUrl: "",
-        mode: "new",
-        createdAt: new Date().toISOString(),
-      };
+    const newQuestion: Question = {
+      id: generateUUID(),
+      questionText: "",
+      options: ["", ""],
+      ansIndex: 0,
+      answer: "",
+      collapsed: false,
+      isCode: false,
+      description: "",
+      imageUrl: "",
+      mode: "new",
+      createdAt: new Date().toISOString(),
+    };
 
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey) ?? [];
+    localQuestions.push(newQuestion);
+    saveToLocalStore<Question[]>(questionsKey, localQuestions);
+
+    setQuestions((prev) => {
       const updatedQuestions = [
         ...prev.map((q) => ({ ...q, collapsed: true })),
       ];
-      const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-      localQuestions?.push(newQuestion);
-      if (localQuestions)
-        saveToLocalStore<Question[]>(questionsKey, localQuestions);
+      updatedQuestions.splice(prev.length, 0, newQuestion);
 
-      updatedQuestions.splice(questions.length, 0, newQuestion);
       console.log("ADDED QUESTION: ", updatedQuestions);
       return updatedQuestions;
     });
   };
 
   const handleCopyQuestion = (id: string, index: number) => {
-    const question = questions.find((q) => q.id === id);
-    if (question) {
-      setLocalQuestions((prev) => {
-        const newQuestion: Question = {
-          id: generateUUID(),
-          questionText: question.questionText,
-          options: question.options,
-          ansIndex: question.ansIndex,
-          answer: question.answer,
-          collapsed: false,
-          isCode: question.isCode,
-          description: question.description,
-          imageUrl: question.imageUrl,
-          mode: "new",
-          createdAt: new Date().toISOString(),
-        };
+    const question = questions.find((q) => q.id === id)!;
+    console.log(question);
 
-        const updatedQuestions = [
-          ...prev.map((q) => ({ ...q, collapsed: true })),
-        ];
+    const newQuestion: Question = {
+      id: generateUUID(),
+      questionText: question.questionText,
+      options: question.options,
+      ansIndex: question.ansIndex,
+      answer: question.answer,
+      collapsed: false,
+      isCode: question.isCode,
+      description: question.description,
+      imageUrl: question.imageUrl,
+      mode: "new",
+      createdAt: new Date().toISOString(),
+    };
 
-        updatedQuestions.splice(questions.length, 0, newQuestion);
-        scrollToBottom(questions[questions.length - 1]!.id);
-        const questionIndex = questions.findIndex((q) => q.id === id);
-        toast.success(`Question ${questionIndex + 1} copied`);
-        return updatedQuestions;
-      });
-    }
+    const localQuestions = loadfromLocalStore<Question[]>(questionsKey) ?? [];
+    localQuestions.push(newQuestion);
+    console.log("chck ehck", localQuestions);
+    saveToLocalStore<Question[]>(questionsKey, localQuestions);
+
+    setQuestions((prev) => {
+      const updatedQuestions = [
+        ...prev.map((q) => ({ ...q, collapsed: true })),
+      ];
+
+      updatedQuestions.splice(questions.length, 0, newQuestion);
+
+      console.log(" QUESTION: ", updatedQuestions);
+
+      scrollToBottom(questions[questions.length - 1]!.id);
+
+      return updatedQuestions;
+    });
+    const questionIndex = questions.findIndex((q) => q.id === id);
+    toast.success(`Question ${questionIndex + 1} copied`);
   };
 
   const handleDeleteQuestions = (id: string) => {
