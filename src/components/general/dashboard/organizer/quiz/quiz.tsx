@@ -84,6 +84,7 @@ const Quiz: React.FC<{
   const [questions, setQuestions] = useState<Question[]>([]);
   const [localQuestions, setLocalQuestions] = useState<Question[]>([]);
   const [dbQuestions, setDbQuestions] = useState<Question[]>([]);
+  const [saved, setSave] = useState(true);
   // const [doneFirstSave1, setDoneSave1] = useState(false);
   // const [isInitialized1, setIsInitialized1] = useState(false);
 
@@ -242,6 +243,10 @@ const Quiz: React.FC<{
   };
 
   // useEffect(() => {
+  //   setSave(false);
+  // }, [questions]);
+
+  // useEffect(() => {
   //   const updatedAt2 = loadfromLocalStore<timeUpdateType>("updatedAt", {
   //     time: "",
   //   });
@@ -337,6 +342,8 @@ const Quiz: React.FC<{
   // }, [doneFetchLocal, doneFetchDB]);
 
   const handleAddQuestions = () => {
+    setSave(false);
+
     const newQuestion: Question = {
       id: generateUUID(),
       questionText: "",
@@ -367,6 +374,8 @@ const Quiz: React.FC<{
   };
 
   const handleCopyQuestion = (id: string, index: number) => {
+    setSave(false);
+
     const question = questions.find((q) => q.id === id)!;
     console.log(question);
 
@@ -407,6 +416,8 @@ const Quiz: React.FC<{
   };
 
   const handleDeleteQuestions = (id: string) => {
+    setSave(false);
+
     if (questions.length > 1) {
       const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
       const question = localQuestions?.find((q) => q.id === id);
@@ -431,6 +442,8 @@ const Quiz: React.FC<{
   };
 
   const handleQuestionTextChange = (id: string, value: string) => {
+    setSave(false);
+
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, questionText: value } : q)),
     );
@@ -460,6 +473,8 @@ const Quiz: React.FC<{
   };
 
   const handleImage = (id: string, value: string) => {
+    setSave(false);
+
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, imageUrl: value } : q)),
     );
@@ -476,7 +491,7 @@ const Quiz: React.FC<{
       if (dbQuestion) {
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
-          { ...dbQuestion, mode: "edit" },
+          { ...dbQuestion, imageUrl: value, mode: "edit" },
         ]);
       }
     }
@@ -487,6 +502,8 @@ const Quiz: React.FC<{
     optionIndex: number,
     value: string,
   ) => {
+    setSave(false);
+
     setQuestions((prev) =>
       prev.map((q) =>
         q.id === id
@@ -533,6 +550,8 @@ const Quiz: React.FC<{
     optIndex: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    setSave(false);
+
     console.log("Answer Changed: ", e.target.name);
     console.log("Answer Id: ", e.target.id);
     setQuestions((prev) =>
@@ -570,6 +589,8 @@ const Quiz: React.FC<{
   };
 
   const handleNewOption = (id: string) => {
+    setSave(false);
+
     setQuestions((prev) =>
       prev.map((q) =>
         q.id === id ? { ...q, options: [...q.options, ""] } : q,
@@ -594,6 +615,8 @@ const Quiz: React.FC<{
   };
 
   const handleDeleteOption = (id: string) => {
+    setSave(false);
+
     setQuestions((prev) =>
       prev.map((q) =>
         q.id === id && q.options.length > 2
@@ -623,6 +646,8 @@ const Quiz: React.FC<{
   };
 
   const handleIsCode = (id: string) => {
+    setSave(false);
+
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, isCode: !q.isCode } : q)),
     );
@@ -645,6 +670,7 @@ const Quiz: React.FC<{
   };
 
   const handleDescriptionChange = (id: string, value: string) => {
+    setSave(false);
     setQuestions((prev) =>
       prev.map((q) => (q.id === id ? { ...q, description: value } : q)),
     );
@@ -737,6 +763,7 @@ const Quiz: React.FC<{
   );
 
   const handleQuizUpdation = async () => {
+    setSave(true);
     let quizId;
     const localUnfilteredQuestions =
       loadfromLocalStore<Question[]>(questionsKey);
@@ -972,8 +999,8 @@ const Quiz: React.FC<{
       </div>
       <div className="flex mt-4 items-center">
         <Button
-          className="my-4 rounded-md mr-6"
-          intent={"info"}
+          className="rounded-md h-14 w-auto fixed bottom-12 left-12 z-50"
+          intent={saved ? "info" : "danger"}
           size={"large"}
           disabled={updateQuizLoading}
           onClick={handlePrint}
@@ -993,7 +1020,7 @@ const Quiz: React.FC<{
       <Button
         intent={"success"}
         onClick={handleAddQuestions}
-        className="fixed bottom-12 font-bold right-12 h-14 w-auto bg-blue-500 text-white hover:bg-blue-600 z-50"
+        className="fixed bottom-12 font-bold rounded-lg right-12 h-14 w-auto bg-blue-500 text-white hover:bg-blue-600 z-50"
       >
         Add Question +
       </Button>
