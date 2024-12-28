@@ -294,14 +294,14 @@ const Quiz: React.FC<{
       prev.map((q) => (q.id === id ? { ...q, questionText: value } : q)),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
       saveToLocalStore<Question[]>(
         questionsKey,
         localQuestions?.map((q) =>
           q.id === id ? { ...q, questionText: value } : q,
         ) ?? [],
       );
-    else {
+    } else {
       const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion) {
         saveToLocalStore<Question[]>(questionsKey, [
@@ -319,14 +319,14 @@ const Quiz: React.FC<{
       prev.map((q) => (q.id === id ? { ...q, imageUrl: value } : q)),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
       saveToLocalStore<Question[]>(
         questionsKey,
         localQuestions?.map((q) =>
           q.id === id ? { ...q, imageUrl: value } : q,
         ) ?? [],
       );
-    else {
+    } else {
       const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion) {
         saveToLocalStore<Question[]>(questionsKey, [
@@ -359,30 +359,37 @@ const Quiz: React.FC<{
     );
 
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
-      if (localQuestions)
-        saveToLocalStore<Question[]>(
-          questionsKey,
-          localQuestions.map((q) =>
-            q.id === id
-              ? {
-                  ...q,
-                  options: q.options.map((opt, i) =>
-                    i === optionIndex ? value : opt,
-                  ),
-                  answer: q.ansIndex === optionIndex ? value : q.answer,
-                }
-              : q,
-          ),
-        );
-      else {
-        const dbQuestion = dbQuestions.find((q) => q.id === id);
-        if (dbQuestion)
-          saveToLocalStore<Question[]>(questionsKey, [
-            ...(localQuestions ?? []),
-            { ...dbQuestion, mode: "edit" },
-          ]);
-      }
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id
+            ? {
+                ...q,
+                options: q.options.map((opt, i) =>
+                  i === optionIndex ? value : opt,
+                ),
+                answer: q.ansIndex === optionIndex ? value : q.answer,
+              }
+            : q,
+        ) ?? [],
+      );
+    } else {
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
+      if (dbQuestion)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          {
+            ...dbQuestion,
+            options: dbQuestion.options.map((opt, i) =>
+              i === optionIndex ? value : opt,
+            ),
+            answer:
+              dbQuestion.ansIndex === optionIndex ? value : dbQuestion.answer,
+            mode: "edit",
+          },
+        ]);
+    }
   };
 
   const handleAnswerChange = (
@@ -403,29 +410,32 @@ const Quiz: React.FC<{
     );
     console.log("Answer Changed: ", questions);
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
-      if (localQuestions)
-        saveToLocalStore<Question[]>(
-          questionsKey,
-          localQuestions?.map(
-            (q) =>
-              (q.id === id
-                ? {
-                    ...q,
-                    ansIndex: optIndex,
-                    answer: q.options[optIndex] ?? "",
-                  }
-                : q) ?? [],
-          ),
-        );
-      else {
-        const dbQuestion = dbQuestions.find((q) => q.id === id);
-        if (dbQuestion)
-          saveToLocalStore<Question[]>(questionsKey, [
-            ...(localQuestions ?? []),
-            { ...dbQuestion, mode: "edit" },
-          ]);
-      }
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id
+            ? {
+                ...q,
+                ansIndex: optIndex,
+                answer: q.options[optIndex] ?? "",
+              }
+            : q,
+        ) ?? [],
+      );
+    } else {
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
+      if (dbQuestion)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          {
+            ...dbQuestion,
+            ansIndex: optIndex,
+            answer: dbQuestion.options[optIndex] ?? "",
+            mode: "edit",
+          },
+        ]);
+    }
   };
 
   const handleNewOption = (id: string) => {
@@ -437,14 +447,14 @@ const Quiz: React.FC<{
       ),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
       saveToLocalStore<Question[]>(
         questionsKey,
         localQuestions?.map((q) =>
           q.id === id ? { ...q, options: [...q.options, ""] } : q,
         ) ?? [],
       );
-    else {
+    } else {
       const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
@@ -464,25 +474,29 @@ const Quiz: React.FC<{
           : q,
       ),
     );
+
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
-      if (localQuestions)
-        saveToLocalStore<Question[]>(
-          questionsKey,
-          localQuestions.map((q) =>
-            q.id === id && q.options.length > 2
-              ? { ...q, options: q.options.slice(0, -1) }
-              : q,
-          ),
-        );
-      else {
-        const dbQuestion = dbQuestions.find((q) => q.id === id);
-        if (dbQuestion)
-          saveToLocalStore<Question[]>(questionsKey, [
-            ...(localQuestions ?? []),
-            { ...dbQuestion, mode: "edit" },
-          ]);
-      }
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
+      saveToLocalStore<Question[]>(
+        questionsKey,
+        localQuestions?.map((q) =>
+          q.id === id && q.options.length > 2
+            ? { ...q, options: q.options.slice(0, -1) }
+            : q,
+        ) ?? [],
+      );
+    } else {
+      const dbQuestion = dbQuestions.find((q) => q.id === id);
+      if (dbQuestion && dbQuestion.options.length > 2)
+        saveToLocalStore<Question[]>(questionsKey, [
+          ...(localQuestions ?? []),
+          {
+            ...dbQuestion,
+            options: dbQuestion.options.slice(0, -1),
+            mode: "edit",
+          },
+        ]);
+    }
   };
 
   const handleIsCode = (id: string) => {
@@ -492,45 +506,57 @@ const Quiz: React.FC<{
       prev.map((q) => (q.id === id ? { ...q, isCode: !q.isCode } : q)),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
       saveToLocalStore<Question[]>(
         questionsKey,
         localQuestions?.map((q) =>
           q.id === id ? { ...q, isCode: !q.isCode } : q,
         ) ?? [],
       );
-    else {
+    } else {
       const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
-          { ...dbQuestion, mode: "edit" },
+          { ...dbQuestion, isCode: !dbQuestion.isCode, mode: "edit" },
         ]);
     }
   };
 
   const handleDescriptionChange = (id: string, value: string) => {
     setSave(false);
-    setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, description: value } : q)),
-    );
+
+    setQuestions((prevQuestions) => {
+      const updatedQuestions = prevQuestions.map((q) =>
+        q.id === id ? { ...q, description: value } : q,
+      );
+      return updatedQuestions;
+    });
+
+    console.log("Description Changed: ", questions);
+    console.log("value: ", value);
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1)
+    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
       saveToLocalStore<Question[]>(
         questionsKey,
         localQuestions?.map((q) =>
           q.id === id ? { ...q, description: value } : q,
         ) ?? [],
       );
-    else {
+    } else {
       const dbQuestion = dbQuestions.find((q) => q.id === id);
       if (dbQuestion)
         saveToLocalStore<Question[]>(questionsKey, [
           ...(localQuestions ?? []),
-          { ...dbQuestion, mode: "edit" },
+          { ...dbQuestion, description: value, mode: "edit" },
         ]);
     }
+    console.log("Description Changed: ", questions);
   };
+
+  useEffect(() => {
+    console.log("Questions updated:", questions);
+  }, [questions]);
 
   const validateQuiz = () => {
     if (questions.length === 0) {
