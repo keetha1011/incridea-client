@@ -14,6 +14,7 @@ type QuestionProps = {
   collapsed: boolean;
   isCode: boolean;
   description: string;
+  questionMode: string;
   imageUrl: string;
   handleImage: (id: string, value: string) => void;
   toggleCollapase: (id: string) => void;
@@ -40,7 +41,9 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
 
   return (
     <div key={props.id} id={props.id} className="flex pt-8 pb-3">
-      <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 p-4 px-8">
+      <div
+        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 p-4 px-8 ${props.questionMode === "edit" ? "border-2 border-blue-500" : props.questionMode === "new" ? "border-2 border-green-500" : ""}`}
+      >
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">
             <h1
@@ -96,9 +99,10 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
               <input
                 required
                 type="checkbox"
-                {...(props.isCode ? { checked: true } : {})}
+                // {...(props.isCode ? { checked: true } : {})}
                 className="mr-2"
                 id="code-${props.id}"
+                checked={props.isCode} // new change
                 onChange={() => props.handleIsCode(props.id)}
               />
             </div>
@@ -117,7 +121,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
 
               <div
                 className="
-               flex gap-4"
+           flex gap-4"
               >
                 <QuizImageUpload
                   // setImage={(file) => {

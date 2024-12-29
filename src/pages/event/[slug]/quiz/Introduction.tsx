@@ -4,6 +4,8 @@ import { GetTeamDetailsDocument } from "~/generated/generated";
 import { GetQuizByIdDocument } from "~/generated/generated";
 import { VerifyQuizPasswordDocument } from "~/generated/generated";
 import { useMutation } from "@apollo/client";
+import { useAuth } from "~/hooks/useAuth"; // For testing purposes
+import { Role } from "~/generated/generated"; // For testing purposes
 
 type Question = {
   id: string;
@@ -27,6 +29,7 @@ const IntroductionPage = ({
   quizId: string;
 }) => {
   // const [Id] = useState(quizId);
+  const { user, loading } = useAuth(); // For testing purposes
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
@@ -110,6 +113,10 @@ const IntroductionPage = ({
     if (myTeamData?.myTeam?.__typename === "QueryMyTeamSuccess") {
       setIsRegistered(true);
     }
+    if (user && user.role === Role.Organizer) {
+      // For testing purposes
+      setIsRegistered(true); // For testing purposes
+    } // For testing purposes
     if (data?.getQuizById?.__typename === "QueryGetQuizByIdSuccess") {
       console.log(data.getQuizById.data);
       setQuizData(data.getQuizById.data);

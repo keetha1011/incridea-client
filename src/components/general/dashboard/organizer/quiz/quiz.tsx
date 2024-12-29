@@ -291,7 +291,13 @@ const Quiz: React.FC<{
     setSave(false);
 
     setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, questionText: value } : q)),
+      prev.map((q) =>
+        q.id === id
+          ? q.mode === "view"
+            ? { ...q, questionText: value, mode: "edit" as const }
+            : { ...q, questionText: value }
+          : q,
+      ),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
@@ -316,7 +322,13 @@ const Quiz: React.FC<{
     setSave(false);
 
     setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, imageUrl: value } : q)),
+      prev.map((q) =>
+        q.id === id
+          ? q.mode === "view"
+            ? { ...q, imageUrl: value, mode: "edit" as const }
+            : { ...q, imageUrl: value }
+          : q,
+      ),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
@@ -347,13 +359,22 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) =>
         q.id === id
-          ? {
-              ...q,
-              options: q.options.map((opt, i) =>
-                i === optionIndex ? value : opt,
-              ),
-              answer: q.ansIndex === optionIndex ? value : q.answer,
-            }
+          ? q.mode === "view"
+            ? {
+                ...q,
+                options: q.options.map((opt, i) =>
+                  i === optionIndex ? value : opt,
+                ),
+                answer: q.ansIndex === optionIndex ? value : q.answer,
+                mode: "edit" as const,
+              }
+            : {
+                ...q,
+                options: q.options.map((opt, i) =>
+                  i === optionIndex ? value : opt,
+                ),
+                answer: q.ansIndex === optionIndex ? value : q.answer,
+              }
           : q,
       ),
     );
@@ -404,7 +425,14 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) =>
         q.id === id
-          ? { ...q, ansIndex: optIndex, answer: q.options[optIndex] ?? "" }
+          ? q.mode === "view"
+            ? {
+                ...q,
+                ansIndex: optIndex,
+                answer: q.options[optIndex] ?? "",
+                mode: "edit" as const,
+              }
+            : { ...q, ansIndex: optIndex, answer: q.options[optIndex] ?? "" }
           : q,
       ),
     );
@@ -443,7 +471,11 @@ const Quiz: React.FC<{
 
     setQuestions((prev) =>
       prev.map((q) =>
-        q.id === id ? { ...q, options: [...q.options, ""] } : q,
+        q.id === id
+          ? q.mode === "view"
+            ? { ...q, options: [...q.options, ""], mode: "edit" as const }
+            : { ...q, options: [...q.options, ""] }
+          : q,
       ),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
@@ -470,7 +502,9 @@ const Quiz: React.FC<{
     setQuestions((prev) =>
       prev.map((q) =>
         q.id === id && q.options.length > 2
-          ? { ...q, options: q.options.slice(0, -1) }
+          ? q.mode === "view"
+            ? { ...q, options: q.options.slice(0, -1), mode: "edit" as const }
+            : { ...q, options: q.options.slice(0, -1) }
           : q,
       ),
     );
@@ -503,7 +537,13 @@ const Quiz: React.FC<{
     setSave(false);
 
     setQuestions((prev) =>
-      prev.map((q) => (q.id === id ? { ...q, isCode: !q.isCode } : q)),
+      prev.map((q) =>
+        q.id === id
+          ? q.mode === "view"
+            ? { ...q, isCode: !q.isCode, mode: "edit" as const }
+            : { ...q, isCode: !q.isCode }
+          : q,
+      ),
     );
     const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
     if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
@@ -528,7 +568,11 @@ const Quiz: React.FC<{
 
     setQuestions((prevQuestions) => {
       const updatedQuestions = prevQuestions.map((q) =>
-        q.id === id ? { ...q, description: value } : q,
+        q.id === id
+          ? q.mode === "view"
+            ? { ...q, description: value, mode: "edit" as const }
+            : { ...q, description: value }
+          : q,
       );
       return updatedQuestions;
     });
@@ -774,6 +818,7 @@ const Quiz: React.FC<{
               isCode={q.isCode}
               description={q.description}
               imageUrl={q.imageUrl}
+              questionMode={q.mode}
               handleImage={handleImage}
               toggleCollapase={toggleCollapase}
               handleQuestionTextChange={handleQuestionTextChange}

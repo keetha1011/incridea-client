@@ -1,8 +1,9 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
 import { type FC, useState } from "react";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
+import { useAuth } from "~/hooks/useAuth";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
@@ -12,6 +13,7 @@ import {
   DeleteJudgeDocument,
   DeleteRoundDocument,
   type EventByOrganizerQuery,
+  EventByOrganizerDocument, // for testing
 } from "~/generated/generated";
 
 import CreateCriteriaModal from "./createCriteriaModal";
@@ -19,6 +21,7 @@ import CreateJudgeModal from "./createJudgeModal";
 import CreateQuizModal from "./createQuizModal";
 import RoundAddModal from "./roundsAddModal";
 import Link from "next/link";
+import Spinner from "~/components/spinner";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -35,6 +38,18 @@ const RoundsSidebar: FC<{
       awaitRefetchQueries: true,
     },
   );
+
+  // for testing start
+
+  const { user } = useAuth();
+
+  const { data, loading } = useQuery(EventByOrganizerDocument, {
+    variables: {
+      organizerId: user?.id ?? "",
+    },
+  });
+
+  // for testing end
 
   const [deleteJudge, { loading: deleteJudgeLoading }] = useMutation(
     DeleteJudgeDocument,
@@ -124,6 +139,18 @@ const RoundsSidebar: FC<{
 
     await createToast(promise, "Publishing quiz...");
   };
+  // for testing start
+  if (loading) {
+    return <Spinner />;
+  } else {
+    if (!data || data.eventByOrganizer.length == 0) return <div>No events</div>;
+
+    if (data.eventByOrganizer.length === 0) {
+      return <div>No events</div>;
+    }
+  }
+
+  // for testing end
 
   return (
     <div className="flex flex-col gap-5 px-2 pb-2">
@@ -314,10 +341,12 @@ const RoundsSidebar: FC<{
                     )}
                     {!round.quiz?.allowAttempts && (
                       <CreateQuizModal
+                        testing={`/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`} // for testing
                         eventId={eventId}
                         roundNo={selectedRound}
                         quizDetails={
                           round.quiz && {
+                            quizId: round.quiz.id, // for testing
                             name: round.quiz.name,
                             description: round.quiz.description ?? "",
                             password: round.quiz.password,
