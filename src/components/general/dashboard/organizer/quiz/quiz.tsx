@@ -647,7 +647,7 @@ const Quiz: React.FC<{
       if (quizId) {
         console.log("Quiz Submitted:", { quizDetails, questions });
         console.log("success");
-        toast.success("Quiz Submitted Successfully");
+        toast.success("Questions saved successfully");
       } else {
         toast.error("Error updating quiz");
       }
@@ -684,133 +684,140 @@ const Quiz: React.FC<{
   }, [localQuestions, dbQuestions]);
 
   return (
-    <div className="my-12">
-      <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/90 p-6 px-8">
-        <div className="flex flex-row w-full justify-between">
-          <div className="flex flex-row items-center">
+    <>
+      {quizLoading && (
+        <div className="flex justify-center items-center h-full">
+          <BiLoaderAlt className="animate-spin text-4xl" />
+        </div>
+      )}
+      <div className="my-12">
+        <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/90 p-6 px-8">
+          <div className="flex flex-row w-full justify-between">
+            <div className="flex flex-row items-center">
+              <label
+                className="self-center font-gilroy text-xl"
+                htmlFor="quizTitle"
+              >
+                Quiz Title:
+              </label>
+              <input
+                className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
+                placeholder="Enter quiz title"
+                id="quizTitle"
+                value={quizDetails.quizTitle}
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-row font-gilroy text-xl self-center text-nowrap items-center">
+              <label htmlFor="startTime" className="w-full">
+                Start Time:
+              </label>
+              <input
+                className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
+                placeholder="Quiz Start Time"
+                id="startTime"
+                value={quizDetails.startTime}
+                readOnly
+              />
+              <label htmlFor="startTime" className="w-full ml-12">
+                End Time:
+              </label>
+              <input
+                className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
+                placeholder="Quiz End Time"
+                id="endTime"
+                value={quizDetails.endTime}
+                readOnly
+              />
+            </div>
+          </div>
+          {quizDetails.description && (
+            <div className="flex flex-row w-full">
+              <textarea
+                name="quizDescription"
+                id="quizDescription"
+                rows={4}
+                readOnly
+                className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
+                placeholder="Quiz Description"
+                value={quizDetails.description}
+              ></textarea>
+            </div>
+          )}
+          <div className="flex flex-row items-center mt-4">
             <label
               className="self-center font-gilroy text-xl"
-              htmlFor="quizTitle"
+              htmlFor="quizPassword"
             >
-              Quiz Title:
+              Quiz Password:
             </label>
             <input
               className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
               placeholder="Enter quiz title"
               id="quizTitle"
-              value={quizDetails.quizTitle}
-              readOnly
-            />
-          </div>
-
-          <div className="flex flex-row font-gilroy text-xl self-center text-nowrap items-center">
-            <label htmlFor="startTime" className="w-full">
-              Start Time:
-            </label>
-            <input
-              className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
-              placeholder="Quiz Start Time"
-              id="startTime"
-              value={quizDetails.startTime}
-              readOnly
-            />
-            <label htmlFor="startTime" className="w-full ml-12">
-              End Time:
-            </label>
-            <input
-              className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
-              placeholder="Quiz End Time"
-              id="endTime"
-              value={quizDetails.endTime}
+              value={quizDetails.password}
               readOnly
             />
           </div>
         </div>
-        {quizDetails.description && (
-          <div className="flex flex-row w-full">
-            <textarea
-              name="quizDescription"
-              id="quizDescription"
-              rows={4}
-              readOnly
-              className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
-              placeholder="Quiz Description"
-              value={quizDetails.description}
-            ></textarea>
-          </div>
-        )}
-        <div className="flex flex-row items-center mt-4">
-          <label
-            className="self-center font-gilroy text-xl"
-            htmlFor="quizPassword"
+        <div className="flex flex-col min-h-fit">
+          {questions.map((q, index) => (
+            <QuestionComp
+              key={q.id}
+              id={q.id}
+              questionText={q.questionText}
+              index={index}
+              options={q.options}
+              ansIndex={q.ansIndex}
+              collapsed={q.collapsed}
+              isCode={q.isCode}
+              description={q.description}
+              imageUrl={q.imageUrl}
+              handleImage={handleImage}
+              toggleCollapase={toggleCollapase}
+              handleQuestionTextChange={handleQuestionTextChange}
+              handleOptionChange={handleOptionChange}
+              handleAnswerChange={handleAnswerChange}
+              handleNewOption={handleNewOption}
+              handleDeleteOption={handleDeleteOption}
+              handleDeleteQuestions={handleDeleteQuestions}
+              handleAddQuestions={handleAddQuestions}
+              handleCopyQuestion={handleCopyQuestion}
+              handleIsCode={handleIsCode}
+              handleDescriptionChange={handleDescriptionChange}
+            />
+          ))}
+        </div>
+        <div className="flex mt-4 items-center">
+          <Button
+            className="rounded-md h-14 w-auto fixed bottom-12 left-12 z-50"
+            intent={saved ? "info" : "danger"}
+            size={"large"}
+            disabled={updateQuizLoading}
+            onClick={handlePrint}
           >
-            Quiz Password:
-          </label>
-          <input
-            className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
-            placeholder="Enter quiz title"
-            id="quizTitle"
-            value={quizDetails.password}
-            readOnly
-          />
+            {updateQuizLoading ? (
+              <>
+                <BiLoaderAlt className="animate-spin text-xl" />
+                Saving Draft...{" "}
+              </>
+            ) : (
+              <>
+                <Save className="text-xl" /> Save Draft
+              </>
+            )}
+          </Button>
         </div>
-      </div>
-      <div className="flex flex-col min-h-fit">
-        {questions.map((q, index) => (
-          <QuestionComp
-            key={q.id}
-            id={q.id}
-            questionText={q.questionText}
-            index={index}
-            options={q.options}
-            ansIndex={q.ansIndex}
-            collapsed={q.collapsed}
-            isCode={q.isCode}
-            description={q.description}
-            imageUrl={q.imageUrl}
-            handleImage={handleImage}
-            toggleCollapase={toggleCollapase}
-            handleQuestionTextChange={handleQuestionTextChange}
-            handleOptionChange={handleOptionChange}
-            handleAnswerChange={handleAnswerChange}
-            handleNewOption={handleNewOption}
-            handleDeleteOption={handleDeleteOption}
-            handleDeleteQuestions={handleDeleteQuestions}
-            handleAddQuestions={handleAddQuestions}
-            handleCopyQuestion={handleCopyQuestion}
-            handleIsCode={handleIsCode}
-            handleDescriptionChange={handleDescriptionChange}
-          />
-        ))}
-      </div>
-      <div className="flex mt-4 items-center">
         <Button
-          className="rounded-md h-14 w-auto fixed bottom-12 left-12 z-50"
-          intent={saved ? "info" : "danger"}
-          size={"large"}
-          disabled={updateQuizLoading}
-          onClick={handlePrint}
+          intent={"success"}
+          onClick={handleAddQuestions}
+          className="fixed bottom-12 font-bold rounded-lg right-12 h-14 w-auto bg-blue-500 text-white hover:bg-blue-600 z-50"
         >
-          {updateQuizLoading ? (
-            <>
-              <BiLoaderAlt className="animate-spin text-xl" />
-              Saving Draft...{" "}
-            </>
-          ) : (
-            <>
-              <Save className="text-xl" /> Save Draft
-            </>
-          )}
+          Add Question +
         </Button>
       </div>
-      <Button
-        intent={"success"}
-        onClick={handleAddQuestions}
-        className="fixed bottom-12 font-bold rounded-lg right-12 h-14 w-auto bg-blue-500 text-white hover:bg-blue-600 z-50"
-      >
-        Add Question +
-      </Button>
-    </div>
+    </>
   );
 };
 

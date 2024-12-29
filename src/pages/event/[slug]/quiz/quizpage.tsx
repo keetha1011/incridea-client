@@ -319,7 +319,7 @@ const QuizPage = ({
             </span>
           </h2>
 
-          <div className="relative bg-glassy bg-opacity-80 p-4 md:p-6 w-3/4 md:w-1/2 h-[80%] overflow-y-auto rounded-3xl shadow-2xl">
+          <div className="relative bg-glassy bg-opacity-60 p-4 md:p-6 w-3/4 md:w-1/2 h-[80%] overflow-y-auto rounded-3xl shadow-2xl bg-white">
             <div className="space-y-6 mb-6">
               {questions.map((question, index) => (
                 <div
@@ -331,7 +331,7 @@ const QuizPage = ({
                     Q{index + 1}
                   </span>
                   <h3
-                    className={`font-semibold text-gray-700 mb-4 pl-10 text-sm md:text-lg ${index >= 9 && "mx-2"}`}
+                    className={`font-semibold text-gray-700 mb-4 pl-10 text-sm md:text-lg break-words ${index >= 9 && "mx-2"}`}
                   >
                     {question.question}
                   </h3>
@@ -339,7 +339,7 @@ const QuizPage = ({
                     {question.options.map((option) => (
                       <p
                         key={option.id}
-                        className={`px-4 py-2 rounded-lg shadow ${
+                        className={`px-4 py-2 rounded-lg shadow break-words ${
                           selectedAnswers.find(
                             (answer) => answer.questionId === question.id,
                           )?.id === option.id

@@ -29,7 +29,7 @@ const AttemptQuizPage = ({ quizId, error }: Props) => {
   }
 
   return (
-    <div className=" mt-16 border border-black bg-white">
+    <div className=" mt-16 border border-b-0">
       {isVerified ? (
         <QuizPage questions={questions} quizId={quizId} />
       ) : (
