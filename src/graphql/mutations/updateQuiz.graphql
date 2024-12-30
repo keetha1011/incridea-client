@@ -7,7 +7,6 @@ mutation UpdateQuiz(
     image: ""
     isCode: false
     mode: ""
-    points: 10
     options: { isAnswer: false, value: "" }
   }
 ) {

@@ -6,7 +6,8 @@ mutation CreateQuiz(
   $startTime: String = ""
   $roundId: String = ""
   $password: String = ""
-  $allowAttempts: Boolean = false
+  $points: Int = 1
+  $qualifyNext: Int = 5
 ) {
   createQuiz(
     endTime: $endTime
@@ -16,7 +17,8 @@ mutation CreateQuiz(
     startTime: $startTime
     description: $quizDescription
     password: $password
-    allowAttempts: $allowAttempts
+    points: $points
+    qualifyNext: $qualifyNext
   ) {
     ... on Error {
       __typename
@@ -24,17 +26,6 @@ mutation CreateQuiz(
     }
     ... on MutationCreateQuizSuccess {
       __typename
-      data {
-        description
-        endTime
-        eventId
-        id
-        name
-        roundNo
-        startTime
-        updatedAt
-        password
-      }
     }
   }
 }

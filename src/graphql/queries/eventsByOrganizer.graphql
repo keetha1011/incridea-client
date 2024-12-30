@@ -12,7 +12,12 @@ query EventByOrganizer($organizerId: ID!) {
         startTime
         endTime
         password
+        points
+        qualifyNext
         allowAttempts
+        questions {
+          id
+        }
       }
       criteria {
         id

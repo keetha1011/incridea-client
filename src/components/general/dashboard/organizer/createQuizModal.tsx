@@ -1,8 +1,9 @@
 import { useMutation } from "@apollo/client";
 import { type FC, useState } from "react";
 import Button from "~/components/button";
-import { TextInput, DateTimeInput } from "~/components/input";
-import { SettingsIcon } from "lucide-react";
+import { TextInput, NumberInput } from "~/components/input";
+import { DateTimePicker } from "~/components/datetime-picker";
+import { PencilIcon } from "lucide-react";
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
@@ -15,36 +16,41 @@ const CreateQuizModal: FC<{
   testing: string; // for testing
   eventId: string;
   roundNo: number;
+  roundDate?: string;
   quizDetails?: {
     quizId: string; // for testing
     name: string;
     description: string;
-    startTime: string;
-    endTime: string;
+    startTime: Date;
+    endTime: Date;
     password: string;
+    points: number;
+    qualifyNext: number;
   } | null;
-}> = ({ testing, eventId, roundNo, quizDetails }) => {
-  // for testing
-  const formatDate = (date: string): string => {
-    const gmtDate = new Date(date + "Z");
-    const localYear = gmtDate.getFullYear();
-    const localMonth = String(gmtDate.getMonth() + 1).padStart(2, "0");
-    const localDate = String(gmtDate.getDate()).padStart(2, "0");
-    const localHours = String(gmtDate.getHours()).padStart(2, "0");
-    const localMinutes = String(gmtDate.getMinutes()).padStart(2, "0");
-    return `${localYear}-${localMonth}-${localDate}T${localHours}:${localMinutes}`;
+}> = ({ testing, eventId, roundNo, roundDate, quizDetails }) => {
+  const formatDate = (date: Date | string): string => {
+    const inputDate = new Date(date.toString()).toLocaleString();
+    const [datePart, timePart] = inputDate.split(", ");
+    const [day, month, year] = (datePart ?? "").split("/").map(Number);
+    const fullDate = new Date(`${year}-${month}-${day} ${timePart}`);
+    return fullDate.toISOString();
   };
 
   const [showModal, setShowModal] = useState(false);
   const [quizInfo, setQuizInfo] = useState({
     name: quizDetails?.name ?? "",
     description: quizDetails?.description ?? "",
-    startTime: quizDetails?.startTime ? formatDate(quizDetails?.startTime) : "",
-    endTime: quizDetails?.endTime ? formatDate(quizDetails?.endTime) : "",
+    startTime: quizDetails?.startTime ?? roundDate ?? new Date(),
+    endTime: quizDetails?.endTime ?? roundDate ?? new Date(),
     password: quizDetails?.password ?? "",
+    points: quizDetails?.points ?? 1,
+    qualifyNext: quizDetails?.qualifyNext ?? 5,
   });
 
-  const [createQuiz, { loading }] = useMutation(CreateQuizDocument);
+  const [createQuiz, { loading }] = useMutation(CreateQuizDocument, {
+    refetchQueries: ["EventByOrganizer"],
+    awaitRefetchQueries: true,
+  });
 
   const isFormChanged = quizDetails
     ? JSON.stringify(quizInfo) !==
@@ -54,10 +60,13 @@ const CreateQuizModal: FC<{
         startTime: formatDate(quizDetails.startTime),
         endTime: formatDate(quizDetails.endTime),
         password: quizDetails.password,
+        points: !quizInfo.points ? quizInfo.points : quizDetails.points,
+        qualifyNext: !quizInfo.qualifyNext
+          ? quizInfo.qualifyNext
+          : quizDetails.qualifyNext,
       })
     : !!quizInfo.name &&
-      !!quizInfo.startTime &&
-      !!quizInfo.endTime &&
+      (quizInfo.startTime !== roundDate || quizInfo.endTime !== roundDate) &&
       !!quizInfo.password;
 
   const disabled = loading || !isFormChanged;
@@ -65,22 +74,37 @@ const CreateQuizModal: FC<{
   const handleCreateQuiz = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (new Date(quizInfo.startTime) > new Date(quizInfo.endTime)) {
-      toast.error("Start time cannot be greater than end time", {
-        duration: 5000,
+    if (new Date(quizInfo.startTime) >= new Date(quizInfo.endTime)) {
+      toast.error("End time has to be greater than start time", {
+        duration: 3000,
       });
+      return;
+    }
+
+    if (quizInfo.points < 1) {
+      toast.error("Points should be greater than 0", { duration: 3000 });
+      return;
+    }
+
+    if (quizInfo.qualifyNext < 5) {
+      toast.error(
+        "No. of teams to be qualified for the next round should be greater than 5",
+        { duration: 3000 },
+      );
       return;
     }
 
     const promise = createQuiz({
       variables: {
         quizDescription: quizInfo.description,
-        endTime: quizInfo.endTime,
+        endTime: new Date(quizInfo.endTime).toISOString(),
         eventId,
         quizTitle: quizInfo.name,
-        startTime: quizInfo.startTime,
+        startTime: new Date(quizInfo.startTime).toISOString(),
         roundId: String(roundNo),
         password: quizInfo.password,
+        points: quizInfo.points,
+        qualifyNext: quizInfo.qualifyNext,
       },
       refetchQueries: ["EventByOrganizer"],
       awaitRefetchQueries: true,
@@ -106,13 +130,20 @@ const CreateQuizModal: FC<{
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuizInfo({ ...quizInfo, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setQuizInfo({
+      ...quizInfo,
+      [name]:
+        ["points", "qualifyNext"].includes(name) && value !== ""
+          ? Number(value)
+          : value,
+    });
   };
 
   return (
     <div className="mt-5">
       {quizDetails ? (
-        <SettingsIcon
+        <PencilIcon
           onClick={() => setShowModal(true)}
           className="absolute right-0 top-0 m-4 cursor-pointer"
         />
@@ -122,14 +153,14 @@ const CreateQuizModal: FC<{
         </Button>
       )}
       <Modal
-        title={`Create Quiz`}
+        title={`${quizDetails ? "Edit" : "Create"} Quiz`}
         showModal={showModal}
         onClose={() => setShowModal(false)}
         size="medium"
       >
         <div
           className={`p-5 ${
-            loading && "pointer-events-none cursor-not-allowed opacity-50"
+            loading && "pointer-events-none cursor-not-allowed opacity-50 z-30"
           }`}
         >
           <form className="flex flex-col gap-5" onSubmit={handleCreateQuiz}>
@@ -158,22 +189,54 @@ const CreateQuizModal: FC<{
                 disabled={loading}
                 onChange={handleChange}
               />
-              <label htmlFor="startTime">Start Time</label>
-              <DateTimeInput
-                name="startTime"
-                placeholder="Start Time"
-                value={quizInfo.startTime}
-                disabled={loading}
-                onChange={handleChange}
-              />
-              <label htmlFor="endTime">End Time</label>
-              <DateTimeInput
-                name="endTime"
-                placeholder="End Time"
-                value={quizInfo.endTime}
-                disabled={loading}
-                onChange={handleChange}
-              />
+              {quizDetails && (
+                <div className="flex flex-col space-y-2">
+                  <label htmlFor="points">
+                    Points to be awarded for right answers
+                  </label>
+                  <NumberInput
+                    name="points"
+                    placeholder="Enter points"
+                    value={quizInfo.points}
+                    disabled={loading}
+                    onChange={handleChange}
+                  />
+                  <label htmlFor="qualifyNext">
+                    No. of teams to be qualified for the next round
+                  </label>
+                  <NumberInput
+                    name="qualifyNext"
+                    placeholder="Enter no. of teams"
+                    value={quizInfo.qualifyNext}
+                    disabled={loading}
+                    onChange={handleChange}
+                  />
+                </div>
+              )}
+              {
+                <div className="sm:grid grid-cols-2 gap-2">
+                  <div className="flex flex-col gap-2 sm:w-3/5">
+                    <label htmlFor="startTime">Start Time</label>
+                    <DateTimePicker
+                      type="time"
+                      value={new Date(quizInfo.startTime)}
+                      onChange={(date) =>
+                        setQuizInfo({ ...quizInfo, startTime: date })
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 sm:w-3/5">
+                    <label htmlFor="endTime">End Time</label>
+                    <DateTimePicker
+                      type="time"
+                      value={new Date(quizInfo.endTime)}
+                      onChange={(date) =>
+                        setQuizInfo({ ...quizInfo, endTime: date })
+                      }
+                    />
+                  </div>
+                </div>
+              }
             </div>
             <div className="flex justify-end">
               <Button intent={"ghost"} className="w-auto">

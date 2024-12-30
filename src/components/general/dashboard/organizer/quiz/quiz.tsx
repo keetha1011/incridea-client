@@ -645,7 +645,6 @@ const Quiz: React.FC<{
               id: question.id,
               question: question.questionText,
               isCode: question.isCode,
-              points: 10,
               options: question.options.map((opt, index) => ({
                 value: opt,
                 isAnswer: index === question.ansIndex,
