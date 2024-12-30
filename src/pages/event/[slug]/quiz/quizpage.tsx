@@ -101,7 +101,7 @@ const QuizPage = ({
         if (quizData.startTime && quizData.endTime) {
           setTimer(
             (new Date(quizData.endTime).getTime() -
-              new Date(quizData.startTime).getTime()) /
+              Date.now()) /
               1000
           );
         }
@@ -138,20 +138,20 @@ const QuizPage = ({
   };
 
   const formatTime = (seconds: number) => {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-
+    const totalSeconds = Math.floor(seconds);
+  
+    const h = Math.floor(totalSeconds / 3600); 
+    const m = Math.floor((totalSeconds % 3600) / 60); 
+    const s = totalSeconds % 60; 
+  
     const formattedMinutes = String(m).padStart(2, "0");
     const formattedSeconds = String(s).padStart(2, "0");
-
-    if (h > 0) {
-      const formattedHours = String(h).padStart(2, "0");
-      return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-    } else {
-      return `${formattedMinutes}:${formattedSeconds}`;
-    }
+  
+    return h > 0
+      ? `${String(h).padStart(2, "0")}:${formattedMinutes}:${formattedSeconds}`
+      : `${formattedMinutes}:${formattedSeconds}`;
   };
+  
   useEffect(() => {
     console.log("Selected Answers", selectedAnswers);
   }, [selectedAnswers]);
