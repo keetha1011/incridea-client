@@ -29,11 +29,9 @@ const CreateQuizModal: FC<{
   } | null;
 }> = ({ testing, eventId, roundNo, roundDate, quizDetails }) => {
   const formatDate = (date: Date | string): string => {
-    const inputDate = new Date(date.toString()).toLocaleString();
-    const [datePart, timePart] = inputDate.split(", ");
-    const [day, month, year] = (datePart ?? "").split("/").map(Number);
-    const fullDate = new Date(`${year}-${month}-${day} ${timePart}`);
-    return fullDate.toISOString();
+    const inputDate = new Date(date).toISOString();
+    console.log("inputDate", inputDate);
+    return inputDate;
   };
 
   const [showModal, setShowModal] = useState(false);
@@ -46,7 +44,6 @@ const CreateQuizModal: FC<{
     points: quizDetails?.points ?? 1,
     qualifyNext: quizDetails?.qualifyNext ?? 5,
   });
-
   const [createQuiz, { loading }] = useMutation(CreateQuizDocument, {
     refetchQueries: ["EventByOrganizer"],
     awaitRefetchQueries: true,

@@ -304,6 +304,7 @@ export type Mutation = {
   updateQuiz: MutationUpdateQuizResult;
   updateQuizStatus: MutationUpdateQuizStatusResult;
   updateStatus: MutationUpdateStatusResult;
+  useReferralCode: MutationUseReferralCodeResult;
   verifyEmail: MutationVerifyEmailResult;
   verifyQuizPassword: MutationVerifyQuizPasswordResult;
 };
@@ -620,6 +621,10 @@ export type MutationUpdateStatusArgs = {
   hotelId: Scalars["String"]["input"];
   room: Scalars["String"]["input"];
   status: Scalars["String"]["input"];
+};
+
+export type MutationUseReferralCodeArgs = {
+  referralCode: Scalars["String"]["input"];
 };
 
 export type MutationVerifyEmailArgs = {
@@ -1113,6 +1118,15 @@ export type MutationUpdateStatusResult = Error | MutationUpdateStatusSuccess;
 export type MutationUpdateStatusSuccess = {
   __typename?: "MutationUpdateStatusSuccess";
   data: UserInHotel;
+};
+
+export type MutationUseReferralCodeResult =
+  | Error
+  | MutationUseReferralCodeSuccess;
+
+export type MutationUseReferralCodeSuccess = {
+  __typename?: "MutationUseReferralCodeSuccess";
+  data: User;
 };
 
 export type MutationVerifyEmailResult = Error | MutationVerifyEmailSuccess;
