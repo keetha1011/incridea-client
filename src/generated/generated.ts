@@ -405,21 +405,20 @@ export type MutationCreateQuestionArgs = {
   description?: InputMaybe<Scalars["String"]["input"]>;
   image?: InputMaybe<Scalars["String"]["input"]>;
   isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
-  negativePoint?: InputMaybe<Scalars["Int"]["input"]>;
   options?: InputMaybe<Array<OptionsCreateInput2>>;
-  points: Scalars["Int"]["input"];
   question: Scalars["String"]["input"];
   quizId: Scalars["String"]["input"];
   type?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationCreateQuizArgs = {
-  allowAttempts: Scalars["Boolean"]["input"];
   description?: InputMaybe<Scalars["String"]["input"]>;
   endTime: Scalars["String"]["input"];
   eventId: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
   password: Scalars["String"]["input"];
+  points: Scalars["Int"]["input"];
+  qualifyNext: Scalars["Int"]["input"];
   roundId: Scalars["String"]["input"];
   startTime: Scalars["String"]["input"];
 };
@@ -613,7 +612,6 @@ export type MutationUpdateQuizArgs = {
 
 export type MutationUpdateQuizStatusArgs = {
   allowAttempts: Scalars["Boolean"]["input"];
-  password: Scalars["String"]["input"];
   quizId: Scalars["String"]["input"];
 };
 
@@ -1650,9 +1648,7 @@ export type Question = {
   id: Scalars["ID"]["output"];
   image?: Maybe<Scalars["String"]["output"]>;
   isCode: Scalars["Boolean"]["output"];
-  negativePoint: Scalars["Int"]["output"];
   options: Array<Options>;
-  point: Scalars["Int"]["output"];
   question: Scalars["String"]["output"];
   quiz: Quiz;
   quizId: Scalars["ID"]["output"];
@@ -1665,9 +1661,7 @@ export type QuestionsCreateInput = {
   image?: InputMaybe<Scalars["String"]["input"]>;
   isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
   mode?: InputMaybe<Scalars["String"]["input"]>;
-  negativePoints?: InputMaybe<Scalars["Int"]["input"]>;
   options?: InputMaybe<Array<OptionsCreateInput>>;
-  points?: InputMaybe<Scalars["Int"]["input"]>;
   question: Scalars["String"]["input"];
 };
 
@@ -1680,6 +1674,8 @@ export type Quiz = {
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
   password: Scalars["String"]["output"];
+  points: Scalars["Int"]["output"];
+  qualifyNext: Scalars["Int"]["output"];
   questions: Array<Question>;
   roundNo: Scalars["Int"]["output"];
   startTime: Scalars["DateTime"]["output"];
@@ -2122,25 +2118,6 @@ export type CreateJudgeMutation = {
     | { __typename: "MutationCreateJudgeSuccess" };
 };
 
-export type CreateQuestionMutationVariables = Exact<{
-  options?: InputMaybe<Array<OptionsCreateInput2> | OptionsCreateInput2>;
-  image?: InputMaybe<Scalars["String"]["input"]>;
-  quizId?: InputMaybe<Scalars["String"]["input"]>;
-  question?: InputMaybe<Scalars["String"]["input"]>;
-  description?: InputMaybe<Scalars["String"]["input"]>;
-  isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
-}>;
-
-export type CreateQuestionMutation = {
-  __typename?: "Mutation";
-  createQuestion:
-    | { __typename: "Error"; message: string }
-    | {
-        __typename: "MutationCreateQuestionSuccess";
-        data: { __typename?: "Question"; id: string };
-      };
-};
-
 export type CreateQuizMutationVariables = Exact<{
   quizDescription?: InputMaybe<Scalars["String"]["input"]>;
   endTime?: InputMaybe<Scalars["String"]["input"]>;
@@ -2149,28 +2126,15 @@ export type CreateQuizMutationVariables = Exact<{
   startTime?: InputMaybe<Scalars["String"]["input"]>;
   roundId?: InputMaybe<Scalars["String"]["input"]>;
   password?: InputMaybe<Scalars["String"]["input"]>;
-  allowAttempts?: InputMaybe<Scalars["Boolean"]["input"]>;
+  points?: InputMaybe<Scalars["Int"]["input"]>;
+  qualifyNext?: InputMaybe<Scalars["Int"]["input"]>;
 }>;
 
 export type CreateQuizMutation = {
   __typename?: "Mutation";
   createQuiz:
     | { __typename: "Error"; message: string }
-    | {
-        __typename: "MutationCreateQuizSuccess";
-        data: {
-          __typename?: "Quiz";
-          description?: string | null;
-          endTime: Date;
-          eventId: string;
-          id: string;
-          name: string;
-          roundNo: number;
-          startTime: Date;
-          updatedAt: Date;
-          password: string;
-        };
-      };
+    | { __typename: "MutationCreateQuizSuccess" };
 };
 
 export type CreateRoundMutationVariables = Exact<{
@@ -2868,6 +2832,18 @@ export type UpdateQuizMutation = {
       };
 };
 
+export type UpdateQuizStatusMutationVariables = Exact<{
+  quizId?: InputMaybe<Scalars["String"]["input"]>;
+  allowAttempts?: InputMaybe<Scalars["Boolean"]["input"]>;
+}>;
+
+export type UpdateQuizStatusMutation = {
+  __typename?: "Mutation";
+  updateQuizStatus:
+    | { __typename: "Error"; message: string }
+    | { __typename: "MutationUpdateQuizStatusSuccess" };
+};
+
 export type VerifyEmailMutationVariables = Exact<{
   token: Scalars["String"]["input"];
 }>;
@@ -2906,7 +2882,6 @@ export type VerifyQuizPasswordMutation = {
             id: string;
             image?: string | null;
             isCode: boolean;
-            point: number;
             question: string;
             options: Array<{
               __typename?: "Options";
@@ -3361,7 +3336,10 @@ export type EventByOrganizerQuery = {
         startTime: Date;
         endTime: Date;
         password: string;
+        points: number;
+        qualifyNext: number;
         allowAttempts: boolean;
+        questions: Array<{ __typename?: "Question"; id: string }>;
       } | null;
       criteria?: Array<{
         __typename?: "Criteria";
@@ -6150,219 +6128,6 @@ export const CreateJudgeDocument = {
     },
   ],
 } as unknown as DocumentNode<CreateJudgeMutation, CreateJudgeMutationVariables>;
-export const CreateQuestionDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "CreateQuestion" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "options" },
-          },
-          type: {
-            kind: "ListType",
-            type: {
-              kind: "NonNullType",
-              type: {
-                kind: "NamedType",
-                name: { kind: "Name", value: "OptionsCreateInput2" },
-              },
-            },
-          },
-          defaultValue: {
-            kind: "ObjectValue",
-            fields: [
-              {
-                kind: "ObjectField",
-                name: { kind: "Name", value: "isAnswer" },
-                value: { kind: "BooleanValue", value: false },
-              },
-              {
-                kind: "ObjectField",
-                name: { kind: "Name", value: "value" },
-                value: { kind: "StringValue", value: "", block: false },
-              },
-            ],
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "image" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-          defaultValue: { kind: "StringValue", value: "", block: false },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "quizId" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-          defaultValue: { kind: "StringValue", value: "", block: false },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "question" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-          defaultValue: { kind: "StringValue", value: "", block: false },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "description" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-          defaultValue: { kind: "StringValue", value: "", block: false },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "isCode" },
-          },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
-          defaultValue: { kind: "BooleanValue", value: false },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "createQuestion" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "points" },
-                value: { kind: "IntValue", value: "10" },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "question" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "question" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "quizId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "quizId" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "image" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "image" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "options" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "options" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "isCode" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "isCode" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "description" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "description" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: {
-                      kind: "Name",
-                      value: "MutationCreateQuestionSuccess",
-                    },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "data" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: { kind: "Name", value: "Error" },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateQuestionMutation,
-  CreateQuestionMutationVariables
->;
 export const CreateQuizDocument = {
   kind: "Document",
   definitions: [
@@ -6438,10 +6203,19 @@ export const CreateQuizDocument = {
           kind: "VariableDefinition",
           variable: {
             kind: "Variable",
-            name: { kind: "Name", value: "allowAttempts" },
+            name: { kind: "Name", value: "points" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
-          defaultValue: { kind: "BooleanValue", value: false },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "IntValue", value: "1" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "qualifyNext" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "IntValue", value: "5" },
         },
       ],
       selectionSet: {
@@ -6509,10 +6283,18 @@ export const CreateQuizDocument = {
               },
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "allowAttempts" },
+                name: { kind: "Name", value: "points" },
                 value: {
                   kind: "Variable",
-                  name: { kind: "Name", value: "allowAttempts" },
+                  name: { kind: "Name", value: "points" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "qualifyNext" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "qualifyNext" },
                 },
               },
             ],
@@ -6551,51 +6333,6 @@ export const CreateQuizDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "data" },
-                        selectionSet: {
-                          kind: "SelectionSet",
-                          selections: [
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "description" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "endTime" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "eventId" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "id" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "name" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "roundNo" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "startTime" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "updatedAt" },
-                            },
-                            {
-                              kind: "Field",
-                              name: { kind: "Name", value: "password" },
-                            },
-                          ],
-                        },
                       },
                     ],
                   },
@@ -11632,11 +11369,6 @@ export const UpdateQuizDocument = {
               },
               {
                 kind: "ObjectField",
-                name: { kind: "Name", value: "points" },
-                value: { kind: "IntValue", value: "10" },
-              },
-              {
-                kind: "ObjectField",
                 name: { kind: "Name", value: "options" },
                 value: {
                   kind: "ObjectValue",
@@ -11837,6 +11569,110 @@ export const UpdateQuizDocument = {
     },
   ],
 } as unknown as DocumentNode<UpdateQuizMutation, UpdateQuizMutationVariables>;
+export const UpdateQuizStatusDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateQuizStatus" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "allowAttempts" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Boolean" } },
+          defaultValue: { kind: "BooleanValue", value: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateQuizStatus" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "quizId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "allowAttempts" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "allowAttempts" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationUpdateQuizStatusSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateQuizStatusMutation,
+  UpdateQuizStatusMutationVariables
+>;
 export const VerifyEmailDocument = {
   kind: "Document",
   definitions: [
@@ -12085,10 +11921,6 @@ export const VerifyQuizPasswordDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "isCode" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "point" },
                                   },
                                   {
                                     kind: "Field",
@@ -13850,7 +13682,28 @@ export const EventByOrganizerDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "points" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "qualifyNext" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "allowAttempts" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "questions" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },

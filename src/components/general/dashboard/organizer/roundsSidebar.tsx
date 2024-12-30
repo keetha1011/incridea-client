@@ -8,7 +8,7 @@ import { useAuth } from "~/hooks/useAuth";
 import Button from "~/components/button";
 import createToast from "~/components/toast";
 import {
-  CreateQuizDocument,
+  UpdateQuizStatusDocument,
   DeleteCriteriaDocument,
   DeleteJudgeDocument,
   DeleteRoundDocument,
@@ -21,6 +21,8 @@ import CreateJudgeModal from "./createJudgeModal";
 import CreateQuizModal from "./createQuizModal";
 import RoundAddModal from "./roundsAddModal";
 import Link from "next/link";
+import { HoverCard, HoverCardTrigger } from "@radix-ui/react-hover-card";
+import { HoverCardContent } from "~/components/ui/hover-card";
 import Spinner from "~/components/spinner";
 
 const RoundsSidebar: FC<{
@@ -67,8 +69,8 @@ const RoundsSidebar: FC<{
     },
   );
 
-  const [createQuiz, { loading: createQuizLoading }] = useMutation(
-    CreateQuizDocument,
+  const [updateQuizStatus, { loading: updateQuizStatusLoading }] = useMutation(
+    UpdateQuizStatusDocument,
     {
       refetchQueries: ["EventByOrganizer"],
       awaitRefetchQueries: true,
@@ -104,32 +106,20 @@ const RoundsSidebar: FC<{
     await createToast(promise, "Deleting criteria...");
   };
 
-  const handlePublishQuiz = async (
-    quiz: {
-      name: string;
-      description: string;
-      password: string;
-      startTime: string;
-      endTime: string;
-    },
-    allowAttempts: boolean,
-  ) => {
-    const promise = createQuiz({
+  const handlePublishQuiz = async (quizId: string, allowAttempts: boolean) => {
+    const promise = updateQuizStatus({
       variables: {
-        eventId: eventId,
-        roundId: String(selectedRound),
-        quizTitle: quiz.name,
-        quizDescription: quiz.description,
-        password: quiz.password,
-        startTime: quiz.startTime,
-        endTime: quiz.endTime,
-        allowAttempts: allowAttempts,
+        quizId,
+        allowAttempts,
       },
     })
       .then((res) => {
-        if (res.data?.createQuiz.__typename !== "MutationCreateQuizSuccess")
+        if (
+          res.data?.updateQuizStatus.__typename !==
+          "MutationUpdateQuizStatusSuccess"
+        )
           throw new Error(
-            res.data?.createQuiz.message ?? "Error publishing quiz",
+            res.data?.updateQuizStatus.message ?? "Error publishing quiz",
           );
       })
       .catch(async (err) => {
@@ -293,78 +283,128 @@ const RoundsSidebar: FC<{
             <CreateCriteriaModal eventId={eventId} roundNo={selectedRound} />
           </div>
 
-          <div className="mx-2 w-full rounded-lg bg-gray-700 p-3 relative">
-            <h1 className="text-xl font-bold">Quiz</h1>
-            {rounds.map((round) => (
-              <div key={round.eventId}>
-                {round.roundNo === selectedRound && (
-                  <>
-                    {round.quiz ? (
-                      <div className="space-y-2 mt-2">
-                        {!round.quiz.allowAttempts && (
-                          <Button intent={"dark"} className="w-auto">
-                            <Link
-                              href={`./organizer/quiz/${eventId}-${selectedRound}`}
-                            >
-                              Edit Quiz
-                            </Link>
-                          </Button>
-                        )}
-                        <Button
-                          intent={
-                            round.quiz.allowAttempts ? "danger" : "success"
+          {rounds.length !== selectedRound && (
+            <div className="mx-2 w-full rounded-lg bg-gray-700 p-3 relative">
+              <h1 className="text-xl font-bold">Quiz</h1>
+              {rounds.map((round) => (
+                <div key={round.eventId}>
+                  {round.roundNo === selectedRound && (
+                    <>
+                      {round.quiz ? (
+                        <div className="mt-2">
+                          {!round.quiz.allowAttempts && (
+                            <Button intent={"dark"} className="w-auto">
+                              <Link
+                                href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                              >
+                                Edit Quiz
+                              </Link>
+                            </Button>
+                          )}
+                          <HoverCard>
+                            <HoverCardTrigger>
+                              <Button
+                                intent={
+                                  round.quiz.allowAttempts
+                                    ? "danger"
+                                    : "success"
+                                }
+                                className="w-auto mt-2"
+                                onClick={() =>
+                                  handlePublishQuiz(
+                                    round.quiz?.id ?? "",
+                                    !round.quiz?.allowAttempts,
+                                  )
+                                }
+                              >
+                                {round.quiz.allowAttempts
+                                  ? "Unpublish"
+                                  : "Publish"}{" "}
+                                Quiz
+                              </Button>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="z-10 lg:bottom-0 bottom-10 lg:right-20 sm:-right-10 -right-20 absolute">
+                              <div className="sm:text-lg text-sm">
+                                <p className="text-center font-semibold sm:text-xl text-lg">
+                                  {round.quiz.name}
+                                </p>
+                                <p>{round.quiz.description}</p>
+                                <p>
+                                  <span className="font-semibold">Date: </span>
+                                  {new Date(round.date ?? "")?.toDateString()}
+                                </p>
+                                <p>
+                                  <span className="font-semibold">
+                                    Start Time:{" "}
+                                  </span>
+                                  {new Date(
+                                    round.quiz.startTime,
+                                  ).toLocaleTimeString()}
+                                </p>
+                                <p>
+                                  <span className="font-semibold">
+                                    End Time:{" "}
+                                  </span>
+                                  {new Date(
+                                    round.quiz.endTime,
+                                  ).toLocaleTimeString()}
+                                </p>
+                                <p>
+                                  <span className="font-semibold">
+                                    Points awarded:{" "}
+                                  </span>
+                                  {round.quiz.points}
+                                </p>
+                                <p>
+                                  <span className="font-semibold">
+                                    Qualifying Teams:{" "}
+                                  </span>
+                                  {round.quiz.qualifyNext}
+                                </p>
+                                <p>
+                                  <span className="font-semibold">
+                                    {round.quiz.allowAttempts
+                                      ? "Published"
+                                      : "Unpublished"}{" "}
+                                    questions:{" "}
+                                  </span>
+                                  {round.quiz.questions.length}
+                                </p>
+                              </div>
+                            </HoverCardContent>
+                          </HoverCard>
+                        </div>
+                      ) : (
+                        <p className="text-gray-400">No Quiz added yet.</p>
+                      )}
+                      {!round.quiz?.allowAttempts && (
+                        <CreateQuizModal
+                          testing={`/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`} // for testing
+                          eventId={eventId}
+                          roundNo={selectedRound}
+                          roundDate={new Date(
+                            round.date ?? new Date(),
+                          ).toISOString()}
+                          quizDetails={
+                            round.quiz && {
+                              quizId: round.quiz.id, // for testing
+                              name: round.quiz.name,
+                              description: round.quiz.description ?? "",
+                              password: round.quiz.password,
+                              startTime: new Date(round.quiz.startTime),
+                              endTime: new Date(round.quiz.endTime),
+                              points: round.quiz.points,
+                              qualifyNext: round.quiz.qualifyNext,
+                            }
                           }
-                          className="w-auto"
-                          onClick={() =>
-                            handlePublishQuiz(
-                              {
-                                name: round.quiz?.name ?? "",
-                                description: round.quiz?.description ?? "",
-                                password: round.quiz?.password ?? "",
-                                startTime: new Date(
-                                  round.quiz?.startTime ?? "",
-                                ).toISOString(),
-                                endTime: new Date(
-                                  round.quiz?.endTime ?? "",
-                                ).toISOString(),
-                              },
-                              !round.quiz?.allowAttempts,
-                            )
-                          }
-                        >
-                          {round.quiz.allowAttempts ? "Unpublish" : "Publish"}{" "}
-                          Quiz
-                        </Button>
-                      </div>
-                    ) : (
-                      <p className="text-gray-400">No Quiz added yet.</p>
-                    )}
-                    {!round.quiz?.allowAttempts && (
-                      <CreateQuizModal
-                        testing={`/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`} // for testing
-                        eventId={eventId}
-                        roundNo={selectedRound}
-                        quizDetails={
-                          round.quiz && {
-                            quizId: round.quiz.id, // for testing
-                            name: round.quiz.name,
-                            description: round.quiz.description ?? "",
-                            password: round.quiz.password,
-                            startTime: new Date(round.quiz.startTime)
-                              .toISOString()
-                              .slice(0, 16),
-                            endTime: new Date(round.quiz.endTime)
-                              .toISOString()
-                              .slice(0, 16),
-                          }
-                        }
-                      />
-                    )}
-                  </>
-                )}
-              </div>
-            ))}
-          </div>
+                        />
+                      )}
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </Tab.List>
       </Tab.Group>
     </div>
