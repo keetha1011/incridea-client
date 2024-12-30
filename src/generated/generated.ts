@@ -12730,7 +12730,6 @@ export const AccommodationRequestsByUserIdDocument = {
   AccommodationRequestsByUserIdQuery,
   AccommodationRequestsByUserIdQueryVariables
 >;
-
 export const CollegesDocument = {
   kind: "Document",
   definitions: [

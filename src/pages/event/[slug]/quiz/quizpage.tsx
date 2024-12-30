@@ -14,15 +14,17 @@ import { Navigation } from "swiper/modules";
 import {
   IconArrowLeft,
   IconArrowRight,
-  IconCheck,
   IconCircleCaretLeft,
   IconCircleCaretRight,
   IconStopwatch,
 } from "@tabler/icons-react";
+import { useRouter } from "next/router";
 
 type Question = {
   id: string;
   question: string;
+  description?: string | null;
+  isCode?: boolean;
   options: Options[];
 };
 
@@ -52,23 +54,37 @@ const QuizPage = ({
 }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Options[]>([]);
   const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
-    null,
+    null
   );
-  const [timer, setTimer] = useState<number>(0); // Initialize timer with 0
-  const [alert, setAlert] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
+
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [quizData, setQuizData] = useState<QuizData | null>(null);
-
+  const [timer, setTimer] = useState<number>(0);
+  const [alert, setAlert] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(
+    null
+  );
   const { data: quizFetchData } = useQuery(GetQuizByIdDocument, {
     variables: { id: quizId },
   });
 
-  const onSubmit = () => {
+  const router = useRouter();
+
+  const onSubmit = useCallback(() => {
     console.log(selectedAnswers);
     sessionStorage.removeItem("savedQuizData");
-  };
+    setIsReviewOpen(false);
+    setIsDialogOpen(true);
+    setTimeout(() => {
+      setIsDialogOpen(false);
+      router.push("/events").catch((error) => {
+        console.error("Error navigating to event page:", error);
+      });
+    }, 3000); // Redirect after 3 seconds
+  }, [selectedAnswers, router]);
 
   // const handleFinalSubmit = useCallback(() => {
   //   console.log(selectedAnswers);
@@ -78,52 +94,41 @@ const QuizPage = ({
 
   useEffect(() => {
     if (quizFetchData?.getQuizById.__typename === "QueryGetQuizByIdSuccess") {
-      console.log(quizFetchData.getQuizById.data);
-      setQuizData(quizFetchData.getQuizById.data);
-      if (
-        quizFetchData.getQuizById.data.startTime &&
-        quizFetchData.getQuizById.data.endTime
-      ) {
-        setTimer(
-          (new Date(quizFetchData.getQuizById.data.endTime).getTime() -
-            new Date().getTime()) /
-            1000,
-        );
+      const quizData = quizFetchData.getQuizById.data;
+      if (quizData) {
+        console.log(quizData);
+        setQuizData(quizData);
+        if (quizData.startTime && quizData.endTime) {
+          setTimer(
+            (new Date(quizData.endTime).getTime() -
+              new Date(quizData.startTime).getTime()) /
+              1000
+          );
+        }
       }
     }
-    const savedQuizData = sessionStorage.getItem("savedQuizData");
-    if (savedQuizData) {
-      setSelectedAnswers(JSON.parse(savedQuizData) as Options[]);
-    }
-
-    // const storedTimer = sessionStorage.getItem("timer");
-    // if (storedTimer) {
-    //   setTimer(Number(storedTimer));
-    // }
-  }, []);
-
+  }, [quizFetchData]);
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
         const newTime = Math.max(prev - 1, 0);
-        // sessionStorage.setItem("timer", String(newTime));
         if (newTime <= 30) {
           setAlert(true);
         }
         if (newTime === 0) {
-          // sessionStorage.removeItem("timer");
           onSubmit();
         }
         return newTime;
       });
     }, 1000);
+
     return () => clearInterval(interval);
   }, [onSubmit]);
 
   const handleOptionSelect = (option: Options) => {
     setSelectedAnswers((prev) => {
       const updatedAnswers = prev.filter(
-        (answer) => answer.questionId !== option.questionId,
+        (answer) => answer.questionId !== option.questionId
       );
       updatedAnswers.push(option);
       sessionStorage.setItem("savedQuizData", JSON.stringify(updatedAnswers));
@@ -133,11 +138,20 @@ const QuizPage = ({
   };
 
   const formatTime = (seconds: number) => {
-    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
-    return `${m}:${s}`;
-  };
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
 
+    const formattedMinutes = String(m).padStart(2, "0");
+    const formattedSeconds = String(s).padStart(2, "0");
+
+    if (h > 0) {
+      const formattedHours = String(h).padStart(2, "0");
+      return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    } else {
+      return `${formattedMinutes}:${formattedSeconds}`;
+    }
+  };
   useEffect(() => {
     console.log("Selected Answers", selectedAnswers);
   }, [selectedAnswers]);
@@ -240,13 +254,29 @@ const QuizPage = ({
                   <h3 className="text-lg font-semibold mb-4 text-gray-800">
                     {question.question}
                   </h3>
+                  {question.description && (
+                    <button
+                      className="mb-4 text-transparent w-fit md:w-30 rounded-lg bg-clip-text bg-gradient-to-br from-secondary-600 to-primary-400 hover:bg-gradient-to-tr hover:from-secondary-300 hover:to-primary-300 hover:bg-clip-text hover:text-transparent hover:underline hover:decoration-4 hover:decoration-gradient-to-br"
+                      onClick={() =>
+                        question.description &&
+                        setSelectedDescription(question.description)
+                      }
+                    >
+                      {question.isCode ? (
+                        <span>View Code</span>
+                      ) : (
+                        <span>View Description</span>
+                      )}
+                    </button>
+                  )}
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {question.options.map((option) => (
                       <button
                         key={option.id}
                         className={`p-4 rounded-lg shadow-lg text-left ${
                           Object.values(selectedAnswers).find(
-                            (answer) => answer.questionId === question.id,
+                            (answer) => answer.questionId === question.id
                           )?.id === option.id
                             ? "bg-green-200 text-green-800"
                             : "bg-gray-100 text-gray-700"
@@ -275,7 +305,22 @@ const QuizPage = ({
           </div>
         </main>
       </div>
-
+      {selectedDescription && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-1/2">
+            <h2 className="text-xl font-bold mb-4">Description</h2>
+            <pre className="bg-gray-100 p-4 rounded-md overflow-x-auto text-sm md:text-base">
+              {selectedDescription}
+            </pre>
+            <button
+              className="mt-4 px-4 py-2 rounded-lg text-white bg-gradient-to-br from-secondary-700 to-primary-400 shadow-lg hover:from-secondary-700 hover:to-primary-500"
+              onClick={() => setSelectedDescription(null)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       {/* Tracker */}
       <aside
         className={` lg:w-1/4 bg-white bg-opacity-70 backdrop-blur-md p-4 shadow-lg ${isTrackerOpen ? "absolute md:static z-50 top-20 right-0 w-3/4 sm:w-1/2 backdrop-blur-md" : "hidden md:w-3/4 md:block"}`}
@@ -291,7 +336,7 @@ const QuizPage = ({
                 currentSlide === index
                   ? "bg-secondary-600 text-white"
                   : selectedAnswers.find(
-                        (answer) => answer.questionId === questions[index]?.id,
+                        (answer) => answer.questionId === questions[index]?.id
                       )
                     ? "bg-green-700 text-white"
                     : "bg-gray-300"
@@ -319,7 +364,7 @@ const QuizPage = ({
             </span>
           </h2>
 
-          <div className="relative bg-glassy bg-opacity-60 p-4 md:p-6 w-3/4 md:w-1/2 h-[80%] overflow-y-auto rounded-3xl shadow-2xl bg-white">
+          <div className="bg-glassy bg-opacity-60 p-4 md:p-6 w-3/4 md:w-1/2 h-[80%] overflow-y-auto rounded-3xl shadow-2xl bg-white">
             <div className="space-y-6 mb-6">
               {questions.map((question, index) => (
                 <div
@@ -335,13 +380,18 @@ const QuizPage = ({
                   >
                     {question.question}
                   </h3>
+                  {question.description && (
+                    <pre className="bg-gray-100 p-2 rounded-md overflow-x-auto text-sm md:text-base">
+                      {question.description}
+                    </pre>
+                  )}
                   <div className="space-y-2">
                     {question.options.map((option) => (
                       <p
                         key={option.id}
                         className={`px-4 py-2 rounded-lg shadow break-words ${
                           selectedAnswers.find(
-                            (answer) => answer.questionId === question.id,
+                            (answer) => answer.questionId === question.id
                           )?.id === option.id
                             ? "bg-green-100 text-green-800 border border-green-300"
                             : "bg-gray-50 text-gray-600 border border-gray-200"
@@ -370,6 +420,16 @@ const QuizPage = ({
                 Submit Quiz
               </button>
             </div>
+          </div>
+        </div>
+      )}
+      {isDialogOpen && (
+        <div className="fixed inset-0 z-50  mx-auto flex items-center justify-center backdrop-blur-sm">
+          <div className="text-center w-[80%] md:w-auto bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">
+              Quiz Submitted Successfully
+            </h2>
+            <p>You will be redirected to the event page shortly.</p>
           </div>
         </div>
       )}
