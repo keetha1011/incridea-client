@@ -81,7 +81,7 @@ const IntroductionPage = ({
       ) {
         console.log(
           "Password verification data:",
-          data.verifyQuizPassword.data.questions,
+          data.verifyQuizPassword.data.questions
         );
         setQuestions(data.verifyQuizPassword.data.questions);
       }
@@ -223,24 +223,34 @@ const IntroductionPage = ({
             </ul>
           </div>
 
-          {/* Start Quiz */}
-          <div className="mt-8 flex justify-end font-sora">
-            {/* {isRegistered ? ( */}
-            <button
-              onClick={handlePasswordSubmit}
-              className="bg-secondary-700 text-white px-4 md:px-6 py-2 rounded-md shadow-md hover:bg-secondary-600 focus:outline-none"
-            >
-              Start Quiz
-            </button>
-            {/* ) : <div><p>Not Registered</p></div>} */}
-            {hasQuizEnded ? (
-              <div>
-                <p>Quiz has ended</p>
+          <div className="mt-8 flex justify-center font-sora">
+            {!isRegistered ? (
+              <div className="text-xl self-center text-white font-bold">
+                <p>Not Registered</p>
               </div>
-            ) : hasQuizStarted ? null : (
-              <div>
-                <p>Quiz has not yet started</p>
-              </div>
+            ) : (
+              <>
+                {hasQuizEnded ? (
+                  <div className="text-xl self-center text-white font-bold">
+                    <p>Quiz has ended</p>
+                  </div>
+                ) : (
+                  <>
+                    {!hasQuizStarted ? (
+                      <div className="text-xl self-center text-white font-bold">
+                        <p>Quiz has not yet started</p>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handlePasswordSubmit}
+                        className="bg-secondary-700 text-white px-4 md:px-6 py-2 rounded-md shadow-md hover:bg-secondary-600 focus:outline-none"
+                      >
+                        Start Quiz
+                      </button>
+                    )}
+                  </>
+                )}
+              </>
             )}
           </div>
         </div>
