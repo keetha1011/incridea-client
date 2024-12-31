@@ -63,7 +63,8 @@ const CreateQuizModal: FC<{
           : quizDetails.qualifyNext,
       })
     : !!quizInfo.name &&
-      (quizInfo.startTime !== roundDate || quizInfo.endTime !== roundDate) &&
+      (formatDate(quizInfo.startTime) !== roundDate ||
+        formatDate(quizInfo.endTime) !== roundDate) &&
       !!quizInfo.password;
 
   const disabled = loading || !isFormChanged;
@@ -94,10 +95,10 @@ const CreateQuizModal: FC<{
     const promise = createQuiz({
       variables: {
         quizDescription: quizInfo.description,
-        endTime: new Date(quizInfo.endTime).toISOString(),
+        endTime: formatDate(quizInfo.endTime),
         eventId,
         quizTitle: quizInfo.name,
-        startTime: new Date(quizInfo.startTime).toISOString(),
+        startTime: formatDate(quizInfo.startTime),
         roundId: String(roundNo),
         password: quizInfo.password,
         points: quizInfo.points,
@@ -138,7 +139,7 @@ const CreateQuizModal: FC<{
   };
 
   return (
-    <div className="mt-5">
+    <div>
       {quizDetails ? (
         <PencilIcon
           onClick={() => setShowModal(true)}
