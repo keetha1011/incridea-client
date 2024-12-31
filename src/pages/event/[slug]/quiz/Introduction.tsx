@@ -23,10 +23,12 @@ const IntroductionPage = ({
   setIsVerified,
   quizId,
   setQuestions,
+  setMyTeamId,
 }: {
   setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
   quizId: string;
+  setMyTeamId: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   // const [Id] = useState(quizId);
   const { user, loading } = useAuth(); // For testing purposes
@@ -35,6 +37,7 @@ const IntroductionPage = ({
   const [isRegistered, setIsRegistered] = useState(false);
   const [hasQuizStarted, setHasQuizStarted] = useState(false);
   const [hasQuizEnded, setHasQuizEnded] = useState(false);
+  const [attended, setAttended] = useState(true);
 
   const handleQRScanner = () => {
     // Placeholder logic for QR scanner
@@ -81,7 +84,7 @@ const IntroductionPage = ({
       ) {
         console.log(
           "Password verification data:",
-          data.verifyQuizPassword.data.questions
+          data.verifyQuizPassword.data.questions,
         );
         setQuestions(data.verifyQuizPassword.data.questions);
       }
@@ -112,6 +115,8 @@ const IntroductionPage = ({
     }
     if (myTeamData?.myTeam?.__typename === "QueryMyTeamSuccess") {
       setIsRegistered(true);
+      setMyTeamId(parseInt(myTeamData.myTeam.data.id));
+      setAttended(myTeamData.myTeam.data.attended);
     }
     if (user && user.role === Role.Organizer) {
       // For testing purposes
@@ -224,7 +229,11 @@ const IntroductionPage = ({
           </div>
 
           <div className="mt-8 flex justify-center font-sora">
-            {!isRegistered ? (
+            {attended ? (
+              <div className="text-xl self-center text-white font-bold">
+                <p>You have already attended the event</p>{" "}
+              </div>
+            ) : !isRegistered ? (
               <div className="text-xl self-center text-white font-bold">
                 <p>Not Registered</p>
               </div>

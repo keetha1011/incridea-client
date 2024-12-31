@@ -9,6 +9,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { useQuery } from "@apollo/client";
 import { GetQuizByIdDocument } from "~/generated/generated";
+import { SubmitQuizAnswerDocument } from "~/generated/generated";
+import { useMutation } from "@apollo/client";
+import { GetTeamDetailsDocument } from "~/generated/generated";
 
 import { Navigation } from "swiper/modules";
 import {
@@ -48,13 +51,15 @@ type QuizData = {
 const QuizPage = ({
   questions,
   quizId,
+  teamId,
 }: {
   questions: Question[];
   quizId: string;
+  teamId: number;
 }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Options[]>([]);
   const [swiperInstance, setSwiperInstance] = useState<SwiperClass | null>(
-    null
+    null,
   );
 
   const [isReviewOpen, setIsReviewOpen] = useState(false);
@@ -65,16 +70,28 @@ const QuizPage = ({
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDescription, setSelectedDescription] = useState<string | null>(
-    null
+    null,
   );
   const { data: quizFetchData } = useQuery(GetQuizByIdDocument, {
     variables: { id: quizId },
   });
+  const [submitQuizAnswers] = useMutation(SubmitQuizAnswerDocument);
 
   const router = useRouter();
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = async () => {
     console.log(selectedAnswers);
+    const { data } = await submitQuizAnswers({
+      variables: {
+        quizId: quizId,
+        selectedAnswers: selectedAnswers.map(({ id, questionId, value }) => ({
+          id,
+          questionId,
+          value,
+        })),
+        teamId: teamId,
+      },
+    });
     sessionStorage.removeItem("savedQuizData");
     setIsReviewOpen(false);
     setIsDialogOpen(true);
@@ -84,7 +101,7 @@ const QuizPage = ({
         console.error("Error navigating to event page:", error);
       });
     }, 3000); // Redirect after 3 seconds
-  }, [selectedAnswers, router]);
+  };
 
   // const handleFinalSubmit = useCallback(() => {
   //   console.log(selectedAnswers);
@@ -99,11 +116,7 @@ const QuizPage = ({
         console.log(quizData);
         setQuizData(quizData);
         if (quizData.startTime && quizData.endTime) {
-          setTimer(
-            (new Date(quizData.endTime).getTime() -
-              Date.now()) /
-              1000
-          );
+          setTimer((new Date(quizData.endTime).getTime() - Date.now()) / 1000);
         }
       }
     }
@@ -116,7 +129,7 @@ const QuizPage = ({
           setAlert(true);
         }
         if (newTime === 0) {
-          onSubmit();
+          void onSubmit();
         }
         return newTime;
       });
@@ -128,7 +141,7 @@ const QuizPage = ({
   const handleOptionSelect = (option: Options) => {
     setSelectedAnswers((prev) => {
       const updatedAnswers = prev.filter(
-        (answer) => answer.questionId !== option.questionId
+        (answer) => answer.questionId !== option.questionId,
       );
       updatedAnswers.push(option);
       sessionStorage.setItem("savedQuizData", JSON.stringify(updatedAnswers));
@@ -139,19 +152,19 @@ const QuizPage = ({
 
   const formatTime = (seconds: number) => {
     const totalSeconds = Math.floor(seconds);
-  
-    const h = Math.floor(totalSeconds / 3600); 
-    const m = Math.floor((totalSeconds % 3600) / 60); 
-    const s = totalSeconds % 60; 
-  
+
+    const h = Math.floor(totalSeconds / 3600);
+    const m = Math.floor((totalSeconds % 3600) / 60);
+    const s = totalSeconds % 60;
+
     const formattedMinutes = String(m).padStart(2, "0");
     const formattedSeconds = String(s).padStart(2, "0");
-  
+
     return h > 0
       ? `${String(h).padStart(2, "0")}:${formattedMinutes}:${formattedSeconds}`
       : `${formattedMinutes}:${formattedSeconds}`;
   };
-  
+
   useEffect(() => {
     console.log("Selected Answers", selectedAnswers);
   }, [selectedAnswers]);
@@ -276,7 +289,7 @@ const QuizPage = ({
                         key={option.id}
                         className={`p-4 rounded-lg shadow-lg text-left ${
                           Object.values(selectedAnswers).find(
-                            (answer) => answer.questionId === question.id
+                            (answer) => answer.questionId === question.id,
                           )?.id === option.id
                             ? "bg-green-200 text-green-800"
                             : "bg-gray-100 text-gray-700"
@@ -336,7 +349,7 @@ const QuizPage = ({
                 currentSlide === index
                   ? "bg-secondary-600 text-white"
                   : selectedAnswers.find(
-                        (answer) => answer.questionId === questions[index]?.id
+                        (answer) => answer.questionId === questions[index]?.id,
                       )
                     ? "bg-green-700 text-white"
                     : "bg-gray-300"
@@ -391,7 +404,7 @@ const QuizPage = ({
                         key={option.id}
                         className={`px-4 py-2 rounded-lg shadow break-words ${
                           selectedAnswers.find(
-                            (answer) => answer.questionId === question.id
+                            (answer) => answer.questionId === question.id,
                           )?.id === option.id
                             ? "bg-green-100 text-green-800 border border-green-300"
                             : "bg-gray-50 text-gray-600 border border-gray-200"
