@@ -2,6 +2,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { Tab } from "@headlessui/react";
 import { type FC, useState } from "react";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
+import { BsQrCodeScan } from "react-icons/bs";
+import { QRCodeSVG } from "qrcode.react";
+import { IoCopy } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
 import { useAuth } from "~/hooks/useAuth";
 
@@ -21,8 +24,17 @@ import CreateJudgeModal from "./createJudgeModal";
 import CreateQuizModal from "./createQuizModal";
 import RoundAddModal from "./roundsAddModal";
 import Link from "next/link";
-import { HoverCard, HoverCardTrigger } from "@radix-ui/react-hover-card";
-import { HoverCardContent } from "~/components/ui/hover-card";
+import {
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent,
+} from "~/components/ui/hover-card";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogHeader,
+  DialogContent,
+} from "~/components/ui/dialog";
 import Spinner from "~/components/spinner";
 
 const RoundsSidebar: FC<{
@@ -141,6 +153,18 @@ const RoundsSidebar: FC<{
   }
 
   // for testing end
+
+  const handleCopyURL = async (copyString: string) => {
+    try {
+      await navigator.clipboard.writeText(copyString);
+      await createToast(Promise.resolve(), "URL copied to clipboard");
+    } catch (error) {
+      await createToast(
+        Promise.reject(new Error("Failed to copy URL to clipboard")),
+        "Failed to copy URL to clipboard",
+      );
+    }
+  };
 
   return (
     <div className="flex flex-col gap-5 px-2 pb-2">
@@ -292,14 +316,56 @@ const RoundsSidebar: FC<{
                     <>
                       {round.quiz ? (
                         <div className="mt-2">
-                          {!round.quiz.allowAttempts && (
-                            <Button intent={"dark"} className="w-auto">
+                          {!round.quiz.allowAttempts ? (
+                            <Button
+                              intent={"dark"}
+                              className="w-auto rounded-md"
+                            >
                               <Link
                                 href={`./organizer/quiz/${eventId}-${selectedRound}`}
                               >
                                 Edit Quiz
                               </Link>
                             </Button>
+                          ) : (
+                            <Dialog>
+                              <DialogTrigger>
+                                <Button
+                                  intent={"dark"}
+                                  className="w-auto rounded-md"
+                                >
+                                  <BsQrCodeScan className="text-lg" />
+                                  QR Code
+                                </Button>
+                              </DialogTrigger>
+                              <DialogContent className="w-[20%]">
+                                <DialogHeader>
+                                  <h1 className="text-3xl text-center font-bold">
+                                    {round.quiz.name}
+                                  </h1>
+                                </DialogHeader>
+                                <div className="flex flex-col justify-center items-center space-y-4">
+                                  <QRCodeSVG
+                                    value={`http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`}
+                                    size={200}
+                                  />
+                                  <div className="flex">
+                                    <Button
+                                      intent="secondary"
+                                      className="rounded-md bg-black"
+                                      onClick={() =>
+                                        handleCopyURL(
+                                          `http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`,
+                                        )
+                                      }
+                                    >
+                                      Copy URL to clipboard
+                                      <IoCopy size={25} />
+                                    </Button>
+                                  </div>
+                                </div>
+                              </DialogContent>
+                            </Dialog>
                           )}
                           <HoverCard>
                             <HoverCardTrigger>
@@ -309,13 +375,14 @@ const RoundsSidebar: FC<{
                                     ? "danger"
                                     : "success"
                                 }
-                                className="w-auto mt-2"
+                                className="w-auto mt-2 rounded-md"
                                 onClick={() =>
                                   handlePublishQuiz(
                                     round.quiz?.id ?? "",
                                     !round.quiz?.allowAttempts,
                                   )
                                 }
+                                disabled={updateQuizStatusLoading}
                               >
                                 {round.quiz.allowAttempts
                                   ? "Unpublish"
