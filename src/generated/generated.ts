@@ -298,6 +298,7 @@ export type Mutation = {
   sendEmailVerification: MutationSendEmailVerificationResult;
   sendPasswordResetEmail: MutationSendPasswordResetEmailResult;
   signUp: MutationSignUpResult;
+  submitQuiz: MutationSubmitQuizResult;
   updateCard: MutationUpdateCardResult;
   updateEvent: MutationUpdateEventResult;
   updateProfileImage: MutationUpdateProfileImageResult;
@@ -589,6 +590,12 @@ export type MutationSendPasswordResetEmailArgs = {
 
 export type MutationSignUpArgs = {
   data: UserCreateInput;
+};
+
+export type MutationSubmitQuizArgs = {
+  quizId: Scalars["String"]["input"];
+  selectedAnswers: Array<SelectedOptions>;
+  teamId: Scalars["Int"]["input"];
 };
 
 export type MutationUpdateCardArgs = {
@@ -1072,6 +1079,13 @@ export type MutationSignUpResult = Error | MutationSignUpSuccess;
 export type MutationSignUpSuccess = {
   __typename?: "MutationSignUpSuccess";
   data: User;
+};
+
+export type MutationSubmitQuizResult = Error | MutationSubmitQuizSuccess;
+
+export type MutationSubmitQuizSuccess = {
+  __typename?: "MutationSubmitQuizSuccess";
+  data: QuizScore;
 };
 
 export type MutationUpdateCardResult = Error | MutationUpdateCardSuccess;
@@ -1696,6 +1710,14 @@ export type Quiz = {
   updatedAt: Scalars["DateTime"]["output"];
 };
 
+export type QuizScore = {
+  __typename?: "QuizScore";
+  id: Scalars["ID"]["output"];
+  quizId: Scalars["String"]["output"];
+  score: Scalars["Int"]["output"];
+  teamId: Scalars["Int"]["output"];
+};
+
 export type QuizSubmission = {
   __typename?: "QuizSubmission";
   OptionId: Scalars["ID"]["output"];
@@ -1746,6 +1768,12 @@ export type Scores = {
   score: Scalars["String"]["output"];
   team: Team;
   teamId: Scalars["ID"]["output"];
+};
+
+export type SelectedOptions = {
+  id: Scalars["String"]["input"];
+  questionId: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export enum Status {
@@ -2745,6 +2773,27 @@ export type SignUpMutation = {
   signUp:
     | { __typename: "Error"; message: string }
     | { __typename: "MutationSignUpSuccess" };
+};
+
+export type SubmitQuizAnswerMutationVariables = Exact<{
+  quizId: Scalars["String"]["input"];
+  selectedAnswers: Array<SelectedOptions> | SelectedOptions;
+  teamId: Scalars["Int"]["input"];
+}>;
+
+export type SubmitQuizAnswerMutation = {
+  __typename?: "Mutation";
+  submitQuiz:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "MutationSubmitQuizSuccess";
+        data: {
+          __typename?: "QuizScore";
+          id: string;
+          quizId: string;
+          teamId: number;
+        };
+      };
 };
 
 export type UpdateAccommodationStatusMutationVariables = Exact<{
@@ -10782,6 +10831,163 @@ export const SignUpDocument = {
     },
   ],
 } as unknown as DocumentNode<SignUpMutation, SignUpMutationVariables>;
+export const SubmitQuizAnswerDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SubmitQuizAnswer" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "selectedAnswers" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "ListType",
+              type: {
+                kind: "NonNullType",
+                type: {
+                  kind: "NamedType",
+                  name: { kind: "Name", value: "SelectedOptions" },
+                },
+              },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "teamId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "submitQuiz" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "quizId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "selectedAnswers" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "selectedAnswers" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "teamId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "teamId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "MutationSubmitQuizSuccess" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "quizId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "teamId" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SubmitQuizAnswerMutation,
+  SubmitQuizAnswerMutationVariables
+>;
 export const UpdateAccommodationStatusDocument = {
   kind: "Document",
   definitions: [

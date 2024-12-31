@@ -24,6 +24,7 @@ type Options = {
 const AttemptQuizPage = ({ quizId, error }: Props) => {
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [teamId, setTeamId] = useState<number>(0);
   if (error) {
     return <div>Error: {error}</div>;
   }
@@ -31,12 +32,13 @@ const AttemptQuizPage = ({ quizId, error }: Props) => {
   return (
     <div className=" mt-16 border border-b-0">
       {isVerified ? (
-        <QuizPage questions={questions} quizId={quizId} />
+        <QuizPage questions={questions} quizId={quizId} teamId={teamId} />
       ) : (
         <IntroductionPage
           setIsVerified={setIsVerified}
           setQuestions={setQuestions}
           quizId={quizId}
+          setMyTeamId={setTeamId}
         />
       )}
     </div>
