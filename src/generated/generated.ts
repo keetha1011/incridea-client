@@ -79,8 +79,19 @@ export type Card = {
   submissions: Array<Submission>;
 };
 
+export type ChampionshipPoints = {
+  __typename?: "ChampionshipPoints";
+  bronzeCount: Count;
+  championshipPoints: Scalars["Int"]["output"];
+  goldCount: Count;
+  id: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
+  silverCount: Count;
+};
+
 export type College = {
   __typename?: "College";
+  championshipPoints: Scalars["Int"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
 };
@@ -100,6 +111,13 @@ export type Comments = {
   roundNo: Scalars["Int"]["output"];
   team: Team;
   teamId: Scalars["ID"]["output"];
+};
+
+export type Count = {
+  __typename?: "Count";
+  runner_up: Scalars["Int"]["output"];
+  second_runner_up: Scalars["Int"]["output"];
+  winner: Scalars["Int"]["output"];
 };
 
 export type CreateCriteriaInput = {
@@ -159,6 +177,7 @@ export type Event = {
   published: Scalars["Boolean"]["output"];
   rounds: Array<Round>;
   teams: Array<Team>;
+  tier: EventTier;
   venue?: Maybe<Scalars["String"]["output"]>;
   winner?: Maybe<Array<Winners>>;
 };
@@ -186,6 +205,12 @@ export type EventPaymentOrder = {
   status: Status;
 };
 
+export enum EventTier {
+  Bronze = "BRONZE",
+  Gold = "GOLD",
+  Silver = "SILVER",
+}
+
 export enum EventType {
   Individual = "INDIVIDUAL",
   IndividualMultipleEntry = "INDIVIDUAL_MULTIPLE_ENTRY",
@@ -204,6 +229,7 @@ export type EventUpdateInput = {
   maxTeams?: InputMaybe<Scalars["Int"]["input"]>;
   minTeamSize?: InputMaybe<Scalars["Int"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
+  tier?: InputMaybe<EventTier>;
   venue?: InputMaybe<Scalars["String"]["input"]>;
 };
 
@@ -349,6 +375,7 @@ export type Mutation = {
   updateProfileImage: MutationUpdateProfileImageResult;
   updateQuizStatus: MutationUpdateQuizStatusResult;
   updateStatus: MutationUpdateStatusResult;
+  useReferralCode: MutationUseReferralCodeResult;
   verifyEmail: MutationVerifyEmailResult;
 };
 
@@ -657,6 +684,10 @@ export type MutationUpdateStatusArgs = {
   hotelId: Scalars["String"]["input"];
   room: Scalars["String"]["input"];
   status: Scalars["String"]["input"];
+};
+
+export type MutationUseReferralCodeArgs = {
+  referralCode: Scalars["String"]["input"];
 };
 
 export type MutationVerifyEmailArgs = {
@@ -1140,6 +1171,15 @@ export type MutationUpdateStatusSuccess = {
   data: UserInHotel;
 };
 
+export type MutationUseReferralCodeResult =
+  | Error
+  | MutationUseReferralCodeSuccess;
+
+export type MutationUseReferralCodeSuccess = {
+  __typename?: "MutationUseReferralCodeSuccess";
+  data: User;
+};
+
 export type MutationVerifyEmailResult = Error | MutationVerifyEmailSuccess;
 
 export type MutationVerifyEmailSuccess = {
@@ -1232,6 +1272,7 @@ export type Query = {
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
+  getChampionshipPoints: QueryGetChampionshipPointsResult;
   getComment: QueryGetCommentResult;
   getLevelXp: QueryGetLevelXpResult;
   getQuizByEvent: QueryGetQuizByEventResult;
@@ -1475,6 +1516,15 @@ export type QueryGetCardsResult = Error | QueryGetCardsSuccess;
 export type QueryGetCardsSuccess = {
   __typename?: "QueryGetCardsSuccess";
   data: Array<Card>;
+};
+
+export type QueryGetChampionshipPointsResult =
+  | Error
+  | QueryGetChampionshipPointsSuccess;
+
+export type QueryGetChampionshipPointsSuccess = {
+  __typename?: "QueryGetChampionshipPointsSuccess";
+  data: Array<ChampionshipPoints>;
 };
 
 export type QueryGetCommentResult = Error | QueryGetCommentSuccess;
@@ -1723,6 +1773,7 @@ export type Submission = {
 
 export type Subscription = {
   __typename?: "Subscription";
+  getChampionshipPoints: SubscriptionGetChampionshipPointsResult;
   getRoundStatus: SubscriptionGetRoundStatusResult;
   judgeGetTeamsByRound: Array<Team>;
 };
@@ -1737,6 +1788,15 @@ export type SubscriptionJudgeGetTeamsByRoundArgs = {
   roundId: Scalars["Int"]["input"];
 };
 
+export type SubscriptionGetChampionshipPointsResult =
+  | Error
+  | SubscriptionGetChampionshipPointsSuccess;
+
+export type SubscriptionGetChampionshipPointsSuccess = {
+  __typename?: "SubscriptionGetChampionshipPointsSuccess";
+  data: Array<ChampionshipPoints>;
+};
+
 export type SubscriptionGetRoundStatusResult =
   | Error
   | SubscriptionGetRoundStatusSuccess;
@@ -1749,6 +1809,7 @@ export type SubscriptionGetRoundStatusSuccess = {
 export type Team = {
   __typename?: "Team";
   attended: Scalars["Boolean"]["output"];
+  college?: Maybe<College>;
   confirmed: Scalars["Boolean"]["output"];
   event: Event;
   id: Scalars["ID"]["output"];
@@ -3311,6 +3372,43 @@ export type BranchesQuery = {
   }>;
 };
 
+export type GetChampionshipQueryQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetChampionshipQueryQuery = {
+  __typename?: "Query";
+  getChampionshipPoints:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryGetChampionshipPointsSuccess";
+        data: Array<{
+          __typename?: "ChampionshipPoints";
+          championshipPoints: number;
+          id: number;
+          name: string;
+          bronzeCount: {
+            __typename?: "Count";
+            runner_up: number;
+            second_runner_up: number;
+            winner: number;
+          };
+          goldCount: {
+            __typename?: "Count";
+            runner_up: number;
+            second_runner_up: number;
+            winner: number;
+          };
+          silverCount: {
+            __typename?: "Count";
+            runner_up: number;
+            second_runner_up: number;
+            winner: number;
+          };
+        }>;
+      };
+};
+
 export type GetCommentQueryVariables = Exact<{
   eventId: Scalars["ID"]["input"];
   roundNo: Scalars["Int"]["input"];
@@ -3791,6 +3889,43 @@ export type WinnersByEventQuery = {
                 role: Role;
               };
             }>;
+          };
+        }>;
+      };
+};
+
+export type GetChampionshipPointsSubscriptionVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetChampionshipPointsSubscription = {
+  __typename?: "Subscription";
+  getChampionshipPoints:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "SubscriptionGetChampionshipPointsSuccess";
+        data: Array<{
+          __typename?: "ChampionshipPoints";
+          championshipPoints: number;
+          id: number;
+          name: string;
+          bronzeCount: {
+            __typename?: "Count";
+            runner_up: number;
+            second_runner_up: number;
+            winner: number;
+          };
+          goldCount: {
+            __typename?: "Count";
+            second_runner_up: number;
+            runner_up: number;
+            winner: number;
+          };
+          silverCount: {
+            __typename?: "Count";
+            runner_up: number;
+            second_runner_up: number;
+            winner: number;
           };
         }>;
       };
@@ -13139,6 +13274,168 @@ export const BranchesDocument = {
     },
   ],
 } as unknown as DocumentNode<BranchesQuery, BranchesQueryVariables>;
+export const GetChampionshipQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetChampionshipQuery" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getChampionshipPoints" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryGetChampionshipPointsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "bronzeCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "championshipPoints",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "goldCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "silverCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetChampionshipQueryQuery,
+  GetChampionshipQueryQueryVariables
+>;
 export const GetCommentDocument = {
   kind: "Document",
   definitions: [
@@ -15649,6 +15946,168 @@ export const WinnersByEventDocument = {
     },
   ],
 } as unknown as DocumentNode<WinnersByEventQuery, WinnersByEventQueryVariables>;
+export const GetChampionshipPointsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "subscription",
+      name: { kind: "Name", value: "GetChampionshipPoints" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getChampionshipPoints" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "SubscriptionGetChampionshipPointsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "bronzeCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "championshipPoints",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "goldCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "silverCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetChampionshipPointsSubscription,
+  GetChampionshipPointsSubscriptionVariables
+>;
 export const GetRoundStatusDocument = {
   kind: "Document",
   definitions: [

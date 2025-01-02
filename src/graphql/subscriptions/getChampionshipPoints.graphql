@@ -1,0 +1,31 @@
+subscription GetChampionshipPoints {
+  getChampionshipPoints {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on SubscriptionGetChampionshipPointsSuccess {
+      __typename
+      data {
+        bronzeCount {
+          runner_up
+          second_runner_up
+          winner
+        }
+        championshipPoints
+        goldCount {
+          second_runner_up
+          runner_up
+          winner
+        }
+        id
+        name
+        silverCount {
+          runner_up
+          second_runner_up
+          winner
+        }
+      }
+    }
+  }
+}

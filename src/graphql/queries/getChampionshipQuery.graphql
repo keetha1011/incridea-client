@@ -1,0 +1,31 @@
+query GetChampionshipQuery {
+  getChampionshipPoints {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetChampionshipPointsSuccess {
+      __typename
+      data {
+        bronzeCount {
+          runner_up
+          second_runner_up
+          winner
+        }
+        championshipPoints
+        goldCount {
+          runner_up
+          second_runner_up
+          winner
+        }
+        id
+        name
+        silverCount {
+          runner_up
+          second_runner_up
+          winner
+        }
+      }
+    }
+  }
+}
