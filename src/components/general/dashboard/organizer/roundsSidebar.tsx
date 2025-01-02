@@ -346,7 +346,7 @@ const RoundsSidebar: FC<{
                                 </DialogHeader>
                                 <div className="flex flex-col justify-center items-center space-y-4">
                                   <QRCodeSVG
-                                    value={`http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`}
+                                    value={`http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/${round.quiz.id}`}
                                     size={200}
                                   />
                                   <div className="flex">
@@ -355,7 +355,7 @@ const RoundsSidebar: FC<{
                                       className="rounded-md bg-black"
                                       onClick={() =>
                                         handleCopyURL(
-                                          `http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`,
+                                          `http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
                                         )
                                       }
                                     >

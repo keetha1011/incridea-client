@@ -6,6 +6,7 @@ import { VerifyQuizPasswordDocument } from "~/generated/generated";
 import { useMutation } from "@apollo/client";
 import { useAuth } from "~/hooks/useAuth"; // For testing purposes
 import { Role } from "~/generated/generated"; // For testing purposes
+import { BiLoader } from "react-icons/bi";
 
 type Question = {
   id: string;
@@ -149,7 +150,8 @@ const IntroductionPage = ({
   if (loadingQuiz || loadingTeam) {
     return (
       <div className="p-96">
-        <p>Loading...</p>
+        {/* <p>Loading...</p> */}
+        <BiLoader className="animate-spin h-6 w-6 text-primary-500" />
       </div>
     );
   }
@@ -229,9 +231,9 @@ const IntroductionPage = ({
           </div>
 
           <div className="mt-8 flex justify-center font-sora">
-            {attended ? (
+            {!attended ? (
               <div className="text-xl self-center text-white font-bold">
-                <p>You have already attended the event</p>{" "}
+                <p>You have to be present at the venue to attempt the quiz</p>{" "}
               </div>
             ) : !isRegistered ? (
               <div className="text-xl self-center text-white font-bold">

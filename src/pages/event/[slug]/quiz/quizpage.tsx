@@ -7,13 +7,24 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperClass } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
+import "swiper/css/pagination";
 import { useQuery } from "@apollo/client";
 import { GetQuizByIdDocument } from "~/generated/generated";
 import { SubmitQuizAnswerDocument } from "~/generated/generated";
 import { useMutation } from "@apollo/client";
 import { GetTeamDetailsDocument } from "~/generated/generated";
+import { Navigation, Pagination } from "swiper/modules";
+// import Prism from "prismjs";
+// import "prismjs/themes/prism-okaidia.css";
+// import "prismjs/components/prism-python";
+// import "prismjs/components/prism-java";
+// import "prismjs/components/prism-javascript";
+// import "prismjs/components/prism-c";
+// import "prismjs/components/prism-cpp";
+// import "prismjs/components/prism-markup";
+import hljs from "highlight.js";
+import "highlight.js/styles/atom-one-dark.css";
 
-import { Navigation } from "swiper/modules";
 import {
   IconArrowLeft,
   IconArrowRight,
@@ -29,6 +40,7 @@ type Question = {
   description?: string | null;
   isCode?: boolean;
   options: Options[];
+  image?: string | null;
 };
 
 type Options = {
@@ -78,6 +90,10 @@ const QuizPage = ({
   const [submitQuizAnswers] = useMutation(SubmitQuizAnswerDocument);
 
   const router = useRouter();
+
+  useEffect(() => {
+    hljs.highlightAll();
+  }, [isReviewOpen]);
 
   const onSubmit = async () => {
     console.log(selectedAnswers);
@@ -230,6 +246,7 @@ const QuizPage = ({
               nextEl: ".next-btn",
               prevEl: ".prev-btn",
             }}
+            autoHeight={true}
             onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
             onSwiper={setSwiperInstance}
             spaceBetween={20}
@@ -264,10 +281,13 @@ const QuizPage = ({
             {questions.map((question) => (
               <SwiperSlide key={question.id}>
                 <div className="bg-white bg-opacity-70 backdrop-blur-md p-6 rounded-lg shadow-lg">
-                  <h3 className="text-lg font-semibold mb-4 text-gray-800">
-                    {question.question}
+                  <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                    <span className="underline decoration-1 underline-offset-4">
+                      Question:
+                    </span>
+                    {` ${question.question}`}
                   </h3>
-                  {question.description && (
+                  {/* {question.description && (
                     <button
                       className="mb-4 text-transparent w-fit md:w-30 rounded-lg bg-clip-text bg-gradient-to-br from-secondary-600 to-primary-400 hover:bg-gradient-to-tr hover:from-secondary-300 hover:to-primary-300 hover:bg-clip-text hover:text-transparent hover:underline hover:decoration-4 hover:decoration-gradient-to-br"
                       onClick={() =>
@@ -281,6 +301,29 @@ const QuizPage = ({
                         <span>View Description</span>
                       )}
                     </button>
+                  )} */}
+
+                  {question.image && (
+                    <img
+                      src={question.image}
+                      alt="Question image"
+                      className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
+                    />
+                  )}
+
+                  {question.description && question.isCode && (
+                    <>
+                      <h2 className="text-xl">Code:</h2>
+                      <pre className="mb-6 text-lg">
+                        <code className="">{`${question.description}`}</code>
+                      </pre>
+                    </>
+                  )}
+                  {question.description && !question.isCode && (
+                    <>
+                      <h2 className="text-xl">Question Description:</h2>
+                      <p className="mb-6 text-lg">{`${question.description}`}</p>
+                    </>
                   )}
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -393,11 +436,30 @@ const QuizPage = ({
                   >
                     {question.question}
                   </h3>
-                  {question.description && (
-                    <pre className="bg-gray-100 p-2 rounded-md overflow-x-auto text-sm md:text-base">
-                      {question.description}
-                    </pre>
+
+                  {question.image && (
+                    <img
+                      src={question.image}
+                      alt="Question image"
+                      className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
+                    />
                   )}
+
+                  {question.description && question.isCode && (
+                    <>
+                      <h2 className="text-xl">Code:</h2>
+                      <pre className="mb-6 text-lg">
+                        <code className="">{`${question.description}`}</code>
+                      </pre>
+                    </>
+                  )}
+                  {question.description && !question.isCode && (
+                    <>
+                      <h2 className="text-xl">Question Description:</h2>
+                      <p className="mb-6 text-lg">{`${question.description}`}</p>
+                    </>
+                  )}
+
                   <div className="space-y-2">
                     {question.options.map((option) => (
                       <p
