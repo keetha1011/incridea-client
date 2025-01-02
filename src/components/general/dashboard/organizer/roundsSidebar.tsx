@@ -53,8 +53,6 @@ const RoundsSidebar: FC<{
     },
   );
 
-  // for testing start
-
   const { user } = useAuth();
 
   const { data, loading } = useQuery(EventByOrganizerDocument, {
@@ -62,8 +60,6 @@ const RoundsSidebar: FC<{
       organizerId: user?.id ?? "",
     },
   });
-
-  // for testing end
 
   const [deleteJudge, { loading: deleteJudgeLoading }] = useMutation(
     DeleteJudgeDocument,
@@ -141,7 +137,6 @@ const RoundsSidebar: FC<{
 
     await createToast(promise, "Publishing quiz...");
   };
-  // for testing start
   if (loading) {
     return <Spinner />;
   } else {
@@ -151,8 +146,6 @@ const RoundsSidebar: FC<{
       return <div>No events</div>;
     }
   }
-
-  // for testing end
 
   const handleCopyURL = async (copyString: string) => {
     try {
@@ -440,13 +433,22 @@ const RoundsSidebar: FC<{
                               </div>
                             </HoverCardContent>
                           </HoverCard>
+                          <Button
+                            intent={"dark"}
+                            className="w-auto rounded-md mt-2"
+                          >
+                            <Link
+                              href={`./organizer/quiz/${eventId}-${selectedRound}/leaderboard`}
+                            >
+                              Leaderboard
+                            </Link>
+                          </Button>
                         </div>
                       ) : (
                         <p className="text-gray-400">No Quiz added yet.</p>
                       )}
                       {!round.quiz?.allowAttempts && (
                         <CreateQuizModal
-                          testing={`/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/`} // for testing
                           eventId={eventId}
                           roundNo={selectedRound}
                           roundDate={new Date(
@@ -454,7 +456,6 @@ const RoundsSidebar: FC<{
                           ).toISOString()}
                           quizDetails={
                             round.quiz && {
-                              quizId: round.quiz.id, // for testing
                               name: round.quiz.name,
                               description: round.quiz.description ?? "",
                               password: round.quiz.password,

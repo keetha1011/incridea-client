@@ -9,16 +9,12 @@ import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
 import toast from "react-hot-toast";
 import { CreateQuizDocument } from "~/generated/generated";
-import Link from "next/link";
-import test from "node:test";
 
 const CreateQuizModal: FC<{
-  testing: string; // for testing
   eventId: string;
   roundNo: number;
   roundDate?: string;
   quizDetails?: {
-    quizId: string; // for testing
     name: string;
     description: string;
     startTime: Date;
@@ -27,7 +23,7 @@ const CreateQuizModal: FC<{
     points: number;
     qualifyNext: number;
   } | null;
-}> = ({ testing, eventId, roundNo, roundDate, quizDetails }) => {
+}> = ({ eventId, roundNo, roundDate, quizDetails }) => {
   const formatDate = (date: Date | string): string => {
     const inputDate = new Date(date).toISOString();
     console.log("inputDate", inputDate);
@@ -237,13 +233,6 @@ const CreateQuizModal: FC<{
               }
             </div>
             <div className="flex justify-end">
-              <Button intent={"ghost"} className="w-auto">
-                <Link
-                  href={`${testing}/${quizDetails?.quizId}`} // for testing
-                >
-                  TEST QUIZ
-                </Link>
-              </Button>
               <Button className="rounded-lg" type="submit" disabled={disabled}>
                 {loading ? (
                   <>

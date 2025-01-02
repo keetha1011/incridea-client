@@ -1257,6 +1257,7 @@ export type Query = {
   getLevelXp: QueryGetLevelXpResult;
   getQuizByEventRound: QueryGetQuizByEventRoundResult;
   getQuizById: QueryGetQuizByIdResult;
+  getQuizScores: QueryGetQuizScoresResult;
   getRoundStatus: QueryGetRoundStatusResult;
   getScore: QueryGetScoreResult;
   getScoreSheetJuryView: QueryGetScoreSheetJuryViewResult;
@@ -1352,6 +1353,10 @@ export type QueryGetQuizByEventRoundArgs = {
 };
 
 export type QueryGetQuizByIdArgs = {
+  quizId: Scalars["String"]["input"];
+};
+
+export type QueryGetQuizScoresArgs = {
   quizId: Scalars["String"]["input"];
 };
 
@@ -1532,6 +1537,13 @@ export type QueryGetQuizByIdResult = Error | QueryGetQuizByIdSuccess;
 export type QueryGetQuizByIdSuccess = {
   __typename?: "QueryGetQuizByIdSuccess";
   data: Quiz;
+};
+
+export type QueryGetQuizScoresResult = Error | QueryGetQuizScoresSuccess;
+
+export type QueryGetQuizScoresSuccess = {
+  __typename?: "QueryGetQuizScoresSuccess";
+  data: Array<QuizScore>;
 };
 
 export type QueryGetRoundStatusResult = Error | QueryGetRoundStatusSuccess;
@@ -1715,6 +1727,7 @@ export type QuizScore = {
   id: Scalars["ID"]["output"];
   quizId: Scalars["String"]["output"];
   score: Scalars["Int"]["output"];
+  team: Team;
   teamId: Scalars["Int"]["output"];
 };
 
@@ -3629,6 +3642,25 @@ export type GetQuizByIdQuery = {
           roundNo: number;
           startTime: Date;
         };
+      };
+};
+
+export type GetQuizScoresQueryVariables = Exact<{
+  quizId?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type GetQuizScoresQuery = {
+  __typename?: "Query";
+  getQuizScores:
+    | { __typename?: "Error" }
+    | {
+        __typename: "QueryGetQuizScoresSuccess";
+        data: Array<{
+          __typename?: "QuizScore";
+          score: number;
+          teamId: number;
+          team: { __typename?: "Team"; name: string };
+        }>;
       };
 };
 
@@ -15062,6 +15094,97 @@ export const GetQuizByIdDocument = {
     },
   ],
 } as unknown as DocumentNode<GetQuizByIdQuery, GetQuizByIdQueryVariables>;
+export const GetQuizScoresDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "getQuizScores" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getQuizScores" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "quizId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "QueryGetQuizScoresSuccess" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "score" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "teamId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "team" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetQuizScoresQuery, GetQuizScoresQueryVariables>;
 export const GetScoreDocument = {
   kind: "Document",
   definitions: [

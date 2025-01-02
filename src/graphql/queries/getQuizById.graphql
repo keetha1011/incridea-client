@@ -9,7 +9,6 @@ query GetQuizById($id: String!) {
       data {
         description
         endTime
-        imageUrl
         eventId
         id
         name

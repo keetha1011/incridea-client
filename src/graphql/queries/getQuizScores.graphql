@@ -1,0 +1,14 @@
+query getQuizScores($quizId: String = "") {
+  getQuizScores(quizId: $quizId) {
+    ... on QueryGetQuizScoresSuccess {
+      __typename
+      data {
+        score
+        teamId
+        team {
+          name
+        }
+      }
+    }
+  }
+}
