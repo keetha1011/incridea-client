@@ -2,18 +2,19 @@
 
 //need to add quiz has ended pop up and a timer
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperClass } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useQuery } from "@apollo/client";
-import { GetQuizByIdDocument } from "~/generated/generated";
 import { SubmitQuizAnswerDocument } from "~/generated/generated";
 import { useMutation } from "@apollo/client";
-import { GetTeamDetailsDocument } from "~/generated/generated";
-import { Navigation, Pagination } from "swiper/modules";
+import { Navigation } from "swiper/modules";
+import {
+  type Question,
+  type Options,
+} from "~/pages/event/[slug]/quiz/[quizId]";
 // import Prism from "prismjs";
 // import "prismjs/themes/prism-okaidia.css";
 // import "prismjs/components/prism-python";
@@ -33,39 +34,20 @@ import {
   IconStopwatch,
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-
-type Question = {
-  id: string;
-  question: string;
-  description?: string | null;
-  isCode?: boolean;
-  options: Options[];
-  image?: string | null;
-};
-
-type Options = {
-  id: string;
-  value: string;
-  questionId: string;
-};
-
-type QuizData = {
-  __typename?: "Quiz";
-  description?: string | null;
-  endTime: Date;
-  eventId: string;
-  id: string;
-  name: string;
-  roundNo: number;
-  startTime: Date;
-};
+import createToast from "~/components/toast";
 
 const QuizPage = ({
   questions,
+  name,
+  startTime,
+  endTime,
   quizId,
   teamId,
 }: {
   questions: Question[];
+  name: string;
+  startTime: Date;
+  endTime: Date;
   quizId: string;
   teamId: number;
 }) => {
@@ -76,7 +58,6 @@ const QuizPage = ({
 
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
-  const [quizData, setQuizData] = useState<QuizData | null>(null);
   const [timer, setTimer] = useState<number>(0);
   const [alert, setAlert] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -84,12 +65,19 @@ const QuizPage = ({
   const [selectedDescription, setSelectedDescription] = useState<string | null>(
     null,
   );
-  const { data: quizFetchData } = useQuery(GetQuizByIdDocument, {
-    variables: { id: quizId },
-  });
-  const [submitQuizAnswers] = useMutation(SubmitQuizAnswerDocument);
+  const [submitQuizAnswers, { loading: submitQuizLoading }] = useMutation(
+    SubmitQuizAnswerDocument,
+  );
 
   const router = useRouter();
+
+  useEffect(() => {
+    const savedData = sessionStorage.getItem("savedQuizData");
+    if (savedData) {
+      const savedAnswers: Options[] = JSON.parse(savedData) as Options[];
+      setSelectedAnswers(savedAnswers);
+    }
+  }, []);
 
   useEffect(() => {
     hljs.highlightAll();
@@ -97,7 +85,7 @@ const QuizPage = ({
 
   const onSubmit = async () => {
     console.log(selectedAnswers);
-    const { data } = await submitQuizAnswers({
+    const promise = submitQuizAnswers({
       variables: {
         quizId: quizId,
         selectedAnswers: selectedAnswers.map(({ id, questionId, value }) => ({
@@ -107,16 +95,29 @@ const QuizPage = ({
         })),
         teamId: teamId,
       },
-    });
-    sessionStorage.removeItem("savedQuizData");
-    setIsReviewOpen(false);
-    setIsDialogOpen(true);
-    setTimeout(() => {
-      setIsDialogOpen(false);
-      router.push("/events").catch((error) => {
-        console.error("Error navigating to event page:", error);
+    })
+      .then((res) => {
+        if (res.data?.submitQuiz.__typename === "MutationSubmitQuizSuccess") {
+          sessionStorage.removeItem("savedQuizData");
+          setIsReviewOpen(false);
+          setIsDialogOpen(true);
+          setTimeout(() => {
+            setIsDialogOpen(false);
+            router.push("/events").catch((error) => {
+              console.error("Error navigating to event page:", error);
+            });
+          }, 3000);
+        } else throw new Error("Error submitting quiz answers");
+      })
+      .catch((error) => {
+        console.error("Error submitting quiz answers:", error);
       });
-    }, 3000); // Redirect after 3 seconds
+
+    await createToast(
+      promise,
+      "Submitting Quiz Answers",
+      "Error submitting quiz answers",
+    );
   };
 
   // const handleFinalSubmit = useCallback(() => {
@@ -125,18 +126,23 @@ const QuizPage = ({
   //   onComplete();
   // }, [onComplete]);
 
+  // useEffect(() => {
+  //   if (quizFetchData?.getQuizById.__typename === "QueryGetQuizByIdSuccess") {
+  //     const quizData = quizFetchData.getQuizById.data;
+  //     if (quizData) {
+  //       console.log(quizData);
+  //       setQuizData(quizData);
+  //       if (quizData.startTime && quizData.endTime) {
+  //         setTimer((new Date(quizData.endTime).getTime() - Date.now()) / 1000);
+  //       }
+  //     }
+  //   }
+  // }, [quizFetchData]);
   useEffect(() => {
-    if (quizFetchData?.getQuizById.__typename === "QueryGetQuizByIdSuccess") {
-      const quizData = quizFetchData.getQuizById.data;
-      if (quizData) {
-        console.log(quizData);
-        setQuizData(quizData);
-        if (quizData.startTime && quizData.endTime) {
-          setTimer((new Date(quizData.endTime).getTime() - Date.now()) / 1000);
-        }
-      }
-    }
-  }, [quizFetchData]);
+    if (startTime && endTime)
+      setTimer((new Date(endTime).getTime() - Date.now()) / 1000);
+  });
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
@@ -202,7 +208,7 @@ const QuizPage = ({
         {/* Header */}
         <header className="w-full sticky top-0 bg-gradient-to-br from-primary-400 to-primary-600  bg-opacity-70 backdrop-blur-lg shadow-md p-4 z-10 flex justify-between items-center">
           <h1 className="text-xl md:text-2xl font-bold text-white font-sora">
-            {quizData?.name}
+            {name}
           </h1>
           <div
             className={`px-4 py-2 rounded-lg flex items-center ${
@@ -490,9 +496,10 @@ const QuizPage = ({
               </button>
               <button
                 onClick={onSubmit}
+                disabled={submitQuizLoading}
                 className="w-3/4 md:w-auto px-6 py-3 text-sm font-semibold rounded-lg text-white bg-gradient-to-tr from-primary-300 to-primary-200 hover:from-primary-400 hover:to-primary-300 transition duration-200 shadow-md hover:shadow-lg"
               >
-                Submit Quiz
+                {submitQuizLoading ? "Submitting..." : "Submit Quiz"}
               </button>
             </div>
           </div>

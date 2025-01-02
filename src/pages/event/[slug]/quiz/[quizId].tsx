@@ -1,21 +1,26 @@
 import { GetServerSideProps } from "next";
-// import { useRouter } from "next/router";
-import IntroductionPage from "./Introduction";
-import QuizPage from "./quizpage";
-import { useState } from "react";
+import { GetAllQuestionsDocument } from "~/generated/generated";
+import IntroductionPage from "~/components/general/dashboard/organizer/quiz/Introduction";
+import QuizPage from "~/components/general/dashboard/organizer/quiz/quizpage";
+import { useEffect, useState } from "react";
+import { useQuery } from "@apollo/client";
+import { BiLoader } from "react-icons/bi";
 
 type Props = {
   quizId: string;
   error?: string;
 };
 
-type Question = {
+export type Question = {
   id: string;
   question: string;
+  description?: string | null;
+  isCode?: boolean;
   options: Options[];
+  image?: string | null;
 };
 
-type Options = {
+export type Options = {
   id: string;
   value: string;
   questionId: string;
@@ -24,21 +29,56 @@ type Options = {
 const AttemptQuizPage = ({ quizId, error }: Props) => {
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [name, setName] = useState<string>("");
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date>(new Date());
   const [teamId, setTeamId] = useState<number>(0);
+
+  const { data: questionsData } = useQuery(GetAllQuestionsDocument, {
+    variables: { quizId: quizId },
+    skip: !isVerified,
+  });
+
+  useEffect(() => {
+    if (
+      questionsData?.getAllquestions.__typename ===
+      "QueryGetAllquestionsSuccess"
+    )
+      setQuestions(questionsData.getAllquestions.data);
+  }, [questionsData]);
+
   if (error) {
     return <div>Error: {error}</div>;
   }
 
   return (
     <div className=" mt-16 border border-b-0">
-      {isVerified ? (
-        <QuizPage questions={questions} quizId={quizId} teamId={teamId} />
-      ) : (
+      {!isVerified ? (
         <IntroductionPage
           setIsVerified={setIsVerified}
           setQuestions={setQuestions}
+          setStartTime={setStartTime}
+          setEndTime={setEndTime}
+          setName={setName}
           quizId={quizId}
           setMyTeamId={setTeamId}
+        />
+      ) : !(questions.length > 0) ? (
+        <div className="w-full h-screen grid justify-center items-center text-3xl">
+          {/* <p>Loading...</p> */}
+          <BiLoader
+            size={100}
+            className="animate-spin h-6 w-6 text-primary-500"
+          />
+        </div>
+      ) : (
+        <QuizPage
+          name={name}
+          questions={questions}
+          startTime={startTime}
+          endTime={endTime}
+          quizId={quizId}
+          teamId={teamId}
         />
       )}
     </div>
