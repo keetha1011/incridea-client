@@ -39,6 +39,7 @@ import createToast from "~/components/toast";
 const QuizPage = ({
   questions,
   name,
+  description,
   startTime,
   endTime,
   quizId,
@@ -46,6 +47,7 @@ const QuizPage = ({
 }: {
   questions: Question[];
   name: string;
+  description: string;
   startTime: Date;
   endTime: Date;
   quizId: string;
@@ -60,11 +62,11 @@ const QuizPage = ({
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [timer, setTimer] = useState<number>(0);
   const [alert, setAlert] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedDescription, setSelectedDescription] = useState<string | null>(
-    null,
-  );
+  const [selectedDescription, setSelectedDescription] =
+    useState<string>(description);
   const [submitQuizAnswers, { loading: submitQuizLoading }] = useMutation(
     SubmitQuizAnswerDocument,
   );
@@ -72,7 +74,9 @@ const QuizPage = ({
   const router = useRouter();
 
   useEffect(() => {
-    const savedData = sessionStorage.getItem("savedQuizData");
+    const savedData = sessionStorage.getItem(
+      `selectionOptions-${teamId}-${quizId}`,
+    );
     if (savedData) {
       const savedAnswers: Options[] = JSON.parse(savedData) as Options[];
       setSelectedAnswers(savedAnswers);
@@ -98,7 +102,7 @@ const QuizPage = ({
     })
       .then((res) => {
         if (res.data?.submitQuiz.__typename === "MutationSubmitQuizSuccess") {
-          sessionStorage.removeItem("savedQuizData");
+          sessionStorage.removeItem(`selectionOptions-${teamId}-${quizId}`);
           setIsReviewOpen(false);
           setIsDialogOpen(true);
           setTimeout(() => {
@@ -139,26 +143,32 @@ const QuizPage = ({
   //   }
   // }, [quizFetchData]);
   useEffect(() => {
-    if (startTime && endTime)
-      setTimer((new Date(endTime).getTime() - Date.now()) / 1000);
-  });
+    if (!startTime || !endTime) return;
 
-  useEffect(() => {
+    const calculateTime = () =>
+      (new Date(endTime).getTime() - Date.now()) / 1000;
+
+    setTimer(calculateTime());
+
     const interval = setInterval(() => {
       setTimer((prev) => {
-        const newTime = Math.max(prev - 1, 0);
-        if (newTime <= 30) {
-          setAlert(true);
-        }
-        if (newTime === 0) {
-          void onSubmit();
+        const newTime = prev - 1;
+        if (newTime <= 60) setAlert(true);
+        if (newTime <= 0) {
+          clearInterval(interval);
+          if (!submitted) {
+            setSubmitted(true);
+            void onSubmit();
+            setIsDialogOpen(true);
+          }
+          return 0;
         }
         return newTime;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [onSubmit]);
+  }, [startTime, endTime, alert, onSubmit]);
 
   const handleOptionSelect = (option: Options) => {
     setSelectedAnswers((prev) => {
@@ -166,7 +176,10 @@ const QuizPage = ({
         (answer) => answer.questionId !== option.questionId,
       );
       updatedAnswers.push(option);
-      sessionStorage.setItem("savedQuizData", JSON.stringify(updatedAnswers));
+      sessionStorage.setItem(
+        `selectionOptions-${teamId}-${quizId}`,
+        JSON.stringify(updatedAnswers),
+      );
       console.log(updatedAnswers);
       return updatedAnswers;
     });
@@ -367,7 +380,7 @@ const QuizPage = ({
           </div>
         </main>
       </div>
-      {selectedDescription && (
+      {selectedDescription && !selectedAnswers && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-3/4 md:w-1/2">
             <h2 className="text-xl font-bold mb-4">Description</h2>

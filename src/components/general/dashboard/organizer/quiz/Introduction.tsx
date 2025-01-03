@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from "@apollo/client";
 import {
   AttemptQuizDocument,
   GetQuizByIdDocument,
   VerifyQuizPasswordDocument,
 } from "~/generated/generated";
-import { useMutation } from "@apollo/client";
 import { BiLoader } from "react-icons/bi";
 import { type Question } from "~/pages/event/[slug]/quiz/[quizId]";
 
@@ -13,6 +12,7 @@ const IntroductionPage = ({
   setIsVerified,
   quizId,
   setName,
+  setDescription,
   setStartTime,
   setEndTime,
   setMyTeamId,
@@ -20,6 +20,7 @@ const IntroductionPage = ({
   setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
   setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
   setName: React.Dispatch<React.SetStateAction<string>>;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
   setStartTime: React.Dispatch<React.SetStateAction<Date>>;
   setEndTime: React.Dispatch<React.SetStateAction<Date>>;
   quizId: string;
@@ -27,6 +28,7 @@ const IntroductionPage = ({
 }) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [teamId, setTeamId] = useState(0);
   const [hasQuizStarted, setHasQuizStarted] = useState(false);
   const [hasQuizEnded, setHasQuizEnded] = useState(false);
   const [attended, setAttended] = useState(true);
@@ -53,9 +55,10 @@ const IntroductionPage = ({
 
   console.log("Quiz data", quiz);
 
-  const [verifyQuizPassword, { loading: verifyQuizLoading }] = useMutation(
-    VerifyQuizPasswordDocument,
-  );
+  const [
+    verifyQuizPassword,
+    { loading: verifyQuizLoading, data: verifyQuizData },
+  ] = useLazyQuery(VerifyQuizPasswordDocument);
 
   const handlePasswordSubmit = async () => {
     try {
@@ -63,8 +66,7 @@ const IntroductionPage = ({
         variables: { password: password, quizId: quizId },
       });
       if (
-        data?.verifyQuizPassword.__typename ===
-        "MutationVerifyQuizPasswordSuccess"
+        data?.verifyQuizPassword.__typename === "QueryVerifyQuizPasswordSuccess"
       ) {
         setErrorMessage("");
         setIsVerified(true);
@@ -82,6 +84,7 @@ const IntroductionPage = ({
   useEffect(() => {
     if (attemptQuizData?.attemptQuiz.__typename === "QueryAttemptQuizSuccess") {
       const teamId = attemptQuizData.attemptQuiz.data.id;
+      setTeamId(parseInt(teamId));
       setMyTeamId(parseInt(teamId));
       setAttended(attemptQuizData.attemptQuiz.data.attended);
     }
@@ -91,13 +94,18 @@ const IntroductionPage = ({
       setStartTime(new Date(quiz.getQuizById.data.startTime));
       setEndTime(new Date(quiz.getQuizById.data.endTime));
       setName(quiz.getQuizById.data.name);
+      if (quiz.getQuizById.data.description)
+        setDescription(quiz.getQuizById.data.description);
       const currentTime = new Date();
       const quizStartTime = new Date(quiz.getQuizById.data.startTime);
       const quizEndTime = new Date(quiz.getQuizById.data.endTime);
       if (currentTime >= quizStartTime && currentTime <= quizEndTime)
         setHasQuizStarted(true);
       else if (currentTime > quizEndTime) setHasQuizEnded(true);
-      if (sessionStorage.getItem("savedQuizData") !== null) setIsVerified(true);
+      if (
+        sessionStorage.getItem(`selectionOptions-${teamId}-${quizId}`) !== null
+      )
+        setIsVerified(true);
     }
   }, [attemptQuizData, quiz]);
 

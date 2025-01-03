@@ -307,7 +307,6 @@ export type Mutation = {
   updateStatus: MutationUpdateStatusResult;
   useReferralCode: MutationUseReferralCodeResult;
   verifyEmail: MutationVerifyEmailResult;
-  verifyQuizPassword: MutationVerifyQuizPasswordResult;
 };
 
 export type MutationAddAccommodationRequestArgs = {
@@ -636,11 +635,6 @@ export type MutationUseReferralCodeArgs = {
 
 export type MutationVerifyEmailArgs = {
   token: Scalars["String"]["input"];
-};
-
-export type MutationVerifyQuizPasswordArgs = {
-  password: Scalars["String"]["input"];
-  quizId: Scalars["String"]["input"];
 };
 
 export type MutationAddAccommodationRequestResult =
@@ -1150,15 +1144,6 @@ export type MutationVerifyEmailSuccess = {
   data: User;
 };
 
-export type MutationVerifyQuizPasswordResult =
-  | Error
-  | MutationVerifyQuizPasswordSuccess;
-
-export type MutationVerifyQuizPasswordSuccess = {
-  __typename?: "MutationVerifyQuizPasswordSuccess";
-  data: Quiz;
-};
-
 export type Option = {
   __typename?: "Option";
   answer: Scalars["String"]["output"];
@@ -1282,6 +1267,7 @@ export type Query = {
   totalRegistrations: Scalars["Int"]["output"];
   userById: QueryUserByIdResult;
   users: QueryUsersConnection;
+  verifyQuizPassword: QueryVerifyQuizPasswordResult;
   winnersByEvent: QueryWinnersByEventResult;
 };
 
@@ -1441,6 +1427,11 @@ export type QueryUsersArgs = {
   contains?: InputMaybe<Scalars["String"]["input"]>;
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
+export type QueryVerifyQuizPasswordArgs = {
+  password: Scalars["String"]["input"];
+  quizId: Scalars["String"]["input"];
 };
 
 export type QueryWinnersByEventArgs = {
@@ -1684,6 +1675,15 @@ export type QueryUsersConnectionEdge = {
   __typename?: "QueryUsersConnectionEdge";
   cursor: Scalars["String"]["output"];
   node: User;
+};
+
+export type QueryVerifyQuizPasswordResult =
+  | Error
+  | QueryVerifyQuizPasswordSuccess;
+
+export type QueryVerifyQuizPasswordSuccess = {
+  __typename?: "QueryVerifyQuizPasswordSuccess";
+  data: Quiz;
 };
 
 export type QueryWinnersByEventResult = Error | QueryWinnersByEventSuccess;
@@ -2944,18 +2944,6 @@ export type VerifyEmailMutation = {
     | { __typename: "MutationVerifyEmailSuccess" };
 };
 
-export type VerifyQuizPasswordMutationVariables = Exact<{
-  password: Scalars["String"]["input"];
-  quizId: Scalars["String"]["input"];
-}>;
-
-export type VerifyQuizPasswordMutation = {
-  __typename?: "Mutation";
-  verifyQuizPassword:
-    | { __typename: "Error"; message: string }
-    | { __typename: "MutationVerifyQuizPasswordSuccess" };
-};
-
 export type AccommodationRequestByDayQueryVariables = Exact<{
   date: Scalars["DateTime"]["input"];
 }>;
@@ -4120,6 +4108,18 @@ export type UserByIdQuery = {
           college?: { __typename?: "College"; name: string } | null;
         };
       };
+};
+
+export type VerifyQuizPasswordQueryVariables = Exact<{
+  password?: InputMaybe<Scalars["String"]["input"]>;
+  quizId?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type VerifyQuizPasswordQuery = {
+  __typename?: "Query";
+  verifyQuizPassword:
+    | { __typename: "Error"; message: string }
+    | { __typename: "QueryVerifyQuizPasswordSuccess" };
 };
 
 export type WinnersByEventQueryVariables = Exact<{
@@ -12046,120 +12046,6 @@ export const VerifyEmailDocument = {
     },
   ],
 } as unknown as DocumentNode<VerifyEmailMutation, VerifyEmailMutationVariables>;
-export const VerifyQuizPasswordDocument = {
-  kind: "Document",
-  definitions: [
-    {
-      kind: "OperationDefinition",
-      operation: "mutation",
-      name: { kind: "Name", value: "VerifyQuizPassword" },
-      variableDefinitions: [
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "password" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-        {
-          kind: "VariableDefinition",
-          variable: {
-            kind: "Variable",
-            name: { kind: "Name", value: "quizId" },
-          },
-          type: {
-            kind: "NonNullType",
-            type: {
-              kind: "NamedType",
-              name: { kind: "Name", value: "String" },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: "SelectionSet",
-        selections: [
-          {
-            kind: "Field",
-            name: { kind: "Name", value: "verifyQuizPassword" },
-            arguments: [
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "password" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "password" },
-                },
-              },
-              {
-                kind: "Argument",
-                name: { kind: "Name", value: "quizId" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "quizId" },
-                },
-              },
-            ],
-            selectionSet: {
-              kind: "SelectionSet",
-              selections: [
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: { kind: "Name", value: "Error" },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "message" },
-                      },
-                    ],
-                  },
-                },
-                {
-                  kind: "InlineFragment",
-                  typeCondition: {
-                    kind: "NamedType",
-                    name: {
-                      kind: "Name",
-                      value: "MutationVerifyQuizPasswordSuccess",
-                    },
-                  },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "__typename" },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  VerifyQuizPasswordMutation,
-  VerifyQuizPasswordMutationVariables
->;
 export const AccommodationRequestByDayDocument = {
   kind: "Document",
   definitions: [
@@ -17519,6 +17405,110 @@ export const UserByIdDocument = {
     },
   ],
 } as unknown as DocumentNode<UserByIdQuery, UserByIdQueryVariables>;
+export const VerifyQuizPasswordDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "VerifyQuizPassword" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "password" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "verifyQuizPassword" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "password" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "password" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "quizId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryVerifyQuizPasswordSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  VerifyQuizPasswordQuery,
+  VerifyQuizPasswordQueryVariables
+>;
 export const WinnersByEventDocument = {
   kind: "Document",
   definitions: [

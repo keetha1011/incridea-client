@@ -30,6 +30,7 @@ const AttemptQuizPage = ({ quizId, error }: Props) => {
   const [isVerified, setIsVerified] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [name, setName] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
   const [startTime, setStartTime] = useState<Date>(new Date());
   const [endTime, setEndTime] = useState<Date>(new Date());
   const [teamId, setTeamId] = useState<number>(0);
@@ -60,6 +61,7 @@ const AttemptQuizPage = ({ quizId, error }: Props) => {
           setStartTime={setStartTime}
           setEndTime={setEndTime}
           setName={setName}
+          setDescription={setDescription}
           quizId={quizId}
           setMyTeamId={setTeamId}
         />
@@ -74,6 +76,7 @@ const AttemptQuizPage = ({ quizId, error }: Props) => {
       ) : (
         <QuizPage
           name={name}
+          description={description}
           questions={questions}
           startTime={startTime}
           endTime={endTime}
