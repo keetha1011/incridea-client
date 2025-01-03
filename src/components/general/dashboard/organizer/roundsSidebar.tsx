@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Tab } from "@headlessui/react";
 import { type FC, useState } from "react";
 import { BiLoaderAlt, BiTrash } from "react-icons/bi";
@@ -16,7 +16,6 @@ import {
   DeleteJudgeDocument,
   DeleteRoundDocument,
   type EventByOrganizerQuery,
-  EventByOrganizerDocument, // for testing
 } from "~/generated/generated";
 
 import CreateCriteriaModal from "./createCriteriaModal";
@@ -35,7 +34,6 @@ import {
   DialogHeader,
   DialogContent,
 } from "~/components/ui/dialog";
-import Spinner from "~/components/spinner";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -52,14 +50,6 @@ const RoundsSidebar: FC<{
       awaitRefetchQueries: true,
     },
   );
-
-  const { user } = useAuth();
-
-  const { data, loading } = useQuery(EventByOrganizerDocument, {
-    variables: {
-      organizerId: user?.id ?? "",
-    },
-  });
 
   const [deleteJudge, { loading: deleteJudgeLoading }] = useMutation(
     DeleteJudgeDocument,
@@ -137,15 +127,6 @@ const RoundsSidebar: FC<{
 
     await createToast(promise, "Publishing quiz...");
   };
-  if (loading) {
-    return <Spinner />;
-  } else {
-    if (!data || data.eventByOrganizer.length == 0) return <div>No events</div>;
-
-    if (data.eventByOrganizer.length === 0) {
-      return <div>No events</div>;
-    }
-  }
 
   const handleCopyURL = async (copyString: string) => {
     try {
@@ -339,7 +320,7 @@ const RoundsSidebar: FC<{
                                 </DialogHeader>
                                 <div className="flex flex-col justify-center items-center space-y-4">
                                   <QRCodeSVG
-                                    value={`http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/${round.quiz.id}`}
+                                    value={`http://localhost:3000/event/${round.quiz.name}-${selectedRound}/quiz/${round.quiz.id}`}
                                     size={200}
                                   />
                                   <div className="flex">
@@ -348,7 +329,7 @@ const RoundsSidebar: FC<{
                                       className="rounded-md bg-black"
                                       onClick={() =>
                                         handleCopyURL(
-                                          `http://localhost:3000/event/${data.eventByOrganizer[0]?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
+                                          `http://localhost:3000/event/${round.quiz?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
                                         )
                                       }
                                     >
@@ -433,16 +414,18 @@ const RoundsSidebar: FC<{
                               </div>
                             </HoverCardContent>
                           </HoverCard>
-                          <Button
-                            intent={"dark"}
-                            className="w-auto rounded-md mt-2"
-                          >
-                            <Link
-                              href={`./organizer/quiz/${eventId}-${selectedRound}/leaderboard`}
+                          {round.quiz.allowAttempts && (
+                            <Button
+                              intent={"dark"}
+                              className="w-auto rounded-md mt-2"
                             >
-                              Leaderboard
-                            </Link>
-                          </Button>
+                              <Link
+                                href={`./organizer/quiz/${eventId}-${selectedRound}/leaderboard`}
+                              >
+                                Leaderboard
+                              </Link>
+                            </Button>
+                          )}
                         </div>
                       ) : (
                         <p className="text-gray-400">No Quiz added yet.</p>

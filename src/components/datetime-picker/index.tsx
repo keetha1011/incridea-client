@@ -76,7 +76,7 @@ export function DateTimePicker({
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? (
-            format(date, "MM/dd/yyyy hh:mm aa") // Always show both date and time
+            format(date, "dd/MM/yyyy hh:mm aa") // Always show both date and time
           ) : (
             <span>MM/DD/YYYY hh:mm aa</span> // Default placeholder
           )}
