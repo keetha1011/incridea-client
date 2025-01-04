@@ -149,18 +149,30 @@ const QuizPage = ({
       (new Date(endTime).getTime() - Date.now()) / 1000;
 
     setTimer(calculateTime());
+  }, [startTime, endTime]);
 
+  useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
-        const newTime = prev - 1;
+        const newTime = Math.max(prev - 1, 0);
+        console.log("Before condition,", newTime);
+
         if (newTime <= 60) setAlert(true);
-        if (newTime <= 0) {
+        if (newTime === 0) {
           clearInterval(interval);
           if (!submitted) {
             setSubmitted(true);
-            void onSubmit();
             setIsDialogOpen(true);
+            onSubmit()
+              .then(() => {
+                console.log("Quiz submitted successfully");
+              })
+              .catch((error) => {
+                console.error("Error submitting quiz answers:", error);
+              });
+            return 0;
           }
+          console.log(newTime);
           return 0;
         }
         return newTime;
@@ -168,7 +180,7 @@ const QuizPage = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, endTime, alert, onSubmit]);
+  }, []);
 
   const handleOptionSelect = (option: Options) => {
     setSelectedAnswers((prev) => {
@@ -389,7 +401,7 @@ const QuizPage = ({
             </pre>
             <button
               className="mt-4 px-4 py-2 rounded-lg text-white bg-gradient-to-br from-secondary-700 to-primary-400 shadow-lg hover:from-secondary-700 hover:to-primary-500"
-              onClick={() => setSelectedDescription(null)}
+              onClick={() => setSelectedDescription("")}
             >
               Close
             </button>
