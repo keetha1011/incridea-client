@@ -25,8 +25,6 @@ type QuestionProps = {
     optIndex: number,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => void;
-  handleNewOption: (id: string) => void;
-  handleDeleteOption: (id: string) => void;
   handleAddQuestions: (index: number) => void;
   handleDeleteQuestions: (id: string) => void;
   handleCopyQuestion: (id: string, index: number) => void;
@@ -42,7 +40,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
   return (
     <div key={props.id} id={props.id} className="flex pt-8 pb-3">
       <div
-        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 p-4 px-8 ${props.questionMode === "edit" ? "border-2 border-blue-500" : props.questionMode === "new" ? "border-2 border-green-500" : ""}`}
+        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 py-6 px-8 ${props.questionMode === "edit" ? "border-2 border-blue-500" : props.questionMode === "new" ? "border-2 border-green-500" : ""}`}
       >
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">
@@ -89,18 +87,18 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                 }
               ></input>
             </div>
-            <div className="mt-6 w-40">
+            <div className="mt-6 w-full ml-2">
               <label
                 htmlFor={`code-${props.id}`}
-                className="w-full text-sm mr-4 font-semibold dark:text-gray-300"
+                className="w-full text-lg mr-4 font-semibold dark:text-gray-300"
               >
-                Is Code?
+                Is a Code Snippet?
               </label>
               <input
                 required
                 type="checkbox"
                 // {...(props.isCode ? { checked: true } : {})}
-                className="mr-2"
+                className="mr-2 w-4 h-4"
                 id="code-${props.id}"
                 checked={props.isCode} // new change
                 onChange={() => props.handleIsCode(props.id)}
@@ -138,64 +136,49 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                 />
               </div>
             </div>
-            {props.options.map((opt, index2) => (
-              <div
-                key={index2}
-                className="mt-4 flex flex-row items-center justify-center gap-3"
-              >
-                <div className="flex flex-row items-center justify-center gap-4">
-                  <ImRadioUnchecked className="text-lg" />
-                  <input
-                    className="mr-4 w-full rounded-2xl bg-slate-600 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
-                    placeholder={`Enter option ${index2 + 1}`}
-                    value={opt}
-                    onChange={(e) =>
-                      props.handleOptionChange(props.id, index2, e.target.value)
-                    }
-                  />
-                </div>
-                <div className="flex items-center gap-4">
-                  <input
-                    required
-                    id={`answer-${props.id}-${index2 + 1}`}
-                    type="radio"
-                    value={opt}
-                    name={`ans-${props.id}`}
-                    className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    checked={props.ansIndex === index2}
-                    onChange={(e) =>
-                      props.handleAnswerChange(props.id, index2, e)
-                    }
-                  />
-                  <label
-                    htmlFor={`answer-${props.id}-${index2 + 1}`}
-                    className="w-full py-4 text-lg font-semibold dark:text-gray-300"
-                  >
-                    Is Answer?
-                  </label>
-                </div>
-              </div>
-            ))}
-
-            <div className="flex flex-row w-full justify-between">
-              <div className="flex flex-row">
-                <Button
-                  className="my-4 rounded-md mr-6"
-                  intent={"ghost"}
-                  size={"small"}
-                  onClick={() => props.handleNewOption(props.id)}
+            <div className="grid grid-cols-2 grid-rows-2 justify-between w-full mt-4 gap-8 px-6 pb-4">
+              {props.options.map((opt, index2) => (
+                <div
+                  key={index2}
+                  className="mt-4 flex flex-row items-center justify-center gap-3"
                 >
-                  Add Option
-                </Button>
-                <Button
-                  className="my-4 rounded-md -skew-x-12"
-                  intent={"danger"}
-                  size={"small"}
-                  onClick={() => props.handleDeleteOption(props.id)}
-                >
-                  Delete Option
-                </Button>
-              </div>
+                  <div className="flex flex-row items-center justify-center w-full gap-4">
+                    {/* {index2 + 1} */}
+                    <input
+                      className="mr-4 w-full rounded-2xl bg-slate-600 bg-opacity-30 bg-clip-padding p-2 px-4 py-3 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
+                      placeholder={`Enter option ${index2 + 1}`}
+                      value={opt}
+                      onChange={(e) =>
+                        props.handleOptionChange(
+                          props.id,
+                          index2,
+                          e.target.value,
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <input
+                      required
+                      id={`answer-${props.id}-${index2 + 1}`}
+                      type="radio"
+                      value={opt}
+                      name={`ans-${props.id}`}
+                      className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                      checked={props.ansIndex === index2}
+                      onChange={(e) =>
+                        props.handleAnswerChange(props.id, index2, e)
+                      }
+                    />
+                    <label
+                      htmlFor={`answer-${props.id}-${index2 + 1}`}
+                      className="w-full py-4 text-lg font-semibold dark:text-gray-300 text-nowrap"
+                    >
+                      Is Answer?
+                    </label>
+                  </div>
+                </div>
+              ))}
             </div>
           </>
         )}

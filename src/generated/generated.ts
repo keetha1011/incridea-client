@@ -1738,6 +1738,7 @@ export type Quiz = {
 export type QuizScore = {
   __typename?: "QuizScore";
   id: Scalars["ID"]["output"];
+  quiz: Quiz;
   quizId: Scalars["String"]["output"];
   score: Scalars["Int"]["output"];
   team: Team;
@@ -3664,6 +3665,20 @@ export type GetQuizByIdQuery = {
           name: string;
           roundNo: number;
           startTime: Date;
+          questions: Array<{
+            __typename?: "Question";
+            id: string;
+            description?: string | null;
+            image?: string | null;
+            isCode: boolean;
+            question: string;
+            options: Array<{
+              __typename?: "Options";
+              id: string;
+              questionId: string;
+              value: string;
+            }>;
+          }>;
         };
       };
 };
@@ -3683,6 +3698,7 @@ export type GetQuizScoresQuery = {
           score: number;
           teamId: number;
           team: { __typename?: "Team"; name: string };
+          quiz: { __typename?: "Quiz"; qualifyNext: number };
         }>;
       };
 };
@@ -15152,6 +15168,65 @@ export const GetQuizByIdDocument = {
                               kind: "Field",
                               name: { kind: "Name", value: "startTime" },
                             },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "questions" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "description",
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "image" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "isCode" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "question" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "options" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "questionId",
+                                          },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: {
+                                            kind: "Name",
+                                            value: "value",
+                                          },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
+                            },
                           ],
                         },
                       },
@@ -15239,6 +15314,22 @@ export const GetQuizScoresDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "name" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "quiz" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "qualifyNext",
+                                    },
                                   },
                                 ],
                               },

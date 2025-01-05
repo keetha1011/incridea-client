@@ -34,6 +34,7 @@ import {
   DialogHeader,
   DialogContent,
 } from "~/components/ui/dialog";
+import { EyeIcon } from "lucide-react";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -283,7 +284,9 @@ const RoundsSidebar: FC<{
 
           {rounds.length !== selectedRound && (
             <div className="mx-2 w-full rounded-lg bg-gray-700 p-3 relative">
-              <h1 className="text-xl font-bold">Quiz</h1>
+              <h1 className="text-xl font-bold flex items-center justify-between mx-1">
+                Quiz
+              </h1>
               {rounds.map((round) => (
                 <div key={round.eventId}>
                   {round.roundNo === selectedRound && (
@@ -291,16 +294,23 @@ const RoundsSidebar: FC<{
                       {round.quiz ? (
                         <div className="mt-2">
                           {!round.quiz.allowAttempts ? (
-                            <Button
-                              intent={"dark"}
-                              className="w-auto rounded-md"
-                            >
-                              <Link
-                                href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                            <div className="flex items-center mr-1 justify-between">
+                              <Button
+                                intent={"dark"}
+                                className="w-auto rounded-md"
                               >
-                                Edit Quiz
+                                <Link
+                                  href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                                >
+                                  Edit Quiz
+                                </Link>
+                              </Button>
+                              <Link
+                                href={`./organizer/quiz/${eventId}-${selectedRound}/preview`}
+                              >
+                                <EyeIcon />
                               </Link>
-                            </Button>
+                            </div>
                           ) : (
                             <Dialog>
                               <DialogTrigger>

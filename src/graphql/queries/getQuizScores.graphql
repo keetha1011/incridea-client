@@ -8,6 +8,9 @@ query getQuizScores($quizId: String = "") {
         team {
           name
         }
+        quiz {
+          qualifyNext
+        }
       }
     }
   }

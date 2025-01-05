@@ -14,6 +14,18 @@ query GetQuizById($id: String!) {
         name
         roundNo
         startTime
+        questions {
+          id
+          description
+          image
+          isCode
+          question
+          options {
+            id
+            questionId
+            value
+          }
+        }
       }
     }
   }

@@ -199,7 +199,7 @@ const Quiz: React.FC<{
     const newQuestion: Question = {
       id: generateUUID(),
       questionText: "",
-      options: ["", ""],
+      options: ["", "", "", ""],
       ansIndex: 0,
       answer: "",
       collapsed: false,
@@ -466,72 +466,72 @@ const Quiz: React.FC<{
     }
   };
 
-  const handleNewOption = (id: string) => {
-    setSave(false);
+  // const handleNewOption = (id: string) => {
+  //   setSave(false);
 
-    setQuestions((prev) =>
-      prev.map((q) =>
-        q.id === id
-          ? q.mode === "view"
-            ? { ...q, options: [...q.options, ""], mode: "edit" as const }
-            : { ...q, options: [...q.options, ""] }
-          : q,
-      ),
-    );
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
-      saveToLocalStore<Question[]>(
-        questionsKey,
-        localQuestions?.map((q) =>
-          q.id === id ? { ...q, options: [...q.options, ""] } : q,
-        ) ?? [],
-      );
-    } else {
-      const dbQuestion = dbQuestions.find((q) => q.id === id);
-      if (dbQuestion)
-        saveToLocalStore<Question[]>(questionsKey, [
-          ...(localQuestions ?? []),
-          { ...dbQuestion, options: [...dbQuestion.options, ""], mode: "edit" },
-        ]);
-    }
-  };
+  //   setQuestions((prev) =>
+  //     prev.map((q) =>
+  //       q.id === id
+  //         ? q.mode === "view"
+  //           ? { ...q, options: [...q.options, ""], mode: "edit" as const }
+  //           : { ...q, options: [...q.options, ""] }
+  //         : q,
+  //     ),
+  //   );
+  //   const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
+  //   if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
+  //     saveToLocalStore<Question[]>(
+  //       questionsKey,
+  //       localQuestions?.map((q) =>
+  //         q.id === id ? { ...q, options: [...q.options, ""] } : q,
+  //       ) ?? [],
+  //     );
+  //   } else {
+  //     const dbQuestion = dbQuestions.find((q) => q.id === id);
+  //     if (dbQuestion)
+  //       saveToLocalStore<Question[]>(questionsKey, [
+  //         ...(localQuestions ?? []),
+  //         { ...dbQuestion, options: [...dbQuestion.options, ""], mode: "edit" },
+  //       ]);
+  //   }
+  // };
 
-  const handleDeleteOption = (id: string) => {
-    setSave(false);
+  // const handleDeleteOption = (id: string) => {
+  //   setSave(false);
 
-    setQuestions((prev) =>
-      prev.map((q) =>
-        q.id === id && q.options.length > 2
-          ? q.mode === "view"
-            ? { ...q, options: q.options.slice(0, -1), mode: "edit" as const }
-            : { ...q, options: q.options.slice(0, -1) }
-          : q,
-      ),
-    );
+  //   setQuestions((prev) =>
+  //     prev.map((q) =>
+  //       q.id === id && q.options.length > 2
+  //         ? q.mode === "view"
+  //           ? { ...q, options: q.options.slice(0, -1), mode: "edit" as const }
+  //           : { ...q, options: q.options.slice(0, -1) }
+  //         : q,
+  //     ),
+  //   );
 
-    const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-    if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
-      saveToLocalStore<Question[]>(
-        questionsKey,
-        localQuestions?.map((q) =>
-          q.id === id && q.options.length > 2
-            ? { ...q, options: q.options.slice(0, -1) }
-            : q,
-        ) ?? [],
-      );
-    } else {
-      const dbQuestion = dbQuestions.find((q) => q.id === id);
-      if (dbQuestion && dbQuestion.options.length > 2)
-        saveToLocalStore<Question[]>(questionsKey, [
-          ...(localQuestions ?? []),
-          {
-            ...dbQuestion,
-            options: dbQuestion.options.slice(0, -1),
-            mode: "edit",
-          },
-        ]);
-    }
-  };
+  //   const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
+  //   if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
+  //     saveToLocalStore<Question[]>(
+  //       questionsKey,
+  //       localQuestions?.map((q) =>
+  //         q.id === id && q.options.length > 2
+  //           ? { ...q, options: q.options.slice(0, -1) }
+  //           : q,
+  //       ) ?? [],
+  //     );
+  //   } else {
+  //     const dbQuestion = dbQuestions.find((q) => q.id === id);
+  //     if (dbQuestion && dbQuestion.options.length > 2)
+  //       saveToLocalStore<Question[]>(questionsKey, [
+  //         ...(localQuestions ?? []),
+  //         {
+  //           ...dbQuestion,
+  //           options: dbQuestion.options.slice(0, -1),
+  //           mode: "edit",
+  //         },
+  //       ]);
+  //   }
+  // };
 
   const handleIsCode = (id: string) => {
     setSave(false);
@@ -738,13 +738,13 @@ const Quiz: React.FC<{
           <div className="flex flex-row w-full justify-between">
             <div className="flex flex-row items-center">
               <label
-                className="self-center font-gilroy text-xl"
+                className="self-center font-gilroy text-lg text-white/85"
                 htmlFor="quizTitle"
               >
                 Quiz Title:
               </label>
               <input
-                className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
+                className=" self-center w-80 rounded-2xl ml-4 bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium outline-none backdrop-blur-3xl backdrop-filter text-white/70"
                 placeholder="Enter quiz title"
                 id="quizTitle"
                 value={quizDetails.quizTitle}
@@ -753,21 +753,27 @@ const Quiz: React.FC<{
             </div>
 
             <div className="flex flex-row font-gilroy text-xl self-center text-nowrap items-center">
-              <label htmlFor="startTime" className="w-full">
+              <label
+                htmlFor="startTime"
+                className="w-full text-lg text-white/85"
+              >
                 Start Time:
               </label>
               <input
-                className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
+                className=" self-center w-80 rounded-2xl bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium backdrop-blur-3xl backdrop-filter text-white/70"
                 placeholder="Quiz Start Time"
                 id="startTime"
                 value={quizDetails.startTime}
                 readOnly
               />
-              <label htmlFor="startTime" className="w-full ml-12">
+              <label
+                htmlFor="startTime"
+                className="w-full ml-12 text-lg text-white/85"
+              >
                 End Time:
               </label>
               <input
-                className=" self-center w-80 rounded-2xl bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium backdrop-blur-3xl backdrop-filter"
+                className=" self-center w-80 rounded-2xl bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium backdrop-blur-3xl backdrop-filter text-white/70"
                 placeholder="Quiz End Time"
                 id="endTime"
                 value={quizDetails.endTime}
@@ -782,7 +788,7 @@ const Quiz: React.FC<{
                 id="quizDescription"
                 rows={4}
                 readOnly
-                className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-600 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter"
+                className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-800 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter text-white/70"
                 placeholder="Quiz Description"
                 value={quizDetails.description}
               ></textarea>
@@ -790,13 +796,13 @@ const Quiz: React.FC<{
           )}
           <div className="flex flex-row items-center mt-4">
             <label
-              className="self-center font-gilroy text-xl"
+              className="self-center font-gilroy text-lg text-white/85"
               htmlFor="quizPassword"
             >
               Quiz Password:
             </label>
             <input
-              className=" self-center w-80 rounded-2xl ml-4 bg-slate-700 bg-opacity-30 bg-clip-padding p-2 px-4 text-xl font-medium outline-none backdrop-blur-3xl backdrop-filter"
+              className=" self-center w-80 rounded-2xl ml-4 bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium outline-none backdrop-blur-3xl backdrop-filter text-white/70"
               placeholder="Enter quiz title"
               id="quizTitle"
               value={quizDetails.password}
@@ -823,8 +829,6 @@ const Quiz: React.FC<{
               handleQuestionTextChange={handleQuestionTextChange}
               handleOptionChange={handleOptionChange}
               handleAnswerChange={handleAnswerChange}
-              handleNewOption={handleNewOption}
-              handleDeleteOption={handleDeleteOption}
               handleDeleteQuestions={handleDeleteQuestions}
               handleAddQuestions={handleAddQuestions}
               handleCopyQuestion={handleCopyQuestion}
