@@ -119,6 +119,7 @@ const Quiz: React.FC<{
     if (typeof window !== "undefined") {
       const loadedQuestions =
         loadfromLocalStore<Question[]>(questionsKey) ?? [];
+      console.log(loadedQuestions);
       loadedQuestions.map((q) => {
         if (questions.findIndex((qq) => qq.id === q.id) === -1) {
           console.log("THE FIRST");
@@ -717,10 +718,9 @@ const Quiz: React.FC<{
       (question) => question.mode !== "delete",
     );
 
-    const uniqueLocalQuestions = combinedQuestions.filter((q) => {
+    const uniqueLocalQuestions = uniqueQuestions.filter((q) => {
       return q.mode !== "view";
     });
-
     saveToLocalStore<Question[]>(questionsKey, uniqueLocalQuestions);
 
     setQuestions(filteredQuestions);

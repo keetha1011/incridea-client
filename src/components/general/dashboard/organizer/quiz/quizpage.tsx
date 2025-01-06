@@ -87,6 +87,10 @@ const QuizPage = ({
     hljs.highlightAll();
   }, [isReviewOpen]);
 
+  useEffect(() => {
+    hljs.highlightAll();
+  }, [questions]);
+
   const onSubmit = async () => {
     console.log(selectedAnswers);
     const promise = submitQuizAnswers({

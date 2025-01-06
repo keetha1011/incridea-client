@@ -121,6 +121,10 @@ const QuizPage = () => {
     hljs.highlightAll();
   }, [isReviewOpen]);
 
+  useEffect(() => {
+    hljs.highlightAll();
+  }, [questions]);
+
   // const handleFinalSubmit = useCallback(() => {
   //   console.log(selectedAnswers);
   //   sessionStorage.removeItem("savedQuizData");
