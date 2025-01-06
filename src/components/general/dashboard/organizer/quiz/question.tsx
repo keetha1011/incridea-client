@@ -1,8 +1,6 @@
 import React from "react";
 import { HiOutlineDuplicate } from "react-icons/hi";
-import { ImRadioUnchecked } from "react-icons/im";
 import { MdDeleteOutline } from "react-icons/md";
-import Button from "~/components/button";
 import QuizImageUpload from "./quizImageUpload";
 
 type QuestionProps = {

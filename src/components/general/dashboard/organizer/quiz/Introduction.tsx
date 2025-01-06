@@ -55,10 +55,9 @@ const IntroductionPage = ({
 
   console.log("Quiz data", quiz);
 
-  const [
-    verifyQuizPassword,
-    { loading: verifyQuizLoading, data: verifyQuizData },
-  ] = useLazyQuery(VerifyQuizPasswordDocument);
+  const [verifyQuizPassword, { loading: verifyQuizLoading }] = useLazyQuery(
+    VerifyQuizPasswordDocument,
+  );
 
   const handlePasswordSubmit = async () => {
     try {
@@ -107,6 +106,7 @@ const IntroductionPage = ({
       )
         setIsVerified(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [attemptQuizData, quiz]);
 
   if (attemptQuizLoading || quizLoading) {

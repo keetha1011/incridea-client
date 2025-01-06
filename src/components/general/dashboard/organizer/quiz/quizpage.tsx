@@ -33,6 +33,7 @@ import {
   IconCircleCaretRight,
   IconStopwatch,
 } from "@tabler/icons-react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import createToast from "~/components/toast";
 
@@ -81,6 +82,7 @@ const QuizPage = ({
       const savedAnswers: Options[] = JSON.parse(savedData) as Options[];
       setSelectedAnswers(savedAnswers);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -183,7 +185,8 @@ const QuizPage = ({
       });
     }, 1000);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // wanna check
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOptionSelect = (option: Options) => {
@@ -339,7 +342,7 @@ const QuizPage = ({
                   )} */}
 
                   {question.image && (
-                    <img
+                    <Image
                       src={question.image}
                       alt="Question image"
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
@@ -473,7 +476,7 @@ const QuizPage = ({
                   </h3>
 
                   {question.image && (
-                    <img
+                    <Image
                       src={question.image}
                       alt="Question image"
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"

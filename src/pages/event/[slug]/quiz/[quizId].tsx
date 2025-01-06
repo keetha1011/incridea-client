@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import type { GetServerSideProps } from "next";
 import { GetAllQuestionsDocument } from "~/generated/generated";
 import IntroductionPage from "~/components/general/dashboard/organizer/quiz/Introduction";
 import QuizPage from "~/components/general/dashboard/organizer/quiz/quizpage";

@@ -8,11 +8,7 @@ import type { SwiperClass } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import {
-  GetQuizByIdDocument,
-  SubmitQuizAnswerDocument,
-} from "~/generated/generated";
-import { useMutation } from "@apollo/client";
+import { GetQuizByIdDocument } from "~/generated/generated";
 import { Navigation } from "swiper/modules";
 import {
   type Question,
@@ -20,7 +16,7 @@ import {
 } from "~/pages/event/[slug]/quiz/[quizId]";
 import { useQuery } from "@apollo/client";
 import { EventByOrganizerDocument } from "~/generated/generated";
-import { GetQuizScoresDocument } from "~/generated/generated";
+import Image from "next/image";
 // import Prism from "prismjs";
 // import "prismjs/themes/prism-okaidia.css";
 // import "prismjs/components/prism-python";
@@ -41,12 +37,10 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useAuth } from "~/hooks/useAuth";
-import createToast from "~/components/toast";
-import { options } from "prettier-plugin-tailwindcss";
 
 const QuizPage = () => {
   const router = useRouter();
-  const { user, loading: loading2 } = useAuth();
+  const { user } = useAuth();
   const { slug } = router.query;
 
   const [eventId, roundId] = slug?.toString().split("-") ?? [];
@@ -56,7 +50,7 @@ const QuizPage = () => {
 
   const [quizName, setQuizName] = useState("");
 
-  const { data, loading } = useQuery(EventByOrganizerDocument, {
+  const { data } = useQuery(EventByOrganizerDocument, {
     variables: {
       organizerId: user?.id ?? "0",
     },
@@ -66,13 +60,10 @@ const QuizPage = () => {
   const round = event?.rounds.find((round) => round.roundNo === roundInt);
   const quizId = round?.quiz?.id;
 
-  const { data: quizScores, loading: quizScoresLoading } = useQuery(
-    GetQuizByIdDocument,
-    {
-      variables: { id: quizId ?? "" },
-      skip: !quizId,
-    },
-  );
+  const { data: quizScores } = useQuery(GetQuizByIdDocument, {
+    variables: { id: quizId ?? "" },
+    skip: !quizId,
+  });
 
   useEffect(() => {
     if (
@@ -104,7 +95,6 @@ const QuizPage = () => {
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedDescription, setSelectedDescription] = useState<string>("");
 
   useEffect(() => {
@@ -115,6 +105,7 @@ const QuizPage = () => {
       const savedAnswers: Options[] = JSON.parse(savedData) as Options[];
       setSelectedAnswers(savedAnswers);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -234,7 +225,7 @@ const QuizPage = () => {
                   </h3>
 
                   {question.image && (
-                    <img
+                    <Image
                       src={question.image}
                       alt="Question image"
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
@@ -366,7 +357,7 @@ const QuizPage = () => {
                   </h3>
 
                   {question.image && (
-                    <img
+                    <Image
                       src={question.image}
                       alt="Question image"
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
@@ -416,16 +407,6 @@ const QuizPage = () => {
                 Return to Quiz
               </button>
             </div>
-          </div>
-        </div>
-      )}
-      {isDialogOpen && (
-        <div className="fixed inset-0 z-50  mx-auto flex items-center justify-center backdrop-blur-sm">
-          <div className="text-center w-[80%] md:w-auto bg-white p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">
-              Quiz Submitted Successfully
-            </h2>
-            <p>You will be redirected to the event page shortly.</p>
           </div>
         </div>
       )}

@@ -7,17 +7,15 @@ import { EventByOrganizerDocument } from "~/generated/generated";
 import { GetQuizScoresDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { Role } from "~/generated/generated";
-import styles from "~/components/event/styles.module.css";
 import { idToTeamId } from "~/utils/id";
-import { CheckboxIndicator } from "@radix-ui/react-checkbox";
-import { CheckCheckIcon, CheckIcon } from "lucide-react";
+import { CheckIcon } from "lucide-react";
 
-interface Leaderboard {
+type Leaderboard = {
   score: number;
   teamName: string;
   teamId: string;
   qualifyNext: number;
-}
+};
 
 const QuizLeaderboard = () => {
   const router = useRouter();
@@ -30,7 +28,7 @@ const QuizLeaderboard = () => {
   const [sortedLeaderboard, setSortedLeaderboard] = useState<Leaderboard[]>([]);
   const [processedQuizScores, setProcessedQuizScores] = useState(false);
 
-  const { data, loading } = useQuery(EventByOrganizerDocument, {
+  const { data } = useQuery(EventByOrganizerDocument, {
     variables: {
       organizerId: user?.id ?? "0",
     },

@@ -6,7 +6,6 @@ import { BsQrCodeScan } from "react-icons/bs";
 import { QRCodeSVG } from "qrcode.react";
 import { IoCopy } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
-import { useAuth } from "~/hooks/useAuth";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
@@ -134,6 +133,7 @@ const RoundsSidebar: FC<{
       await navigator.clipboard.writeText(copyString);
       await createToast(Promise.resolve(), "URL copied to clipboard");
     } catch (error) {
+      console.log(error);
       await createToast(
         Promise.reject(new Error("Failed to copy URL to clipboard")),
         "Failed to copy URL to clipboard",

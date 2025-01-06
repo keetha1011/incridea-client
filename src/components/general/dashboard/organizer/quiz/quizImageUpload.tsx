@@ -1,13 +1,10 @@
-import { useMutation } from "@apollo/client";
 import Image from "next/image";
-import React, { memo, useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 
 import Spinner from "~/components/spinner";
 // import { CreateSubmissionDocument } from "~/generated/generated";
 import { UploadButton } from "~/components/uploadthing/button";
 import toast from "react-hot-toast";
-import { CreateSubmissionDocument } from "~/generated/generated";
-import { set } from "zod";
 
 type Props = {
   existingImage?: string | null;
@@ -22,15 +19,16 @@ type Props = {
 
 const QuizImageUpload = React.memo(
   ({ existingImage, loading, handleImageUpload }: Props) => {
-    const [highlighted, setHighlighted] = useState(false);
+    // const [highlighted, setHighlighted] = useState(false);
+    const highlighted = false;
 
     const [mediaPreview, setMediaPreview] = useState<string>("");
     const [manualLoading, setManualLoading] = useState(false);
-    const inputRef = useRef<HTMLInputElement>(null);
+    // const inputRef = useRef<HTMLInputElement>(null);
 
-    const [submissionMutation, { loading: submissionLoading }] = useMutation(
-      CreateSubmissionDocument,
-    );
+    // const [submissionMutation, { loading: submissionLoading }] = useMutation(
+    //   CreateSubmissionDocument,
+    // );
 
     return (
       <>
@@ -61,7 +59,7 @@ const QuizImageUpload = React.memo(
           //   }
           // }}
         >
-          {loading || submissionLoading || manualLoading ? (
+          {loading || manualLoading ? (
             <>
               <Spinner />
             </>

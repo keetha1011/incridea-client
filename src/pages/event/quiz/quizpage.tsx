@@ -10,7 +10,6 @@ import { Navigation } from "swiper/modules";
 import {
   IconArrowLeft,
   IconArrowRight,
-  IconCheck,
   IconCircleCaretLeft,
   IconCircleCaretRight,
   IconStopwatch,

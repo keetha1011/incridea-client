@@ -41,9 +41,9 @@ type QuizDetailsType = {
   password: string;
 };
 
-function appendMilliseconds(localDateString: string): string {
-  return `${localDateString}:00.000Z`;
-}
+// function appendMilliseconds(localDateString: string): string {
+//   return `${localDateString}:00.000Z`;
+// }
 
 function saveToLocalStore<T>(key: string, value: T): void {
   if (typeof window === "undefined") return;
@@ -84,8 +84,8 @@ const Quiz: React.FC<{
   const concatId = eventId + "-" + roundNo;
   const questionsKey = "questions-" + concatId;
 
-  const [doneFetchLocal, setDoneFetchLocal] = useState(false);
-  const [doneFetchDB, setDoneFetchDB] = useState(false);
+  // const [doneFetchLocal, setDoneFetchLocal] = useState(false);
+  // const [doneFetchDB, setDoneFetchDB] = useState(false);
 
   const toggleCollapase = (id: string) => {
     setQuestions((prev) =>
@@ -136,7 +136,7 @@ const Quiz: React.FC<{
       });
     }
     console.log("DONE FETCH CHANGED 2222");
-    setDoneFetchLocal(true);
+    // setDoneFetchLocal(true);
   };
 
   const fetchFromDB = () => {
@@ -185,13 +185,14 @@ const Quiz: React.FC<{
       }
     }
     console.log("DONE FETCH CHANGED 11");
-    setDoneFetchDB(true);
+    // setDoneFetchDB(true);
   };
 
   useEffect(() => {
     console.log("FETCHING FROM DB AND LOCAL");
     fetchFromDB();
     fetchFromLocal();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizData]);
 
   const handleAddQuestions = () => {
@@ -724,6 +725,7 @@ const Quiz: React.FC<{
     saveToLocalStore<Question[]>(questionsKey, uniqueLocalQuestions);
 
     setQuestions(filteredQuestions);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localQuestions, dbQuestions]);
 
   return (
