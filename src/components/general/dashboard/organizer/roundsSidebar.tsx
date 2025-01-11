@@ -6,7 +6,6 @@ import { BsQrCodeScan } from "react-icons/bs";
 import { QRCodeSVG } from "qrcode.react";
 import { IoCopy } from "react-icons/io5";
 import { MdDelete } from "react-icons/md";
-import { useAuth } from "~/hooks/useAuth";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
@@ -34,6 +33,7 @@ import {
   DialogHeader,
   DialogContent,
 } from "~/components/ui/dialog";
+import { EyeIcon } from "lucide-react";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -133,6 +133,7 @@ const RoundsSidebar: FC<{
       await navigator.clipboard.writeText(copyString);
       await createToast(Promise.resolve(), "URL copied to clipboard");
     } catch (error) {
+      console.log(error);
       await createToast(
         Promise.reject(new Error("Failed to copy URL to clipboard")),
         "Failed to copy URL to clipboard",
@@ -283,7 +284,9 @@ const RoundsSidebar: FC<{
 
           {rounds.length !== selectedRound && (
             <div className="mx-2 w-full rounded-lg bg-gray-700 p-3 relative">
-              <h1 className="text-xl font-bold">Quiz</h1>
+              <h1 className="text-xl font-bold flex items-center justify-between mx-1">
+                Quiz
+              </h1>
               {rounds.map((round) => (
                 <div key={round.eventId}>
                   {round.roundNo === selectedRound && (
@@ -291,16 +294,23 @@ const RoundsSidebar: FC<{
                       {round.quiz ? (
                         <div className="mt-2">
                           {!round.quiz.allowAttempts ? (
-                            <Button
-                              intent={"dark"}
-                              className="w-auto rounded-md"
-                            >
-                              <Link
-                                href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                            <div className="flex items-center mr-1 justify-between">
+                              <Button
+                                intent={"dark"}
+                                className="w-auto rounded-md"
                               >
-                                Edit Quiz
+                                <Link
+                                  href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                                >
+                                  Edit Quiz
+                                </Link>
+                              </Button>
+                              <Link
+                                href={`./organizer/quiz/${eventId}-${selectedRound}/preview`}
+                              >
+                                <EyeIcon />
                               </Link>
-                            </Button>
+                            </div>
                           ) : (
                             <Dialog>
                               <DialogTrigger>

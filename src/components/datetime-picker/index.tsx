@@ -12,11 +12,11 @@ import {
 } from "~/components/ui/popover";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 
-interface DateTimePickerProps {
+type DateTimePickerProps = {
   type: "date" | "time" | "datetime";
   value?: Date;
   onChange?: (value: Date) => void;
-}
+};
 
 export function DateTimePicker({
   type = "datetime",

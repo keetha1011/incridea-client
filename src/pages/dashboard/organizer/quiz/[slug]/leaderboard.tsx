@@ -7,14 +7,15 @@ import { EventByOrganizerDocument } from "~/generated/generated";
 import { GetQuizScoresDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 import { Role } from "~/generated/generated";
-import styles from "~/components/event/styles.module.css";
 import { idToTeamId } from "~/utils/id";
+import { CheckIcon } from "lucide-react";
 
-interface Leaderboard {
+type Leaderboard = {
   score: number;
   teamName: string;
   teamId: string;
-}
+  qualifyNext: number;
+};
 
 const QuizLeaderboard = () => {
   const router = useRouter();
@@ -27,7 +28,7 @@ const QuizLeaderboard = () => {
   const [sortedLeaderboard, setSortedLeaderboard] = useState<Leaderboard[]>([]);
   const [processedQuizScores, setProcessedQuizScores] = useState(false);
 
-  const { data, loading } = useQuery(EventByOrganizerDocument, {
+  const { data } = useQuery(EventByOrganizerDocument, {
     variables: {
       organizerId: user?.id ?? "0",
     },
@@ -57,6 +58,7 @@ const QuizLeaderboard = () => {
       const leaderboard = scores.map((score) => ({
         score: score.score,
         teamName: score.team.name,
+        qualifyNext: score.quiz.qualifyNext,
         teamId: idToTeamId(score.teamId.toString()),
       }));
 
@@ -132,7 +134,13 @@ const QuizLeaderboard = () => {
                     key={user.teamId}
                     className="flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl"
                   >
-                    <h1 className="flex basis-1/4 items-center justify-center text-center text-base md:gap-1 md:text-xl">
+                    {/* <p className="border rounded-2xl border-green-700 text-green-700 absolute left-20">Qualified</p> */}
+                    <h1
+                      className={`flex basis-1/4 items-center justify-center text-center text-base md:gap-1 md:text-xl relative ${i + 1 <= user.qualifyNext && "pr-12"}`}
+                    >
+                      {i + 1 <= user.qualifyNext && (
+                        <CheckIcon className="mr-4 border border-green-600 text-green-500 rounded-lg scale-75 md:scale-90 lg:scale-100" />
+                      )}
                       {i + 1}
                     </h1>
                     <h1 className="mx-2 flex basis-1/4 items-center justify-center text-center text-sm font-semibold md:text-xl">
