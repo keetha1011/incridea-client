@@ -89,6 +89,15 @@ const QuizPage = ({
 
   const onSubmit = async () => {
     console.log(selectedAnswers);
+    let timeTaken = 0;
+    const quizStartTime = localStorage.getItem("quizStartTime");
+    const quizEndTime = new Date().toISOString();
+    if (quizStartTime) {
+      timeTaken =
+        (new Date(quizEndTime).getTime() - new Date(quizStartTime).getTime()) /
+        60000;
+    }
+    localStorage.removeItem("quizStartTime");
     const promise = submitQuizAnswers({
       variables: {
         quizId: quizId,
@@ -98,6 +107,7 @@ const QuizPage = ({
           value,
         })),
         teamId: teamId,
+        timeTaken: timeTaken,
       },
     })
       .then((res) => {
@@ -389,7 +399,7 @@ const QuizPage = ({
             </pre>
             <button
               className="mt-4 px-4 py-2 rounded-lg text-white bg-gradient-to-br from-secondary-700 to-primary-400 shadow-lg hover:from-secondary-700 hover:to-primary-500"
-              onClick={() => setSelectedDescription(null)}
+              onClick={() => setSelectedDescription("")}
             >
               Close
             </button>

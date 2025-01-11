@@ -70,6 +70,7 @@ const IntroductionPage = ({
       ) {
         setErrorMessage("");
         setIsVerified(true);
+        localStorage.setItem("quizStartTime", new Date().toISOString());
       } else {
         setErrorMessage("Invalid password. Please try again.");
       }
