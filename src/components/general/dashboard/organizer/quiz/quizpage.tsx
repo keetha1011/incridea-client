@@ -234,7 +234,7 @@ const QuizPage = ({
   const closeReviewDialog = () => setIsReviewOpen(false);
 
   return (
-    <div className="relative md:static w-[90%] mx-auto mt-16 flex flex-col justify-center md:flex-row bg-gradient-to-br from-pink-50 via-white to-pink-100">
+    <div className="relative md:static w-[90%] rounded-xl mx-auto mt-16 flex flex-col justify-center md:flex-row bg-gradient-to-br from-pink-50 via-white to-pink-100">
       {/* Quiz Content */}
       <div className="flex flex-col w-full md:w-[70%] lg:w-3/4">
         {/* Header */}
@@ -345,6 +345,8 @@ const QuizPage = ({
                     <Image
                       src={question.image}
                       alt="Question image"
+                      width={300}
+                      height={300}
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
                     />
                   )}
@@ -417,7 +419,7 @@ const QuizPage = ({
       )}
       {/* Tracker */}
       <aside
-        className={` lg:w-1/4 bg-white bg-opacity-70 backdrop-blur-md p-4 shadow-lg ${isTrackerOpen ? "absolute md:static z-50 top-20 right-0 w-3/4 sm:w-1/2 backdrop-blur-md" : "hidden md:w-3/4 md:block"}`}
+        className={` lg:w-1/4 rounded-xl bg-white bg-opacity-70 backdrop-blur-md p-4 shadow-lg ${isTrackerOpen ? "absolute md:static z-50 top-20 right-0 w-3/4 sm:w-1/2 backdrop-blur-md" : "hidden md:w-3/4 md:block"}`}
       >
         <h2 className="text-lg font-semibold text-gray-800 mb-4">
           Quiz Navigator
@@ -479,6 +481,8 @@ const QuizPage = ({
                     <Image
                       src={question.image}
                       alt="Question image"
+                      width={300}
+                      height={300}
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
                     />
                   )}
