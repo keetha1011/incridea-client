@@ -18,89 +18,8 @@ const config: Config = {
         shake: "shake 0.3s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        vibrate: "vibrate 5s ease-in-out",
-        splatter1: "splatter1 1s ease-out forwards",
-        splatter2: "splatter2 1s ease-out forwards",
-        splatter3: "splatter3 1s ease-out forwards",
-        splatter4: "splatter4 1s ease-out forwards",
-        splatter5: "splatter5 1s ease-out forwards",
-        splatter6: "splatter6 1s ease-out forwards",
       },
       keyframes: {
-        vibrate: {
-          "0%": {
-            transform: "rotate(0deg)",
-          },
-          "25%": {
-            transform: "rotate(10deg)",
-          },
-          "75%": {
-            transform: "rotate(-10deg)",
-          },
-          "100%": {
-            transform: "rotate(0deg)",
-          },
-        },
-        splatter1: {
-          "0%": {
-            transform: "translate(0, 0) scale(1)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translate(-180px, -170px) scale(0.5)",
-            opacity: "0",
-          },
-        },
-        splatter2: {
-          "0%": {
-            transform: "translate(0, 0) scale(1)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translate(200px, -80px) scale(0.6)",
-            opacity: "0",
-          },
-        },
-        splatter3: {
-          "0%": {
-            transform: "translate(0, 0) scale(1)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translate(-220px, 30px) scale(0.5)",
-            opacity: "0",
-          },
-        },
-        splatter4: {
-          "0%": {
-            transform: "translate(0, 0) scale(1)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translate(300px, -40px) scale(0.6)",
-            opacity: "0",
-          },
-        },
-        splatter5: {
-          "0%": {
-            transform: "translate(0, 0) scale(1)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translate(-120px, 150px) scale(0.5)",
-            opacity: "0",
-          },
-        },
-        splatter6: {
-          "0%": {
-            transform: "translate(0, 0) scale(1)",
-            opacity: "1",
-          },
-          "100%": {
-            transform: "translate(200px, 120px) scale(0.4)",
-            opacity: "0",
-          },
-        },
         shake: {
           "0%": {
             transform: "translate(0, 0) rotate(0deg)",
