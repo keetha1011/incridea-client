@@ -1,4 +1,4 @@
-query GetAllQuestions($quizId: String = "") {
+query GetAllQuestions($quizId: String!) {
   getAllquestions(quizId: $quizId) {
     ... on Error {
       __typename

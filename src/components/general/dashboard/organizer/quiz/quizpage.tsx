@@ -95,6 +95,15 @@ const QuizPage = ({
 
   const onSubmit = async () => {
     console.log(selectedAnswers);
+    let timeTaken = 0;
+    const quizStartTime = localStorage.getItem("quizStartTime");
+    const quizEndTime = new Date().toISOString();
+    if (quizStartTime) {
+      timeTaken =
+        (new Date(quizEndTime).getTime() - new Date(quizStartTime).getTime()) /
+        60000;
+    }
+    localStorage.removeItem("quizStartTime");
     const promise = submitQuizAnswers({
       variables: {
         quizId: quizId,
@@ -104,6 +113,7 @@ const QuizPage = ({
           value,
         })),
         teamId: teamId,
+        timeTaken: timeTaken,
       },
     })
       .then((res) => {

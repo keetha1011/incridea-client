@@ -595,6 +595,7 @@ export type MutationSubmitQuizArgs = {
   quizId: Scalars["String"]["input"];
   selectedAnswers: Array<SelectedOptions>;
   teamId: Scalars["Int"]["input"];
+  timeTaken: Scalars["Int"]["input"];
 };
 
 export type MutationUpdateCardArgs = {
@@ -2806,6 +2807,7 @@ export type SubmitQuizAnswerMutationVariables = Exact<{
   quizId: Scalars["String"]["input"];
   selectedAnswers: Array<SelectedOptions> | SelectedOptions;
   teamId: Scalars["Int"]["input"];
+  timeTaken: Scalars["Int"]["input"];
 }>;
 
 export type SubmitQuizAnswerMutation = {
@@ -3121,7 +3123,7 @@ export type AccommodationRequestsByUserIdQuery = {
 };
 
 export type AttemptQuizQueryVariables = Exact<{
-  quizId?: InputMaybe<Scalars["ID"]["input"]>;
+  quizId: Scalars["ID"]["input"];
 }>;
 
 export type AttemptQuizQuery = {
@@ -3449,7 +3451,7 @@ export type GetAllHotelsQuery = {
 };
 
 export type GetAllQuestionsQueryVariables = Exact<{
-  quizId?: InputMaybe<Scalars["String"]["input"]>;
+  quizId: Scalars["String"]["input"];
 }>;
 
 export type GetAllQuestionsQuery = {
@@ -10967,6 +10969,17 @@ export const SubmitQuizAnswerDocument = {
             type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "timeTaken" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -10997,6 +11010,14 @@ export const SubmitQuizAnswerDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "teamId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "timeTaken" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "timeTaken" },
                 },
               },
             ],
@@ -12665,8 +12686,10 @@ export const AttemptQuizDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "quizId" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
-          defaultValue: { kind: "StringValue", value: "", block: false },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
         },
       ],
       selectionSet: {
@@ -14073,8 +14096,13 @@ export const GetAllQuestionsDocument = {
             kind: "Variable",
             name: { kind: "Name", value: "quizId" },
           },
-          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
-          defaultValue: { kind: "StringValue", value: "", block: false },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
         },
       ],
       selectionSet: {

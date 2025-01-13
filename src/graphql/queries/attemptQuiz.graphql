@@ -1,4 +1,4 @@
-query AttemptQuiz($quizId: ID = "") {
+query AttemptQuiz($quizId: ID!) {
   attemptQuiz(quizId: $quizId) {
     ... on Error {
       __typename
