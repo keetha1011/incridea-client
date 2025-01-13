@@ -73,6 +73,7 @@ export default function App({
   initialApolloState,
 }: AppProps & PageProps) {
   const router = useRouter();
+
   const apolloClient = useApollo(initialApolloState);
   const [isLoading, setLoading] = useState<boolean>(false);
 

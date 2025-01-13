@@ -253,7 +253,7 @@ const EditEvent: FC<{
                   onUploadBegin={() => {
                     setUploading(true);
                   }}
-                  onClientUploadComplete={(res) => {
+                  onClientUploadComplete={(res: { url: string }[]) => {
                     if (res[0]) {
                       toast.success("Image uploaded", {
                         position: "bottom-right",
@@ -262,7 +262,7 @@ const EditEvent: FC<{
                       setBanner(res[0].url);
                     }
                   }}
-                  onUploadError={(error) => {
+                  onUploadError={(error: Error) => {
                     console.log(error);
                     toast.error("Image upload failed", {
                       position: "bottom-right",
