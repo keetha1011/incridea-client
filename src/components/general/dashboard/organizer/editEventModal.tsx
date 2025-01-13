@@ -281,7 +281,7 @@ export default function EditEventModal({
                   onUploadBegin={() => {
                     setUploading(true);
                   }}
-                  onClientUploadComplete={(res) => {
+                  onClientUploadComplete={(res: { url: string }[]) => {
                     if (res[0]) {
                       setUploading(false);
                       setBanner(res[0].url);
@@ -296,7 +296,7 @@ export default function EditEventModal({
                     });
                     setUploading(false);
                   }}
-                  onUploadError={(error) => {
+                  onUploadError={(error: Error) => {
                     console.log(error);
                     toast.error("Upload Failed", {
                       position: "bottom-right",

@@ -87,7 +87,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
       <UploadButton
         endpoint="easterEggUploader"
         className="mt-6"
-        onBeforeUploadBegin={(files) => {
+        onBeforeUploadBegin={(files: File[]) => {
           setImage(files[0]!);
           setMediaPreview(URL.createObjectURL(files[0]!));
 
@@ -96,7 +96,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
         onUploadBegin={() => {
           setManualLoading(true);
         }}
-        onClientUploadComplete={async (res) => {
+        onClientUploadComplete={async (res: { url: string }[]) => {
           if (res[0]) {
             setMediaPreview(res[0].url);
             await submissionMutation({
@@ -123,7 +123,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
           toast.error("Image upload aborted", { position: "bottom-right" });
           setManualLoading(false);
         }}
-        onUploadError={(error) => {
+        onUploadError={(error: Error) => {
           console.log(error);
           toast.error("Image upload failed", { position: "bottom-right" });
           setManualLoading(false);
