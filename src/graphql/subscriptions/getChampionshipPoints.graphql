@@ -7,24 +7,15 @@ subscription GetChampionshipPoints {
     ... on SubscriptionGetChampionshipPointsSuccess {
       __typename
       data {
-        bronzeCount {
-          runner_up
-          second_runner_up
-          winner
-        }
+        bronzeCount
         championshipPoints
-        goldCount {
-          second_runner_up
-          runner_up
-          winner
-        }
+        coreCount
+        goldCount
         id
         name
-        silverCount {
-          runner_up
-          second_runner_up
-          winner
-        }
+        nonTechCount
+        silverCount
+        techCount
       }
     }
   }

@@ -79,14 +79,17 @@ export type Card = {
   submissions: Array<Submission>;
 };
 
-export type ChampionshipPoints = {
-  __typename?: "ChampionshipPoints";
-  bronzeCount: Count;
+export type ChampionshipPoint = {
+  __typename?: "ChampionshipPoint";
+  bronzeCount: Scalars["Int"]["output"];
   championshipPoints: Scalars["Int"]["output"];
-  goldCount: Count;
+  coreCount: Scalars["Int"]["output"];
+  goldCount: Scalars["Int"]["output"];
   id: Scalars["Int"]["output"];
   name: Scalars["String"]["output"];
-  silverCount: Count;
+  nonTechCount: Scalars["Int"]["output"];
+  silverCount: Scalars["Int"]["output"];
+  techCount: Scalars["Int"]["output"];
 };
 
 export type College = {
@@ -111,13 +114,6 @@ export type Comments = {
   roundNo: Scalars["Int"]["output"];
   team: Team;
   teamId: Scalars["ID"]["output"];
-};
-
-export type Count = {
-  __typename?: "Count";
-  runner_up: Scalars["Int"]["output"];
-  second_runner_up: Scalars["Int"]["output"];
-  winner: Scalars["Int"]["output"];
 };
 
 export type CreateCriteriaInput = {
@@ -1524,7 +1520,7 @@ export type QueryGetChampionshipPointsResult =
 
 export type QueryGetChampionshipPointsSuccess = {
   __typename?: "QueryGetChampionshipPointsSuccess";
-  data: Array<ChampionshipPoints>;
+  data: Array<ChampionshipPoint>;
 };
 
 export type QueryGetCommentResult = Error | QueryGetCommentSuccess;
@@ -1794,7 +1790,7 @@ export type SubscriptionGetChampionshipPointsResult =
 
 export type SubscriptionGetChampionshipPointsSuccess = {
   __typename?: "SubscriptionGetChampionshipPointsSuccess";
-  data: Array<ChampionshipPoints>;
+  data: Array<ChampionshipPoint>;
 };
 
 export type SubscriptionGetRoundStatusResult =
@@ -3372,39 +3368,27 @@ export type BranchesQuery = {
   }>;
 };
 
-export type GetChampionshipQueryQueryVariables = Exact<{
+export type GetChampionshipPointsQueryQueryVariables = Exact<{
   [key: string]: never;
 }>;
 
-export type GetChampionshipQueryQuery = {
+export type GetChampionshipPointsQueryQuery = {
   __typename?: "Query";
   getChampionshipPoints:
     | { __typename: "Error"; message: string }
     | {
         __typename: "QueryGetChampionshipPointsSuccess";
         data: Array<{
-          __typename?: "ChampionshipPoints";
+          __typename?: "ChampionshipPoint";
+          bronzeCount: number;
           championshipPoints: number;
+          coreCount: number;
+          goldCount: number;
           id: number;
           name: string;
-          bronzeCount: {
-            __typename?: "Count";
-            runner_up: number;
-            second_runner_up: number;
-            winner: number;
-          };
-          goldCount: {
-            __typename?: "Count";
-            runner_up: number;
-            second_runner_up: number;
-            winner: number;
-          };
-          silverCount: {
-            __typename?: "Count";
-            runner_up: number;
-            second_runner_up: number;
-            winner: number;
-          };
+          nonTechCount: number;
+          silverCount: number;
+          techCount: number;
         }>;
       };
 };
@@ -3905,28 +3889,16 @@ export type GetChampionshipPointsSubscription = {
     | {
         __typename: "SubscriptionGetChampionshipPointsSuccess";
         data: Array<{
-          __typename?: "ChampionshipPoints";
+          __typename?: "ChampionshipPoint";
+          bronzeCount: number;
           championshipPoints: number;
+          coreCount: number;
+          goldCount: number;
           id: number;
           name: string;
-          bronzeCount: {
-            __typename?: "Count";
-            runner_up: number;
-            second_runner_up: number;
-            winner: number;
-          };
-          goldCount: {
-            __typename?: "Count";
-            second_runner_up: number;
-            runner_up: number;
-            winner: number;
-          };
-          silverCount: {
-            __typename?: "Count";
-            runner_up: number;
-            second_runner_up: number;
-            winner: number;
-          };
+          nonTechCount: number;
+          silverCount: number;
+          techCount: number;
         }>;
       };
 };
@@ -13274,13 +13246,13 @@ export const BranchesDocument = {
     },
   ],
 } as unknown as DocumentNode<BranchesQuery, BranchesQueryVariables>;
-export const GetChampionshipQueryDocument = {
+export const GetChampionshipPointsQueryDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "GetChampionshipQuery" },
+      name: { kind: "Name", value: "GetChampionshipPointsQuery" },
       selectionSet: {
         kind: "SelectionSet",
         selections: [
@@ -13335,26 +13307,6 @@ export const GetChampionshipQueryDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "bronzeCount" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "runner_up" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: {
-                                      kind: "Name",
-                                      value: "second_runner_up",
-                                    },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "winner" },
-                                  },
-                                ],
-                              },
                             },
                             {
                               kind: "Field",
@@ -13365,27 +13317,11 @@ export const GetChampionshipQueryDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "coreCount" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "goldCount" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "runner_up" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: {
-                                      kind: "Name",
-                                      value: "second_runner_up",
-                                    },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "winner" },
-                                  },
-                                ],
-                              },
                             },
                             {
                               kind: "Field",
@@ -13397,27 +13333,15 @@ export const GetChampionshipQueryDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "nonTechCount" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "silverCount" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "runner_up" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: {
-                                      kind: "Name",
-                                      value: "second_runner_up",
-                                    },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "winner" },
-                                  },
-                                ],
-                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "techCount" },
                             },
                           ],
                         },
@@ -13433,8 +13357,8 @@ export const GetChampionshipQueryDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  GetChampionshipQueryQuery,
-  GetChampionshipQueryQueryVariables
+  GetChampionshipPointsQueryQuery,
+  GetChampionshipPointsQueryQueryVariables
 >;
 export const GetCommentDocument = {
   kind: "Document",
@@ -16007,26 +15931,6 @@ export const GetChampionshipPointsDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "bronzeCount" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "runner_up" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: {
-                                      kind: "Name",
-                                      value: "second_runner_up",
-                                    },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "winner" },
-                                  },
-                                ],
-                              },
                             },
                             {
                               kind: "Field",
@@ -16037,27 +15941,11 @@ export const GetChampionshipPointsDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "coreCount" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "goldCount" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: {
-                                      kind: "Name",
-                                      value: "second_runner_up",
-                                    },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "runner_up" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "winner" },
-                                  },
-                                ],
-                              },
                             },
                             {
                               kind: "Field",
@@ -16069,27 +15957,15 @@ export const GetChampionshipPointsDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "nonTechCount" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "silverCount" },
-                              selectionSet: {
-                                kind: "SelectionSet",
-                                selections: [
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "runner_up" },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: {
-                                      kind: "Name",
-                                      value: "second_runner_up",
-                                    },
-                                  },
-                                  {
-                                    kind: "Field",
-                                    name: { kind: "Name", value: "winner" },
-                                  },
-                                ],
-                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "techCount" },
                             },
                           ],
                         },

@@ -1,4 +1,4 @@
-query GetChampionshipQuery {
+query GetChampionshipPointsQuery {
   getChampionshipPoints {
     ... on Error {
       __typename
@@ -7,24 +7,15 @@ query GetChampionshipQuery {
     ... on QueryGetChampionshipPointsSuccess {
       __typename
       data {
-        bronzeCount {
-          runner_up
-          second_runner_up
-          winner
-        }
+        bronzeCount
         championshipPoints
-        goldCount {
-          runner_up
-          second_runner_up
-          winner
-        }
+        coreCount
+        goldCount
         id
         name
-        silverCount {
-          runner_up
-          second_runner_up
-          winner
-        }
+        nonTechCount
+        silverCount
+        techCount
       }
     }
   }

@@ -1,103 +1,99 @@
-import { useMutation, useQuery, useSubscription } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
 import {
+  type ChampionshipPoint,
   GetChampionshipPointsDocument,
-  GetChampionshipQueryDocument,
-  CreateWinnerDocument,
-  WinnerType,
+  GetChampionshipPointsQueryDocument,
 } from "~/generated/generated";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "~/components/ui/table";
+import { Input } from "~/components/ui/input";
+import Button from "~/components/button";
 
 const ChampionshipPointsPanel = () => {
   const { data: subscriptionData } = useSubscription(
     GetChampionshipPointsDocument,
   );
-  const { data: queryData } = useQuery(GetChampionshipQueryDocument);
-  const [createWinner] = useMutation(CreateWinnerDocument);
-
-  const [points, setPoints] = useState<number>(0);
-
-  // Mock data for development or fallback
-  const mockData = {
-    getChampionshipPoints: {
-      __typename: "SubscriptionGetChampionshipPointsSuccess",
-      data: [
-        {
-          id: 1,
-          name: "NMAM Institute of Technology",
-          championshipPoints: 0,
-          goldCount: { winner: 0, runner_up: 0, second_runner_up: 0 },
-          silverCount: { winner: 0, runner_up: 0, second_runner_up: 0 },
-          bronzeCount: { winner: 0, runner_up: 0, second_runner_up: 0 },
-        },
-        {
-          id: 3,
-          name: "College 2",
-          championshipPoints: 200,
-          goldCount: { winner: 0, runner_up: 0, second_runner_up: 0 },
-          silverCount: { winner: 0, runner_up: 0, second_runner_up: 0 },
-          bronzeCount: { winner: 1, runner_up: 0, second_runner_up: 0 },
-        },
-      ],
-    },
-  };
-
-  const fallbackData = subscriptionData ?? queryData ?? mockData;
+  const { data: queryData } = useQuery(GetChampionshipPointsQueryDocument);
+  const [tableData, setTableData] = useState<ChampionshipPoint[]>();
 
   useEffect(() => {
     if (
-      fallbackData?.getChampionshipPoints.__typename ===
-      "SubscriptionGetChampionshipPointsSuccess"
+      queryData?.getChampionshipPoints.__typename ===
+      "QueryGetChampionshipPointsSuccess"
     ) {
-      const firstCollegePoints =
-        fallbackData.getChampionshipPoints.data[0]?.championshipPoints;
-      if (firstCollegePoints) setPoints(firstCollegePoints);
-      console.log("Points Updated:", firstCollegePoints);
+      const data = queryData.getChampionshipPoints.data;
+      data.sort((a, b) => b.championshipPoints - a.championshipPoints);
+      setTableData(data);
     }
-  }, [fallbackData]);
+  }, [queryData]);
 
   useEffect(() => {
     console.log(subscriptionData?.getChampionshipPoints.__typename);
   }, [subscriptionData]);
 
-  const handleCreateWinner = async () => {
-    await createWinner({
-      variables: {
-        eventId: "3",
-        teamId: "6",
-        type: WinnerType.Winner,
-      },
-    })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   return (
     <div>
-      {!fallbackData ? (
-        <div>Loading...</div>
-      ) : fallbackData?.getChampionshipPoints.__typename ===
-        "SubscriptionGetChampionshipPointsSuccess" ? (
+      {queryData?.getChampionshipPoints.__typename ===
+      "QueryGetChampionshipPointsSuccess" ? (
         <div>
-          <h1>Championship Points</h1>
-          {fallbackData.getChampionshipPoints.data.map((college) => (
-            <div key={college.id}>
-              <h2>{college.name}</h2>
-              <p>Championship Points: {college.championshipPoints}</p>
-            </div>
-          ))}
-          <div>
-            <strong>First College Points: </strong>
-            {points ?? "N/A"}
-          </div>
+          <Input
+            placeholder="Search for college..."
+            className="bg-[#1c1b16] w-[70%] text-xl justify-self-center my-4 border-0 text-white h-12"
+          ></Input>
+          <Table className="w-[70%] justify-self-center rounded-md bg-[#1c1b16] text-white">
+            <TableHeader>
+              <TableRow className="text-lg">
+                <TableHead className="text-center w-[20%]">College</TableHead>
+                <TableHead className="text-center">
+                  Championship Points
+                </TableHead>
+                <TableHead className="text-center">Gold</TableHead>
+                <TableHead className="text-center">Silver</TableHead>
+                <TableHead className="text-center">Bronze</TableHead>
+                <TableHead className="text-center">Technical</TableHead>
+                <TableHead className="text-center">Non-Technical</TableHead>
+                <TableHead className="text-center">Core</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody className="text-center text-lg">
+              {tableData ? (
+                tableData.map((college, index) => (
+                  <TableRow
+                    key={college.id}
+                    className={`${college.id === tableData[0]?.id ? "bg-[#b49709]" : college.id === tableData[1]?.id ? "bg-[#b4b4b4]" : college.id === tableData[2]?.id ? "bg-[#cd7f32]" : ""}`}
+                  >
+                    <TableCell>{college.name}</TableCell>
+                    <TableCell>{college.championshipPoints}</TableCell>
+                    <TableCell>{college.goldCount}</TableCell>
+                    <TableCell>{college.silverCount}</TableCell>
+                    <TableCell>{college.bronzeCount}</TableCell>
+                    <TableCell>{college.techCount}</TableCell>
+                    <TableCell>{college.nonTechCount}</TableCell>
+                    <TableCell>{college.coreCount}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} className="text-center">
+                    No data found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
       ) : (
         <div>Error fetching data</div>
       )}
-      <button onClick={handleCreateWinner}>Create Winner</button>
     </div>
   );
 };
