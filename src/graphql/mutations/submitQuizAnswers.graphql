@@ -2,7 +2,7 @@ mutation SubmitQuizAnswer(
   $quizId: String!
   $selectedAnswers: [SelectedOptions!]!
   $teamId: Int!
-  $timeTaken: Int!
+  $timeTaken: Float!
 ) {
   submitQuiz(
     quizId: $quizId

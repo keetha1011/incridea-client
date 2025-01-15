@@ -284,6 +284,7 @@ export type Mutation = {
   organizerMarkAttendance: MutationOrganizerMarkAttendanceResult;
   organizerMarkAttendanceSolo: MutationOrganizerMarkAttendanceSoloResult;
   organizerRegisterSolo: MutationOrganizerRegisterSoloResult;
+  promoteQuizParticipants: MutationPromoteQuizParticipantsResult;
   promoteToNextRound: MutationPromoteToNextRoundResult;
   publishEvent: MutationPublishEventResult;
   /** Refreshes the access token */
@@ -532,6 +533,13 @@ export type MutationOrganizerRegisterSoloArgs = {
   userId: Scalars["ID"]["input"];
 };
 
+export type MutationPromoteQuizParticipantsArgs = {
+  eventId: Scalars["Int"]["input"];
+  quizId: Scalars["String"]["input"];
+  roundId: Scalars["Int"]["input"];
+  teams: Array<Scalars["Int"]["input"]>;
+};
+
 export type MutationPromoteToNextRoundArgs = {
   roundNo: Scalars["ID"]["input"];
   selected?: Scalars["Boolean"]["input"];
@@ -595,7 +603,7 @@ export type MutationSubmitQuizArgs = {
   quizId: Scalars["String"]["input"];
   selectedAnswers: Array<SelectedOptions>;
   teamId: Scalars["Int"]["input"];
-  timeTaken: Scalars["Int"]["input"];
+  timeTaken: Scalars["Float"]["input"];
 };
 
 export type MutationUpdateCardArgs = {
@@ -967,6 +975,15 @@ export type MutationOrganizerRegisterSoloResult =
 export type MutationOrganizerRegisterSoloSuccess = {
   __typename?: "MutationOrganizerRegisterSoloSuccess";
   data: Team;
+};
+
+export type MutationPromoteQuizParticipantsResult =
+  | Error
+  | MutationPromoteQuizParticipantsSuccess;
+
+export type MutationPromoteQuizParticipantsSuccess = {
+  __typename?: "MutationPromoteQuizParticipantsSuccess";
+  data: Quiz;
 };
 
 export type MutationPromoteToNextRoundResult =
@@ -1731,6 +1748,7 @@ export type Quiz = {
   qualifyNext: Scalars["Int"]["output"];
   questions: Array<Question>;
   quizScores: Array<QuizScore>;
+  round: Round;
   roundNo: Scalars["Int"]["output"];
   startTime: Scalars["DateTime"]["output"];
   updatedAt: Scalars["DateTime"]["output"];
@@ -1744,6 +1762,7 @@ export type QuizScore = {
   score: Scalars["Int"]["output"];
   team: Team;
   teamId: Scalars["Int"]["output"];
+  timeTaken: Scalars["Float"]["output"];
 };
 
 export type QuizSubmission = {
@@ -2601,6 +2620,20 @@ export type OrganizerRegisterSoloMutation = {
       };
 };
 
+export type PromoteQuizParticipantsMutationVariables = Exact<{
+  eventId?: InputMaybe<Scalars["Int"]["input"]>;
+  quizId?: InputMaybe<Scalars["String"]["input"]>;
+  roundId?: InputMaybe<Scalars["Int"]["input"]>;
+  teams?: InputMaybe<Array<Scalars["Int"]["input"]> | Scalars["Int"]["input"]>;
+}>;
+
+export type PromoteQuizParticipantsMutation = {
+  __typename?: "Mutation";
+  promoteQuizParticipants:
+    | { __typename: "Error"; message: string }
+    | { __typename: "MutationPromoteQuizParticipantsSuccess" };
+};
+
 export type PromoteToNextRoundMutationVariables = Exact<{
   roundNo: Scalars["ID"]["input"];
   teamId: Scalars["ID"]["input"];
@@ -2807,7 +2840,7 @@ export type SubmitQuizAnswerMutationVariables = Exact<{
   quizId: Scalars["String"]["input"];
   selectedAnswers: Array<SelectedOptions> | SelectedOptions;
   teamId: Scalars["Int"]["input"];
-  timeTaken: Scalars["Int"]["input"];
+  timeTaken: Scalars["Float"]["input"];
 }>;
 
 export type SubmitQuizAnswerMutation = {
@@ -3692,15 +3725,21 @@ export type GetQuizScoresQueryVariables = Exact<{
 export type GetQuizScoresQuery = {
   __typename?: "Query";
   getQuizScores:
-    | { __typename?: "Error" }
+    | { __typename: "Error"; message: string }
     | {
         __typename: "QueryGetQuizScoresSuccess";
         data: Array<{
           __typename?: "QuizScore";
           score: number;
+          timeTaken: number;
           teamId: number;
-          team: { __typename?: "Team"; name: string };
-          quiz: { __typename?: "Quiz"; qualifyNext: number };
+          team: { __typename?: "Team"; name: string; roundNo: number };
+          quiz: {
+            __typename?: "Quiz";
+            qualifyNext: number;
+            roundNo: number;
+            name: string;
+          };
         }>;
       };
 };
@@ -9328,6 +9367,150 @@ export const OrganizerRegisterSoloDocument = {
   OrganizerRegisterSoloMutation,
   OrganizerRegisterSoloMutationVariables
 >;
+export const PromoteQuizParticipantsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "PromoteQuizParticipants" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "IntValue", value: "10" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "roundId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          defaultValue: { kind: "IntValue", value: "10" },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "teams" },
+          },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NonNullType",
+              type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+            },
+          },
+          defaultValue: { kind: "IntValue", value: "10" },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "promoteQuizParticipants" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "quizId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "roundId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "roundId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "teams" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "teams" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationPromoteQuizParticipantsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  PromoteQuizParticipantsMutation,
+  PromoteQuizParticipantsMutationVariables
+>;
 export const PromoteToNextRoundDocument = {
   kind: "Document",
   definitions: [
@@ -10977,7 +11160,7 @@ export const SubmitQuizAnswerDocument = {
           },
           type: {
             kind: "NonNullType",
-            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+            type: { kind: "NamedType", name: { kind: "Name", value: "Float" } },
           },
         },
       ],
@@ -15310,6 +15493,26 @@ export const GetQuizScoresDocument = {
                   kind: "InlineFragment",
                   typeCondition: {
                     kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
                     name: { kind: "Name", value: "QueryGetQuizScoresSuccess" },
                   },
                   selectionSet: {
@@ -15331,6 +15534,10 @@ export const GetQuizScoresDocument = {
                             },
                             {
                               kind: "Field",
+                              name: { kind: "Name", value: "timeTaken" },
+                            },
+                            {
+                              kind: "Field",
                               name: { kind: "Name", value: "teamId" },
                             },
                             {
@@ -15342,6 +15549,10 @@ export const GetQuizScoresDocument = {
                                   {
                                     kind: "Field",
                                     name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "roundNo" },
                                   },
                                 ],
                               },
@@ -15358,6 +15569,14 @@ export const GetQuizScoresDocument = {
                                       kind: "Name",
                                       value: "qualifyNext",
                                     },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "roundNo" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
                                   },
                                 ],
                               },
