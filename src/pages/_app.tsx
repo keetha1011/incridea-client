@@ -86,7 +86,7 @@ export default function App({
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <div
           className={cn(
@@ -107,7 +107,7 @@ export default function App({
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <Loader />
         <div
@@ -128,7 +128,7 @@ export default function App({
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <Toaster />
         <Loader />
