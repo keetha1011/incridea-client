@@ -30,6 +30,7 @@ import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 
 import {
+  AlertCircle,
   ChevronLeft,
   ChevronRight,
   Hourglass,
@@ -238,12 +239,12 @@ const QuizPage = () => {
       </div>
 
       {/* Main Content with Swiper */}
-      <main className="w-[90%] md:w-3/4 mx-auto mt-8 px-2 ">
+      <main className="w-[90%] md:w-3/4 mx-auto mt-8 px-2">
         <Swiper
           onSwiper={setSwiper}
           modules={[Navigation]}
           onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
-          spaceBetween={20}
+          spaceBetween={24}
           slidesPerView={1}
           allowTouchMove={false}
           className=""
@@ -320,7 +321,7 @@ const QuizPage = () => {
         <div className="flex justify-between m-4">
           <button
             onClick={handlePrevSlide}
-            className={`md:w-32 px-4 py-2 rounded-md shadow-md transition-all glass-button ${
+            className={`w-26 md:w-32 px-4 py-2 rounded-md shadow-md transition-all glass-button ${
               currentSlide > 0
                 ? "bg-transparent border border-white text-white"
                 : "opacity-0 cursor-auto"
@@ -332,7 +333,7 @@ const QuizPage = () => {
 
           <button
             onClick={handleNextSlide}
-            className={`md:w-32 px-4 py-2 rounded-md shadow-md transition-all glass-button ${
+            className={`w-20 md:w-32 px-4 py-2 rounded-md shadow-md transition-all glass-button ${
               currentSlide < questions.length - 1
                 ? "bg-transparent border border-white text-white"
                 : "opacity-0 cursor-auto"
@@ -344,16 +345,19 @@ const QuizPage = () => {
         </div>
       </main>
       {/* Question Navigator */}
-      <span
-        className="block md:hidden absolute top-[7.25rem] right-1 z-50 cursor-pointer"
-        onClick={() => setQuizTrackerVisible(!quizTrackerVisible)}
-      >
-        <Sliders
-          className={`w-8 h-8 p-1 border-secondary-50 border-2 text-slate-50 rounded-3xl ${quizTrackerVisible ? "rotate-90" : "-rotate-90"}`}
-        />
-      </span>
+      {/* Question Navigator Toggle */}
+      <div className="block md:hidden absolute top-[7.25rem] right-1 z-50 cursor-pointer">
+        <HelperTooltip />
+        <span onClick={() => setQuizTrackerVisible(!quizTrackerVisible)}>
+          <Sliders
+            className={`w-8 h-8 p-1 border-secondary-50 border-2 text-slate-50 rounded-3xl ${
+              quizTrackerVisible ? "rotate-90" : "-rotate-90"
+            }`}
+          />
+        </span>
+      </div>
       <div
-        className={`quiz-nav w-[50%] bg-blue-950 border-t border-cyan-500/20 my-6 ${quizTrackerVisible ? "block" : "hidden"}`}
+        className={`quiz-nav w-[50%] bg-blue-950 rounded-3xl border-t border-cyan-500/20 my-6 ${quizTrackerVisible ? "block" : "hidden"}`}
       >
         <div className="max-w-3xl mx-auto px-2 py-1 md:p-4 flex justify-center gap-4 md:flex-col">
           <div className="slider-btns flex items-center gap-2 justify-center">
@@ -525,3 +529,42 @@ const QuizPage = () => {
 };
 
 export default QuizPage;
+
+const HelperTooltip = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const showTooltip = () => {
+      setIsVisible(true);
+      // Hide after 5 seconds
+      setTimeout(() => setIsVisible(false), 5000);
+    };
+
+    // Show initially after 1 second
+    const initialTimeout = setTimeout(showTooltip, 1000);
+
+    // Show every 20 seconds
+    const interval = setInterval(showTooltip, 20000);
+
+    return () => {
+      clearTimeout(initialTimeout);
+      clearInterval(interval);
+    };
+  }, []);
+
+  if (!isVisible) return null;
+
+  return (
+    <div className="absolute w-28 -top-14 right-4 z-50 animate-fade-in">
+      <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500 p-[1px] rounded-lg">
+        <div className="bg-blue-950 px-3 py-2 rounded-lg flex items-center gap-2">
+          <AlertCircle className="w-6 h-6 text-cyan-400" />
+          <p className="text-[0.6rem] text-white text-pretty">
+            Click to toggle question navigator
+          </p>
+        </div>
+      </div>
+      <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-fuchsia-500 absolute -bottom-2 right-0" />
+    </div>
+  );
+};
