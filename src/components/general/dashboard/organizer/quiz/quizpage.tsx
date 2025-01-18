@@ -33,7 +33,6 @@ import {
   IconCircleCaretRight,
   IconStopwatch,
 } from "@tabler/icons-react";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import createToast from "~/components/toast";
 
@@ -66,8 +65,9 @@ const QuizPage = ({
   const [submitted, setSubmitted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedDescription, setSelectedDescription] =
-    useState<string>(description);
+  const [selectedDescription, setSelectedDescription] = useState<string | null>(
+    description,
+  );
   const [submitQuizAnswers, { loading: submitQuizLoading }] = useMutation(
     SubmitQuizAnswerDocument,
   );
@@ -82,16 +82,11 @@ const QuizPage = ({
       const savedAnswers: Options[] = JSON.parse(savedData) as Options[];
       setSelectedAnswers(savedAnswers);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     hljs.highlightAll();
   }, [isReviewOpen]);
-
-  useEffect(() => {
-    hljs.highlightAll();
-  }, [questions]);
 
   const onSubmit = async () => {
     console.log(selectedAnswers);
@@ -155,39 +150,26 @@ const QuizPage = ({
       (new Date(endTime).getTime() - Date.now()) / 1000;
 
     setTimer(calculateTime());
-  }, [startTime, endTime]);
 
-  useEffect(() => {
     const interval = setInterval(() => {
       setTimer((prev) => {
-        const newTime = Math.max(prev - 1, 0);
-        console.log("Before condition,", newTime);
-
+        const newTime = prev - 1;
         if (newTime <= 60) setAlert(true);
-        if (newTime === 0) {
+        if (newTime <= 0) {
           clearInterval(interval);
           if (!submitted) {
             setSubmitted(true);
+            void onSubmit();
             setIsDialogOpen(true);
-            onSubmit()
-              .then(() => {
-                console.log("Quiz submitted successfully");
-              })
-              .catch((error) => {
-                console.error("Error submitting quiz answers:", error);
-              });
-            return 0;
           }
-          console.log(newTime);
           return 0;
         }
         return newTime;
       });
     }, 1000);
 
-    return () => clearInterval(interval); // wanna check
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => clearInterval(interval);
+  }, [startTime, endTime, alert, onSubmit]);
 
   const handleOptionSelect = (option: Options) => {
     setSelectedAnswers((prev) => {
@@ -234,7 +216,7 @@ const QuizPage = ({
   const closeReviewDialog = () => setIsReviewOpen(false);
 
   return (
-    <div className="relative md:static w-[90%] rounded-xl mx-auto mt-16 flex flex-col justify-center md:flex-row bg-gradient-to-br from-pink-50 via-white to-pink-100">
+    <div className="relative md:static w-[90%] mx-auto mt-16 flex flex-col justify-center md:flex-row bg-gradient-to-br from-pink-50 via-white to-pink-100">
       {/* Quiz Content */}
       <div className="flex flex-col w-full md:w-[70%] lg:w-3/4">
         {/* Header */}
@@ -342,11 +324,9 @@ const QuizPage = ({
                   )} */}
 
                   {question.image && (
-                    <Image
+                    <img
                       src={question.image}
                       alt="Question image"
-                      width={300}
-                      height={300}
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
                     />
                   )}
@@ -410,7 +390,7 @@ const QuizPage = ({
             </pre>
             <button
               className="mt-4 px-4 py-2 rounded-lg text-white bg-gradient-to-br from-secondary-700 to-primary-400 shadow-lg hover:from-secondary-700 hover:to-primary-500"
-              onClick={() => setSelectedDescription("")}
+              onClick={() => setSelectedDescription(null)}
             >
               Close
             </button>
@@ -419,7 +399,7 @@ const QuizPage = ({
       )}
       {/* Tracker */}
       <aside
-        className={` lg:w-1/4 rounded-xl bg-white bg-opacity-70 backdrop-blur-md p-4 shadow-lg ${isTrackerOpen ? "absolute md:static z-50 top-20 right-0 w-3/4 sm:w-1/2 backdrop-blur-md" : "hidden md:w-3/4 md:block"}`}
+        className={` lg:w-1/4 bg-white bg-opacity-70 backdrop-blur-md p-4 shadow-lg ${isTrackerOpen ? "absolute md:static z-50 top-20 right-0 w-3/4 sm:w-1/2 backdrop-blur-md" : "hidden md:w-3/4 md:block"}`}
       >
         <h2 className="text-lg font-semibold text-gray-800 mb-4">
           Quiz Navigator
@@ -478,11 +458,9 @@ const QuizPage = ({
                   </h3>
 
                   {question.image && (
-                    <Image
+                    <img
                       src={question.image}
                       alt="Question image"
-                      width={300}
-                      height={300}
                       className="min-w-48 w-full max-w-96 h-60 object-cover rounded-lg mb-4"
                     />
                   )}
