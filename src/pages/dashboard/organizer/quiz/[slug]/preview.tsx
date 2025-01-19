@@ -2,8 +2,7 @@
 
 //need to add quiz has ended pop up and a timer
 
-import React, { useState, useEffect, useRef } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperClass } from "swiper/react";
 import "swiper/css";
@@ -30,10 +29,8 @@ import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 
 import {
-  AlertCircle,
   ChevronLeft,
   ChevronRight,
-  Hourglass,
   HourglassIcon,
   Sliders,
   X,
@@ -41,9 +38,10 @@ import {
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { IconStopwatch } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useAuth } from "~/hooks/useAuth";
+import { HelperTooltip } from "~/components/general/dashboard/organizer/quiz/HelperToolTip";
+import { IconStopwatch } from "@tabler/icons-react";
 
 const QuizPage = () => {
   const router = useRouter();
@@ -247,12 +245,11 @@ const QuizPage = () => {
           spaceBetween={24}
           slidesPerView={1}
           allowTouchMove={false}
-          className=""
         >
           {questions.map((question, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide key={index} className="">
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-4 shadow-xl border border-cyan-500/20">
-                <div className="flex flex-col gap-8 lg:flex-row">
+                <div className=" flex flex-col gap-4 lg:flex-row">
                   <div className="lg:w-1/2 flex flex-col justify-evenly gap-6 border-[1.5px] border-gray-100 p-3 rounded-3xl">
                     <div className="flex gap-2 -space-y-[0.5px]">
                       <span className="font-bold text-[1rem] sm:text-lg bg-gradient-to-tr from-cyan-300 via-fuchsia-300 to-pink-400 text-transparent bg-clip-text">
@@ -265,11 +262,11 @@ const QuizPage = () => {
                     </div>
                     {question.image && (
                       <Image
-                        width={360}
-                        height={360}
+                        width={300}
+                        height={300}
                         src={question.image}
                         alt="question_image"
-                        className="mx-auto rounded-xl border border-cyan-500/20"
+                        className="mx-auto w-3/4 rounded-xl border border-cyan-500/20"
                       />
                     )}
 
@@ -293,12 +290,12 @@ const QuizPage = () => {
                       </div>
                     )}
                   </div>
-                  <div className="resp-layout lg:flex flex-col  mx-auto lg:w-1/2 items-center justify-center gap-y-8 gap-x-6 border-[1.5px] border-gray-100 p-3 rounded-3xl">
+                  <div className="w-full sm:grid sm:grid-cols-2 lg:flex flex-col mx-auto lg:w-1/2 items-center justify-center gap-y-4 gap-x-6 border-[1.5px] border-gray-100 p-3 rounded-3xl">
                     {question.options.map((option, optionIndex) => (
                       <button
                         key={option.id}
                         onClick={() => handleOptionSelect(option)}
-                        className={`flex gap-2 lg:w-3/4 min-h-24 p-3 text-pretty rounded-xl text-left transition-all border ${
+                        className={`my-4 sm:m-0 flex gap-2 w-full min-h-24 p-3 text-pretty rounded-xl text-left transition-all border ${
                           selectedAnswers.find((a) => a.id === option.id)
                             ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 border-transparent"
                             : "bg-blue-950/30 border-cyan-500/20 hover:bg-blue-900/40"
@@ -310,6 +307,56 @@ const QuizPage = () => {
                         <span>{option.value}</span>
                       </button>
                     ))}
+                  </div>
+                  <div className="hidden md:flex lg:flex-col items-center gap-2 justify-center">
+                    <button
+                      onClick={handlePrevTrackerPage}
+                      disabled={trackerPage === 0}
+                      className={`p-1 rounded-full transition-all ${
+                        trackerPage === 0
+                          ? "text-gray-500 cursor-not-allowed"
+                          : "text-cyan-400 hover:bg-white/10"
+                      }`}
+                    >
+                      <ChevronLeft className="w-5 h-5 lg:rotate-90" />
+                    </button>
+
+                    <div className="bg-blue-950 rounded-3xl border-t border-cyan-500/20 px-2 flex lg:flex-col lg:h-[20rem] justify-center gap-2 overflow-x-hidden">
+                      {visibleQuestions.map((_, index) => {
+                        const questionNumber = startIndex + index;
+                        return (
+                          <button
+                            key={questionNumber}
+                            onClick={() => swiper?.slideTo(questionNumber)}
+                            className={`w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-full font-medium transition-all ${
+                              currentSlide === questionNumber
+                                ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500"
+                                : selectedAnswers.find(
+                                      (a) =>
+                                        a.questionId ===
+                                        questions[questionNumber]?.id,
+                                    )
+                                  ? "bg-fuchsia-600"
+                                  : "bg-blue-950/50"
+                            }`}
+                          >
+                            {questionNumber + 1}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <button
+                      onClick={handleNextTrackerPage}
+                      disabled={trackerPage >= totalPages - 1}
+                      className={`p-1 rounded-full transition-all ${
+                        trackerPage >= totalPages - 1
+                          ? "text-gray-500 cursor-not-allowed"
+                          : "text-cyan-400 hover:bg-white/10"
+                      }`}
+                    >
+                      <ChevronRight className="w-5 h-5 lg:rotate-90" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -343,11 +390,27 @@ const QuizPage = () => {
             Next
           </button>
         </div>
+        <div className="hidden md:flex w-[90%] px-2 py-1 md:p-4 justify-center gap-4 md:flex-col">
+          <div className="ctrl-btns flex justify-evenly gap-4">
+            <button
+              onClick={() => setIsReviewOpen(true)}
+              className="max-w-48 flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 font-medium hover:opacity-90 transition-all"
+            >
+              Review Quiz
+            </button>
+            <button
+              onClick={() => setIsSubmitDialogOpen(true)}
+              className="max-w-48 flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 font-medium hover:opacity-90 transition-all"
+            >
+              Submit Quiz
+            </button>
+          </div>
+        </div>
       </main>
       {/* Question Navigator */}
       {/* Question Navigator Toggle */}
       <div className="block md:hidden absolute top-[7.25rem] right-1 z-50 cursor-pointer">
-        <HelperTooltip />
+        {!quizTrackerVisible && <HelperTooltip />}
         <span onClick={() => setQuizTrackerVisible(!quizTrackerVisible)}>
           <Sliders
             className={`w-8 h-8 p-1 border-secondary-50 border-2 text-slate-50 rounded-3xl ${
@@ -357,69 +420,68 @@ const QuizPage = () => {
         </span>
       </div>
       <div
-        className={`quiz-nav w-[50%] bg-blue-950 rounded-3xl border-t border-cyan-500/20 my-6 ${quizTrackerVisible ? "block" : "hidden"}`}
+        className={`quiz-nav flex md:hidden h-[24%] sm:h-[32%] p-2 bg-blue-950 rounded-3xl border-t border-cyan-500/20 my-6 ${!quizTrackerVisible && "hidden"}`}
       >
-        <div className="max-w-3xl mx-auto px-2 py-1 md:p-4 flex justify-center gap-4 md:flex-col">
-          <div className="slider-btns flex items-center gap-2 justify-center">
-            <button
-              onClick={handlePrevTrackerPage}
-              disabled={trackerPage === 0}
-              className={`p-1 rounded-full transition-all ${
-                trackerPage === 0
-                  ? "text-gray-500 cursor-not-allowed"
-                  : "text-cyan-400 hover:bg-white/10"
-              }`}
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
+        <div className="flex items-center gap-2 justify-center">
+          <button
+            onClick={handlePrevTrackerPage}
+            disabled={trackerPage === 0}
+            className={`p-1 rounded-full transition-all ${
+              trackerPage === 0
+                ? "text-gray-500 cursor-not-allowed"
+                : "text-cyan-400 hover:bg-white/10"
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
 
-            <div className="quiz-nav-btns flex gap-2 overflow-x-hidden">
-              {visibleQuestions.map((_, index) => {
-                const questionNumber = startIndex + index;
-                return (
-                  <button
-                    key={questionNumber}
-                    onClick={() => swiper?.slideTo(questionNumber)}
-                    className={`w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-full font-medium transition-all ${
-                      currentSlide === questionNumber
-                        ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500"
-                        : selectedAnswers.find(
-                              (a) =>
-                                a.questionId === questions[questionNumber]?.id,
-                            )
-                          ? "bg-fuchsia-600"
-                          : "bg-blue-950/50"
-                    }`}
-                  >
-                    {questionNumber + 1}
-                  </button>
-                );
-              })}
-            </div>
-
-            <button
-              onClick={handleNextTrackerPage}
-              disabled={trackerPage >= totalPages - 1}
-              className={`p-1 rounded-full transition-all ${
-                trackerPage >= totalPages - 1
-                  ? "text-gray-500 cursor-not-allowed"
-                  : "text-cyan-400 hover:bg-white/10"
-              }`}
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+          <div className="bg-blue-950 rounded-3xl border-t border-cyan-500/20 px-2 flex flex-col gap-2 overflow-x-hidden">
+            {visibleQuestions.map((_, index) => {
+              const questionNumber = startIndex + index;
+              return (
+                <button
+                  key={questionNumber}
+                  onClick={() => swiper?.slideTo(questionNumber)}
+                  className={`w-10 h-10 flex items-center justify-center flex-shrink-0 rounded-full font-medium transition-all ${
+                    currentSlide === questionNumber
+                      ? "bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500"
+                      : selectedAnswers.find(
+                            (a) =>
+                              a.questionId === questions[questionNumber]?.id,
+                          )
+                        ? "bg-fuchsia-600"
+                        : "bg-blue-950/50"
+                  }`}
+                >
+                  {questionNumber + 1}
+                </button>
+              );
+            })}
           </div>
 
-          <div className="ctrl-btns mb-2 flex justify-evenly gap-4">
+          <button
+            onClick={handleNextTrackerPage}
+            disabled={trackerPage >= totalPages - 1}
+            className={`p-1 rounded-full transition-all ${
+              trackerPage >= totalPages - 1
+                ? "text-gray-500 cursor-not-allowed"
+                : "text-cyan-400 hover:bg-white/10"
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+        <div className="w-full px-2 py-1 md:p-4 gap-4 md:flex-col">
+          <div className="flex flex-col ctrl-btns items-center justify-center gap-4 p-4">
             <button
               onClick={() => setIsReviewOpen(true)}
-              className="max-w-50 flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 font-medium hover:opacity-90 transition-all"
+              className="w-full flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-pink-500 font-medium hover:opacity-90 transition-all"
             >
               Review Quiz
             </button>
             <button
               onClick={() => setIsSubmitDialogOpen(true)}
-              className="max-w-50/2 flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 font-medium hover:opacity-90 transition-all"
+              className="w-full flex-1 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 font-medium hover:opacity-90 transition-all"
             >
               Submit Quiz
             </button>
@@ -454,11 +516,11 @@ const QuizPage = () => {
 
                   {question.image && (
                     <Image
-                      width={360}
-                      height={360}
+                      width={300}
+                      height={300}
                       src={question.image}
                       alt="Question"
-                      className="mx-auto rounded-xl mb-4 border border-cyan-500/20"
+                      className="mx-auto w-3/4 rounded-xl mb-4 border border-cyan-500/20"
                     />
                   )}
 
@@ -529,42 +591,3 @@ const QuizPage = () => {
 };
 
 export default QuizPage;
-
-const HelperTooltip = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const showTooltip = () => {
-      setIsVisible(true);
-      // Hide after 5 seconds
-      setTimeout(() => setIsVisible(false), 5000);
-    };
-
-    // Show initially after 1 second
-    const initialTimeout = setTimeout(showTooltip, 1000);
-
-    // Show every 20 seconds
-    const interval = setInterval(showTooltip, 20000);
-
-    return () => {
-      clearTimeout(initialTimeout);
-      clearInterval(interval);
-    };
-  }, []);
-
-  if (!isVisible) return null;
-
-  return (
-    <div className="absolute w-28 -top-14 right-4 z-50 animate-fade-in">
-      <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500 p-[1px] rounded-lg">
-        <div className="bg-blue-950 px-3 py-2 rounded-lg flex items-center gap-2">
-          <AlertCircle className="w-6 h-6 text-cyan-400" />
-          <p className="text-[0.6rem] text-white text-pretty">
-            Click to toggle question navigator
-          </p>
-        </div>
-      </div>
-      <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-fuchsia-500 absolute -bottom-2 right-0" />
-    </div>
-  );
-};

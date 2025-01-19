@@ -316,47 +316,14 @@ body {
   animation: gradient-animation 2s ease-in infinite alternate;
 }
 
-@media (max-width: 721px) {
-  .resp-layout {
-    display: grid;
-  }
-}
-
-@media (min-width: 721px) {
-  .resp-layout {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 768px) {
-  .quiz-nav {
-    display: block;
-  }
-}
-
 @media (max-width: 768px) {
   .quiz-nav {
-    /* display: none; */
-    position: absolute;
-    @apply top-24 right-2 w-2/4 z-20;
+    @apply absolute flex-row justify-center items-center top-[100px] right-2 w-[85%] sm:w-[60%] z-20;
   }
 
-  .quiz-nav > div > div {
-    flex-direction: column;
-  }
-
-  .ctrl-btns {
+  /* .ctrl-btns {
     @apply w-3/4 h-1/2 place-self-center;
-  }
-
-  .quiz-nav > div > .slider-btns > button {
-    @apply rotate-90;
-  }
-
-  .quiz-nav-btns {
-    flex-direction: column;
-  }
+  } */
 }
 
 /* Workaround for disappearing elements (scope: locomotive scroll) */
