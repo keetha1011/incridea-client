@@ -6,7 +6,7 @@ import dynamic from "next/dynamic";
 import { Press_Start_2P } from "next/font/google";
 import LocalFont from "next/font/local";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 import Footer from "~/components/footer";
@@ -55,6 +55,11 @@ export const gilroy = LocalFont({
   display: "swap",
 });
 
+export const BlackChancery = LocalFont({
+  src: "../font/BlackChancery.ttf",
+  variable: "--font-BlackChancery",
+});
+
 export const pressStart = Press_Start_2P({
   weight: ["400"],
   subsets: ["latin"],
@@ -77,52 +82,84 @@ export default function App({
   const apolloClient = useApollo(initialApolloState);
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  if (
-    router.pathname === "/theme" ||
-    router.pathname === "/test" ||
-    router.pathname === "/"
-  )
+  useEffect(() => {
+    const handleRouteChange = async () => {
+      const allowedRoutes = ["/coming-soon"];
+      if (!allowedRoutes.includes(router.pathname)) {
+        try {
+          await router.push("/coming-soon");
+          console.log("Redirected to /coming-soon");
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+
+    void handleRouteChange();
+  }, [router.pathname]);
+
+  // if (
+  //   router.pathname === "/theme" ||
+  //   router.pathname === "/coming-soon" ||
+  //   router.pathname === "/test" ||
+  //   router.pathname === "/"
+  // )
+  //   return (
+  //     <ApolloProvider client={apolloClient}>
+  //       <HeadComponent
+  //         title="Incridea"
+  //         description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+  //       />
+  //       <div
+  //         className={cn(
+  //           "min-h-scree",
+  //           // VikingHell.variable,
+  //           // pressStart.variable,
+  //           // garetFont.variable,
+  //           // gilroy.variable,
+  //         )}
+  //       >
+  //         <Component {...pageProps} />
+  //         <Toaster />
+  //       </div>
+  //     </ApolloProvider>
+  //   );
+  // if (router.pathname.startsWith("/explore"))
+  //   return (
+  //     <ApolloProvider client={apolloClient}>
+  //       <HeadComponent
+  //         title="Incridea"
+  //         description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+  //       />
+  //       <Loader />
+  //       <div
+  //         className={cn(
+  //           "min-h-screen",
+  //           // VikingHell.variable,
+  //           // pressStart.variable,
+  //           // garetFont.variable,
+  //         )}
+  //       >
+  //         <Component {...pageProps} />
+  //         <Toaster />
+  //       </div>
+  //     </ApolloProvider>
+  //   );
+
+  if (router.pathname === "/coming-soon") {
     return (
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <div
-          className={cn(
-            "min-h-scree",
-            // VikingHell.variable,
-            // pressStart.variable,
-            // garetFont.variable,
-            // gilroy.variable,
-          )}
-        >
+        <div className={cn("min-h-screen")}>
           <Component {...pageProps} />
-          <Toaster />
         </div>
       </ApolloProvider>
     );
-  if (router.pathname.startsWith("/explore"))
-    return (
-      <ApolloProvider client={apolloClient}>
-        <HeadComponent
-          title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-        />
-        <Loader />
-        <div
-          className={cn(
-            "min-h-screen",
-            // VikingHell.variable,
-            // pressStart.variable,
-            // garetFont.variable,
-          )}
-        >
-          <Component {...pageProps} />
-          <Toaster />
-        </div>
-      </ApolloProvider>
-    );
+  }
+
   return (
     <>
       <ApolloProvider client={apolloClient}>
@@ -130,7 +167,7 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <Toaster />
+        {/* <Toaster />
         <Loader />
         <div
           className={cn(
@@ -152,7 +189,7 @@ export default function App({
             </motion.div>
           </AnimatePresence>
           <Footer />
-        </div>
+        </div> */}
       </ApolloProvider>
       <Analytics />
     </>

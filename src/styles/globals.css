@@ -285,6 +285,10 @@ body {
   font-family: "VikingHell", system-ui;
 }
 
+.blackChancery {
+  font-family: "BlackChancery", system-ui;
+}
+
 .black-ops {
   font-family: "Black Ops One", system-ui;
   font-style: italic;
