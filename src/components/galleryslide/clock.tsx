@@ -16,13 +16,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-const Model = ({
-  handRotation,
-  visible,
-}: {
-  handRotation: number;
-  visible: boolean;
-}) => {
+const Model = ({ handRotation }: { handRotation: number }) => {
   const { nodes, materials } = useGLTF("/assets/3d/clock.glb") as GLTFResult;
 
   return (
@@ -37,18 +31,16 @@ const Model = ({
         scale={[2.2, 0.11, 2.2]}
       />
       {/* Clock Hand */}
-      {visible && (
-        <a.group position={[0, 0.5, 0]} rotation={[0, handRotation, 0]}>
-          <mesh
-            name="clock_hand"
-            castShadow
-            receiveShadow
-            geometry={nodes.clock_hand.geometry}
-            material={materials["Material.008"]}
-            scale={[0.015, 0.015, 0.015]}
-          />
-        </a.group>
-      )}
+      <a.group position={[0, 0.5, 0]} rotation={[0, handRotation, 0]}>
+        <mesh
+          name="clock_hand"
+          castShadow
+          receiveShadow
+          geometry={nodes.clock_hand.geometry}
+          material={materials["Material.008"]}
+          scale={[0.015, 0.015, 0.015]}
+        />
+      </a.group>
     </group>
   );
 };
@@ -66,29 +58,13 @@ const Clock = ({ onClockClick }: ClockProps) => {
   const { handRotation: animatedRotation } = useSpring({
     handRotation,
     config: { tension: 180, friction: 14 },
-    immediate: clickCount === 0, // Ensure the first click animates properly
+    from: { handRotation },
   });
 
   const handleClockClick = useCallback(() => {
-    setClickCount((prevCount) => {
-      const newCount = prevCount + 1;
-
-      if (newCount === 5) {
-        // Hide the hand on 5th click
-        return newCount;
-      }
-
-      if (newCount === 6) {
-        // Reset on 6th click
-        setHandRotation(0); // Reset rotation
-        return 0; // Reset click count
-      }
-
-      // Rotate the hand on other clicks
-      setHandRotation((prevRotation) => prevRotation - Math.PI / 2);
-      onClockClick(); // Notify parent component
-      return newCount;
-    });
+    // Rotate the hand on other clicks
+    setHandRotation((prevRotation) => prevRotation - Math.PI / 2);
+    onClockClick(); // Notify parent component
   }, [onClockClick]);
 
   return (
@@ -99,10 +75,9 @@ const Clock = ({ onClockClick }: ClockProps) => {
         left: "50%",
         transform: "translate(-50%, 0)",
         cursor: "pointer",
-        boxShadow: "0 0 15px 5px rgba(0, 123, 255, 0.6)", // Glow effect
+        boxShadow: "0 0 15px 5px rgba(0, 200, 0, 0.6)", // Glow effect
         borderRadius: "50%",
         padding: "10px",
-        backgroundColor: "rgba(255, 255, 255, 0.2)",
       }}
       onClick={handleClockClick}
     >
@@ -112,10 +87,7 @@ const Clock = ({ onClockClick }: ClockProps) => {
       >
         <ambientLight intensity={0.6} />
         <directionalLight position={[3, 3, 3]} intensity={1} />
-        <Model
-          handRotation={animatedRotation.get()}
-          visible={clickCount !== 5}
-        />
+        <Model handRotation={animatedRotation.get()} />
       </Canvas>
     </div>
   );

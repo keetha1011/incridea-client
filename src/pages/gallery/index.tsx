@@ -17,7 +17,6 @@ import Inc24 from "~/components/galleryslide/scenes/Inc24";
 
 const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
-  const [glowClock, setGlowClock] = useState<boolean>(false);
   //const swiperRef = useRef<SwiperType>();
   const incrideaYears = [
     "Incridea 21",
@@ -44,11 +43,6 @@ const Gallery: NextPage = () => {
   const handleClockClick = () => {
     setActiveYear((prev) => {
       const newYear = (prev + 1) % 4; // Cycle through 0 to 3
-      if (newYear === 0 && prev === 3) {
-        setGlowClock(true); // Glow clock when clicking 4th time
-      } else {
-        setGlowClock(false);
-      }
       return newYear;
     });
   };
@@ -74,63 +68,45 @@ const Gallery: NextPage = () => {
         {/* Timeline with Dots */}
         <div className="absolute top-32 left-0 right-0 flex items-center justify-between px-4 md:px-12 lg:px-20">
           {/* Left Line and Dots */}
-          <div className="flex items-center gap-2">
-            <div className="h-1 w-16 bg-gray-400 md:w-28 lg:w-40"></div>
-            {incrideaYears.map((_, index) => (
+          <div className="flex items-center gap-4 md:gap-8">
+            <div className="h-1 w-16 sm:w-20 md:w-28 lg:w-40"></div>
+            {/* Only two dots for left side (Incridea 21 and 22) */}
+            <div className="flex flex-col items-center">
               <div
-                key={`left-dot-${index}`}
-                className={`h-4 w-4 rounded-full border-2 ${
-                  activeYear === index
-                    ? "bg-blue-500 border-blue-700"
-                    : "bg-gray-200 border-gray-400"
-                }`}
+                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 0 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
               ></div>
-            ))}
-            <div
-              className={`h-4 w-4 rounded-full border-2 ${
-                activeYear === 0
-                  ? "bg-blue-500 border-blue-700"
-                  : "bg-gray-200 border-gray-400"
-              }`}
-            ></div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 1 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
+              ></div>
+            </div>
           </div>
 
           {/* Clock */}
-          <div
-            className={`relative z-50 transform -translate-y-10 ${
-              glowClock ? "animate-pulse" : ""
-            }`}
-          >
+          <div className="relative transform translate-y-10 md:-translate-y-10">
             <Clock onClockClick={handleClockClick} />
           </div>
 
           {/* Right Line and Dots */}
-          <div className="flex items-center gap-2">
-            <div
-              className={`h-4 w-4 rounded-full border-2 ${
-                activeYear === 0
-                  ? "bg-blue-500 border-blue-700"
-                  : "bg-gray-200 border-gray-400"
-              }`}
-            ></div>
-            {incrideaYears.map((_, index) => (
+          <div className="flex items-center gap-4 md:gap-8">
+            <div className="flex flex-col items-center">
               <div
-                key={`right-dot-${index}`}
-                className={`h-4 w-4 rounded-full border-2 ${
-                  activeYear === index
-                    ? "bg-blue-500 border-blue-700"
-                    : "bg-gray-200 border-gray-400"
-                }`}
+                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 2 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
               ></div>
-            ))}
-            <div className="h-1 w-16 bg-gray-400 md:w-28 lg:w-40"></div>
+            </div>
+            <div className="flex flex-col items-center">
+              <div
+                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 3 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
+              ></div>
+            </div>
+            <div className="h-1 w-16 sm:w-20 md:w-28 lg:w-40"></div>
           </div>
         </div>
 
         {/* Render Active Year Component */}
         <div className="relative z-40 mt-20">{renderActiveYearComponent()}</div>
       </section>
-
       {/* Footer */}
       <FooterBody />
     </>

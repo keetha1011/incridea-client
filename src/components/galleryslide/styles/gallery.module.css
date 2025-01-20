@@ -50,3 +50,10 @@
   -webkit-filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black);
   filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black);
 }
+
+.glow-green {
+  text-shadow:
+    0 0 10px rgba(0, 255, 0, 0.7),
+    0 0 20px rgba(0, 255, 0, 0.7),
+    0 0 30px rgba(0, 255, 0, 0.7);
+}
