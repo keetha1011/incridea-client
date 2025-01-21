@@ -54,7 +54,7 @@ const SignIn: NextPage = () => {
   >(query.whichForm ?? "signUp");
 
   const [radius1, setRadius1] = useState<number>(0); // Small gear radius
-  const [radius2, setRadius2] = useState<number>(0); // Large gear radius
+  const [radius2, setRadius2] = useState<string>("0"); // Large gear radius
   const [gearPosition, setGearPosition] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -114,24 +114,30 @@ const SignIn: NextPage = () => {
     //   setRadius1(gear1Radius);
     //   setRadius2(gear2Radius);
     // }
-    if (screenWidth < 440) {
+    if (screenWidth < 600) {
       gear2Radius = screenWidth; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
-      setRadius2(300);
+      setRadius2("300vw");
+    } else if (screenWidth < 1000) {
+      gear2Radius = screenWidth; // Half the screen width
+      gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
+      console.log("gear2Radius", gear2Radius);
+      setRadius1(gear1Radius);
+      setRadius2("160vw");
     } else if (screenWidth < 1024) {
       gear2Radius = screenWidth / 1; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
-      setRadius2(gear2Radius);
+      setRadius2(`${gear2Radius}px`);
     } else {
       gear2Radius = screenWidth / 1;
       gear1Radius = gear2Radius * 0.8;
 
       setRadius1(gear1Radius);
-      setRadius2(gear2Radius);
+      setRadius2(`${gear2Radius}px`);
     }
 
     // Calculate positioning for gear1 to attach to gear2
@@ -156,8 +162,8 @@ const SignIn: NextPage = () => {
       <div className="h-16 bg-[#6a5fd7]"></div>
       <Image
         fill={true}
-        className="mt-16 object-cover"
-        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/loginBG.svg`}
+        className="mt-16 object-cover blur-[3px]"
+        src={`/assets/svg/copperbg.jpg`}
         alt={"loginBG"}
         quality={100}
         priority
@@ -245,13 +251,14 @@ const SignIn: NextPage = () => {
             src="assets/svg/geardone2.svg"
             style={{
               top: "18%",
-              width: `${radius2}`,
-              height: `${radius2}`,
+              width: radius2,
+              height: radius2,
               animation: "rotateAntiClock 20s linear infinite",
             }}
             className="absolute translate-y-1/2 h-full scale-[1.85]"
             alt=""
           />
+
           {/* <img
             src="assets/svg/geardone2.svg"
             style={{

@@ -45,7 +45,7 @@ const LoginCard: FunctionComponent<LoginCardProps> = ({
   return (
     // HACK: Please update anything here or in children also in auth/reset-password.tsx
     <div
-      className="absolute left-2/4 top-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] origin-bottom overflow-y-auto rounded-md bg-gradient-to-b from-[#1f2e97] to-[#090d4b] px-3 py-3 text-accent-200 shadow-[0_0_18px_1px_#141e73] transition-all ease-suck-in sm:min-w-[350px] sm:max-w-[350px] md:shadow-[0_0_20px_2px_#141e73] lg:max-h-[76vh]"
+      className="absolute left-2/4 top-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] origin-bottom overflow-y-auto rounded-xl px-3 py-3 text-accent-200 shadow-[0_0_18px_1px_#141e73] transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px] md:shadow-[0_0_20px_2px_#141e73] lg:max-h-[76vh] bg-black/70 backdrop-blur-md"
       style={cardStyle}
     >
       {whichForm === "signIn" ? (
