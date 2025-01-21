@@ -18,6 +18,7 @@ const config: Config = {
         shake: "shake 0.3s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        rotateClockwise: "rotateClockwise 1s linear infinite",
       },
       keyframes: {
         shake: {
@@ -37,6 +38,7 @@ const config: Config = {
             transform: "translate(0, 0) rotate(0deg)",
           },
         },
+
         scroll: {
           "0%": {
             transform: "translateX(0)",
@@ -83,6 +85,14 @@ const config: Config = {
           },
           to: {
             height: "0",
+          },
+        },
+        rotateClockwise: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg)",
           },
         },
       },

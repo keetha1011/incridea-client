@@ -116,10 +116,10 @@ const SignIn: NextPage = () => {
     // }
     if (screenWidth < 440) {
       gear2Radius = screenWidth; // Half the screen width
-      gear1Radius = gear2Radius; // Proportional size for smaller gear
+      gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
-      setRadius2(gear2Radius);
+      setRadius2(300);
     } else if (screenWidth < 1024) {
       gear2Radius = screenWidth / 1; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
@@ -207,46 +207,71 @@ const SignIn: NextPage = () => {
           />
         </div> */}
 
-        <div className="relative size-full">
+        <div className="relative w-[500vw] h-[160vh] flex items-center justify-center self-center">
+          {/* <div className="absolute w-[130vw] h-[130vh] bg-[url('http://localhost:3000/assets/svg/geardone2.svg')] bg-cover bg-center top-full -translate-y-1/2"></div> */}
           <img
             src="assets/svg/geardone2.svg"
             style={{
               width: radius1,
               height: radius1,
-              left: "100%",
+              left: "42%",
+              bottom: "80%",
+              rotate: "18deg",
+              animation: "rotateClockwise 20s linear infinite",
             }}
-            className="absolute -translate-y-1/2 scale-150 -translate-x-full"
+            className="absolute scale-150 translate-y-1/2"
+            alt=""
+          />
+          <style jsx global>{`
+            @keyframes rotateClockwise {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(360deg);
+              }
+            }
+            @keyframes rotateAntiClock {
+              0% {
+                transform: rotate(0deg);
+              }
+              100% {
+                transform: rotate(-360deg);
+              }
+            }
+          `}</style>
+
+          <img
+            src="assets/svg/geardone2.svg"
+            style={{
+              top: "18%",
+              width: `${radius2}`,
+              height: `${radius2}`,
+              animation: "rotateAntiClock 20s linear infinite",
+            }}
+            className="absolute translate-y-1/2 h-full scale-[1.85]"
             alt=""
           />
           {/* <img
             src="assets/svg/geardone2.svg"
             style={{
-              width: radius1,
-              height: radius1,
-              left: "100%",
-            }}
-            className="absolute translate-y-1/2  scale-150 -translate-x-full"
-            alt=""
-          /> */}
-          <img
-            src="assets/svg/geardone2.svg"
-            style={{
-              width: radius1,
-              height: radius1,
+              width: "1000px",
+              height: "1000px",
               left: "100%",
               top: "100%",
             }}
             className="absolute -translate-y-1/2 scale-150  -translate-x-full"
             alt=""
-          />
+          /> */}
         </div>
 
-        {/* <LoginCard
+        <LoginCard
           whichForm="signIn"
           cardStyle={cardStyle.signIn}
           setWhichForm={changeCard}
           redirectUrl={query.redirectUrl}
         />
+
         <LoginCard
           whichForm="resetPassword"
           cardStyle={cardStyle.resetPassword}
@@ -261,7 +286,7 @@ const SignIn: NextPage = () => {
           whichForm="resendEmail"
           cardStyle={cardStyle.resendEmail}
           setWhichForm={changeCard}
-        /> */}
+        />
 
         {/* <LoginPortal isTop={false} /> */}
       </div>
