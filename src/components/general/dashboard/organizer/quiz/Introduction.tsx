@@ -178,18 +178,9 @@ const IntroductionPage = ({
             <p className="text-sm md:text-base text-primary-700 mt-2">
               Please note the following rules for the quiz:
             </p>
-            <ul className="list-disc pl-6 mt-2 text-sm md:text-base text-secondary-50 font-sora">
-              <li>The quiz must be completed in one attempt.</li>
-              <li>A minimum score of 60% is required to pass.</li>
-              <li>If you fail, no retest will be allowed.</li>
-              <li>
-                Students who pass will receive certification for this course.
-              </li>
-              <li>
-                Avoid refreshing the page or changing tabs while taking the
-                quiz.
-              </li>
-            </ul>
+            <article className="pl-6 mt-2 text-sm md:text-base text-secondary-50 font-sora">
+              {quizData?.description}
+            </article>
           </div>
 
           <div className="mt-8 flex justify-center font-sora">
