@@ -107,8 +107,15 @@ const SignIn: NextPage = () => {
     let gear2Radius: number;
     let top: number;
     // Dynamically calculate radii
+    // if (screenWidth < 440) {
+    //   gear2Radius = screenWidth / 0.4; // Half the screen width
+    //   gear1Radius = gear2Radius; // Proportional size for smaller gear
+    //   console.log("gear2Radius", gear2Radius);
+    //   setRadius1(gear1Radius);
+    //   setRadius2(gear2Radius);
+    // }
     if (screenWidth < 440) {
-      gear2Radius = screenWidth / 0.4; // Half the screen width
+      gear2Radius = screenWidth; // Half the screen width
       gear1Radius = gear2Radius; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
@@ -157,7 +164,7 @@ const SignIn: NextPage = () => {
       />
 
       <div
-        className={`relative flex min-h-[93vh] flex-col justify-between overflow-hidden [perspective:500px] [transform-style:preserve-3d]`}
+        className={`relative flex min-h-[93vh] h-screen flex-col justify-between [perspective:500px] [transform-style:preserve-3d] overflow-hidden`}
       >
         {/* <LoginPortal isTop={true} /> */}
 
@@ -174,7 +181,7 @@ const SignIn: NextPage = () => {
           <EasterBomb />
         </div>
 
-        <div className="relative size-full">
+        {/* <div className="relative size-full">
           <img
             src="assets/svg/geardone2.svg"
             style={{
@@ -196,6 +203,40 @@ const SignIn: NextPage = () => {
               // transform: `translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`,
             }}
             className="absolute -translate-x-[70%] translate-y-full scale-150 overflow-hidden"
+            alt=""
+          />
+        </div> */}
+
+        <div className="relative size-full">
+          <img
+            src="assets/svg/geardone2.svg"
+            style={{
+              width: radius1,
+              height: radius1,
+              left: "100%",
+            }}
+            className="absolute -translate-y-1/2 scale-150 -translate-x-full"
+            alt=""
+          />
+          {/* <img
+            src="assets/svg/geardone2.svg"
+            style={{
+              width: radius1,
+              height: radius1,
+              left: "100%",
+            }}
+            className="absolute translate-y-1/2  scale-150 -translate-x-full"
+            alt=""
+          /> */}
+          <img
+            src="assets/svg/geardone2.svg"
+            style={{
+              width: radius1,
+              height: radius1,
+              left: "100%",
+              top: "100%",
+            }}
+            className="absolute -translate-y-1/2 scale-150  -translate-x-full"
             alt=""
           />
         </div>
