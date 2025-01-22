@@ -13,31 +13,40 @@ type CardStyle = {
   top: string;
   transitionDuration: string;
   opacity?: string;
+  transformOrigin?: string;
   pointerEvents?: React.CSSProperties["pointerEvents"];
   transform: string;
 };
 
 // HACK: If "top" values are changed, please check LoginCard component logic once
-const CARD_SWITCH_DURATION = 1000;
-const CARD_TOP_STYLE: CardStyle = {
-    top: "-50%",
-    transitionDuration: "0s",
-    opacity: "0%",
-    pointerEvents: "none",
-    transform: `translate(-50%, -50%) rotateX(45deg) scaleX(-0.2)`,
-  },
-  CARD_NEUTRAL_STYLE: CardStyle = {
-    top: "50%",
-    transitionDuration: `${CARD_SWITCH_DURATION}ms`,
-    opacity: "100%",
-    pointerEvents: "auto",
-    transform: `translate(-50%, -50%) rotateX(0deg) scaleX(1)`,
-  },
-  CARD_BOTTOM_STYLE: CardStyle = {
-    top: "150%",
-    transitionDuration: `${CARD_SWITCH_DURATION}ms`,
-    transform: `translate(-50%, -50%) rotateX(-45deg) scaleX(-0.2)`,
-  };
+const CARD_SWITCH_DURATION = 1000; // 1 second
+
+const CARD_TOP_STYLE = {
+  top: "100%",
+  transitionDuration: `${1500}ms`,
+  opacity: "0%",
+  transformOrigin: "bottom",
+  pointerEvents: "none" as React.CSSProperties["pointerEvents"],
+  transform: `translate(-50%, -50%) rotate(360deg) scale(0.5)`, // Moves out, rotates, and shrinks
+};
+
+const CARD_NEUTRAL_STYLE = {
+  top: "50%",
+  transitionDuration: `${2000}ms`,
+  opacity: "100%",
+  transformOrigin: "bottom",
+  pointerEvents: "auto" as React.CSSProperties["pointerEvents"],
+  transform: `translate(-50%, -50%) rotate(0deg) scale(1)`, // Normal position
+};
+
+const CARD_BOTTOM_STYLE = {
+  top: "100%",
+  transitionDuration: `${1500}ms`,
+  opacity: "0%",
+  transformOrigin: "bottom",
+  pointerEvents: "none",
+  transform: `translate(-50%, -50%) rotate(-360deg) scale(0.5)`, // Moves out, rotates, and shrinks
+};
 
 const SignIn: NextPage = () => {
   const {
@@ -58,6 +67,9 @@ const SignIn: NextPage = () => {
   const [bottom1, setBottom1] = useState<string>("90%");
   const [scale1, setScale1] = useState<string>("");
   const [secondsAnimation, setSecondsAnimation] = useState<string>("20000s");
+  const [rotationAngle1, setRotationAngle1] = useState<number>(0);
+  const [rotationAngle2, setRotationAngle2] = useState<number>(0);
+
   const [gearPosition, setGearPosition] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -82,7 +94,9 @@ const SignIn: NextPage = () => {
   ) => void = (newForm) => {
     if (whichForm === newForm) return;
 
-    setSecondsAnimation("20s");
+    // setSecondsAnimation(`${CARD_SWITCH_DURATION * 0.9}s`);
+    setRotationAngle1((prev) => prev + 90);
+    setRotationAngle2((prev) => prev - 90);
 
     setCardStyle((prev) => ({
       ...prev,
@@ -95,7 +109,7 @@ const SignIn: NextPage = () => {
         ...prev,
         [whichForm]: CARD_TOP_STYLE,
       }));
-      setSecondsAnimation("200000s");
+      setSecondsAnimation("0s");
     }, CARD_SWITCH_DURATION * 0.9);
 
     setWhichForm(newForm);
@@ -237,7 +251,12 @@ const SignIn: NextPage = () => {
               left: "42%",
               bottom: bottom1,
               rotate: "18deg",
-              animation: `rotateClockwise ${secondsAnimation} linear infinite`,
+              transform: `rotate(${rotationAngle1}deg)`, // Use dynamic rotation angle
+              transition: "transform 2s ease-in-out",
+              // animation:
+              //   secondsAnimation !== "0s"
+              //     ? `rotateClockwise ${secondsAnimation} linear infinite`
+              //     : "rotateClockwise 20000s linear infinite",
               scale: scale1,
             }}
             className="absolute scale-150 translate-y-1/2"
@@ -268,7 +287,12 @@ const SignIn: NextPage = () => {
               top: "18%",
               width: radius2,
               height: radius2,
-              animation: `rotateAntiClock ${secondsAnimation} linear infinite`,
+              transform: `rotate(${rotationAngle2}deg)`, // Use dynamic rotation angle
+              transition: "transform 2s ease-in-out",
+              // animation:
+              //   secondsAnimation !== "0s"
+              //     ? `rotateAntiClock ${secondsAnimation} linear infinite`
+              //     : "rotateAntiClock 20000s linear infinite",
             }}
             className="absolute translate-y-1/2 h-full scale-[1.85]"
             alt=""
