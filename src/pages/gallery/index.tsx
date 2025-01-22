@@ -25,34 +25,60 @@ const Gallery: NextPage = () => {
     "Incridea 24",
   ];
 
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     toast.success(
-  //       "Feel free to interact with the console, Swipe the screens etc to interact!",
-  //       {
-  //         duration: 3000,
-  //         style: {
-  //           backgroundColor: "#7628D0",
-  //           color: "white",
-  //         },
-  //       }
-  //     );
-  //   }
-  // }, []);
+  const years = [2021, 2022, 2023, 2024] as const;
+  const imageCounts = [29, 12, 26, 26] as const;
 
-  const handleClockClick = () => {
-    setActiveYear((prev) => {
-      const newYear = (prev + 1) % 4; // Cycle through 0 to 3
-      return newYear;
-    });
+  const handleClockClick = (angle: number) => {
+    switch (angle) {
+      case 0:
+      case 2 * Math.PI:
+        setActiveYear(2);
+        break;
+      case Math.PI / 2:
+        setActiveYear(3);
+        break;
+      case (3 * Math.PI) / 2:
+      case -Math.PI / 2:
+        setActiveYear(1);
+        break;
+      case Math.PI:
+        setActiveYear(0);
+        break;
+    }
   };
+
+  const generateImagePaths = (
+    year: number,
+    count: number,
+    extension: string,
+  ) => {
+    const imagePaths = [];
+    for (let i = 1; i <= count; i++) {
+      imagePaths.push(`gallery/${year}/${i}.${extension}`);
+    }
+    return imagePaths;
+  };
+
+  const img2021: string[] = generateImagePaths(years[0], imageCounts[0], "jpg");
+  const img2022: string[] = generateImagePaths(years[1], imageCounts[1], "jpg");
+  const img2023: string[] = generateImagePaths(years[2], imageCounts[2], "jpg");
+  const img2024: string[] = generateImagePaths(years[3], imageCounts[3], "jpg");
+
+  // const images22: string[] = [
+  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP',
+  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS',
+  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6R0y97VshMbdqu9Dv5sClAGzH4NFEa8xgrwZW',
+  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR',
+  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD63kfzz9uyGThZ7z4KLvCYJEoXsRPUlefFnuwk',
+  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD656UKEcozf8HJFAlsQ20KwyZNUIoLmOVecu4g'
+  // ]
 
   const renderActiveYearComponent = () => {
     switch (activeYear) {
       case 0:
         return <Inc21 />;
       case 1:
-        return <Inc22 />;
+        return <Inc22 imgArr={img2022} />;
       case 2:
         return <Inc23 />;
       case 3:
@@ -64,48 +90,14 @@ const Gallery: NextPage = () => {
 
   return (
     <>
-      <section className="relative flex h-screen w-full flex-col overflow-hidden bg-black">
+      <section className="relative flex h-screen w-full flex-col overflow-hidden ">
         {/* Timeline with Dots */}
         <div className="absolute top-32 left-0 right-0 flex items-center justify-between px-4 md:px-12 lg:px-20">
-          {/* Left Line and Dots */}
-          <div className="flex items-center gap-4 md:gap-8">
-            <div className="h-1 w-16 sm:w-20 md:w-28 lg:w-40"></div>
-            {/* Only two dots for left side (Incridea 21 and 22) */}
-            <div className="flex flex-col items-center">
-              <div
-                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 0 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
-              ></div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div
-                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 1 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
-              ></div>
-            </div>
-          </div>
-
-          {/* Clock */}
-          <div className="relative transform translate-y-10 md:-translate-y-10">
-            <Clock onClockClick={handleClockClick} />
-          </div>
-
-          {/* Right Line and Dots */}
-          <div className="flex items-center gap-4 md:gap-8">
-            <div className="flex flex-col items-center">
-              <div
-                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 2 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
-              ></div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div
-                className={`h-6 w-6 rounded-full border-2 transition-all duration-300 ${activeYear === 3 ? "bg-green-500 border-green-700 glow-green" : "bg-gray-200 border-gray-400"}`}
-              ></div>
-            </div>
-            <div className="h-1 w-16 sm:w-20 md:w-28 lg:w-40"></div>
-          </div>
+          <Clock onClockClick={handleClockClick} />
         </div>
 
         {/* Render Active Year Component */}
-        <div className="relative z-40 mt-20">{renderActiveYearComponent()}</div>
+        <div className="relative mt-16">{renderActiveYearComponent()}</div>
       </section>
       {/* Footer */}
       <FooterBody />
