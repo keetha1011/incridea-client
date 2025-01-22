@@ -43,10 +43,7 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
   }, []);
 
   return (
-    <div
-      ref={containerRef}
-      className="w-full h-screen relative bg-[url('/assets/png/22_Background.jpg')] bg-cover bg-center bg-opacity-50"
-    >
+    <div ref={containerRef} className="w-full h-screen relative">
       <Modal
         showModal={activeModal}
         title="test"
