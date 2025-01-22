@@ -65,6 +65,11 @@ export const pressStart = Press_Start_2P({
   variable: "--font-Press_Start_2P",
 });
 
+export const BlackChancery = LocalFont({
+  src: "../font/BlackChancery.ttf",
+  variable: "--font-BlackChancery",
+});
+
 type PageProps = {
   initialApolloState?: NormalizedCacheObject;
 };
