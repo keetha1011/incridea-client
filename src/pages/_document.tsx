@@ -9,7 +9,7 @@ export default function Document() {
         <meta name="robots" content="index, follow" />
         <meta name="theme-color" content="#46aacf" />
       </Head>
-      <body className="min-h-screen bg-primary-700">
+      <body className="min-h-screen">
         <Main />
         <NextScript />
       </body>
