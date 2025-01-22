@@ -207,16 +207,31 @@ const QuizPage = ({
       (new Date(endTime).getTime() - Date.now()) / 1000;
 
     setTimer(calculateTime());
-
+  }, [startTime, endTime]);
+  useEffect(() => {
+    console.log("Time: ", new Date(endTime).getTime() - Date.now());
+    if (new Date(endTime).getTime() - Date.now() <= 0) {
+      router.push("/profile").catch((error) => {
+        console.error("Error navigating to introduction page:", error);
+      });
+      return;
+    }
     const interval = setInterval(() => {
       setTimer((prev) => {
-        const newTime = prev - 1;
+        const newTime = Math.max(prev - 1, 0);
         if (newTime <= 60) setAlert(true);
         if (newTime <= 0) {
           clearInterval(interval);
           if (!submitted) {
             setSubmitted(true);
-            void onSubmit();
+            onSubmit()
+              .then(() => {
+                console.log("Quiz submitted successfully");
+              })
+              .catch((error) => {
+                console.error("Error submitting quiz answers:", error);
+              });
+            return 0;
           }
           return 0;
         }
@@ -225,7 +240,7 @@ const QuizPage = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, endTime, alert, onSubmit, submitted]);
+  }, []);
 
   const handleOptionSelect = (option: Options) => {
     setSelectedAnswers((prev) => {
