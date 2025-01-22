@@ -8,10 +8,12 @@ import LocalFont from "next/font/local";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import ComingSoonComponent from "~/components/coming-soon";
 
 import Footer from "~/components/footer";
 import HeadComponent from "~/components/head";
 import Loader from "~/components/loader";
+import { env } from "~/env";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
@@ -83,70 +85,39 @@ export default function App({
   const [isLoading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const handleRouteChange = async () => {
-      const allowedRoutes = ["/coming-soon"];
-      if (!allowedRoutes.includes(router.pathname)) {
-        try {
-          await router.push("/coming-soon");
-          console.log("Redirected to /coming-soon");
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    };
+    if (env.NEXT_PUBLIC_NODE_ENV !== "development")
+      void router.push("/coming-soon");
+  });
 
-    void handleRouteChange();
-  }, [router.pathname]);
+  if (env.NEXT_PUBLIC_NODE_ENV !== "development")
+    return <ComingSoonComponent />;
 
-  // if (
-  //   router.pathname === "/theme" ||
-  //   router.pathname === "/coming-soon" ||
-  //   router.pathname === "/test" ||
-  //   router.pathname === "/"
-  // )
-  //   return (
-  //     <ApolloProvider client={apolloClient}>
-  //       <HeadComponent
-  //         title="Incridea"
-  //         description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-  //       />
-  //       <div
-  //         className={cn(
-  //           "min-h-scree",
-  //           // VikingHell.variable,
-  //           // pressStart.variable,
-  //           // garetFont.variable,
-  //           // gilroy.variable,
-  //         )}
-  //       >
-  //         <Component {...pageProps} />
-  //         <Toaster />
-  //       </div>
-  //     </ApolloProvider>
-  //   );
-  // if (router.pathname.startsWith("/explore"))
-  //   return (
-  //     <ApolloProvider client={apolloClient}>
-  //       <HeadComponent
-  //         title="Incridea"
-  //         description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-  //       />
-  //       <Loader />
-  //       <div
-  //         className={cn(
-  //           "min-h-screen",
-  //           // VikingHell.variable,
-  //           // pressStart.variable,
-  //           // garetFont.variable,
-  //         )}
-  //       >
-  //         <Component {...pageProps} />
-  //         <Toaster />
-  //       </div>
-  //     </ApolloProvider>
-  //   );
-
-  if (router.pathname === "/coming-soon") {
+  if (
+    router.pathname === "/theme" ||
+    router.pathname === "/test" ||
+    router.pathname === "/"
+  )
+    return (
+      <ApolloProvider client={apolloClient}>
+        <HeadComponent
+          title="Incridea"
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+        />
+        <div
+          className={cn(
+            "min-h-scree",
+            // VikingHell.variable,
+            // pressStart.variable,
+            // garetFont.variable,
+            // gilroy.variable,
+          )}
+        >
+          <Component {...pageProps} />
+          <Toaster />
+        </div>
+      </ApolloProvider>
+    );
+  if (router.pathname.startsWith("/explore"))
     return (
       <ApolloProvider client={apolloClient}>
         <HeadComponent
@@ -165,7 +136,7 @@ export default function App({
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         {/* <Toaster />
         <Loader />

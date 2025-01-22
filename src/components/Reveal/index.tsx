@@ -66,7 +66,7 @@ function Reveal() {
         setShowEgg(false);
         setShowGif(true);
       }, 1000);
-      setMessage("You were fooled");
+      setMessage("Congratulations! You just wasted your time... or did you? 👀");
       setTimeout(() => {
         setMessageVisible(false);
       }, 10000);
@@ -206,7 +206,7 @@ function Reveal() {
           {showGif && (
             <div className="flex flex-col text-center w-full items-center justify-center">
               <p className="text-2xl mb-8 text-white px-6">
-                You really thought we will reveal it??
+                You really thought we would reveal it??
               </p>
               <div className="flex size-64">
                 <CatGif />
