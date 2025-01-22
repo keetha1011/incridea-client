@@ -6,12 +6,14 @@ import dynamic from "next/dynamic";
 import { Press_Start_2P } from "next/font/google";
 import LocalFont from "next/font/local";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import ComingSoonComponent from "~/components/coming-soon";
 
 import Footer from "~/components/footer";
 import HeadComponent from "~/components/head";
 import Loader from "~/components/loader";
+import { env } from "~/env";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
@@ -76,6 +78,14 @@ export default function App({
 
   const apolloClient = useApollo(initialApolloState);
   const [isLoading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (env.NEXT_PUBLIC_NODE_ENV !== "development")
+      void router.push("/coming-soon");
+  });
+
+  if (env.NEXT_PUBLIC_NODE_ENV !== "development")
+    return <ComingSoonComponent />;
 
   if (
     router.pathname === "/theme" ||
