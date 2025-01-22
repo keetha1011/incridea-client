@@ -1,32 +1,23 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { type NextPage } from "next";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { type Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import Clock from "~/components/galleryslide/clock";
 import { FooterBody } from "~/components/footer";
-import ProgressBar from "~/components/galleryslide/progressBar/progress-bar";
+import Clock from "~/components/galleryslide/clock";
 import Inc21 from "~/components/galleryslide/scenes/Inc21";
 import Inc22 from "~/components/galleryslide/scenes/Inc22";
 import Inc23 from "~/components/galleryslide/scenes/Inc23";
 import Inc24 from "~/components/galleryslide/scenes/Inc24";
+import Parallax from "parallax-js";
 
 const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
-  //const swiperRef = useRef<SwiperType>();
-  const incrideaYears = [
-    "Incridea 21",
-    "Incridea 22",
-    "Incridea 23",
-    "Incridea 24",
-  ];
 
-  const years = [2021, 2022, 2023, 2024] as const;
-  const imageCounts = [29, 12, 26, 26] as const;
+  const backgroundImages: string[] = [
+    "/assets/landing/landing@2x.png",
+    "/assets/jpeg/inc22-gallerybg.jpg",
+    "/assets/jpeg/inc23-gallerybg.jpg",
+    "/assets/landing/landing@2x.png",
+  ];
 
   const handleClockClick = (angle: number) => {
     switch (angle) {
@@ -47,58 +38,88 @@ const Gallery: NextPage = () => {
     }
   };
 
+  const years = [2021, 2022, 2023, 2024] as const;
+  const imageCounts = [29, 12, 26, 26] as const;
+
   const generateImagePaths = (
     year: number,
     count: number,
     extension: string,
-  ) => {
-    const imagePaths = [];
-    for (let i = 1; i <= count; i++) {
-      imagePaths.push(`gallery/${year}/${i}.${extension}`);
-    }
-    return imagePaths;
+  ): string[] => {
+    return Array.from(
+      { length: count },
+      (_, i) => `gallery/${year}/${i + 1}.${extension}`,
+    );
   };
 
-  const img2021: string[] = generateImagePaths(years[0], imageCounts[0], "jpg");
-  const img2022: string[] = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2023: string[] = generateImagePaths(years[2], imageCounts[2], "jpg");
-  const img2024: string[] = generateImagePaths(years[3], imageCounts[3], "jpg");
+  const img2022 = generateImagePaths(years[1], imageCounts[1], "jpg");
+  const img2023 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
+    (path) => (path.startsWith("/") ? path : `/${path}`),
+  );
 
-  // const images22: string[] = [
-  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP',
-  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS',
-  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6R0y97VshMbdqu9Dv5sClAGzH4NFEa8xgrwZW',
-  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR',
-  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD63kfzz9uyGThZ7z4KLvCYJEoXsRPUlefFnuwk',
-  //   'https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD656UKEcozf8HJFAlsQ20KwyZNUIoLmOVecu4g'
-  // ]
-
-  const renderActiveYearComponent = () => {
-    switch (activeYear) {
-      case 0:
-        return <Inc21 />;
-      case 1:
-        return <Inc22 imgArr={img2022} />;
-      case 2:
-        return <Inc23 />;
-      case 3:
-        return <Inc24 />;
-      default:
-        return null;
-    }
+  const renderActiveYearComponent = (): JSX.Element | null => {
+    const components = [
+      <Inc21 key={0} />,
+      <Inc22 imgArr={img2022} key={1} />,
+      <Inc23 imgArr={img2023} key={2} />,
+      <Inc24 key={3} />,
+    ];
+    return components[activeYear] ?? null;
   };
+
+  useEffect(() => {
+    const parallaxContainer = document.getElementById("parallax-container");
+    if (parallaxContainer) {
+      const parallaxInstance = new Parallax(parallaxContainer, {
+        relativeInput: true,
+        hoverOnly: false,
+      });
+      return () => parallaxInstance.destroy();
+    }
+  }, []);
+
+  useEffect(() => {
+    gsap.fromTo(
+      "#active-year-content",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6 },
+    );
+
+    return () => {
+      gsap.to("#active-year-content", { opacity: 0, duration: 0.6 });
+    };
+  }, [activeYear]);
 
   return (
     <>
-      <section className="relative flex h-screen w-full flex-col overflow-hidden ">
-        {/* Timeline with Dots */}
-        <div className="absolute top-32 left-0 right-0 flex items-center justify-between px-4 md:px-12 lg:px-20">
-          <Clock onClockClick={handleClockClick} />
-        </div>
+      <section className="relative flex h-screen w-full flex-col overflow-hidden bg-black bg-opacity-50">
+        <div
+          className="relative h-screen w-full z-0 overflow-hidden"
+          style={{
+            backgroundImage: `url(${backgroundImages[activeYear]})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          {/* Parallax Effect */}
+          <div
+            id="parallax-container"
+            className="absolute inset-0 pointer-events-none"
+            style={{ zIndex: -2 }}
+          ></div>
+          {/* Clock */}
+          <div className="relative transform translate-y-10 md:-translate-y-10 z-20 top-28">
+            <Clock onClockClick={handleClockClick} />
+          </div>
 
-        {/* Render Active Year Component */}
-        <div className="relative mt-16">{renderActiveYearComponent()}</div>
+          {/* Render Active Year Component with Fade Animation */}
+          <div id="active-year-content" className="relative h-full w-full z-10">
+            {renderActiveYearComponent()}
+          </div>
+        </div>
       </section>
+
       {/* Footer */}
       <FooterBody />
     </>
