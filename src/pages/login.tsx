@@ -55,6 +55,9 @@ const SignIn: NextPage = () => {
 
   const [radius1, setRadius1] = useState<number>(0); // Small gear radius
   const [radius2, setRadius2] = useState<string>("0"); // Large gear radius
+  const [bottom1, setBottom1] = useState<string>("90%");
+  const [scale1, setScale1] = useState<string>("");
+  const [secondsAnimation, setSecondsAnimation] = useState<string>("20000s");
   const [gearPosition, setGearPosition] = useState<{ x: number; y: number }>({
     x: 0,
     y: 0,
@@ -79,6 +82,8 @@ const SignIn: NextPage = () => {
   ) => void = (newForm) => {
     if (whichForm === newForm) return;
 
+    setSecondsAnimation("20s");
+
     setCardStyle((prev) => ({
       ...prev,
       [whichForm]: CARD_BOTTOM_STYLE,
@@ -90,6 +95,7 @@ const SignIn: NextPage = () => {
         ...prev,
         [whichForm]: CARD_TOP_STYLE,
       }));
+      setSecondsAnimation("200000s");
     }, CARD_SWITCH_DURATION * 0.9);
 
     setWhichForm(newForm);
@@ -120,24 +126,32 @@ const SignIn: NextPage = () => {
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
       setRadius2("300vw");
+      setScale1("1.4");
+      setBottom1("88%");
     } else if (screenWidth < 1000) {
       gear2Radius = screenWidth; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
       setRadius2("160vw");
+      setScale1("");
+      setBottom1("80%");
     } else if (screenWidth < 1024) {
       gear2Radius = screenWidth / 1; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
       setRadius1(gear1Radius);
       setRadius2(`${gear2Radius}px`);
+      setScale1("");
+      setBottom1("80%");
     } else {
       gear2Radius = screenWidth / 1;
       gear1Radius = gear2Radius * 0.8;
 
       setRadius1(gear1Radius);
       setRadius2(`${gear2Radius}px`);
+      setScale1("");
+      setBottom1("80%");
     }
 
     // Calculate positioning for gear1 to attach to gear2
@@ -221,9 +235,10 @@ const SignIn: NextPage = () => {
               width: radius1,
               height: radius1,
               left: "42%",
-              bottom: "80%",
+              bottom: bottom1,
               rotate: "18deg",
-              animation: "rotateClockwise 20s linear infinite",
+              animation: `rotateClockwise ${secondsAnimation} linear infinite`,
+              scale: scale1,
             }}
             className="absolute scale-150 translate-y-1/2"
             alt=""
@@ -253,7 +268,7 @@ const SignIn: NextPage = () => {
               top: "18%",
               width: radius2,
               height: radius2,
-              animation: "rotateAntiClock 20s linear infinite",
+              animation: `rotateAntiClock ${secondsAnimation} linear infinite`,
             }}
             className="absolute translate-y-1/2 h-full scale-[1.85]"
             alt=""
