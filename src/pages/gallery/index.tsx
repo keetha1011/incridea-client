@@ -80,7 +80,7 @@ const Gallery: NextPage = () => {
       case 1:
         return <Inc22 imgArr={img2022} />;
       case 2:
-        return <Inc23 />;
+        return <Inc23 imageUrls={img2023} />;
       case 3:
         return <Inc24 />;
       default:
