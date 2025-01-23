@@ -138,15 +138,20 @@ const Page = ({ event, error }: Props) => {
     ];
   };
 
+  // #002C1B - main green
+  // #054432 - secondary green
+  // #D79128 - golden shine text
+  // #5BC89E - light text green
+
   return (
     <div className={`relative flex items-center justify-center`}>
       <Image
         alt="events-bg"
-        src="/assets/eventSlug/cover.svg"
+        src="/assets/eventSlug/leo-edited.jpg"
         height={1920}
         width={1080}
         priority
-        className={`absolute left-0 top-0 h-screen w-screen object-cover object-center`}
+        className={`absolute left-0 top-0 h-screen w-screen object-cover object-center `}
       />
       <Toaster />
       {error && (
@@ -181,7 +186,7 @@ const Page = ({ event, error }: Props) => {
             className={`lg:no-scrollbar overflow-x-visible px-3 pt-20 lg:h-full lg:overflow-y-scroll lg:pb-8`}
           >
             <div
-              className={`basis-1/3 rounded-xl border border-primary-200/80 bg-primary-300/50 p-5 backdrop-blur-xl backdrop-filter`}
+              className={`basis-1/3 rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
             >
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
@@ -195,12 +200,14 @@ const Page = ({ event, error }: Props) => {
                   />
                 )}
                 <h1
-                  className={`px-4 pb-0 text-center font-VikingHell text-3xl font-bold capitalize tracking-wider sm:p-0 md:text-6xl`}
+                  className={`px-4 pb-0 text-center PTSerif text-3xl font-bold capitalize tracking-wider sm:p-0 md:text-6xl text-[#D79128]`}
                 >
                   {event.name}
                 </h1>
+                <hr className="border-t-2 border-[#D79128] w-3/4 mx-auto rounded-full shadow-lg" />
                 <div className={`px-4 pb-4 sm:p-0`}>
                   <EventDetails details={event.description ?? ""} />
+                  {/* <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum, iure natus illo alias exercitationem est quaerat asperiores ipsa, maiores placeat esse tempora libero id aperiam accusamus reiciendis atque obcaecati nisi officiis magni nostrum facilis tempore fuga! Minima officiis distinctio earum? Quis velit atque, similique, quo sunt minus fugit aperiam tempora commodi explicabo error hic temporibus qui assumenda unde dicta saepe necessitatibus obcaecati pariatur cumque provident, cupiditate officia consequatur! Quas obcaecati aspernatur nemo animi? Minus vel quis, eaque exercitationem unde dignissimos, est ipsam nihil ipsum architecto odio optio, corrupti in quidem! Minima tempore harum, quod mollitia totam inventore suscipit corrupti? Corrupti.</p> */}
                 </div>
               </div>
             </div>
@@ -209,13 +216,13 @@ const Page = ({ event, error }: Props) => {
             className={`lg:no-scrollbar flex w-full shrink-0 basis-1/3 flex-col items-center gap-5 rounded-md px-3 pb-8 lg:h-full lg:overflow-y-scroll lg:pt-20`}
           >
             <div
-              className={`w-full rounded-xl border border-primary-200/80 bg-primary-300/50 p-5 backdrop-blur-xl backdrop-filter`}
+              className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
             >
               <div>
-                <div className={`order-2 w-full space-y-1.5`}>
+                <div className={`order-2 w-full space-y-1.56`}>
                   {/* <hr className="w-48 h-1 mx-auto my-4 bg-secondary-800 border-0 rounded " /> */}
                   <h2
-                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl`}
+                    className={`mb-2 font-RedRose text-2xl tracking-wider md:text-4xl text-[#D79128] font-bold`}
                   >
                     Details
                   </h2>
@@ -224,7 +231,7 @@ const Page = ({ event, error }: Props) => {
                       attr.text ? (
                         <div
                           key={attr.name}
-                          className={`md:text-md flex w-full items-center gap-2 rounded-full border border-secondary-400/40 bg-primary-200/30 p-1 px-2 text-left text-sm`}
+                          className={`md:text-md flex w-full items-center gap-2 rounded-full border border-[#D79128] p-1 px-2 text-left text-sm bg-[#D79128] bg-opacity-30`}
                         >
                           {<attr.Icon />}
                           <p>
@@ -238,11 +245,11 @@ const Page = ({ event, error }: Props) => {
                     )}
                   </div>
                   <div className={`text-sm`}>
-                    <div className={`grid grid-cols-1 gap-2`}>
+                    <div className={`grid grid-cols-1 gap-2 mt-2`}>
                       {event.rounds.map((round) => (
                         <div
                           key={round.roundNo}
-                          className={`bodyFont items-center space-y-2 rounded-xl border border-secondary-400/40 bg-primary-200/30 px-3 py-2 text-white`}
+                          className={`bodyFont items-center space-y-2 rounded-xl border border-[#D79128] bg-opacity-30 px-3 py-2 text-white bg-[#D79128]`}
                         >
                           <div className={`font-semibold`}>
                             Round {round.roundNo}
@@ -253,21 +260,32 @@ const Page = ({ event, error }: Props) => {
                               suppressHydrationWarning
                             >
                               <BsFillCalendar2WeekFill />
-                              {round.date?.toLocaleDateString("en-IN", {
-                                day: "numeric",
-                                month: "short",
-                              })}
+
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      day: "numeric",
+                                      month: "short",
+                                    },
+                                  )
+                                : ""}
                             </p>
                             <p
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
                               <BiTimeFive />
-                              {round.date?.toLocaleDateString("en-IN", {
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              })}
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                      hour12: true,
+                                    },
+                                  )
+                                : ""}
                             </p>
                           </div>
                         </div>
@@ -281,16 +299,21 @@ const Page = ({ event, error }: Props) => {
                     eventId={event.id}
                     type={event.eventType}
                   />
+                  {/* <button
+                    className="bg-gradient-to-r from-[#D79128] to-[#FFD700] text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-[#FFD700] hover:to-[#D79128] transition-all duration-300"
+                    >
+                    Register Now
+                    </button> */}
                 </div>
               </div>
             </div>
             {event.organizers.length > 0 && (
               <div
-                className={`w-full rounded-xl border border-primary-200/80 bg-primary-300/50 p-5 backdrop-blur-xl backdrop-filter`}
+                className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
               >
                 <div className={`order-3 w-full`}>
                   <h2
-                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl`}
+                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl text-[#D79128] font-bold`}
                   >
                     Organizers
                   </h2>
@@ -298,7 +321,7 @@ const Page = ({ event, error }: Props) => {
                     {event.organizers.map((organizer, idx) => (
                       <div
                         key={idx}
-                        className={`text-md w-full rounded-xl border border-secondary-400/40 bg-primary-200/30 p-3 text-white`}
+                        className={`text-md w-full rounded-xl border border-[#D79128] p-3 text-white bg-[#D79128] bg-opacity-30`}
                       >
                         <h3 className={`mb-2 text-lg font-semibold`}>
                           {organizer.user.name}

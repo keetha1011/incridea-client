@@ -30,6 +30,11 @@ export const garetFont = LocalFont({
   variable: "--font-Garet",
 });
 
+export const PTSerif = LocalFont({
+  src: "../font/PTSerif-Regular.ttf",
+  variable: "--font-PTSerif",
+});
+
 export const gilroy = LocalFont({
   src: [
     {
