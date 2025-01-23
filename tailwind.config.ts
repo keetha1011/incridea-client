@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        2000: "2000ms",
+      },
       animation: {
         "spin-slow": "spin 2s linear infinite",
         scroll: "scroll 60s linear infinite",

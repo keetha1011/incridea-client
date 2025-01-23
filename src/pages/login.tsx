@@ -10,42 +10,30 @@ import LoginPortal from "~/components/login/portal";
 import { env } from "~/env";
 
 type CardStyle = {
-  top: string;
+  opacity: string;
   transitionDuration: string;
-  opacity?: string;
-  transformOrigin?: string;
-  pointerEvents?: React.CSSProperties["pointerEvents"];
-  transform: string;
+  pointerEvents: React.CSSProperties["pointerEvents"];
 };
 
 // HACK: If "top" values are changed, please check LoginCard component logic once
 const CARD_SWITCH_DURATION = 1000; // 1 second
 
 const CARD_TOP_STYLE = {
-  top: "100%",
-  transitionDuration: `${1500}ms`,
   opacity: "0%",
-  transformOrigin: "bottom",
+  transitionDuration: "500ms",
   pointerEvents: "none" as React.CSSProperties["pointerEvents"],
-  transform: `translate(-50%, -50%) rotate(360deg) scale(0.5)`, // Moves out, rotates, and shrinks
 };
 
 const CARD_NEUTRAL_STYLE = {
-  top: "50%",
-  transitionDuration: `${2000}ms`,
   opacity: "100%",
-  transformOrigin: "bottom",
+  transitionDuration: "2000ms",
   pointerEvents: "auto" as React.CSSProperties["pointerEvents"],
-  transform: `translate(-50%, -50%) rotate(0deg) scale(1)`, // Normal position
 };
 
 const CARD_BOTTOM_STYLE = {
-  top: "100%",
-  transitionDuration: `${1500}ms`,
-  opacity: "0%",
-  transformOrigin: "bottom",
+  opacity: "100%",
+  transitionDuration: "1500ms",
   pointerEvents: "none",
-  transform: `translate(-50%, -50%) rotate(-360deg) scale(0.5)`, // Moves out, rotates, and shrinks
 };
 
 const SignIn: NextPage = () => {
@@ -75,6 +63,7 @@ const SignIn: NextPage = () => {
     y: 0,
   });
   const [radius3, setRadius3] = useState<number>(0);
+  const [transitioning, setTransitioning] = useState<boolean>(false);
 
   const [cardStyle, setCardStyle] = useState<{
     signIn: CardStyle;
@@ -92,11 +81,23 @@ const SignIn: NextPage = () => {
   const changeCard: (
     newForm: "signIn" | "resetPassword" | "signUp" | "resendEmail",
   ) => void = (newForm) => {
-    if (whichForm === newForm) return;
+    if (whichForm === newForm || transitioning) return;
+
+    const audio1 = new Audio("/assets/gearsounds.mp3");
+    audio1
+      .play()
+      .then(() => {
+        console.log("audio played");
+      })
+      .catch((err) => {
+        console.log("audio not played", err);
+      });
 
     // setSecondsAnimation(`${CARD_SWITCH_DURATION * 0.9}s`);
-    setRotationAngle1((prev) => prev + 90);
-    setRotationAngle2((prev) => prev - 90);
+    setRotationAngle1((prev) => prev + 360);
+    setRotationAngle2((prev) => prev - 360);
+
+    setTransitioning(true);
 
     setCardStyle((prev) => ({
       ...prev,
@@ -110,6 +111,10 @@ const SignIn: NextPage = () => {
         [whichForm]: CARD_TOP_STYLE,
       }));
       setSecondsAnimation("0s");
+      setTimeout(() => {
+        setTransitioning(false);
+        audio1.pause();
+      }, CARD_SWITCH_DURATION);
     }, CARD_SWITCH_DURATION * 0.9);
 
     setWhichForm(newForm);
@@ -141,7 +146,7 @@ const SignIn: NextPage = () => {
       setRadius1(gear1Radius);
       setRadius2("300vw");
       setScale1("1.4");
-      setBottom1("88%");
+      setBottom1("80%");
     } else if (screenWidth < 1000) {
       gear2Radius = screenWidth; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
@@ -243,8 +248,7 @@ const SignIn: NextPage = () => {
 
         <div className="relative w-[500vw] h-[160vh] flex items-center justify-center self-center">
           {/* <div className="absolute w-[130vw] h-[130vh] bg-[url('http://localhost:3000/assets/svg/geardone2.svg')] bg-cover bg-center top-full -translate-y-1/2"></div> */}
-          <img
-            src="assets/svg/geardone2.svg"
+          <div
             style={{
               width: radius1,
               height: radius1,
@@ -260,8 +264,9 @@ const SignIn: NextPage = () => {
               scale: scale1,
             }}
             className="absolute scale-150 translate-y-1/2"
-            alt=""
-          />
+          >
+            <img src="assets/svg/geardone2.svg" alt="" className="size-full" />
+          </div>
           <style jsx global>{`
             @keyframes rotateClockwise {
               0% {
@@ -281,8 +286,7 @@ const SignIn: NextPage = () => {
             }
           `}</style>
 
-          <img
-            src="assets/svg/geardone2.svg"
+          <div
             style={{
               top: "18%",
               width: radius2,
@@ -294,9 +298,39 @@ const SignIn: NextPage = () => {
               //     ? `rotateAntiClock ${secondsAnimation} linear infinite`
               //     : "rotateAntiClock 20000s linear infinite",
             }}
-            className="absolute translate-y-1/2 h-full scale-[1.85]"
-            alt=""
-          />
+            className="fixed translate-y-1/2 h-full scale-[1.85]"
+          >
+            <img
+              src="assets/svg/geardone2.svg"
+              alt=""
+              className="absolute size-full"
+            />
+
+            <div className="size-full relative">
+              <LoginCard
+                whichForm="signIn"
+                cardStyle={cardStyle.signIn}
+                setWhichForm={changeCard}
+                redirectUrl={query.redirectUrl}
+              />
+
+              <LoginCard
+                whichForm="resetPassword"
+                cardStyle={cardStyle.resetPassword}
+                setWhichForm={changeCard}
+              />
+              <LoginCard
+                whichForm="signUp"
+                cardStyle={cardStyle.signUp}
+                setWhichForm={changeCard}
+              />
+              <LoginCard
+                whichForm="resendEmail"
+                cardStyle={cardStyle.resendEmail}
+                setWhichForm={changeCard}
+              />
+            </div>
+          </div>
 
           {/* <img
             src="assets/svg/geardone2.svg"
@@ -310,29 +344,6 @@ const SignIn: NextPage = () => {
             alt=""
           /> */}
         </div>
-
-        <LoginCard
-          whichForm="signIn"
-          cardStyle={cardStyle.signIn}
-          setWhichForm={changeCard}
-          redirectUrl={query.redirectUrl}
-        />
-
-        <LoginCard
-          whichForm="resetPassword"
-          cardStyle={cardStyle.resetPassword}
-          setWhichForm={changeCard}
-        />
-        <LoginCard
-          whichForm="signUp"
-          cardStyle={cardStyle.signUp}
-          setWhichForm={changeCard}
-        />
-        <LoginCard
-          whichForm="resendEmail"
-          cardStyle={cardStyle.resendEmail}
-          setWhichForm={changeCard}
-        />
 
         {/* <LoginPortal isTop={false} /> */}
       </div>
