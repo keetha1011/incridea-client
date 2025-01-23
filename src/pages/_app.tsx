@@ -146,7 +146,7 @@ export default function App({
   //     </ApolloProvider>
   //   );
 
-  if (router.pathname === "/coming-soon") {
+  if (router.pathname === "/coming-soon") { 
     return (
       <ApolloProvider client={apolloClient}>
         <HeadComponent
