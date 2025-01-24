@@ -16,6 +16,40 @@ const ComingSoonComponent = () => {
         from: "random",
       },
     });
+
+    if (window.innerWidth >= 1024) {
+      gsap.fromTo(
+        "#door-left",
+        { x: "150%" },
+        { x: "0%", duration: 2, delay: 0.5, ease: "back" },
+      );
+      gsap.fromTo(
+        "#door-right",
+        { x: "-150%" },
+        { x: "0%", duration: 2, delay: 0.5, ease: "back" },
+      );
+    } else {
+      gsap.fromTo(
+        "#door-left",
+        { y: "-17%" },
+        { y: "-38%", duration: 2, delay: 0.5, ease: "back" },
+      );
+      gsap.fromTo(
+        "#door-right",
+        { y: "17%" },
+        { y: "38%", duration: 2, delay: 0.5, ease: "back" },
+      );
+    }
+    // } else if(window.innerWidth >= 640) {
+    //     gsap.fromTo('#door-left', { y: "0%" }, { y: "-33.5%", duration: 2, delay: 0.5, ease: 'back' });
+    //     gsap.fromTo('#door-right', { y: "0%" }, { y: "33.5%", duration: 2, delay: 0.5, ease: 'back' });
+    // }
+
+    gsap.fromTo(
+      "#text-container",
+      { opacity: 0 },
+      { opacity: 1, duration: 1, delay: 1.5 },
+    );
   }, []);
 
   const renderStars = () => {
@@ -42,9 +76,8 @@ const ComingSoonComponent = () => {
   };
 
   return (
-    <a
-      href="https://www.instagram.com/reel/DE2IY6FvbTm/?igsh=MTdsbnc1bjMyaXZuYw=="
-      className="relative w-full h-screen select-none flex-col flex items-center justify-center overflow-hidden"
+    <div
+      className="relative w-full h-screen select-none flex items-center justify-center overflow-hidden"
       style={{
         background: `radial-gradient(circle at 50% 50%, #033137 0%, #137C2D 70%)`,
         backgroundSize: "100% 100%",
@@ -52,39 +85,37 @@ const ComingSoonComponent = () => {
       }}
     >
       <div className="absolute w-full h-full z-20">{renderStars()}</div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/2025/Incridea Stroke Font.png"
-        alt="logo"
-        className="w-52 lg:w-96 aspect-auto"
-      />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <div className="md:w-[60%] w-[80%] h-52 lg:h-96 z-20 flex justify-center items-center">
+
+      <a
+        id="text-container"
+        href="https://www.instagram.com/reel/DE2IY6FvbTm/?igsh=MTdsbnc1bjMyaXZuYw=="
+        className="md:w-[60%] w-[80%] z-20"
+      >
         <MorphingText
           texts={["Coming Soon", "Echoes of Eternity"]}
           className="blackChancery lg:text-[9rem] md:text-[6rem] text-[4rem] text-yellow-400 text-center min-w-full self-center justify-self-center"
         />
-      </div>
+      </a>
+
       <div className="absolute w-full h-full z-20">
         <ShootingStars />
       </div>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+
       <img
         id="door-left"
         src="/assets/png/door.png"
         alt="Door-Left"
-        className="absolute lg:h-full h-screen lg:w-[20%] md:scale-y-150 lg:scale-y-100 lg:left-0 -top-[38%] lg:top-0 lg:rotate-0 rotate-90 z-30"
+        className="absolute lg:h-full h-screen lg:w-[20%] md:scale-y-150 lg:scale-y-100 lg:left-0 lg:top-0 top-0 lg:rotate-0 rotate-90 z-30"
         draggable={false}
       />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         id="door-right"
         src="/assets/png/door1.png"
         alt="Door-Left"
-        className="absolute lg:h-full h-screen lg:w-[20%] md:scale-y-150 lg:scale-y-100 lg:right-0 lg:bottom-0 -bottom-[38%] lg:rotate-0 rotate-90 z-30"
+        className="absolute lg:h-full h-screen lg:w-[20%] md:scale-y-150 lg:scale-y-100 lg:right-0 lg:bottom-0 lg:rotate-0 rotate-90 z-30"
         draggable={false}
       />
-    </a>
+    </div>
   );
 };
 

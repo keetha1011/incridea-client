@@ -1,4 +1,4 @@
-import styles from "./shootingStars.module.css";
+import styles from "./ShootingStars.module.css";
 
 const ShootingStars = () => {
   return (
