@@ -65,20 +65,6 @@ export default function Inc23({ imgArr }: { imgArr: string[] }) {
     }
   }, [isPaused]);
 
-  // Add parallax effect to the background
-  useEffect(() => {
-    if (backgroundRef.current) {
-      const parallaxInstance = new Parallax(backgroundRef.current, {
-        relativeInput: true,
-        hoverOnly: true,
-      });
-
-      return () => {
-        parallaxInstance.destroy();
-      };
-    }
-  }, []);
-
   return (
     <div className="relative top-96 overflow-hidden px-8">
       {/* Parallax Background */}

@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { type NextPage } from "next";
 import { FooterBody } from "~/components/footer";
 import Clock from "~/components/galleryslide/clock";
-import Inc21 from "~/components/galleryslide/scenes/Inc21";
+import Inc20 from "~/components/galleryslide/scenes/Inc20";
 import Inc22 from "~/components/galleryslide/scenes/Inc22";
 import Inc23 from "~/components/galleryslide/scenes/Inc23";
 import Inc24 from "~/components/galleryslide/scenes/Inc24";
@@ -38,7 +38,7 @@ const Gallery: NextPage = () => {
     }
   };
 
-  const years = [2021, 2022, 2023, 2024] as const;
+  const years = [2020, 2022, 2023, 2024] as const;
   const imageCounts = [29, 12, 26, 26] as const;
 
   const generateImagePaths = (
@@ -52,18 +52,18 @@ const Gallery: NextPage = () => {
     );
   };
 
+  const img2020 = generateImagePaths(years[0], imageCounts[0], "jpg");
   const img2022 = generateImagePaths(years[1], imageCounts[1], "jpg");
   const img2023 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
     (path) => (path.startsWith("/") ? path : `/${path}`),
   );
-  const img2024 = generateImagePaths(years[3], imageCounts[3], "jpg");
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
-      <Inc21 key={0} />,
+      <Inc20 imageUrls={img2020} key={0} />,
       <Inc22 imgArr={img2022} key={1} />,
       <Inc23 imgArr={img2023} key={2} />,
-      <Inc24 imageUrls={img2024} key={3} />,
+      <Inc24 key={3} />,
     ];
     return components[activeYear] ?? null;
   };
