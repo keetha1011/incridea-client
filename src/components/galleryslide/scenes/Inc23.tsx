@@ -65,19 +65,10 @@ export default function Inc23({ imgArr }: { imgArr: string[] }) {
     }
   }, [isPaused]);
 
+  // Add parallax effect to the background
+
   return (
     <div className="relative top-96 overflow-hidden px-8">
-      {/* Parallax Background */}
-      <div
-        ref={backgroundRef}
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: "url('/assets/landing/lounge@2x.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      ></div>
-
       <div className="flex flex-col items-center space-y-6 pb-10 relative z-10">
         <div className="h-72 relative w-full overflow-hidden flex items-center">
           {/* XRay Component */}

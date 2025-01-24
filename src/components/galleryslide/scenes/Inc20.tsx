@@ -223,7 +223,7 @@ const Inc20 = ({ imageUrls }: { imageUrls: string[] }) => {
 
   return (
     <>
-      <div className="relative w-full h-screen bg-gray-100 overflow-hidden bg-[url('/assets/png/inc_23_bg.jpg')] bg-cover bg-center ">
+      <div className="relative w-full h-screen overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full">
           <Canvas
             className="absolute top-0 left-0 w-full h-full"

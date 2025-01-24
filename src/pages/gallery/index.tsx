@@ -13,7 +13,7 @@ const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
 
   const backgroundImages: string[] = [
-    "/assets/landing/landing@2x.png",
+    "/assets/jpeg/inc20-gallerybg.jpg",
     "/assets/jpeg/inc22-gallerybg.jpg",
     "/assets/jpeg/inc23-gallerybg.jpg",
     "/assets/landing/landing@2x.png",

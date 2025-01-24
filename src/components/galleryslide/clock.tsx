@@ -48,7 +48,11 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
         material={materials["Material.005"]}
         scale={[2, 0.1, 2]}
       />
-      <group position={[0, 0.5, 0]} ref={handRef} rotation={[Math.PI, 0, 0]}>
+      <group
+        position={[0, 0.5, 0]}
+        ref={handRef}
+        rotation={[Math.PI, Math.PI, 0]}
+      >
         <mesh
           name="clock_hand"
           castShadow
