@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { GLTF } from "three-stdlib";
-import * as THREE from "three";
+import type * as THREE from "three";
 import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
+import type { GLTF } from "three-stdlib";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -46,7 +46,7 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
         receiveShadow
         geometry={nodes.clock_face.geometry}
         material={materials["Material.005"]}
-        scale={[2.2, 0.11, 2.2]}
+        scale={[2, 0.1, 2]}
       />
       <group position={[0, 0.5, 0]} ref={handRef} rotation={[Math.PI, 0, 0]}>
         <mesh
