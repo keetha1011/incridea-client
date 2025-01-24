@@ -82,7 +82,7 @@ export default function App({
   const apolloClient = useApollo(initialApolloState);
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const handleRouteChange = async () => {
       const allowedRoutes = ["/coming-soon"];
       if (!allowedRoutes.includes(router.pathname)) {
@@ -96,7 +96,7 @@ export default function App({
     };
 
     void handleRouteChange();
-  }, [router.pathname]);
+  }, [router.pathname]); */
 
   // if (
   //   router.pathname === "/theme" ||
@@ -146,19 +146,19 @@ export default function App({
   //     </ApolloProvider>
   //   );
 
-  if (router.pathname === "/coming-soon") { 
-    return (
-      <ApolloProvider client={apolloClient}>
-        <HeadComponent
-          title="Incridea"
-          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-        />
-        <div className={cn("min-h-screen")}>
-          <Component {...pageProps} />
-        </div>
-      </ApolloProvider>
-    );
-  }
+  /* if (router.pathname === "/coming-soon") {  */
+  return (
+    <ApolloProvider client={apolloClient}>
+      <HeadComponent
+        title="Incridea"
+        description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+      />
+      <div className={cn("min-h-screen")}>
+        <Component {...pageProps} />
+      </div>
+    </ApolloProvider>
+  );
+  //}
 
   return (
     <>

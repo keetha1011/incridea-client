@@ -142,7 +142,7 @@ const Clock = ({ onClockClick }: ClockProps) => {
   return (
     <div
       ref={containerRef}
-      className="absolute top-[10%] left-[50%] -translate-x-1/2 cursor-pointer z-10 aspect-square md:w-[280px] w-[250px] touch-none"
+      className="absolute top-[10%] left-[50%] -translate-x-1/2 cursor-pointer z-10 aspect-square md:w-[180px] w-[200px] touch-none"
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
