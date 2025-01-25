@@ -1,0 +1,22 @@
+query GetChampionshipPointsQuery {
+  getChampionshipPoints {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetChampionshipPointsSuccess {
+      __typename
+      data {
+        bronzeCount
+        championshipPoints
+        coreCount
+        goldCount
+        id
+        name
+        nonTechCount
+        silverCount
+        techCount
+      }
+    }
+  }
+}
