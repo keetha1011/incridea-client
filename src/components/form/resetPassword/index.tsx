@@ -87,7 +87,7 @@ const ResetPassword: FunctionComponent = () => {
         <div className="size-full absolute top-0 left-0 origin-center ">
           <div className="relative size-full">
             <form
-              className={`absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-black/80 justify-center gap-4 px-7 py-9 ${
+              className={`absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-black/80 justify-center gap-4 px-12 py-12 ${
                 loading && "pointer-events-none cursor-not-allowed"
               }`}
               onSubmit={handleSubmit}
@@ -105,7 +105,7 @@ const ResetPassword: FunctionComponent = () => {
                   }
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter New Password"
-                  className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
+                  className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-md outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
                 />
                 <button
                   type="button"
@@ -125,7 +125,7 @@ const ResetPassword: FunctionComponent = () => {
                   }
                   type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm New Password"
-                  className="mb-3 w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
+                  className="mb-3 w-full border-b border-gray-400 bg-transparent px-1 py-2 text-md outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
                 />
                 <button
                   type="button"
