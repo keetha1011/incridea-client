@@ -2,20 +2,17 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { env } from "~/env";
-
 function Theme() {
   // redirect to youtube
   const router = useRouter();
-
   useEffect(() => {
-    void router.push("https://youtu.be/GdmrDe-VIlo?feature=shared");
+    void router.push("https://www.instagram.com/reel/DE2IY6FvbTm/");
   }, [router]);
 
   return (
-    <div className="flex h-screen w-screen items-center justify-center bg-black">
+    <div className="h-screen w-screen bg-black flex justify-center items-center">
       <Image
-        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo.png`}
+        src={"/assets/png/logo.png"}
         className="animate-pulse"
         alt="logo"
         width={300}

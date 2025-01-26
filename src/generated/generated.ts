@@ -323,6 +323,7 @@ export type Mutation = {
   joinTeam: MutationJoinTeamResult;
   leaveTeam: MutationLeaveTeamResult;
   login: MutationLoginResult;
+  notifyParticipants: Scalars["Boolean"]["output"];
   organizerAddTeamMember: MutationOrganizerAddTeamMemberResult;
   organizerCreateTeam: MutationOrganizerCreateTeamResult;
   organizerDeleteTeam: MutationOrganizerDeleteTeamResult;
@@ -343,12 +344,14 @@ export type Mutation = {
   resetPassword: MutationResetPasswordResult;
   sendEmailVerification: MutationSendEmailVerificationResult;
   sendPasswordResetEmail: MutationSendPasswordResetEmailResult;
+  sendWinnerWhatsAppNotification: Scalars["Boolean"]["output"];
   signUp: MutationSignUpResult;
   updateCard: MutationUpdateCardResult;
   updateEvent: MutationUpdateEventResult;
   updateProfileImage: MutationUpdateProfileImageResult;
   updateQuizStatus: MutationUpdateQuizStatusResult;
   updateStatus: MutationUpdateStatusResult;
+  useReferralCode: MutationUseReferralCodeResult;
   verifyEmail: MutationVerifyEmailResult;
 };
 
@@ -537,6 +540,11 @@ export type MutationLoginArgs = {
   data: UserLoginInput;
 };
 
+export type MutationNotifyParticipantsArgs = {
+  eventId: Scalars["ID"]["input"];
+  roundNo: Scalars["Int"]["input"];
+};
+
 export type MutationOrganizerAddTeamMemberArgs = {
   teamId: Scalars["ID"]["input"];
   userId: Scalars["ID"]["input"];
@@ -627,6 +635,10 @@ export type MutationSendPasswordResetEmailArgs = {
   email: Scalars["String"]["input"];
 };
 
+export type MutationSendWinnerWhatsAppNotificationArgs = {
+  eventId: Scalars["ID"]["input"];
+};
+
 export type MutationSignUpArgs = {
   data: UserCreateInput;
 };
@@ -657,6 +669,10 @@ export type MutationUpdateStatusArgs = {
   hotelId: Scalars["String"]["input"];
   room: Scalars["String"]["input"];
   status: Scalars["String"]["input"];
+};
+
+export type MutationUseReferralCodeArgs = {
+  referralCode: Scalars["String"]["input"];
 };
 
 export type MutationVerifyEmailArgs = {
@@ -1138,6 +1154,15 @@ export type MutationUpdateStatusResult = Error | MutationUpdateStatusSuccess;
 export type MutationUpdateStatusSuccess = {
   __typename?: "MutationUpdateStatusSuccess";
   data: UserInHotel;
+};
+
+export type MutationUseReferralCodeResult =
+  | Error
+  | MutationUseReferralCodeSuccess;
+
+export type MutationUseReferralCodeSuccess = {
+  __typename?: "MutationUseReferralCodeSuccess";
+  data: User;
 };
 
 export type MutationVerifyEmailResult = Error | MutationVerifyEmailSuccess;
@@ -2366,6 +2391,16 @@ export type LeaveTeamMutation = {
     | { __typename: "MutationLeaveTeamSuccess" };
 };
 
+export type NotifyParticipantsMutationVariables = Exact<{
+  eventId: Scalars["ID"]["input"];
+  roundNo: Scalars["Int"]["input"];
+}>;
+
+export type NotifyParticipantsMutation = {
+  __typename?: "Mutation";
+  notifyParticipants: boolean;
+};
+
 export type OrganizerAddTeamMemberMutationVariables = Exact<{
   teamId: Scalars["ID"]["input"];
   userId: Scalars["ID"]["input"];
@@ -2650,6 +2685,15 @@ export type ResetPasswordEmailMutation = {
   sendPasswordResetEmail:
     | { __typename: "Error"; message: string }
     | { __typename: "MutationSendPasswordResetEmailSuccess"; data: string };
+};
+
+export type SendWinnerWhatsAppNotificationMutationVariables = Exact<{
+  eventId: Scalars["ID"]["input"];
+}>;
+
+export type SendWinnerWhatsAppNotificationMutation = {
+  __typename?: "Mutation";
+  sendWinnerWhatsAppNotification: boolean;
 };
 
 export type SignInMutationVariables = Exact<{
@@ -7822,6 +7866,70 @@ export const LeaveTeamDocument = {
     },
   ],
 } as unknown as DocumentNode<LeaveTeamMutation, LeaveTeamMutationVariables>;
+export const NotifyParticipantsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "NotifyParticipants" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "roundNo" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "notifyParticipants" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "roundNo" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "roundNo" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotifyParticipantsMutation,
+  NotifyParticipantsMutationVariables
+>;
 export const OrganizerAddTeamMemberDocument = {
   kind: "Document",
   definitions: [
@@ -9998,6 +10106,51 @@ export const ResetPasswordEmailDocument = {
 } as unknown as DocumentNode<
   ResetPasswordEmailMutation,
   ResetPasswordEmailMutationVariables
+>;
+export const SendWinnerWhatsAppNotificationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SendWinnerWhatsAppNotification" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "sendWinnerWhatsAppNotification" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SendWinnerWhatsAppNotificationMutation,
+  SendWinnerWhatsAppNotificationMutationVariables
 >;
 export const SignInDocument = {
   kind: "Document",
