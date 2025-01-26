@@ -253,21 +253,31 @@ const Page = ({ event, error }: Props) => {
                               suppressHydrationWarning
                             >
                               <BsFillCalendar2WeekFill />
-                              {round.date?.toLocaleDateString("en-IN", {
-                                day: "numeric",
-                                month: "short",
-                              })}
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      day: "numeric",
+                                      month: "short",
+                                    },
+                                  )
+                                : ""}
                             </p>
                             <p
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
                               <BiTimeFive />
-                              {round.date?.toLocaleDateString("en-IN", {
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              })}
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                      hour12: true,
+                                    },
+                                  )
+                                : ""}
                             </p>
                           </div>
                         </div>

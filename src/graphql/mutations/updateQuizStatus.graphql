@@ -1,0 +1,14 @@
+mutation UpdateQuizStatus(
+  $quizId: String = ""
+  $allowAttempts: Boolean = false
+) {
+  updateQuizStatus(quizId: $quizId, allowAttempts: $allowAttempts) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationUpdateQuizStatusSuccess {
+      __typename
+    }
+  }
+}

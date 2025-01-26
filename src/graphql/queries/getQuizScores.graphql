@@ -1,0 +1,25 @@
+query getQuizScores($quizId: String = "") {
+  getQuizScores(quizId: $quizId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetQuizScoresSuccess {
+      __typename
+      data {
+        score
+        timeTaken
+        teamId
+        team {
+          name
+          roundNo
+        }
+        quiz {
+          qualifyNext
+          roundNo
+          name
+        }
+      }
+    }
+  }
+}
