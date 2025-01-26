@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        2000: "2000ms",
+      },
       animation: {
         "spin-slow": "spin 2s linear infinite",
         scroll: "scroll 60s linear infinite",
@@ -25,6 +28,7 @@ const config: Config = {
         splatter4: "splatter4 1s ease-out forwards",
         splatter5: "splatter5 1s ease-out forwards",
         splatter6: "splatter6 1s ease-out forwards",
+        rotateClockwise: "rotateClockwise 1s linear infinite",
       },
       keyframes: {
         vibrate: {
@@ -118,6 +122,7 @@ const config: Config = {
             transform: "translate(0, 0) rotate(0deg)",
           },
         },
+
         scroll: {
           "0%": {
             transform: "translateX(0)",
@@ -164,6 +169,14 @@ const config: Config = {
           },
           to: {
             height: "0",
+          },
+        },
+        rotateClockwise: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg)",
           },
         },
       },
