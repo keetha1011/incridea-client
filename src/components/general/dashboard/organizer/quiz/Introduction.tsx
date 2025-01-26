@@ -53,8 +53,6 @@ const IntroductionPage = ({
     skip: !attemptQuizData,
   });
 
-  console.log("Quiz data", quiz);
-
   const [verifyQuizPassword, { loading: verifyQuizLoading }] = useLazyQuery(
     VerifyQuizPasswordDocument,
   );
@@ -102,9 +100,7 @@ const IntroductionPage = ({
       if (currentTime >= quizStartTime && currentTime <= quizEndTime)
         setHasQuizStarted(true);
       else if (currentTime > quizEndTime) setHasQuizEnded(true);
-      if (
-        sessionStorage.getItem(`selectionOptions-${teamId}-${quizId}`) !== null
-      )
+      if (localStorage.getItem(`selectionOptions-${teamId}-${quizId}`) !== null)
         setIsVerified(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

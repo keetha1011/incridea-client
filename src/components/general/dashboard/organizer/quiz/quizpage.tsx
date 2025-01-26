@@ -1,8 +1,6 @@
 "use client";
 
-//need to add quiz has ended pop up and a timer
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { SwiperClass } from "swiper/react";
 import "swiper/css";
@@ -15,14 +13,6 @@ import {
   type Question,
   type Options,
 } from "~/pages/event/[slug]/quiz/[quizId]";
-// import Prism from "prismjs";
-// import "prismjs/themes/prism-okaidia.css";
-// import "prismjs/components/prism-python";
-// import "prismjs/components/prism-java";
-// import "prismjs/components/prism-javascript";
-// import "prismjs/components/prism-c";
-// import "prismjs/components/prism-cpp";
-// import "prismjs/components/prism-markup";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
 
@@ -58,6 +48,7 @@ const QuizPage = ({
   teamId: number;
 }) => {
   const [selectedAnswers, setSelectedAnswers] = useState<Options[]>([]);
+  const selectedAnswersRef = useRef<Options[]>([]);
   const [swiper, setSwiper] = useState<SwiperClass | null>(null);
 
   const [isReviewOpen, setIsReviewOpen] = useState(false);
@@ -65,6 +56,7 @@ const QuizPage = ({
   const [alert, setAlert] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
   const [submitQuizAnswers, { loading: submitQuizLoading }] = useMutation(
     SubmitQuizAnswerDocument,
   );
@@ -72,7 +64,7 @@ const QuizPage = ({
   const router = useRouter();
 
   useEffect(() => {
-    const savedData = sessionStorage.getItem(
+    const savedData = localStorage.getItem(
       `selectionOptions-${teamId}-${quizId}`,
     );
     if (savedData) {
@@ -85,34 +77,43 @@ const QuizPage = ({
     hljs.highlightAll();
   }, [isReviewOpen]);
 
+  useEffect(() => {
+    console.log("Selected Answers", selectedAnswers);
+    selectedAnswersRef.current = selectedAnswers;
+  }, [selectedAnswers]);
+
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
   const onSubmit = async () => {
-    console.log(selectedAnswers);
     let timeTaken = 0;
     const quizStartTime = localStorage.getItem("quizStartTime");
     const quizEndTime = new Date().toISOString();
     if (quizStartTime) {
       timeTaken =
         (new Date(quizEndTime).getTime() - new Date(quizStartTime).getTime()) /
-        1000;
+        60000;
     }
-    // localStorage.removeItem("quizStartTime");
+
+    const finalSelectedAnswers = selectedAnswersRef.current;
+
     const promise = submitQuizAnswers({
       variables: {
         quizId: quizId,
-        selectedAnswers: selectedAnswers.map(({ id, questionId, value }) => ({
-          id,
-          questionId,
-          value,
-        })),
+        selectedAnswers: finalSelectedAnswers.map(
+          ({ id, questionId, value }) => ({
+            id,
+            questionId,
+            value,
+          }),
+        ),
         teamId: teamId,
         timeTaken: timeTaken,
       },
     })
       .then((res) => {
         if (res.data?.submitQuiz.__typename === "MutationSubmitQuizSuccess") {
-          sessionStorage.removeItem(`selectionOptions-${teamId}-${quizId}`);
+          localStorage.removeItem("quizStartTime");
+          localStorage.removeItem(`selectionOptions-${teamId}-${quizId}`);
           setIsSubmitDialogOpen(false);
           setShowSuccessDialog(true);
           setTimeout(() => {
@@ -181,25 +182,6 @@ const QuizPage = ({
     }
   };
 
-  const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false);
-  // const handleFinalSubmit = useCallback(() => {
-  //   console.log(selectedAnswers);
-  //   sessionStorage.removeItem("savedQuizData");
-  //   onComplete();
-  // }, [onComplete]);
-
-  // useEffect(() => {
-  //   if (quizFetchData?.getQuizById.__typename === "QueryGetQuizByIdSuccess") {
-  //     const quizData = quizFetchData.getQuizById.data;
-  //     if (quizData) {
-  //       console.log(quizData);
-  //       setQuizData(quizData);
-  //       if (quizData.startTime && quizData.endTime) {
-  //         setTimer((new Date(quizData.endTime).getTime() - Date.now()) / 1000);
-  //       }
-  //     }
-  //   }
-  // }, [quizFetchData]);
   useEffect(() => {
     if (!startTime || !endTime) return;
 
@@ -208,6 +190,7 @@ const QuizPage = ({
 
     setTimer(calculateTime());
   }, [startTime, endTime]);
+
   useEffect(() => {
     console.log("Time: ", new Date(endTime).getTime() - Date.now());
     if (new Date(endTime).getTime() - Date.now() <= 0) {
@@ -248,7 +231,7 @@ const QuizPage = ({
         (answer) => answer.questionId !== option.questionId,
       );
       updatedAnswers.push(option);
-      sessionStorage.setItem(
+      localStorage.setItem(
         `selectionOptions-${teamId}-${quizId}`,
         JSON.stringify(updatedAnswers),
       );
@@ -283,8 +266,12 @@ const QuizPage = ({
           </h1>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-2">
-              <IconStopwatch className="w-5 h-5 text-cyan-400" />
-              <span className="text-cyan-200">{formatTime(timer)}</span>
+              <IconStopwatch
+                className={`w-5 h-5 ${alert ? "text-red-500" : "text-cyan-400"}`}
+              />
+              <span className={`${alert ? "text-red-500" : "text-cyan-400"}`}>
+                {formatTime(timer)}
+              </span>
             </span>
           </div>
         </div>
@@ -697,176 +684,3 @@ const SuccessDialog = ({ isOpen }: { isOpen: boolean }) => {
     </div>
   );
 };
-
-{
-  /* <div className="mt-4">
-<button
-  className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-  onClick={handleFinalSubmit}
->
-  Submit Quiz
-</button>
-<button
-  className="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 mt-2"
-  onClick={() => setIsReviewOpen(!isReviewOpen)}
->
-  {isReviewOpen ? "Exit Review" : "Review Answers"}
-</button>
-</div>
-{isReviewOpen && (
-<div className="mt-4 bg-gray-100 p-4 rounded-md shadow-inner">
-  <h4 className="font-bold text-lg mb-2">Review Mode</h4>
-  {quizData.questions.map((question) => (
-    <div key={question.id} className="mb-4">
-      <p className="font-medium">{question.mainQuestion}</p>
-      <p className="text-sm text-gray-600">
-        Selected:{" "}
-        {selectedAnswers[question.id]
-          ? question.options.find(
-              (opt) => opt.id === selectedAnswers[question.id]
-            )?.text
-          : "Not Answered"}
-      </p>
-    </div>
-  ))}
-</div>
-)} */
-}
-// const quizData = {
-//   title: "Quiz Title",
-//   timings: "10",
-//   questions: [
-//     {
-//       id: 1,
-//       mainQuestion: "What is the capital of France?",
-//       correctAnswerId: 3,
-//       options: [
-//         { id: 1, text: "Berlin" },
-//         { id: 2, text: "Madrid" },
-//         { id: 3, text: "Paris" },
-//         { id: 4, text: "Rome" },
-//       ],
-//     },
-//     {
-//       id: 2,
-//       mainQuestion: "Which planet is known as the Red Planet?",
-//       correctAnswerId: 2,
-//       options: [
-//         { id: 1, text: "Venus" },
-//         { id: 2, text: "Mars" },
-//         { id: 3, text: "Jupiter" },
-//         { id: 4, text: "Saturn" },
-//       ],
-//     },
-//     {
-//       id: 3,
-//       mainQuestion: "Who wrote 'Hamlet'?",
-//       correctAnswerId: 1,
-//       options: [
-//         { id: 1, text: "William Shakespeare" },
-//         { id: 2, text: "Charles Dickens" },
-//         { id: 3, text: "J.K. Rowling" },
-//         { id: 4, text: "Mark Twain" },
-//       ],
-//     },
-//     {
-//       id: 4,
-//       mainQuestion: "What is the chemical symbol for water?",
-//       correctAnswerId: 4,
-//       options: [
-//         { id: 1, text: "O2" },
-//         { id: 2, text: "CO2" },
-//         { id: 3, text: "H" },
-//         { id: 4, text: "H2O" },
-//       ],
-//     },
-//     {
-//       id: 5,
-//       mainQuestion: "Which country is known as the Land of the Rising Sun?",
-//       correctAnswerId: 3,
-//       options: [
-//         { id: 1, text: "China" },
-//         { id: 2, text: "Thailand" },
-//         { id: 3, text: "Japan" },
-//         { id: 4, text: "India" },
-//       ],
-//     },
-//     {
-//       id: 6,
-//       mainQuestion: "Which element has the atomic number 1?",
-//       correctAnswerId: 1,
-//       options: [
-//         { id: 1, text: "Hydrogen" },
-//         { id: 2, text: "Helium" },
-//         { id: 3, text: "Oxygen" },
-//         { id: 4, text: "Carbon" },
-//       ],
-//     },
-//     {
-//       id: 7,
-//       mainQuestion: "Which is the largest mammal?",
-//       correctAnswerId: 4,
-//       options: [
-//         { id: 1, text: "Elephant" },
-//         { id: 2, text: "Giraffe" },
-//         { id: 3, text: "Rhino" },
-//         { id: 4, text: "Blue Whale" },
-//       ],
-//     },
-//     {
-//       id: 8,
-//       mainQuestion: "What is the smallest prime number?",
-//       correctAnswerId: 2,
-//       options: [
-//         { id: 1, text: "0" },
-//         { id: 2, text: "2" },
-//         { id: 3, text: "3" },
-//         { id: 4, text: "1" },
-//       ],
-//     },
-//     {
-//       id: 9,
-//       mainQuestion: "Who painted the Mona Lisa?",
-//       correctAnswerId: 3,
-//       options: [
-//         { id: 1, text: "Vincent van Gogh" },
-//         { id: 2, text: "Pablo Picasso" },
-//         { id: 3, text: "Leonardo da Vinci" },
-//         { id: 4, text: "Claude Monet" },
-//       ],
-//     },
-//     {
-//       id: 10,
-//       mainQuestion: "Which language is primarily spoken in Brazil?",
-//       correctAnswerId: 1,
-//       options: [
-//         { id: 1, text: "Portuguese" },
-//         { id: 2, text: "Spanish" },
-//         { id: 3, text: "French" },
-//         { id: 4, text: "English" },
-//       ],
-//     },
-//     {
-//       id: 11,
-//       mainQuestion: "Which is the fastest land animal?",
-//       correctAnswerId: 2,
-//       options: [
-//         { id: 1, text: "Lion" },
-//         { id: 2, text: "Cheetah" },
-//         { id: 3, text: "Tiger" },
-//         { id: 4, text: "Leopard" },
-//       ],
-//     },
-//     {
-//       id: 12,
-//       mainQuestion: "What is the largest planet in our Solar System?",
-//       correctAnswerId: 3,
-//       options: [
-//         { id: 1, text: "Earth" },
-//         { id: 2, text: "Venus" },
-//         { id: 3, text: "Jupiter" },
-//         { id: 4, text: "Saturn" },
-//       ],
-//     },
-//   ] as Question[],
-// };

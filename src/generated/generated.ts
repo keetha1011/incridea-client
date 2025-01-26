@@ -273,6 +273,7 @@ export type Mutation = {
   deleteRound: MutationDeleteRoundResult;
   deleteTeam: MutationDeleteTeamResult;
   deleteWinner: MutationDeleteWinnerResult;
+  endQuiz: MutationEndQuizResult;
   eventPaymentOrder: MutationEventPaymentOrderResult;
   joinTeam: MutationJoinTeamResult;
   leaveTeam: MutationLeaveTeamResult;
@@ -482,6 +483,10 @@ export type MutationDeleteTeamArgs = {
 
 export type MutationDeleteWinnerArgs = {
   id: Scalars["ID"]["input"];
+};
+
+export type MutationEndQuizArgs = {
+  quizId: Scalars["String"]["input"];
 };
 
 export type MutationEventPaymentOrderArgs = {
@@ -893,6 +898,13 @@ export type MutationDeleteWinnerResult = Error | MutationDeleteWinnerSuccess;
 export type MutationDeleteWinnerSuccess = {
   __typename?: "MutationDeleteWinnerSuccess";
   data: Winners;
+};
+
+export type MutationEndQuizResult = Error | MutationEndQuizSuccess;
+
+export type MutationEndQuizSuccess = {
+  __typename?: "MutationEndQuizSuccess";
+  data: Quiz;
 };
 
 export type MutationEventPaymentOrderResult =
@@ -1749,6 +1761,7 @@ export type QuestionsCreateInput = {
 export type Quiz = {
   __typename?: "Quiz";
   allowAttempts: Scalars["Boolean"]["output"];
+  completed: Scalars["Boolean"]["output"];
   description?: Maybe<Scalars["String"]["output"]>;
   endTime: Scalars["DateTime"]["output"];
   eventId: Scalars["ID"]["output"];
@@ -2415,6 +2428,17 @@ export type EmailVerificationMutation = {
   sendEmailVerification:
     | { __typename: "Error"; message: string }
     | { __typename: "MutationSendEmailVerificationSuccess"; data: string };
+};
+
+export type EndQuizMutationVariables = Exact<{
+  quizId?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type EndQuizMutation = {
+  __typename?: "Mutation";
+  endQuiz:
+    | { __typename: "Error"; message: string }
+    | { __typename: "MutationEndQuizSuccess" };
 };
 
 export type EventPaymentOrderMutationVariables = Exact<{
@@ -3477,6 +3501,7 @@ export type EventByOrganizerQuery = {
         points: number;
         qualifyNext: number;
         allowAttempts: boolean;
+        completed: boolean;
         questions: Array<{ __typename?: "Question"; id: string }>;
       } | null;
       criteria?: Array<{
@@ -7960,6 +7985,87 @@ export const EmailVerificationDocument = {
   EmailVerificationMutation,
   EmailVerificationMutationVariables
 >;
+export const EndQuizDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "EndQuiz" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "quizId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "endQuiz" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "quizId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "quizId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "MutationEndQuizSuccess" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<EndQuizMutation, EndQuizMutationVariables>;
 export const EventPaymentOrderDocument = {
   kind: "Document",
   definitions: [
@@ -14239,6 +14345,10 @@ export const EventByOrganizerDocument = {
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "allowAttempts" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "completed" },
                             },
                             {
                               kind: "Field",

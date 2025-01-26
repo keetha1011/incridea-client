@@ -177,7 +177,7 @@ const QuizLeaderboard = () => {
               </div>
             )}
 
-            <div className="w-1/2 bg-primary-800 rounded-t-xl overflow-clip">
+            <div className="w-1/2 bg-primary-800 rounded-t-xl overflow-clip h-screen">
               <div className="h-20 flex w-full bg-[#35436F] text-3xl items-center p-4 relative">
                 <input
                   className="h-full border-0 bg-white/20 text-xl p-2 w-full rounded-md"
@@ -198,7 +198,7 @@ const QuizLeaderboard = () => {
                 <h1>Duration</h1>
                 <h1>Promote</h1>
               </div>
-              <div className="overflow-y-scroll">
+              <div className="overflow-y-scroll h-[80%] pb-10">
                 {sortedLeaderboard
                   .filter(
                     (team) =>
@@ -218,7 +218,7 @@ const QuizLeaderboard = () => {
                           <p>{user.teamName}</p>
                           <p>{user.teamId}</p>
                           <p>{user.score}</p>
-                          <p>{user.timeTaken}</p>
+                          <p>{user.timeTaken.toFixed(3)}</p>
                           <Button
                             className={`h-8 w-8 bg-green-500 hover:bg-green-700 justify-self-center aspect-square p-1`}
                             onClick={() => {
@@ -238,7 +238,7 @@ const QuizLeaderboard = () => {
                   })}
               </div>
             </div>
-            <div className="w-1/2 bg-primary-800 rounded-t-xl overflow-clip">
+            <div className="w-1/2 bg-primary-800 rounded-t-xl overflow-clip h-screen">
               <div className="h-20 flex w-full text-3xl items-center p-4 bg-[#35436F]">
                 Selected Teams
               </div>
@@ -248,7 +248,7 @@ const QuizLeaderboard = () => {
                 <h1 className="col-span-2">Score</h1>
                 <h1 className="col-span-2">Duration</h1>
               </div>
-              <div className="overflow-y-scroll">
+              <div className="overflow-y-scroll h-[70%] pb-10">
                 {sortedLeaderboard.map((user, i) => {
                   return (
                     user.selected && (
@@ -260,7 +260,9 @@ const QuizLeaderboard = () => {
                         <h1 className="col-span-2">{user.teamName}</h1>
                         <h1 className="col-span-2">{user.teamId}</h1>
                         <h1 className="col-span-2">{user.score}</h1>
-                        <h1 className="col-span-2">{user.timeTaken}</h1>
+                        <h1 className="col-span-2">
+                          {user.timeTaken.toFixed(3)}
+                        </h1>
                         <Button
                           className="bg-red-500 right-0 mx-[5%] aspect-square p-1 hover:bg-red-700"
                           onClick={() => {

@@ -35,6 +35,7 @@ import {
   DialogContent,
 } from "~/components/ui/dialog";
 import { EyeIcon } from "lucide-react";
+import EndQuizModal from "./endQuizModal";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -70,6 +71,12 @@ const RoundsSidebar: FC<{
 
   const [notifyParticipants, { loading: notifyLoading }] = useMutation(
     NotifyParticipantsDocument,
+    {
+      refetchQueries: ["EventByOrganizer"],
+      awaitRefetchQueries: true,
+    },
+  );
+
   const [updateQuizStatus, { loading: updateQuizStatusLoading }] = useMutation(
     UpdateQuizStatusDocument,
     {
@@ -118,6 +125,8 @@ const RoundsSidebar: FC<{
     });
 
     await createToast(promise, "Sending notifications...");
+  };
+
   const handlePublishQuiz = async (quizId: string, allowAttempts: boolean) => {
     const promise = updateQuizStatus({
       variables: {
@@ -307,138 +316,143 @@ const RoundsSidebar: FC<{
                     <>
                       {round.quiz ? (
                         <div className="mt-2">
-                          {!round.quiz.allowAttempts ? (
-                            <div className="flex items-center mr-1 justify-between">
-                              <Button
-                                intent={"dark"}
-                                className="w-auto rounded-md"
-                              >
-                                <Link
-                                  href={`./organizer/quiz/${eventId}-${selectedRound}`}
-                                >
-                                  Edit Quiz
-                                </Link>
-                              </Button>
-                              <Link
-                                href={`./organizer/quiz/${eventId}-${selectedRound}/preview`}
-                              >
-                                <EyeIcon />
-                              </Link>
-                            </div>
-                          ) : (
-                            <Dialog>
-                              <DialogTrigger>
+                          {!round.quiz.completed &&
+                            (!round.quiz.allowAttempts ? (
+                              <div className="flex items-center mr-1 justify-between">
                                 <Button
                                   intent={"dark"}
                                   className="w-auto rounded-md"
                                 >
-                                  <BsQrCodeScan className="text-lg" />
-                                  QR Code
+                                  <Link
+                                    href={`./organizer/quiz/${eventId}-${selectedRound}`}
+                                  >
+                                    Edit Quiz
+                                  </Link>
                                 </Button>
-                              </DialogTrigger>
-                              <DialogContent className="w-[20%]">
-                                <DialogHeader>
-                                  <h1 className="text-3xl text-center font-bold">
-                                    {round.quiz.name}
-                                  </h1>
-                                </DialogHeader>
-                                <div className="flex flex-col justify-center items-center space-y-4">
-                                  <QRCodeSVG
-                                    value={`http://localhost:3000/event/${round.quiz.name}-${selectedRound}/quiz/${round.quiz.id}`}
-                                    size={200}
-                                  />
-                                  <div className="flex">
-                                    <Button
-                                      intent="secondary"
-                                      className="rounded-md bg-black"
-                                      onClick={() =>
-                                        handleCopyURL(
-                                          `http://localhost:3000/event/${round.quiz?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
-                                        )
-                                      }
-                                    >
-                                      Copy URL to clipboard
-                                      <IoCopy size={25} />
-                                    </Button>
-                                  </div>
-                                </div>
-                              </DialogContent>
-                            </Dialog>
-                          )}
-                          <HoverCard>
-                            <HoverCardTrigger>
-                              <Button
-                                intent={
-                                  round.quiz.allowAttempts
-                                    ? "danger"
-                                    : "success"
-                                }
-                                className="w-auto mt-2 rounded-md"
-                                onClick={() =>
-                                  handlePublishQuiz(
-                                    round.quiz?.id ?? "",
-                                    !round.quiz?.allowAttempts,
-                                  )
-                                }
-                                disabled={updateQuizStatusLoading}
-                              >
-                                {round.quiz.allowAttempts
-                                  ? "Unpublish"
-                                  : "Publish"}{" "}
-                                Quiz
-                              </Button>
-                            </HoverCardTrigger>
-                            <HoverCardContent className="z-10 lg:bottom-0 bottom-10 lg:right-20 sm:-right-10 -right-20 absolute">
-                              <div className="sm:text-lg text-sm">
-                                <p className="text-center font-semibold sm:text-xl text-lg">
-                                  {round.quiz.name}
-                                </p>
-                                <p>{round.quiz.description}</p>
-                                <p>
-                                  <span className="font-semibold">Date: </span>
-                                  {new Date(round.date ?? "")?.toDateString()}
-                                </p>
-                                <p>
-                                  <span className="font-semibold">
-                                    Start Time:{" "}
-                                  </span>
-                                  {new Date(
-                                    round.quiz.startTime,
-                                  ).toLocaleTimeString()}
-                                </p>
-                                <p>
-                                  <span className="font-semibold">
-                                    End Time:{" "}
-                                  </span>
-                                  {new Date(
-                                    round.quiz.endTime,
-                                  ).toLocaleTimeString()}
-                                </p>
-                                <p>
-                                  <span className="font-semibold">
-                                    Points awarded:{" "}
-                                  </span>
-                                  {round.quiz.points}
-                                </p>
-                                <p>
-                                  <span className="font-semibold">
-                                    Qualifying Teams:{" "}
-                                  </span>
-                                  {round.quiz.qualifyNext}
-                                </p>
-                                <p>
-                                  <span className="font-semibold">
-                                    {round.quiz.allowAttempts
-                                      ? "Published"
-                                      : "Unpublished"}{" "}
-                                    questions:{" "}
-                                  </span>
-                                  {round.quiz.questions.length}
-                                </p>
+                                <Link
+                                  href={`./organizer/quiz/${eventId}-${selectedRound}/preview`}
+                                >
+                                  <EyeIcon />
+                                </Link>
                               </div>
-                            </HoverCardContent>
-                          </HoverCard>
-                          {round.quiz.allowAttempts && (
+                            ) : (
+                              <Dialog>
+                                <DialogTrigger>
+                                  <Button
+                                    intent={"dark"}
+                                    className="w-auto rounded-md"
+                                  >
+                                    <BsQrCodeScan className="text-lg" />
+                                    QR Code
+                                  </Button>
+                                </DialogTrigger>
+                                <DialogContent className="w-[20%]">
+                                  <DialogHeader>
+                                    <h1 className="text-3xl text-center font-bold">
+                                      {round.quiz.name}
+                                    </h1>
+                                  </DialogHeader>
+                                  <div className="flex flex-col justify-center items-center space-y-4">
+                                    <QRCodeSVG
+                                      value={`http://localhost:3000/event/${round.quiz.name}-${selectedRound}/quiz/${round.quiz.id}`}
+                                      size={200}
+                                    />
+                                    <div className="flex">
+                                      <Button
+                                        intent="secondary"
+                                        className="rounded-md bg-black"
+                                        onClick={() =>
+                                          handleCopyURL(
+                                            `http://localhost:3000/event/${round.quiz?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
+                                          )
+                                        }
+                                      >
+                                        Copy URL to clipboard
+                                        <IoCopy size={25} />
+                                      </Button>
+                                    </div>
+                                  </div>
+                                </DialogContent>
+                              </Dialog>
+                            ))}
+                          {!round.quiz.completed && (
+                            <HoverCard>
+                              <HoverCardTrigger>
+                                <Button
+                                  intent={
+                                    round.quiz.allowAttempts
+                                      ? "danger"
+                                      : "success"
+                                  }
+                                  className="w-auto mt-2 rounded-md"
+                                  onClick={() =>
+                                    handlePublishQuiz(
+                                      round.quiz?.id ?? "",
+                                      !round.quiz?.allowAttempts,
+                                    )
+                                  }
+                                  disabled={updateQuizStatusLoading}
+                                >
+                                  {round.quiz.allowAttempts
+                                    ? "Unpublish "
+                                    : "Publish "}
+                                  Quiz
+                                </Button>
+                              </HoverCardTrigger>
+                              <HoverCardContent className="z-10 lg:bottom-0 bottom-10 lg:right-20 sm:-right-10 -right-20 absolute">
+                                <div className="sm:text-lg text-sm">
+                                  <p className="text-center font-semibold sm:text-xl text-lg">
+                                    {round.quiz.name}
+                                  </p>
+                                  <p>{round.quiz.description}</p>
+                                  <p>
+                                    <span className="font-semibold">
+                                      Date:{" "}
+                                    </span>
+                                    {new Date(round.date ?? "")?.toDateString()}
+                                  </p>
+                                  <p>
+                                    <span className="font-semibold">
+                                      Start Time:{" "}
+                                    </span>
+                                    {new Date(
+                                      round.quiz.startTime,
+                                    ).toLocaleTimeString()}
+                                  </p>
+                                  <p>
+                                    <span className="font-semibold">
+                                      End Time:{" "}
+                                    </span>
+                                    {new Date(
+                                      round.quiz.endTime,
+                                    ).toLocaleTimeString()}
+                                  </p>
+                                  <p>
+                                    <span className="font-semibold">
+                                      Points awarded:{" "}
+                                    </span>
+                                    {round.quiz.points}
+                                  </p>
+                                  <p>
+                                    <span className="font-semibold">
+                                      Qualifying Teams:{" "}
+                                    </span>
+                                    {round.quiz.qualifyNext}
+                                  </p>
+                                  <p>
+                                    <span className="font-semibold">
+                                      {round.quiz.allowAttempts
+                                        ? "Published"
+                                        : "Unpublished"}{" "}
+                                      questions:{" "}
+                                    </span>
+                                    {round.quiz.questions.length}
+                                  </p>
+                                </div>
+                              </HoverCardContent>
+                            </HoverCard>
+                          )}
+                          {round.quiz.completed && (
                             <Button
                               intent={"dark"}
                               className="w-auto rounded-md mt-2"
@@ -450,11 +464,18 @@ const RoundsSidebar: FC<{
                               </Link>
                             </Button>
                           )}
+                          {round.quiz.allowAttempts &&
+                            !round.quiz.completed && (
+                              <EndQuizModal
+                                quizName={round.quiz.name}
+                                quizId={round.quiz.id}
+                              />
+                            )}
                         </div>
                       ) : (
                         <p className="text-gray-400">No Quiz added yet.</p>
                       )}
-                      {!round.quiz?.allowAttempts && (
+                      {!round.quiz?.allowAttempts && !round.quiz?.completed && (
                         <CreateQuizModal
                           eventId={eventId}
                           roundNo={selectedRound}
