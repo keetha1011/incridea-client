@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import LoginCard from "~/components/login/card";
 import EasterBomb from "~/components/login/easterBomb";
@@ -26,7 +26,7 @@ const CARD_TOP_STYLE = {
 
 const CARD_NEUTRAL_STYLE = {
   opacity: "100%",
-  transitionDuration: "2000ms",
+  transitionDuration: "3000ms",
   pointerEvents: "auto" as React.CSSProperties["pointerEvents"],
 };
 
@@ -121,6 +121,7 @@ const SignIn: NextPage = () => {
   };
 
   const [gearDistance, setGearDistance] = useState<number>(0);
+  const formRef = useRef<HTMLDivElement>(null);
 
   // setRadius1(Math.max(400, window.screen.width * 0.6));
   // setRadius2(window.screen.width * 0.35);
@@ -203,7 +204,7 @@ const SignIn: NextPage = () => {
       />
 
       <div
-        className={`relative flex min-h-[93vh] h-screen flex-col justify-between [perspective:500px] [transform-style:preserve-3d] overflow-hidden`}
+        className={`relative flex min-h-[73vh] h-screen flex-col justify-between [perspective:500px] [transform-style:preserve-3d] overflow-hidden`}
       >
         {/* <LoginPortal isTop={true} /> */}
 
@@ -255,7 +256,7 @@ const SignIn: NextPage = () => {
               left: "42%",
               bottom: bottom1,
               rotate: "18deg",
-              transform: `rotate(${rotationAngle1}deg)`, // Use dynamic rotation angle
+              transform: `rotate(${rotationAngle1}deg)`,
               transition: "transform 2s ease-in-out",
               // animation:
               //   secondsAnimation !== "0s"
@@ -267,7 +268,7 @@ const SignIn: NextPage = () => {
           >
             <img src="assets/svg/geardone2.svg" alt="" className="size-full" />
           </div>
-          <style jsx global>{`
+          {/* <style jsx global>{`
             @keyframes rotateClockwise {
               0% {
                 transform: rotate(0deg);
@@ -284,19 +285,15 @@ const SignIn: NextPage = () => {
                 transform: rotate(-360deg);
               }
             }
-          `}</style>
+          `}</style> */}
 
           <div
             style={{
               top: "18%",
               width: radius2,
               height: radius2,
-              transform: `rotate(${rotationAngle2}deg)`, // Use dynamic rotation angle
+              transform: `rotate(${rotationAngle2}deg)`,
               transition: "transform 2s ease-in-out",
-              // animation:
-              //   secondsAnimation !== "0s"
-              //     ? `rotateAntiClock ${secondsAnimation} linear infinite`
-              //     : "rotateAntiClock 20000s linear infinite",
             }}
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
