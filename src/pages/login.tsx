@@ -83,7 +83,7 @@ const SignIn: NextPage = () => {
   ) => void = (newForm) => {
     if (whichForm === newForm || transitioning) return;
 
-    const audio1 = new Audio("/assets/gearsounds.mp3");
+    const audio1 = new Audio("/assets/audio/gearsounds.mp3");
     audio1
       .play()
       .then(() => {
@@ -197,7 +197,7 @@ const SignIn: NextPage = () => {
       <Image
         fill={true}
         className="mt-16 object-cover blur-[3px]"
-        src={`/assets/svg/copperbg.jpg`}
+        src={`/assets/jpeg/copperbg.jpg`}
         alt={"loginBG"}
         quality={100}
         priority

@@ -89,7 +89,7 @@ const Reset: NextPage = () => {
       <Image
         fill={true}
         className="mt-16 object-cover"
-        src={`/assets/svg/copperbg.jpg`}
+        src={`/assets/jpeg/copperbg.jpg`}
         alt={"loginBG"}
         quality={100}
         priority
