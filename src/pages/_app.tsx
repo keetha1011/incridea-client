@@ -57,17 +57,17 @@ export const gilroy = LocalFont({
   display: "swap",
 });
 
-export const BlackChancery = LocalFont({
-  src: "../font/BlackChancery.ttf",
-  variable: "--font-BlackChancery",
-});
-
 export const pressStart = Press_Start_2P({
   weight: ["400"],
   subsets: ["latin"],
   style: ["normal"],
   display: "swap",
   variable: "--font-Press_Start_2P",
+});
+
+export const BlackChancery = LocalFont({
+  src: "../font/BlackChancery.ttf",
+  variable: "--font-BlackChancery",
 });
 
 type PageProps = {
@@ -124,13 +124,20 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <div className={cn("min-h-screen")}>
+        <Loader />
+        <div
+          className={cn(
+            "min-h-screen",
+            // VikingHell.variable,
+            // pressStart.variable,
+            // garetFont.variable,
+          )}
+        >
           <Component {...pageProps} />
+          <Toaster />
         </div>
       </ApolloProvider>
     );
-  }
-
   return (
     <>
       <ApolloProvider client={apolloClient}>
@@ -138,7 +145,7 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        {/* <Toaster />
+        <Toaster />
         <Loader />
         <div
           className={cn(
@@ -160,7 +167,7 @@ export default function App({
             </motion.div>
           </AnimatePresence>
           <Footer />
-        </div> */}
+        </div>
       </ApolloProvider>
       <Analytics />
     </>

@@ -95,9 +95,9 @@ const QuizPage = ({
     if (quizStartTime) {
       timeTaken =
         (new Date(quizEndTime).getTime() - new Date(quizStartTime).getTime()) /
-        60000;
+        1000;
     }
-    localStorage.removeItem("quizStartTime");
+    // localStorage.removeItem("quizStartTime");
     const promise = submitQuizAnswers({
       variables: {
         quizId: quizId,
