@@ -1,0 +1,3 @@
+mutation SendWinnerWhatsAppNotification($eventId: ID!) {
+  sendWinnerWhatsAppNotification(eventId: $eventId)
+}
