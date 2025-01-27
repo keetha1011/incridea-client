@@ -37,14 +37,10 @@ export enum AccommodationBookingStatus {
 
 export type AllSubmissions = {
   __typename?: "AllSubmissions";
-  fitbAns?: Maybe<Scalars["String"]["output"]>;
   isRight?: Maybe<Scalars["Boolean"]["output"]>;
-  laAns?: Maybe<Scalars["String"]["output"]>;
-  longAnsIsRight?: Maybe<Scalars["String"]["output"]>;
   mcqAns?: Maybe<Scalars["String"]["output"]>;
   options?: Maybe<Array<Option>>;
   qId: Scalars["String"]["output"];
-  qType: Scalars["String"]["output"];
   question: Scalars["String"]["output"];
   userId: Scalars["String"]["output"];
 };
@@ -207,18 +203,6 @@ export type EventUpdateInput = {
   venue?: InputMaybe<Scalars["String"]["input"]>;
 };
 
-export type FitbSubmission = {
-  __typename?: "FITBSubmission";
-  OptionId: Scalars["ID"]["output"];
-  createdAt: Scalars["DateTime"]["output"];
-  id: Scalars["ID"]["output"];
-  options: Options;
-  team: Team;
-  teamId: Scalars["ID"]["output"];
-  updatedAt: Scalars["DateTime"]["output"];
-  value: Scalars["String"]["output"];
-};
-
 export enum Gender {
   Female = "FEMALE",
   Male = "MALE",
@@ -248,41 +232,11 @@ export type JudgeJuryView = {
   judgeName: Scalars["String"]["output"];
 };
 
-export enum LaAnswerStatus {
-  False = "FALSE",
-  Pending = "PENDING",
-  True = "TRUE",
-}
-
-export type LaSubmission = {
-  __typename?: "LASubmission";
-  Question: Question;
-  createdAt: Scalars["DateTime"]["output"];
-  id: Scalars["ID"]["output"];
-  isRight: LaAnswerStatus;
-  questionId: Scalars["ID"]["output"];
-  team: Team;
-  teamId: Scalars["ID"]["output"];
-  updatedAt: Scalars["DateTime"]["output"];
-  value: Scalars["String"]["output"];
-};
-
 export type Level = {
   __typename?: "Level";
   id: Scalars["ID"]["output"];
   point: Scalars["Int"]["output"];
   xp: Array<Xp>;
-};
-
-export type McqSubmission = {
-  __typename?: "MCQSubmission";
-  OptionId: Scalars["ID"]["output"];
-  createdAt: Scalars["DateTime"]["output"];
-  id: Scalars["ID"]["output"];
-  options: Options;
-  team: Team;
-  teamId: Scalars["ID"]["output"];
-  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export type Mutation = {
@@ -330,6 +284,7 @@ export type Mutation = {
   organizerMarkAttendance: MutationOrganizerMarkAttendanceResult;
   organizerMarkAttendanceSolo: MutationOrganizerMarkAttendanceSoloResult;
   organizerRegisterSolo: MutationOrganizerRegisterSoloResult;
+  promoteQuizParticipants: MutationPromoteQuizParticipantsResult;
   promoteToNextRound: MutationPromoteToNextRoundResult;
   publishEvent: MutationPublishEventResult;
   /** Refreshes the access token */
@@ -344,9 +299,11 @@ export type Mutation = {
   sendEmailVerification: MutationSendEmailVerificationResult;
   sendPasswordResetEmail: MutationSendPasswordResetEmailResult;
   signUp: MutationSignUpResult;
+  submitQuiz: MutationSubmitQuizResult;
   updateCard: MutationUpdateCardResult;
   updateEvent: MutationUpdateEventResult;
   updateProfileImage: MutationUpdateProfileImageResult;
+  updateQuiz: MutationUpdateQuizResult;
   updateQuizStatus: MutationUpdateQuizStatusResult;
   updateStatus: MutationUpdateStatusResult;
   useReferralCode: MutationUseReferralCodeResult;
@@ -447,20 +404,23 @@ export type MutationCreatePaymentOrderArgs = {
 };
 
 export type MutationCreateQuestionArgs = {
+  description?: InputMaybe<Scalars["String"]["input"]>;
   image?: InputMaybe<Scalars["String"]["input"]>;
-  negativePoint: Scalars["Int"]["input"];
-  options?: InputMaybe<Scalars["String"]["input"]>;
-  points: Scalars["Int"]["input"];
+  isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
+  options?: InputMaybe<Array<OptionsCreateInput2>>;
   question: Scalars["String"]["input"];
   quizId: Scalars["String"]["input"];
-  type: Scalars["String"]["input"];
+  type?: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type MutationCreateQuizArgs = {
-  description: Scalars["String"]["input"];
+  description?: InputMaybe<Scalars["String"]["input"]>;
   endTime: Scalars["String"]["input"];
   eventId: Scalars["String"]["input"];
   name: Scalars["String"]["input"];
+  password: Scalars["String"]["input"];
+  points: Scalars["Int"]["input"];
+  qualifyNext: Scalars["Int"]["input"];
   roundId: Scalars["String"]["input"];
   startTime: Scalars["String"]["input"];
 };
@@ -573,6 +533,13 @@ export type MutationOrganizerRegisterSoloArgs = {
   userId: Scalars["ID"]["input"];
 };
 
+export type MutationPromoteQuizParticipantsArgs = {
+  eventId: Scalars["Int"]["input"];
+  quizId: Scalars["String"]["input"];
+  roundId: Scalars["Int"]["input"];
+  teams: Array<Scalars["Int"]["input"]>;
+};
+
 export type MutationPromoteToNextRoundArgs = {
   roundNo: Scalars["ID"]["input"];
   selected?: Scalars["Boolean"]["input"];
@@ -632,6 +599,13 @@ export type MutationSignUpArgs = {
   data: UserCreateInput;
 };
 
+export type MutationSubmitQuizArgs = {
+  quizId: Scalars["String"]["input"];
+  selectedAnswers: Array<SelectedOptions>;
+  teamId: Scalars["Int"]["input"];
+  timeTaken: Scalars["Float"]["input"];
+};
+
 export type MutationUpdateCardArgs = {
   clue: Scalars["String"]["input"];
   day: DayType;
@@ -647,9 +621,13 @@ export type MutationUpdateProfileImageArgs = {
   imageURL: Scalars["String"]["input"];
 };
 
+export type MutationUpdateQuizArgs = {
+  questions: Array<QuestionsCreateInput>;
+  quizId: Scalars["String"]["input"];
+};
+
 export type MutationUpdateQuizStatusArgs = {
   allowAttempts: Scalars["Boolean"]["input"];
-  password: Scalars["String"]["input"];
   quizId: Scalars["String"]["input"];
 };
 
@@ -999,6 +977,15 @@ export type MutationOrganizerRegisterSoloSuccess = {
   data: Team;
 };
 
+export type MutationPromoteQuizParticipantsResult =
+  | Error
+  | MutationPromoteQuizParticipantsSuccess;
+
+export type MutationPromoteQuizParticipantsSuccess = {
+  __typename?: "MutationPromoteQuizParticipantsSuccess";
+  data: Quiz;
+};
+
 export type MutationPromoteToNextRoundResult =
   | Error
   | MutationPromoteToNextRoundSuccess;
@@ -1106,6 +1093,13 @@ export type MutationSignUpSuccess = {
   data: User;
 };
 
+export type MutationSubmitQuizResult = Error | MutationSubmitQuizSuccess;
+
+export type MutationSubmitQuizSuccess = {
+  __typename?: "MutationSubmitQuizSuccess";
+  data: QuizScore;
+};
+
 export type MutationUpdateCardResult = Error | MutationUpdateCardSuccess;
 
 export type MutationUpdateCardSuccess = {
@@ -1129,12 +1123,19 @@ export type MutationUpdateProfileImageSuccess = {
   data: User;
 };
 
+export type MutationUpdateQuizResult = Error | MutationUpdateQuizSuccess;
+
 export type MutationUpdateQuizStatusResult =
   | Error
   | MutationUpdateQuizStatusSuccess;
 
 export type MutationUpdateQuizStatusSuccess = {
   __typename?: "MutationUpdateQuizStatusSuccess";
+  data: Quiz;
+};
+
+export type MutationUpdateQuizSuccess = {
+  __typename?: "MutationUpdateQuizSuccess";
   data: Quiz;
 };
 
@@ -1169,13 +1170,22 @@ export type Option = {
 
 export type Options = {
   __typename?: "Options";
-  FITBSubmissions: Array<FitbSubmission>;
-  MCQSubmissions: Array<McqSubmission>;
+  QuizSubmissions: Array<QuizSubmission>;
   id: Scalars["ID"]["output"];
   isAnswer: Scalars["Boolean"]["output"];
   question: Question;
   questionId: Scalars["ID"]["output"];
   value: Scalars["String"]["output"];
+};
+
+export type OptionsCreateInput = {
+  isAnswer: Scalars["Boolean"]["input"];
+  value: Scalars["String"]["input"];
+};
+
+export type OptionsCreateInput2 = {
+  isAnswer: Scalars["Boolean"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export enum OrderType {
@@ -1232,6 +1242,7 @@ export type Query = {
   accommodationRequestsByUser: Array<UserInHotel>;
   accommodationRequestsByUserId: Array<UserInHotel>;
   allWinners: QueryAllWinnersResult;
+  attemptQuiz: QueryAttemptQuizResult;
   colleges: Array<College>;
   completedEvents: QueryCompletedEventsResult;
   eventById: Event;
@@ -1248,7 +1259,9 @@ export type Query = {
   getCards: QueryGetCardsResult;
   getComment: QueryGetCommentResult;
   getLevelXp: QueryGetLevelXpResult;
-  getQuizByEvent: QueryGetQuizByEventResult;
+  getQuizByEventRound: QueryGetQuizByEventRoundResult;
+  getQuizById: QueryGetQuizByIdResult;
+  getQuizScores: QueryGetQuizScoresResult;
   getRoundStatus: QueryGetRoundStatusResult;
   getScore: QueryGetScoreResult;
   getScoreSheetJuryView: QueryGetScoreSheetJuryViewResult;
@@ -1272,6 +1285,7 @@ export type Query = {
   totalRegistrations: Scalars["Int"]["output"];
   userById: QueryUserByIdResult;
   users: QueryUsersConnection;
+  verifyQuizPassword: QueryVerifyQuizPasswordResult;
   winnersByEvent: QueryWinnersByEventResult;
 };
 
@@ -1285,6 +1299,10 @@ export type QueryAccommodationRequestByHotelArgs = {
 
 export type QueryAccommodationRequestsByUserIdArgs = {
   userId: Scalars["ID"]["input"];
+};
+
+export type QueryAttemptQuizArgs = {
+  quizId: Scalars["ID"]["input"];
 };
 
 export type QueryEventByIdArgs = {
@@ -1338,8 +1356,17 @@ export type QueryGetLevelXpArgs = {
   levelId: Scalars["ID"]["input"];
 };
 
-export type QueryGetQuizByEventArgs = {
+export type QueryGetQuizByEventRoundArgs = {
   eventId: Scalars["Int"]["input"];
+  roundId: Scalars["Int"]["input"];
+};
+
+export type QueryGetQuizByIdArgs = {
+  quizId: Scalars["String"]["input"];
+};
+
+export type QueryGetQuizScoresArgs = {
+  quizId: Scalars["String"]["input"];
 };
 
 export type QueryGetRoundStatusArgs = {
@@ -1420,6 +1447,11 @@ export type QueryUsersArgs = {
   last?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
+export type QueryVerifyQuizPasswordArgs = {
+  password: Scalars["String"]["input"];
+  quizId: Scalars["String"]["input"];
+};
+
 export type QueryWinnersByEventArgs = {
   eventId: Scalars["ID"]["input"];
 };
@@ -1438,6 +1470,13 @@ export type QueryAllWinnersResult = Error | QueryAllWinnersSuccess;
 export type QueryAllWinnersSuccess = {
   __typename?: "QueryAllWinnersSuccess";
   data: Array<Winners>;
+};
+
+export type QueryAttemptQuizResult = Error | QueryAttemptQuizSuccess;
+
+export type QueryAttemptQuizSuccess = {
+  __typename?: "QueryAttemptQuizSuccess";
+  data: Team;
 };
 
 export type QueryCompletedEventsResult = Error | QueryCompletedEventsSuccess;
@@ -1505,11 +1544,27 @@ export type QueryGetLevelXpSuccess = {
   data: Level;
 };
 
-export type QueryGetQuizByEventResult = Error | QueryGetQuizByEventSuccess;
+export type QueryGetQuizByEventRoundResult =
+  | Error
+  | QueryGetQuizByEventRoundSuccess;
 
-export type QueryGetQuizByEventSuccess = {
-  __typename?: "QueryGetQuizByEventSuccess";
-  data: Array<Quiz>;
+export type QueryGetQuizByEventRoundSuccess = {
+  __typename?: "QueryGetQuizByEventRoundSuccess";
+  data: Quiz;
+};
+
+export type QueryGetQuizByIdResult = Error | QueryGetQuizByIdSuccess;
+
+export type QueryGetQuizByIdSuccess = {
+  __typename?: "QueryGetQuizByIdSuccess";
+  data: Quiz;
+};
+
+export type QueryGetQuizScoresResult = Error | QueryGetQuizScoresSuccess;
+
+export type QueryGetQuizScoresSuccess = {
+  __typename?: "QueryGetQuizScoresSuccess";
+  data: Array<QuizScore>;
 };
 
 export type QueryGetRoundStatusResult = Error | QueryGetRoundStatusSuccess;
@@ -1640,6 +1695,15 @@ export type QueryUsersConnectionEdge = {
   node: User;
 };
 
+export type QueryVerifyQuizPasswordResult =
+  | Error
+  | QueryVerifyQuizPasswordSuccess;
+
+export type QueryVerifyQuizPasswordSuccess = {
+  __typename?: "QueryVerifyQuizPasswordSuccess";
+  data: Quiz;
+};
+
 export type QueryWinnersByEventResult = Error | QueryWinnersByEventSuccess;
 
 export type QueryWinnersByEventSuccess = {
@@ -1649,35 +1713,67 @@ export type QueryWinnersByEventSuccess = {
 
 export type Question = {
   __typename?: "Question";
-  LASubmissions: Array<LaSubmission>;
+  createdAt: Scalars["DateTime"]["output"];
+  description?: Maybe<Scalars["String"]["output"]>;
   id: Scalars["ID"]["output"];
   image?: Maybe<Scalars["String"]["output"]>;
-  negativePoint: Scalars["Int"]["output"];
+  isCode: Scalars["Boolean"]["output"];
   options: Array<Options>;
-  point: Scalars["Int"]["output"];
   question: Scalars["String"]["output"];
-  questionType: QuestionType;
   quiz: Quiz;
   quizId: Scalars["ID"]["output"];
 };
 
-export enum QuestionType {
-  Fitb = "FITB",
-  La = "LA",
-  Mcq = "MCQ",
-}
+export type QuestionsCreateInput = {
+  createdAt?: InputMaybe<Scalars["String"]["input"]>;
+  description?: InputMaybe<Scalars["String"]["input"]>;
+  id?: InputMaybe<Scalars["String"]["input"]>;
+  image?: InputMaybe<Scalars["String"]["input"]>;
+  isCode?: InputMaybe<Scalars["Boolean"]["input"]>;
+  mode?: InputMaybe<Scalars["String"]["input"]>;
+  options?: InputMaybe<Array<OptionsCreateInput>>;
+  question: Scalars["String"]["input"];
+};
 
 export type Quiz = {
   __typename?: "Quiz";
+  allowAttempts: Scalars["Boolean"]["output"];
   description?: Maybe<Scalars["String"]["output"]>;
   endTime: Scalars["DateTime"]["output"];
   eventId: Scalars["ID"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
+  password: Scalars["String"]["output"];
+  points: Scalars["Int"]["output"];
+  qualifyNext: Scalars["Int"]["output"];
   questions: Array<Question>;
+  quizScores: Array<QuizScore>;
   round: Round;
   roundNo: Scalars["Int"]["output"];
   startTime: Scalars["DateTime"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
+};
+
+export type QuizScore = {
+  __typename?: "QuizScore";
+  id: Scalars["ID"]["output"];
+  quiz: Quiz;
+  quizId: Scalars["String"]["output"];
+  score: Scalars["Int"]["output"];
+  team: Team;
+  teamId: Scalars["Int"]["output"];
+  timeTaken: Scalars["Float"]["output"];
+};
+
+export type QuizSubmission = {
+  __typename?: "QuizSubmission";
+  OptionId: Scalars["ID"]["output"];
+  createdAt: Scalars["DateTime"]["output"];
+  id: Scalars["ID"]["output"];
+  options: Options;
+  team: Team;
+  teamId: Scalars["ID"]["output"];
+  updatedAt: Scalars["DateTime"]["output"];
 };
 
 export enum Role {
@@ -1698,6 +1794,7 @@ export type Round = {
   event: Event;
   eventId: Scalars["ID"]["output"];
   judges: Array<Judge>;
+  quiz?: Maybe<Quiz>;
   roundNo: Scalars["Int"]["output"];
   selectStatus: Scalars["Boolean"]["output"];
 };
@@ -1718,6 +1815,12 @@ export type Scores = {
   score: Scalars["String"]["output"];
   team: Team;
   teamId: Scalars["ID"]["output"];
+};
+
+export type SelectedOptions = {
+  id: Scalars["String"]["input"];
+  questionId: Scalars["String"]["input"];
+  value: Scalars["String"]["input"];
 };
 
 export enum Status {

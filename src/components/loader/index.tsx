@@ -1,164 +1,153 @@
+import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
-import { useEffect, useState, type FC } from "react";
-
-import { env } from "~/env";
-
+import Particles from "react-tsparticles";
+import gsap from "gsap";
 import styles from "./loader.module.css";
 
-const Loader: FC = () => {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState(true);
+const LoadingScreen = () => {
+  const containerRef = useRef(null);
+  const logoRef = useRef(null);
+  const hourglassRef = useRef(null);
 
   useEffect(() => {
-    function startTimer() {
-      setTimeout(() => {
-        setIsLoading(false);
-        setTimeout(() => {
-          document.body.classList.remove("remove-scrolling");
-        }, 10);
-      }, 3000);
-    }
+    const container = containerRef.current;
+    const logo = logoRef.current;
+    const hourglass = hourglassRef.current;
 
-    window.scrollTo(0, 0);
-    router.events.on("routeChangeStart", () => {
-      window.scrollTo(0, 0);
-      document.body.classList.add("remove-scrolling");
-      setIsLoading(true);
-      setOpen(true);
+    // Fade in animation for the container
+    gsap.fromTo(
+      container,
+      { opacity: 0 },
+      { 
+        opacity: 1, 
+        duration: 0.4,
+        ease: "power2.inOut"
+      }
+    );
+
+
+    gsap.to(logo, {
+      scale: 1.1,
+      duration: 1.5,
+      repeat: -1,
+      yoyo: true,
+      ease: "power1.inOut",
     });
 
-    router.events.on("routeChangeComplete", () => {
-      startTimer();
-    });
-
-    router.events.on("routeChangeError", () => {
-      startTimer();
-    });
 
     return () => {
-      setIsLoading(false);
-      setOpen(false);
+      gsap.killTweensOf([container, logo, hourglass]);
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const particlesOptions = {
+    background: {
+      color: {
+        value: "#00000",
+      },
+    },
+    fpsLimit: 60,
+    interactivity: {
+      detectsOn: "canvas" as const,
+      events: {
+        onClick: {
+          enable: true,
+          mode: "push",
+        },
+        onHover: {
+          enable: true,
+          mode: "repulse",
+        },
+        resize: true,
+      },
+      modes: {
+        push: {
+          quantity: 4,
+        },
+        repulse: {
+          distance: 200,
+          duration: 2,
+        },
+      },
+    },
+    particles: {
+      number: {
+        value: 100,
+        density: {
+          enable: true,
+          value_area: 800,
+        },
+      },
+      color: {
+        value: "#ffffff",
+      },
+      shape: {
+        type: "circle",
+      },
+      opacity: {
+        value: 0.5,
+        random: false,
+        anim: {
+          enable: false,
+        },
+      },
+      size: {
+        value: 5,
+        random: true,
+        anim: {
+          enable: false,
+        },
+      },
+      move: {
+        enable: true,
+        speed: 3,
+        direction: "none" as const,
+        random: false,
+        straight: false,
+        out_mode: "out" as const,
+        bounce: false,
+      },
+    },
+    detectRetina: true,
+  };
+
   return (
-    <div className="relative h-full w-full">
-      {isLoading ? (
-        <div
-          className={`w-fh-full no-scrollbar absolute z-[9999] h-full overflow-hidden`}
-        >
-          <div
-            className={`fixed h-screen w-screen bg-primary-300 ${styles.fadeInBg}`}
-          >
-            <Image
-              className={`${
-                open ? styles.mountbl : styles.unmountbl
-              } absolute h-screen w-full object-cover object-center`}
-              src={`/assets/loader/cloudbl.png`}
-              alt="cloud-bg"
-              height={1080}
-              width={1920}
-            />
-            <Image
-              className={`${
-                open ? styles.mounttr : styles.unmounttr
-              } absolute h-screen w-full object-cover object-center`}
-              src={`/assets/loader/cloudtr.png`}
-              alt="cloud-bg"
-              height={1080}
-              width={1920}
-            />
-            <div className="flex h-screen w-full flex-col items-center justify-center">
-              <Image
-                className={`${styles.fadeinlogo} h-auto w-44 animate-pulse`}
-                src={`/assets/png/logo-black.png`}
-                alt="logo"
-                height={250}
-                width={250}
-              />
-              <Image
-                className={`${styles.fadeinlogo} h-auto w-auto animate-pulse`}
-                src={`/assets/loader/dodLogo.png`}
-                alt="logo"
-                height={250}
-                width={250}
-              />
-            </div>
-            <div className="absolute left-0 top-0 flex h-screen w-full items-center justify-center px-4">
-              <div className={`pointer-events-none ${styles.animateMagnifier}`}>
-                <Image
-                  src={`/assets/loader/magnifier.png`}
-                  className="h-auto w-16"
-                  height={100}
-                  width={100}
-                  alt="magnifier"
-                />
-              </div>
-            </div>
-          </div>
+    <div
+      ref={containerRef}
+      className={styles.loadingScreen}
+    >
+      <div className="relative h-screen w-screen flex flex-col items-center justify-center">
+        <div className={styles.background}>
+          <div className={styles.particlesContainer}></div>
+          <Particles options={particlesOptions} />
         </div>
-      ) : (
-        <div
-          className={`no-scrollbar absolute h-full w-full overflow-hidden ${styles.fadeloader}`}
+        <div 
+          ref={hourglassRef}
+          className={styles.hourglass}
         >
-          {/* FIXME: Dont know if fadeOutBg is working or not */}
-          <div
-            className={`fixed h-screen w-screen bg-primary-300 ${styles.fadeOutBg}`}
-          >
-            <Image
-              className={`${styles.unmountblsecond} absolute h-screen w-screen object-cover object-center`}
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/loader/cloudbl.png`}
-              alt="cloud-bg"
-              height={1000}
-              width={1000}
-            />
-            <Image
-              className={`${styles.unmounttrsecond} absolute h-screen w-screen object-cover object-center`}
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/loader/cloudtr.png`}
-              alt="cloud-bg"
-              height={1000}
-              width={1000}
-            />
-            <div
-              className={`flex h-screen w-screen flex-col items-center justify-center`}
-            >
-              <Image
-                className={`${styles.fadelogo} h-auto w-44`}
-                src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-black.png`}
-                alt="logo"
-                height={250}
-                width={250}
-              />
-              <Image
-                className={`${styles.fadelogo} h-auto w-auto`}
-                src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/loader/dodLogo.png`}
-                alt="logo"
-                height={250}
-                width={250}
-              />
-            </div>
-            <div
-              className={`${styles.fadelogo} absolute left-0 top-0 flex h-screen w-screen items-center justify-center`}
-            >
-              <div className={`pointer-events-none ${styles.animateMagnifier}`}>
-                <Image
-                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/loader/magnifier.png`}
-                  className="h-auto w-16"
-                  height={100}
-                  width={100}
-                  alt="magnifier"
-                />
-              </div>
-            </div>
-          </div>
+          <Image
+            src="/assets/png/hourglass.png"
+            width={150}
+            height={150}
+            alt="Echoes of Eternity Logo"
+            priority
+          />
         </div>
-      )}
+        <div 
+          ref={logoRef}
+          className="absolute bottom-[8%] lg:bottom-[15%]"
+        >
+          <Image
+            src="/assets/png/Echoes_of_Eternity_Logo.png"
+            width={300}
+            height={300}
+            alt="Echoes of Eternity Logo"
+            priority
+          />
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Loader;
+export default LoadingScreen;
