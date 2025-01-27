@@ -10,6 +10,7 @@ import {
   DeleteCriteriaDocument,
   DeleteJudgeDocument,
   DeleteRoundDocument,
+  NotifyParticipantsDocument,
   type EventByOrganizerQuery,
 } from "~/generated/generated";
 
@@ -49,7 +50,16 @@ const RoundsSidebar: FC<{
     },
   );
 
+  const [notifyParticipants, { loading: notifyLoading }] = useMutation(
+    NotifyParticipantsDocument,
+    {
+      refetchQueries: ["EventByOrganizer"],
+      awaitRefetchQueries: true,
+    },
+  );
+
   const [selectedRound, setSelectedRound] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleDeleteRound = async () => {
     const promise = deleteRound();
@@ -78,9 +88,21 @@ const RoundsSidebar: FC<{
     await createToast(promise, "Deleting criteria...");
   };
 
+  const handleNotify = async () => {
+    const roundNo = rounds[selectedIndex]?.roundNo ?? 0;
+    const promise = notifyParticipants({
+      variables: {
+        eventId,
+        roundNo,
+      },
+    });
+
+    await createToast(promise, "Sending notifications...");
+  };
+
   return (
     <div className="flex flex-col gap-5 px-2 pb-2">
-      <Tab.Group>
+      <Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
         <Tab.List className="flex w-full flex-row items-center gap-2 overflow-x-auto rounded-2xl border border-gray-600 bg-gray-900/30 p-3 backdrop-blur-md">
           {rounds.map((round) => (
             <Tab key={round.roundNo} className="focus:outline-none md:w-full">
@@ -220,6 +242,18 @@ const RoundsSidebar: FC<{
           </div>
         </Tab.List>
       </Tab.Group>
+      <Button
+        variant="outline"
+        onClick={handleNotify}
+        disabled={notifyLoading}
+        className="m-2 flex items-center justify-center"
+      >
+        {notifyLoading ? (
+          <BiLoaderAlt className="animate-spin" />
+        ) : (
+          "Notify Participants"
+        )}
+      </Button>
     </div>
   );
 };
