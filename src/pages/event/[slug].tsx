@@ -207,7 +207,7 @@ const Page = ({ event, error }: Props) => {
                 <hr className="border-t-2 border-[#D79128] w-3/4 mx-auto rounded-full shadow-lg" />
                 <div className={`px-4 pb-4 sm:p-0`}>
                   <EventDetails details={event.description ?? ""} />
-                  {/* <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laborum, iure natus illo alias exercitationem est quaerat asperiores ipsa, maiores placeat esse tempora libero id aperiam accusamus reiciendis atque obcaecati nisi officiis magni nostrum facilis tempore fuga! Minima officiis distinctio earum? Quis velit atque, similique, quo sunt minus fugit aperiam tempora commodi explicabo error hic temporibus qui assumenda unde dicta saepe necessitatibus obcaecati pariatur cumque provident, cupiditate officia consequatur! Quas obcaecati aspernatur nemo animi? Minus vel quis, eaque exercitationem unde dignissimos, est ipsam nihil ipsum architecto odio optio, corrupti in quidem! Minima tempore harum, quod mollitia totam inventore suscipit corrupti? Corrupti.</p> */}
+                  {/* <p>Lorem ipsum dolor sit, amet co nsectetur adipisicing elit. Laborum, iure natus illo alias exercitationem est quaerat asperiores ipsa, maiores placeat esse tempora libero id aperiam accusamus reiciendis atque obcaecati nisi officiis magni nostrum facilis tempore fuga! Minima officiis distinctio earum? Quis velit atque, similique, quo sunt minus fugit aperiam tempora commodi explicabo error hic temporibus qui assumenda unde dicta saepe necessitatibus obcaecati pariatur cumque provident, cupiditate officia consequatur! Quas obcaecati aspernatur nemo animi? Minus vel quis, eaque exercitationem unde dignissimos, est ipsam nihil ipsum architecto odio optio, corrupti in quidem! Minima tempore harum, quod mollitia totam inventore suscipit corrupti? Corrupti.</p> */}
                 </div>
               </div>
             </div>
@@ -217,6 +217,8 @@ const Page = ({ event, error }: Props) => {
           >
             <div
               className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
+
+              // style={{clipPath: "polygon(0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 100% 15%, 100% 85%, 85% 85%, 85% 100%, 15% 100%, 15% 85%, 0% 85%)"}}
             >
               <div>
                 <div className={`order-2 w-full space-y-1.56`}>
@@ -231,9 +233,11 @@ const Page = ({ event, error }: Props) => {
                       attr.text ? (
                         <div
                           key={attr.name}
-                          className={`md:text-md flex w-full items-center gap-2 rounded-full border border-[#D79128] p-1 px-2 text-left text-sm bg-[#D79128] bg-opacity-30`}
+                          className={`md:text-md flex w-full items-center gap-2 rounded-full border border-[#D79128] text-left text-sm bg-[#D79128] bg-opacity-30`}
                         >
-                          {<attr.Icon />}
+                          {
+                            <attr.Icon className="bg-[#D79128] rounded-full h-full w-10 p-2 text-[#002C1B]" />
+                          }
                           <p>
                             {attr.name} {": "}
                           </p>
@@ -259,7 +263,9 @@ const Page = ({ event, error }: Props) => {
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
-                              <BsFillCalendar2WeekFill />
+                              <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
+                                <BsFillCalendar2WeekFill />
+                              </span>
 
                               {round.date
                                 ? new Date(round.date).toLocaleDateString(
@@ -275,7 +281,9 @@ const Page = ({ event, error }: Props) => {
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
-                              <BiTimeFive />
+                              <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
+                                <BiTimeFive />
+                              </span>
                               {round.date
                                 ? new Date(round.date).toLocaleDateString(
                                     "en-IN",
@@ -294,16 +302,14 @@ const Page = ({ event, error }: Props) => {
                   </div>
                 </div>
                 <div className={`order-1 mt-3 flex w-full justify-center`}>
-                  <EventRegistration
+                  {/* <EventRegistration
                     fees={event.fees}
                     eventId={event.id}
                     type={event.eventType}
-                  />
-                  {/* <button
-                    className="bg-gradient-to-r from-[#D79128] to-[#FFD700] text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-[#FFD700] hover:to-[#D79128] transition-all duration-300"
-                    >
+                  /> */}
+                  <button className="bg-gradient-to-r from-[#D79128] to-[#FFD700] text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-[#FFD700] hover:to-[#D79128] transition-all duration-300">
                     Register Now
-                    </button> */}
+                  </button>
                 </div>
               </div>
             </div>
@@ -332,7 +338,9 @@ const Page = ({ event, error }: Props) => {
                               href={`mailto:${organizer.user.email}`}
                               className={`inline-flex items-center gap-2 overflow-x-auto text-sm hover:underline hover:underline-offset-4`}
                             >
-                              <MdOutlineMailOutline className={`text-lg`} />{" "}
+                              <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
+                                <MdOutlineMailOutline className={`text-lg`} />{" "}
+                              </span>
                               {organizer.user.email}
                             </a>
                           )}
@@ -341,7 +349,9 @@ const Page = ({ event, error }: Props) => {
                               href={`tel:${organizer.user.phoneNumber}`}
                               className={`inline-flex items-center gap-2 text-sm hover:underline hover:underline-offset-4`}
                             >
-                              <BsFillTelephoneFill className={`text-lg`} />{" "}
+                              <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
+                                <BsFillTelephoneFill className={`text-lg`} />{" "}
+                              </span>
                               {organizer.user.phoneNumber}
                             </a>
                           )}
