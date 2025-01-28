@@ -12,6 +12,7 @@ import { Toaster } from "react-hot-toast";
 import Footer from "~/components/footer";
 import HeadComponent from "~/components/head";
 import Loader from "~/components/loader";
+import { LoaderProvider } from "~/components/loader/loaderContext";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
@@ -167,8 +168,7 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        {/* <Toaster />
-        <Loader />
+        <Toaster />
         <div
           className={cn(
             "min-h-screen bg-[#7528cf]",
@@ -177,19 +177,22 @@ export default function App({
             // garetFont.variable,
           )}
         >
-          {!isLoading && <Navbar />}
-          <AnimatePresence mode="wait">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="min-h-screen"
-            >
-              <Component setLoading={setLoading} {...pageProps} />
-            </motion.div>
-          </AnimatePresence>
-          <Footer />
-        </div> */}
+          <LoaderProvider>
+            <Loader />
+            {!isLoading && <Navbar />}
+            <AnimatePresence mode="wait">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="min-h-screen"
+              >
+                <Component setLoading={setLoading} {...pageProps} />
+              </motion.div>
+            </AnimatePresence>
+            <Footer />
+          </LoaderProvider>
+        </div>
       </ApolloProvider>
       <Analytics />
     </>

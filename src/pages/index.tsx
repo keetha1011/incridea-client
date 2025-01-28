@@ -8,7 +8,6 @@ import { type FC, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 
 import Button from "~/components/button";
-import ArcadeLoader from "~/components/loader/arcadeLoader";
 import Spinner from "~/components/spinner";
 import { env } from "~/env";
 import { useAuth } from "~/hooks/useAuth";
@@ -19,13 +18,6 @@ export default function Landing() {
 
   return (
     <main className="relative h-screen overflow-hidden">
-      {typeof window !== "undefined" && (
-        <>
-          {window.sessionStorage.getItem("arcadeLoader") ? null : (
-            <ArcadeLoader />
-          )}
-        </>
-      )}
       <div className="absolute top-0">
         <HomeUi />
         <Menu router={router} />
