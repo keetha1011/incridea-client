@@ -27,8 +27,8 @@ const LoadingScreen = () => {
 
 
     gsap.to(logo, {
-      scale: 1.1,
-      duration: 1.5,
+      scale: 1.2,
+      duration: 2,
       repeat: -1,
       yoyo: true,
       ease: "power1.inOut",
@@ -135,7 +135,7 @@ const LoadingScreen = () => {
         </div>
         <div 
           ref={logoRef}
-          className="absolute bottom-[8%] lg:bottom-[15%]"
+          className="absolute bottom-[8%] lg:bottom-[12%]"
         >
           <Image
             src="/assets/png/Echoes_of_Eternity_Logo.png"
