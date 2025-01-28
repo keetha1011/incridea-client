@@ -1,0 +1,22 @@
+subscription GetChampionshipPoints {
+  getChampionshipPoints {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on SubscriptionGetChampionshipPointsSuccess {
+      __typename
+      data {
+        bronzeCount
+        championshipPoints
+        coreCount
+        goldCount
+        id
+        name
+        nonTechCount
+        silverCount
+        techCount
+      }
+    }
+  }
+}

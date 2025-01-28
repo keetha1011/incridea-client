@@ -66,7 +66,9 @@ function Reveal() {
         setShowEgg(false);
         setShowGif(true);
       }, 1000);
-      setMessage("Congratulations! You just wasted your time... or did you? 👀");
+      setMessage(
+        "Congratulations! You just wasted your time... or did you? 👀",
+      );
       setTimeout(() => {
         setMessageVisible(false);
       }, 10000);

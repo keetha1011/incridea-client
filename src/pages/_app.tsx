@@ -13,6 +13,7 @@ import ComingSoonComponent from "~/components/coming-soon";
 import Footer from "~/components/footer";
 import HeadComponent from "~/components/head";
 import Loader from "~/components/loader";
+import { LoaderProvider } from "~/components/loader/loaderContext";
 import { env } from "~/env";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
@@ -57,17 +58,17 @@ export const gilroy = LocalFont({
   display: "swap",
 });
 
+export const BlackChancery = LocalFont({
+  src: "../font/BlackChancery.ttf",
+  variable: "--font-BlackChancery",
+});
+
 export const pressStart = Press_Start_2P({
   weight: ["400"],
   subsets: ["latin"],
   style: ["normal"],
   display: "swap",
   variable: "--font-Press_Start_2P",
-});
-
-export const BlackChancery = LocalFont({
-  src: "../font/BlackChancery.ttf",
-  variable: "--font-BlackChancery",
 });
 
 type PageProps = {
@@ -103,18 +104,13 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <div
-          className={cn(
-            "min-h-scree",
-            // VikingHell.variable,
-            // pressStart.variable,
-            // garetFont.variable,
-            // gilroy.variable,
-          )}
-        >
-          <Component {...pageProps} />
-          <Toaster />
-        </div>
+
+        <LoaderProvider>
+          <div className={cn("min-h-screen")}>
+            <Component {...pageProps} />
+            <Toaster />
+          </div>
+        </LoaderProvider>
       </ApolloProvider>
     );
   if (router.pathname.startsWith("/explore"))
@@ -138,6 +134,7 @@ export default function App({
         </div>
       </ApolloProvider>
     );
+
   return (
     <>
       <ApolloProvider client={apolloClient}>
@@ -146,7 +143,6 @@ export default function App({
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <Toaster />
-        <Loader />
         <div
           className={cn(
             "min-h-screen bg-[#7528cf]",
@@ -155,6 +151,7 @@ export default function App({
             // garetFont.variable,
           )}
         >
+          <Loader />
           {!isLoading && <Navbar />}
           <AnimatePresence mode="wait">
             <motion.div
