@@ -144,15 +144,18 @@ const Page = ({ event, error }: Props) => {
   // #5BC89E - light text green
 
   return (
-    <div className={`relative flex items-center justify-center`}>
-      <Image
+    <div
+      className={`relative flex items-center justify-center bg-transparent bg-center bg-cover`}
+    >
+      <div className="fixed  bg-[url('/assets/eventSlug/eventBg.jpg')] w-screen h-screen top-0 left-0 z-0 bg-no-repeat bg-cover"></div>
+      {/* <Image
         alt="events-bg"
         src="/assets/eventSlug/leo-edited.jpg"
         height={1920}
         width={1080}
         priority
-        className={`absolute left-0 top-0 h-screen w-screen object-cover object-center `}
-      />
+        className={`absolute left-0 top-0 h-screen w-screen object-cover object-center`}
+      /> */}
       <Toaster />
       {error && (
         <div
@@ -180,20 +183,17 @@ const Page = ({ event, error }: Props) => {
       )}
       {event && (
         <section
-          className={`no-scrollbar mx-auto flex h-screen max-w-7xl flex-col gap-5 overflow-y-scroll text-white lg:flex-row lg:overflow-y-hidden`}
+          className={`no-scrollbar flex mt-20 min-h-screen justify-center flex-col gap-5 overflow-y-scroll text-white lg:flex-row z-10 w-screen lg:px-10`}
         >
-          <div
-            className={`lg:no-scrollbar overflow-x-visible px-3 pt-20 lg:h-full lg:overflow-y-scroll lg:pb-8`}
-          >
+          <div className={`no-scrollbar px-3 lg:h-full lg:pb-8`}>
             <div
               className={`basis-1/3 rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
             >
-              <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
+              <div className={`space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
                     src={event.image}
-                    // src="https://res.cloudinary.com/dg1941jdi/image/upload/v1706863440/Events/Usaravalli_1706863437635.png"
-                    className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
+                    className={`z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
                     width={1000}
                     height={1000}
@@ -207,13 +207,13 @@ const Page = ({ event, error }: Props) => {
                 <hr className="border-t-2 border-[#D79128] w-3/4 mx-auto rounded-full shadow-lg" />
                 <div className={`px-4 pb-4 sm:p-0`}>
                   <EventDetails details={event.description ?? ""} />
-                  {/* <p>Lorem ipsum dolor sit, amet co nsectetur adipisicing elit. Laborum, iure natus illo alias exercitationem est quaerat asperiores ipsa, maiores placeat esse tempora libero id aperiam accusamus reiciendis atque obcaecati nisi officiis magni nostrum facilis tempore fuga! Minima officiis distinctio earum? Quis velit atque, similique, quo sunt minus fugit aperiam tempora commodi explicabo error hic temporibus qui assumenda unde dicta saepe necessitatibus obcaecati pariatur cumque provident, cupiditate officia consequatur! Quas obcaecati aspernatur nemo animi? Minus vel quis, eaque exercitationem unde dignissimos, est ipsam nihil ipsum architecto odio optio, corrupti in quidem! Minima tempore harum, quod mollitia totam inventore suscipit corrupti? Corrupti.</p> */}
+                  {/* <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci temporibus dolorem inventore praesentium, blanditiis tenetur. Ut id minus optio, numquam at aliquam laborum accusantium architecto non aut omnis nobis molestiae odit repellendus? Aspernatur eligendi quaerat error illum commodi neque accusamus perferendis molestiae, similique ratione, odit ipsa labore! Exercitationem quam vel repellat incidunt nisi, possimus quod? Quas quae quos tempora ea architecto eligendi illo magnam, id, debitis tempore pariatur aliquam! Delectus reprehenderit ipsum, dolore deleniti mollitia iusto! Quas voluptatem quisquam iure nemo. At ut ex adipisci nam perferendis nostrum laborum similique. Molestiae, dolorum quasi. Nulla magni perferendis distinctio adipisci. Nam, eligendi dolorum beatae similique repellendus aliquam quisquam voluptas commodi. Delectus, aut. Illo eos rerum necessitatibus asperiores ducimus esse molestias incidunt adipisci atque quisquam, laboriosam accusantium, aut nobis deserunt expedita, quia fugiat quibusdam sapiente perspiciatis. Tenetur quaerat placeat fuga corrupti tempore earum asperiores veritatis, dolore accusantium nihil odit in dicta id saepe dolor delectus unde qui quod consequatur rerum! Ipsum omnis dignissimos facere reprehenderit temporibus, officiis quae. Voluptas esse consectetur ratione sunt reprehenderit veniam explicabo, magnam, nemo nobis eligendi suscipit. Obcaecati repellat omnis veritatis neque suscipit aspernatur. Obcaecati aliquam dolorum amet dignissimos accusamus aliquid omnis, sint hic nesciunt quasi totam odio praesentium quos? Esse id, fuga incidunt, voluptate praesentium officia voluptatem architecto veniam laborum aspernatur sit est autem quasi in explicabo voluptatibus aliquid, qui vel repudiandae ut. Quaerat totam saepe consequatur. Sed, cupiditate perspiciatis! Dolorum in fuga voluptate non aperiam, suscipit, dignissimos eos voluptas vero mollitia dolorem temporibus quia dolor. Rem sequi excepturi assumenda dolores reprehenderit maiores ad eum, iusto deserunt! Dicta iure sint pariatur officia iusto? Quod, animi ab labore harum vero aspernatur rerum, quae eius, minima neque accusantium esse praesentium accusamus dignissimos eaque eligendi. Nulla sint nisi mollitia vero quam eligendi doloremque exercitationem, non error ab quis quo minus eaque numquam ullam reiciendis quos vel necessitatibus cumque vitae corporis odit cupiditate! Cupiditate est consectetur veritatis incidunt explicabo dolorem vel, culpa debitis voluptatem atque repellendus natus, excepturi nihil dolorum, non fugit voluptatibus. Rem iusto excepturi voluptates perspiciatis sit obcaecati vero accusantium, dolore facere provident aspernatur cumque fugiat. Rem at accusamus iusto quas aut voluptas porro eaque provident, praesentium cumque dolore saepe atque aliquam hic. Facilis minus consequatur impedit quia magnam provident iusto eligendi labore, dignissimos animi! Magnam quam vitae molestiae, voluptatum sunt animi similique. Quos expedita perferendis obcaecati repellendus, architecto nulla ut assumenda earum optio doloremque tempore officia rem labore iste libero molestias vitae adipisci suscipit? Nostrum numquam odio voluptatibus quo repudiandae eligendi ea quibusdam voluptate, amet quod possimus quis recusandae consectetur sequi itaque esse saepe dolores tempore facere asperiores, a corporis? Expedita provident quo, ad magni consectetur sed doloremque consequuntur itaque cupiditate ab autem nemo labore reprehenderit iure ducimus inventore dolore libero dicta eligendi nulla. Ab, officia? Quas expedita at voluptates ut corporis quibusdam dicta repellendus illum beatae officiis ipsam autem facere deleniti nihil distinctio voluptate, vitae aut molestiae quod quisquam assumenda. Dolorum illo sed nulla molestias neque nostrum odit, excepturi minima error ipsum labore maxime voluptate veritatis adipisci odio?</p> */}
                 </div>
               </div>
             </div>
           </div>
           <div
-            className={`lg:no-scrollbar flex w-full shrink-0 basis-1/3 flex-col items-center gap-5 rounded-md px-3 pb-8 lg:h-full lg:overflow-y-scroll lg:pt-20`}
+            className={`lg:no-scrollbar flex w-full shrink-0 basis-1/3 flex-col items-center gap-5 rounded-md px-3 pb-8 lg:h-full`}
           >
             <div
               className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
@@ -302,14 +302,14 @@ const Page = ({ event, error }: Props) => {
                   </div>
                 </div>
                 <div className={`order-1 mt-3 flex w-full justify-center`}>
-                  {/* <EventRegistration
+                  <EventRegistration
                     fees={event.fees}
                     eventId={event.id}
                     type={event.eventType}
-                  /> */}
-                  <button className="bg-gradient-to-r from-[#D79128] to-[#FFD700] text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-[#FFD700] hover:to-[#D79128] transition-all duration-300">
+                  />
+                  {/* <button className="bg-gradient-to-r from-[#D79128] to-[#FFD700] text-white font-semibold py-2 px-4 rounded-full shadow-lg hover:from-[#FFD700] hover:to-[#D79128] transition-all duration-300">
                     Register Now
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
