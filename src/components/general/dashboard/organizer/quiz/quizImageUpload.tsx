@@ -5,6 +5,9 @@ import Spinner from "~/components/spinner";
 // import { CreateSubmissionDocument } from "~/generated/generated";
 import { UploadButton } from "~/components/uploadthing/button";
 import toast from "react-hot-toast";
+import { getSession } from "next-auth/react";
+
+import { env } from "~/env";
 
 type Props = {
   existingImage?: string | null;
@@ -29,6 +32,20 @@ const QuizImageUpload = React.memo(
     // const [submissionMutation, { loading: submissionLoading }] = useMutation(
     //   CreateSubmissionDocument,
     // );
+
+    const deleteImage = async (url: string) => {
+      const res = await fetch(
+        `${env.NEXT_PUBLIC_SERVER_URL}/uploadrthing/delete`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: (await getSession())?.accessToken ?? "",
+          },
+          body: JSON.stringify({ url }),
+        },
+      );
+    };
 
     return (
       <>
@@ -71,6 +88,7 @@ const QuizImageUpload = React.memo(
                 width={600}
                 height={600}
                 alt=""
+                priority
               />
             </div>
           ) : mediaPreview === null ? (
@@ -85,6 +103,7 @@ const QuizImageUpload = React.memo(
                 className="h-64 object-contain"
                 src={mediaPreview}
                 alt=""
+                priority
               />
             </div>
           )}
@@ -94,7 +113,7 @@ const QuizImageUpload = React.memo(
           className="mt-6"
           onBeforeUploadBegin={(files) => {
             //   setImage(files[0]!);
-            setMediaPreview(URL.createObjectURL(files[0]!));
+            // setMediaPreview(URL.createObjectURL(files[0]!));
             console.log(files[0]);
             return files.map((f) => new File([f], f.name, { type: f.type }));
           }}
@@ -103,21 +122,37 @@ const QuizImageUpload = React.memo(
           }}
           onClientUploadComplete={(res) => {
             if (res[0]) {
-              console.log("----");
               console.log(res[0].url);
+              console.log("----");
+              if (mediaPreview !== "") {
+                const deleted = mediaPreview;
+                deleteImage(deleted)
+                  .then(() => {
+                    console.log("Deleted");
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+              }
+              console.log("----");
               setMediaPreview(res[0].url);
+              console.log(mediaPreview);
               setManualLoading(false);
               toast.success("Image uploaded", { position: "bottom-right" });
               handleImageUpload(res[0].url);
             }
           }}
           onUploadAborted={() => {
-            toast.error("Image upload aborted", { position: "bottom-right" });
+            toast.error("Image upload aborted, please upload other image", {
+              position: "bottom-right",
+            });
             setManualLoading(false);
           }}
           onUploadError={(error) => {
             console.log(error);
-            toast.error("Image upload failed", { position: "bottom-right" });
+            toast.error("Image upload failed, please upload other image", {
+              position: "bottom-right",
+            });
             setManualLoading(false);
           }}
         />
@@ -127,7 +162,6 @@ const QuizImageUpload = React.memo(
   (prevProps, nextProps) => {
     return (
       prevProps.loading !== nextProps.loading ||
-      prevProps.existingImage !== nextProps.existingImage ||
       prevProps.handleImageUpload !== nextProps.handleImageUpload
     );
   },
