@@ -145,7 +145,7 @@ export default function App({
         <Toaster />
         <div
           className={cn(
-            "min-h-screen bg-[#7528cf]",
+            "min-h-screen bg-[#0f1923]",
             // VikingHell.variable,
             // pressStart.variable,
             // garetFont.variable,
@@ -160,6 +160,7 @@ export default function App({
               transition={{ duration: 0.8 }}
               className="min-h-screen"
             >
+              <Navbar />
               <Component setLoading={setLoading} {...pageProps} />
             </motion.div>
           </AnimatePresence>
