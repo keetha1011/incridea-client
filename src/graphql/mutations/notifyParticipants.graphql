@@ -1,0 +1,3 @@
+mutation NotifyParticipants($eventId: ID!, $roundNo: Int!) {
+  notifyParticipants(eventId: $eventId, roundNo: $roundNo)
+}

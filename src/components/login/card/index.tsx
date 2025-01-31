@@ -26,14 +26,14 @@ const LoginCard: FunctionComponent<LoginCardProps> = ({
   const [gotDialogBox, setGotDialogBox] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
 
-  useEffect(() => {
-    if (cardStyle.top === "-50%" && gotDialogBox) {
-      // Work around to remove error and success dialog box from card when card is re-bought into viewport
-      // % 10 is to control overflow [which will never happen]
-      setCount((prev) => (prev + 1) % 10);
-      setGotDialogBox(false);
-    }
-  }, [cardStyle.top, gotDialogBox]);
+  // useEffect(() => {
+  //   if (cardStyle.top === "-50%" && gotDialogBox) {
+  //     // Work around to remove error and success dialog box from card when card is re-bought into viewport
+  //     // % 10 is to control overflow [which will never happen]
+  //     setCount((prev) => (prev + 1) % 10);
+  //     setGotDialogBox(false);
+  //   }
+  // }, [cardStyle.top, gotDialogBox]);
 
   const router = useRouter();
   const { verify } = router.query;
@@ -45,35 +45,39 @@ const LoginCard: FunctionComponent<LoginCardProps> = ({
   return (
     // HACK: Please update anything here or in children also in auth/reset-password.tsx
     <div
-      className="absolute left-2/4 top-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] origin-bottom overflow-y-auto rounded-md bg-gradient-to-b from-[#1f2e97] to-[#090d4b] px-3 py-3 text-accent-200 shadow-[0_0_18px_1px_#141e73] transition-all ease-suck-in sm:min-w-[350px] sm:max-w-[350px] md:shadow-[0_0_20px_2px_#141e73] lg:max-h-[76vh]"
-      style={cardStyle}
+      className="size-full absolute top-0 left-0 origin-center "
+      style={{ ...cardStyle }}
     >
-      {whichForm === "signIn" ? (
-        <SignInForm
-          redirectUrl={redirectUrl}
-          setWhichForm={setWhichForm}
-          setGotDialogBox={setGotDialogBox}
-          key={count}
-        />
-      ) : whichForm === "resetPassword" ? (
-        <ResetPasswordForm
-          setWhichForm={setWhichForm}
-          setGotDialogBox={setGotDialogBox}
-          key={count}
-        />
-      ) : whichForm === "signUp" ? (
-        <SignUpForm
-          setWhichForm={setWhichForm}
-          setGotDialogBox={setGotDialogBox}
-          key={count}
-        />
-      ) : (
-        <ResendEmail
-          setWhichForm={setWhichForm}
-          setGotDialogBox={setGotDialogBox}
-          key={count}
-        />
-      )}
+      <div className="relative size-full">
+        <div className="absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl px-3 py-3 text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-black/80">
+          {whichForm === "signIn" ? (
+            <SignInForm
+              redirectUrl={redirectUrl}
+              setWhichForm={setWhichForm}
+              setGotDialogBox={setGotDialogBox}
+              key={count}
+            />
+          ) : whichForm === "resetPassword" ? (
+            <ResetPasswordForm
+              setWhichForm={setWhichForm}
+              setGotDialogBox={setGotDialogBox}
+              key={count}
+            />
+          ) : whichForm === "signUp" ? (
+            <SignUpForm
+              setWhichForm={setWhichForm}
+              setGotDialogBox={setGotDialogBox}
+              key={count}
+            />
+          ) : (
+            <ResendEmail
+              setWhichForm={setWhichForm}
+              setGotDialogBox={setGotDialogBox}
+              key={count}
+            />
+          )}
+        </div>
+      </div>
     </div>
   );
 };

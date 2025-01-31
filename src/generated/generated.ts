@@ -75,8 +75,22 @@ export type Card = {
   submissions: Array<Submission>;
 };
 
+export type ChampionshipPoint = {
+  __typename?: "ChampionshipPoint";
+  bronzeCount: Scalars["Int"]["output"];
+  championshipPoints: Scalars["Int"]["output"];
+  coreCount: Scalars["Int"]["output"];
+  goldCount: Scalars["Int"]["output"];
+  id: Scalars["Int"]["output"];
+  name: Scalars["String"]["output"];
+  nonTechCount: Scalars["Int"]["output"];
+  silverCount: Scalars["Int"]["output"];
+  techCount: Scalars["Int"]["output"];
+};
+
 export type College = {
   __typename?: "College";
+  championshipPoints: Scalars["Int"]["output"];
   id: Scalars["ID"]["output"];
   name: Scalars["String"]["output"];
 };
@@ -155,6 +169,7 @@ export type Event = {
   published: Scalars["Boolean"]["output"];
   rounds: Array<Round>;
   teams: Array<Team>;
+  tier: EventTier;
   venue?: Maybe<Scalars["String"]["output"]>;
   winner?: Maybe<Array<Winners>>;
 };
@@ -182,6 +197,12 @@ export type EventPaymentOrder = {
   status: Status;
 };
 
+export enum EventTier {
+  Bronze = "BRONZE",
+  Gold = "GOLD",
+  Silver = "SILVER",
+}
+
 export enum EventType {
   Individual = "INDIVIDUAL",
   IndividualMultipleEntry = "INDIVIDUAL_MULTIPLE_ENTRY",
@@ -200,6 +221,7 @@ export type EventUpdateInput = {
   maxTeams?: InputMaybe<Scalars["Int"]["input"]>;
   minTeamSize?: InputMaybe<Scalars["Int"]["input"]>;
   name?: InputMaybe<Scalars["String"]["input"]>;
+  tier?: InputMaybe<EventTier>;
   venue?: InputMaybe<Scalars["String"]["input"]>;
 };
 
@@ -277,6 +299,7 @@ export type Mutation = {
   joinTeam: MutationJoinTeamResult;
   leaveTeam: MutationLeaveTeamResult;
   login: MutationLoginResult;
+  notifyParticipants: Scalars["Boolean"]["output"];
   organizerAddTeamMember: MutationOrganizerAddTeamMemberResult;
   organizerCreateTeam: MutationOrganizerCreateTeamResult;
   organizerDeleteTeam: MutationOrganizerDeleteTeamResult;
@@ -298,6 +321,7 @@ export type Mutation = {
   resetPassword: MutationResetPasswordResult;
   sendEmailVerification: MutationSendEmailVerificationResult;
   sendPasswordResetEmail: MutationSendPasswordResetEmailResult;
+  sendWinnerWhatsAppNotification: Scalars["Boolean"]["output"];
   signUp: MutationSignUpResult;
   submitQuiz: MutationSubmitQuizResult;
   updateCard: MutationUpdateCardResult;
@@ -498,6 +522,11 @@ export type MutationLoginArgs = {
   data: UserLoginInput;
 };
 
+export type MutationNotifyParticipantsArgs = {
+  eventId: Scalars["ID"]["input"];
+  roundNo: Scalars["Int"]["input"];
+};
+
 export type MutationOrganizerAddTeamMemberArgs = {
   teamId: Scalars["ID"]["input"];
   userId: Scalars["ID"]["input"];
@@ -593,6 +622,10 @@ export type MutationSendEmailVerificationArgs = {
 
 export type MutationSendPasswordResetEmailArgs = {
   email: Scalars["String"]["input"];
+};
+
+export type MutationSendWinnerWhatsAppNotificationArgs = {
+  eventId: Scalars["ID"]["input"];
 };
 
 export type MutationSignUpArgs = {
@@ -1257,6 +1290,7 @@ export type Query = {
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
+  getChampionshipPoints: QueryGetChampionshipPointsResult;
   getComment: QueryGetCommentResult;
   getLevelXp: QueryGetLevelXpResult;
   getQuizByEventRound: QueryGetQuizByEventRoundResult;
@@ -1528,6 +1562,15 @@ export type QueryGetCardsResult = Error | QueryGetCardsSuccess;
 export type QueryGetCardsSuccess = {
   __typename?: "QueryGetCardsSuccess";
   data: Array<Card>;
+};
+
+export type QueryGetChampionshipPointsResult =
+  | Error
+  | QueryGetChampionshipPointsSuccess;
+
+export type QueryGetChampionshipPointsSuccess = {
+  __typename?: "QueryGetChampionshipPointsSuccess";
+  data: Array<ChampionshipPoint>;
 };
 
 export type QueryGetCommentResult = Error | QueryGetCommentSuccess;
@@ -1840,6 +1883,7 @@ export type Submission = {
 
 export type Subscription = {
   __typename?: "Subscription";
+  getChampionshipPoints: SubscriptionGetChampionshipPointsResult;
   getRoundStatus: SubscriptionGetRoundStatusResult;
   judgeGetTeamsByRound: Array<Team>;
 };
@@ -1854,6 +1898,15 @@ export type SubscriptionJudgeGetTeamsByRoundArgs = {
   roundId: Scalars["Int"]["input"];
 };
 
+export type SubscriptionGetChampionshipPointsResult =
+  | Error
+  | SubscriptionGetChampionshipPointsSuccess;
+
+export type SubscriptionGetChampionshipPointsSuccess = {
+  __typename?: "SubscriptionGetChampionshipPointsSuccess";
+  data: Array<ChampionshipPoint>;
+};
+
 export type SubscriptionGetRoundStatusResult =
   | Error
   | SubscriptionGetRoundStatusSuccess;
@@ -1866,6 +1919,7 @@ export type SubscriptionGetRoundStatusSuccess = {
 export type Team = {
   __typename?: "Team";
   attended: Scalars["Boolean"]["output"];
+  college?: Maybe<College>;
   confirmed: Scalars["Boolean"]["output"];
   event: Event;
   id: Scalars["ID"]["output"];
@@ -2483,6 +2537,16 @@ export type LeaveTeamMutation = {
     | { __typename: "MutationLeaveTeamSuccess" };
 };
 
+export type NotifyParticipantsMutationVariables = Exact<{
+  eventId: Scalars["ID"]["input"];
+  roundNo: Scalars["Int"]["input"];
+}>;
+
+export type NotifyParticipantsMutation = {
+  __typename?: "Mutation";
+  notifyParticipants: boolean;
+};
+
 export type OrganizerAddTeamMemberMutationVariables = Exact<{
   teamId: Scalars["ID"]["input"];
   userId: Scalars["ID"]["input"];
@@ -2767,6 +2831,15 @@ export type ResetPasswordEmailMutation = {
   sendPasswordResetEmail:
     | { __typename: "Error"; message: string }
     | { __typename: "MutationSendPasswordResetEmailSuccess"; data: string };
+};
+
+export type SendWinnerWhatsAppNotificationMutationVariables = Exact<{
+  eventId: Scalars["ID"]["input"];
+}>;
+
+export type SendWinnerWhatsAppNotificationMutation = {
+  __typename?: "Mutation";
+  sendWinnerWhatsAppNotification: boolean;
 };
 
 export type SignInMutationVariables = Exact<{
@@ -3428,6 +3501,31 @@ export type BranchesQuery = {
   }>;
 };
 
+export type GetChampionshipPointsQueryQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetChampionshipPointsQueryQuery = {
+  __typename?: "Query";
+  getChampionshipPoints:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryGetChampionshipPointsSuccess";
+        data: Array<{
+          __typename?: "ChampionshipPoint";
+          bronzeCount: number;
+          championshipPoints: number;
+          coreCount: number;
+          goldCount: number;
+          id: number;
+          name: string;
+          nonTechCount: number;
+          silverCount: number;
+          techCount: number;
+        }>;
+      };
+};
+
 export type GetCommentQueryVariables = Exact<{
   eventId: Scalars["ID"]["input"];
   roundNo: Scalars["Int"]["input"];
@@ -3909,6 +4007,31 @@ export type WinnersByEventQuery = {
               };
             }>;
           };
+        }>;
+      };
+};
+
+export type GetChampionshipPointsSubscriptionVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetChampionshipPointsSubscription = {
+  __typename?: "Subscription";
+  getChampionshipPoints:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "SubscriptionGetChampionshipPointsSuccess";
+        data: Array<{
+          __typename?: "ChampionshipPoint";
+          bronzeCount: number;
+          championshipPoints: number;
+          coreCount: number;
+          goldCount: number;
+          id: number;
+          name: string;
+          nonTechCount: number;
+          silverCount: number;
+          techCount: number;
         }>;
       };
 };
@@ -7939,6 +8062,70 @@ export const LeaveTeamDocument = {
     },
   ],
 } as unknown as DocumentNode<LeaveTeamMutation, LeaveTeamMutationVariables>;
+export const NotifyParticipantsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "NotifyParticipants" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "roundNo" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Int" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "notifyParticipants" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "roundNo" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "roundNo" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  NotifyParticipantsMutation,
+  NotifyParticipantsMutationVariables
+>;
 export const OrganizerAddTeamMemberDocument = {
   kind: "Document",
   definitions: [
@@ -10115,6 +10302,51 @@ export const ResetPasswordEmailDocument = {
 } as unknown as DocumentNode<
   ResetPasswordEmailMutation,
   ResetPasswordEmailMutationVariables
+>;
+export const SendWinnerWhatsAppNotificationDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "SendWinnerWhatsAppNotification" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "eventId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "sendWinnerWhatsAppNotification" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "eventId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "eventId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  SendWinnerWhatsAppNotificationMutation,
+  SendWinnerWhatsAppNotificationMutationVariables
 >;
 export const SignInDocument = {
   kind: "Document",
@@ -13256,6 +13488,120 @@ export const BranchesDocument = {
     },
   ],
 } as unknown as DocumentNode<BranchesQuery, BranchesQueryVariables>;
+export const GetChampionshipPointsQueryDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetChampionshipPointsQuery" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getChampionshipPoints" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryGetChampionshipPointsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "bronzeCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "championshipPoints",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "coreCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "goldCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "nonTechCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "silverCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "techCount" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetChampionshipPointsQueryQuery,
+  GetChampionshipPointsQueryQueryVariables
+>;
 export const GetCommentDocument = {
   kind: "Document",
   definitions: [
@@ -15766,6 +16112,120 @@ export const WinnersByEventDocument = {
     },
   ],
 } as unknown as DocumentNode<WinnersByEventQuery, WinnersByEventQueryVariables>;
+export const GetChampionshipPointsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "subscription",
+      name: { kind: "Name", value: "GetChampionshipPoints" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getChampionshipPoints" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "SubscriptionGetChampionshipPointsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "bronzeCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "championshipPoints",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "coreCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "goldCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "nonTechCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "silverCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "techCount" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetChampionshipPointsSubscription,
+  GetChampionshipPointsSubscriptionVariables
+>;
 export const GetRoundStatusDocument = {
   kind: "Document",
   definitions: [
