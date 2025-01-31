@@ -213,7 +213,7 @@ const Page = ({ event, error }: Props) => {
             </div>
           </div>
           <div
-            className={`lg:no-scrollbar flex w-full shrink-0 basis-1/3 flex-col items-center gap-5 rounded-md px-3 pb-8 lg:h-full`}
+            className={`lg:no-scrollbar flex w-full shrink-0 basis-1/3 flex-col items-center gap-5 rounded-md px-3 pb-3 lg:h-full`}
           >
             <div
               className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
@@ -315,7 +315,7 @@ const Page = ({ event, error }: Props) => {
             </div>
             {event.organizers.length > 0 && (
               <div
-                className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
+                className={`w-full rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter mb-3`}
               >
                 <div className={`order-3 w-full`}>
                   <h2
