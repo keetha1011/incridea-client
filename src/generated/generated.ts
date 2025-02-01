@@ -75,6 +75,21 @@ export type Card = {
   submissions: Array<Submission>;
 };
 
+export type ChampionshipPoint = {
+  __typename?: "ChampionshipPoint";
+  bronzeCount: Counts;
+  championshipPoints: Scalars["Int"]["output"];
+  coreCount: Scalars["Int"]["output"];
+  diamondCount: Counts;
+  goldCount: Counts;
+  id: Scalars["Int"]["output"];
+  isEligible: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
+  nonTechCount: Scalars["Int"]["output"];
+  silverCount: Counts;
+  techCount: Scalars["Int"]["output"];
+};
+
 export type College = {
   __typename?: "College";
   id: Scalars["ID"]["output"];
@@ -96,6 +111,13 @@ export type Comments = {
   roundNo: Scalars["Int"]["output"];
   team: Team;
   teamId: Scalars["ID"]["output"];
+};
+
+export type Counts = {
+  __typename?: "Counts";
+  runner_up: Scalars["Int"]["output"];
+  second_runner_up: Scalars["Int"]["output"];
+  winner: Scalars["Int"]["output"];
 };
 
 export type CreateCriteriaInput = {
@@ -180,6 +202,18 @@ export type EventPaymentOrder = {
   id: Scalars["ID"]["output"];
   orderId: Scalars["ID"]["output"];
   status: Status;
+};
+
+export type EventRegistrationsCount = {
+  __typename?: "EventRegistrationsCount";
+  externalRegistrations: Scalars["Int"]["output"];
+  internalRegistrations: Scalars["Int"]["output"];
+};
+
+export type EventStatus = {
+  __typename?: "EventStatus";
+  eventName: Scalars["String"]["output"];
+  status: Scalars["String"]["output"];
 };
 
 export enum EventType {
@@ -1257,6 +1291,12 @@ export type ProniteRegistration = {
   userId: Scalars["ID"]["output"];
 };
 
+export type ProniteRegistrationCounts = {
+  __typename?: "ProniteRegistrationCounts";
+  day1Count: Scalars["Int"]["output"];
+  day2Count: Scalars["Int"]["output"];
+};
+
 export type Query = {
   __typename?: "Query";
   accommodationRequestByDay: Array<UserInHotel>;
@@ -1280,15 +1320,20 @@ export type Query = {
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
+  getChampionshipLeaderboard: QueryGetChampionshipLeaderboardResult;
   getComment: QueryGetCommentResult;
+  getEventStatus: Array<EventStatus>;
   getLevelXp: QueryGetLevelXpResult;
+  getProniteRegistrations: ProniteRegistrationCounts;
   getQuizByEventRound: QueryGetQuizByEventRoundResult;
   getQuizById: QueryGetQuizByIdResult;
   getQuizScores: QueryGetQuizScoresResult;
+  getRevenue: QueryGetRevenueResult;
   getRoundStatus: QueryGetRoundStatusResult;
   getScore: QueryGetScoreResult;
   getScoreSheetJuryView: QueryGetScoreSheetJuryViewResult;
   getSubmissionByUser: Array<AllSubmissions>;
+  getTotalRegistrations: EventRegistrationsCount;
   getTotalScores: QueryGetTotalScoresResult;
   getUserAccommodation?: Maybe<UserInHotel>;
   getUserLevelScore: QueryGetUserLevelScoreResult;
@@ -1305,7 +1350,6 @@ export type Query = {
   submissionsByUser: QuerySubmissionsByUserResult;
   teamDetails: QueryTeamDetailsResult;
   teamsByRound: QueryTeamsByRoundConnection;
-  totalRegistrations: Scalars["Int"]["output"];
   userById: QueryUserByIdResult;
   users: QueryUsersConnection;
   verifyQuizPassword: QueryVerifyQuizPasswordResult;
@@ -1413,6 +1457,11 @@ export type QueryGetSubmissionByUserArgs = {
   teamId: Scalars["String"]["input"];
 };
 
+export type QueryGetTotalRegistrationsArgs = {
+  date?: InputMaybe<Scalars["DateTime"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type QueryGetTotalScoresArgs = {
   eventId: Scalars["ID"]["input"];
   roundNo: Scalars["Int"]["input"];
@@ -1451,11 +1500,6 @@ export type QueryTeamsByRoundArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   roundNo: Scalars["Int"]["input"];
-};
-
-export type QueryTotalRegistrationsArgs = {
-  date?: InputMaybe<Scalars["DateTime"]["input"]>;
-  last?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QueryUserByIdArgs = {
@@ -1553,6 +1597,15 @@ export type QueryGetCardsSuccess = {
   data: Array<Card>;
 };
 
+export type QueryGetChampionshipLeaderboardResult =
+  | Error
+  | QueryGetChampionshipLeaderboardSuccess;
+
+export type QueryGetChampionshipLeaderboardSuccess = {
+  __typename?: "QueryGetChampionshipLeaderboardSuccess";
+  data: Array<ChampionshipPoint>;
+};
+
 export type QueryGetCommentResult = Error | QueryGetCommentSuccess;
 
 export type QueryGetCommentSuccess = {
@@ -1588,6 +1641,13 @@ export type QueryGetQuizScoresResult = Error | QueryGetQuizScoresSuccess;
 export type QueryGetQuizScoresSuccess = {
   __typename?: "QueryGetQuizScoresSuccess";
   data: Array<QuizScore>;
+};
+
+export type QueryGetRevenueResult = Error | QueryGetRevenueSuccess;
+
+export type QueryGetRevenueSuccess = {
+  __typename?: "QueryGetRevenueSuccess";
+  data: Scalars["Int"]["output"];
 };
 
 export type QueryGetRoundStatusResult = Error | QueryGetRoundStatusSuccess;
