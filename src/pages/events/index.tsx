@@ -17,6 +17,7 @@ import {
 import { client } from "~/lib/apollo";
 
 import styles from "./styles.module.css";
+import CopperButton from "~/components/copperButton";
 
 enum AllCategory {
   ALL = "ALL",
@@ -226,7 +227,7 @@ const Page = ({ data }: Props) => {
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
+                      <Menu.Items className="absolute top-11  mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
                             {() => (
@@ -302,7 +303,7 @@ const Page = ({ data }: Props) => {
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Menu.Items className="absolute top-11 z-[100] mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
+                      <Menu.Items className="absolute top-11  mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
                         {[
                           Object.keys(EventCategory),
                           Object.keys(AllCategory),
