@@ -8,6 +8,7 @@ import { type FC, useEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 
 import Button from "~/components/button";
+import ArcadeLoader from "~/components/loader/arcadeLoader";
 import Spinner from "~/components/spinner";
 import { env } from "~/env";
 import { useAuth } from "~/hooks/useAuth";
@@ -24,6 +25,13 @@ export default function Landing() {
 
   return (
     <main className="relative h-screen overflow-hidden">
+      {/* {typeof window !== "undefined" && (
+        <>
+          {window.sessionStorage.getItem("arcadeLoader") ? null : (
+            <ArcadeLoader />
+          )}
+        </>
+      )} */}
       <div className="absolute top-0">
         <HomeUi />
         {/* <Menu router={router} /> */}
@@ -131,7 +139,7 @@ export const Menu: FC<{
       <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
         <h3
           className={cn(
-            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block"
+            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
             // VikingHell.className,
           )}
         >
