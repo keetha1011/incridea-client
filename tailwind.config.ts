@@ -237,6 +237,7 @@ const config: Config = {
         },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        glassy: "rgba(var(--background-rgb), 0.8)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

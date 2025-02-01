@@ -38,6 +38,7 @@
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -78,6 +79,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -115,14 +117,17 @@ body {
 ::-webkit-scrollbar {
   width: 0.4rem;
 }
+
 ::-webkit-scrollbar-track {
   @apply bg-gray-800;
   @apply rounded;
 }
+
 ::-webkit-scrollbar-thumb {
   @apply rounded;
   @apply bg-gray-400;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-gray-300;
 }
@@ -254,6 +259,73 @@ body {
   );
 }
 
+.glass-button {
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.glass-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.glass-button:hover {
+  background-image: linear-gradient(
+    45deg,
+    rgba(0, 255, 255, 0.5),
+    rgba(255, 0, 255, 0.5),
+    rgba(255, 192, 203, 0.5)
+  );
+  background-size: 200% auto;
+  animation: gradient-animation 1s linear infinite alternate;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 25%;
+    /* Start position */
+  }
+
+  25% {
+    background-position: 25% 50%;
+  }
+
+  50% {
+    background-position: 50% 75%;
+  }
+
+  75% {
+    background-position: 75% 100%;
+  }
+
+  100% {
+    background-position: 100% 0%;
+    /* Return to start */
+  }
+}
+
+.progress-bar-effect {
+  background-image: linear-gradient(
+    55deg,
+    #13ccccf6,
+    #c522c5fd,
+    rgba(236, 56, 155, 0.767)
+  );
+  background-size: 250% auto;
+  animation: gradient-animation 2s ease-in infinite alternate;
+}
+
+@media (max-width: 768px) {
+  .quiz-nav {
+    @apply absolute flex-row justify-center items-center top-[100px] right-2 w-[85%] sm:w-[60%] z-20;
+  }
+
+  /* .ctrl-btns {
+    @apply w-3/4 h-1/2 place-self-center;
+  } */
+}
+
 /* Workaround for disappearing elements (scope: locomotive scroll) */
 .has-scroll-smooth {
   position: fixed;
@@ -298,9 +370,11 @@ body {
   0% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-4px);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -369,10 +443,13 @@ body {
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   /* Hide scrollbar for IE, Edge, and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
   }
 }
 
@@ -386,6 +463,7 @@ body {
   -webkit-filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
   filter: blur(1px) grayscale(0.2) saturate(1.2) sepia(0.2);
 }
+
 #foglayer_01,
 #foglayer_02,
 #foglayer_03 {
@@ -393,6 +471,7 @@ body {
   position: absolute;
   width: 200%;
 }
+
 #foglayer_01 .image01,
 #foglayer_01 .image02,
 #foglayer_02 .image01,
@@ -403,6 +482,7 @@ body {
   height: 100%;
   width: 50%;
 }
+
 #foglayer_01 {
   -webkit-animation:
     foglayer_01_opacity 10s linear infinite,
@@ -414,6 +494,7 @@ body {
     foglayer_01_opacity 10s linear infinite,
     foglayer_moveme 15s linear infinite;
 }
+
 #foglayer_02,
 #foglayer_03 {
   -webkit-animation:
@@ -439,6 +520,7 @@ body {
   background: url("https://raw.githubusercontent.com/danielstuart14/CSS_FOG_ANIMATION/master/fog1.png")
     center center/cover no-repeat transparent;
 }
+
 #foglayer_02 .image01,
 #foglayer_02 .image02,
 #foglayer_03 .image01,
@@ -452,249 +534,320 @@ body {
   0% {
     opacity: 0.1;
   }
+
   22% {
     opacity: 0.6;
   }
+
   40% {
     opacity: 0.38;
   }
+
   58% {
     opacity: 0.5;
   }
+
   80% {
     opacity: 0.26;
   }
+
   100% {
     opacity: 0.1;
   }
 }
+
 @-moz-keyframes foglayer_01_opacity {
   0% {
     opacity: 0.1;
   }
+
   22% {
     opacity: 0.6;
   }
+
   40% {
     opacity: 0.38;
   }
+
   58% {
     opacity: 0.5;
   }
+
   80% {
     opacity: 0.26;
   }
+
   100% {
     opacity: 0.1;
   }
 }
+
 @-o-keyframes foglayer_01_opacity {
   0% {
     opacity: 0.1;
   }
+
   22% {
     opacity: 0.6;
   }
+
   40% {
     opacity: 0.38;
   }
+
   58% {
     opacity: 0.5;
   }
+
   80% {
     opacity: 0.26;
   }
+
   100% {
     opacity: 0.1;
   }
 }
+
 @keyframes foglayer_01_opacity {
   0% {
     opacity: 0.1;
   }
+
   22% {
     opacity: 0.6;
   }
+
   40% {
     opacity: 0.38;
   }
+
   58% {
     opacity: 0.5;
   }
+
   80% {
     opacity: 0.26;
   }
+
   100% {
     opacity: 0.1;
   }
 }
+
 /* ---------- Keyframe Layer 2 ---------- */
 @-webkit-keyframes foglayer_02_opacity {
   0% {
     opacity: 0.55;
   }
+
   25% {
     opacity: 0.25;
   }
+
   50% {
     opacity: 0.15;
   }
+
   80% {
     opacity: 0.35;
   }
+
   100% {
     opacity: 0.55;
   }
 }
+
 @-moz-keyframes foglayer_02_opacity {
   0% {
     opacity: 0.5;
   }
+
   25% {
     opacity: 0.2;
   }
+
   50% {
     opacity: 0.1;
   }
+
   80% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 0.5;
   }
 }
+
 @-o-keyframes foglayer_02_opacity {
   0% {
     opacity: 0.5;
   }
+
   25% {
     opacity: 0.2;
   }
+
   50% {
     opacity: 0.1;
   }
+
   80% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 0.5;
   }
 }
+
 @keyframes foglayer_02_opacity {
   0% {
     opacity: 0.55;
   }
+
   25% {
     opacity: 0.25;
   }
+
   50% {
     opacity: 0.15;
   }
+
   80% {
     opacity: 0.35;
   }
+
   100% {
     opacity: 0.55;
   }
 }
+
 /* ---------- Keyframe Layer 3 ---------- */
 @-webkit-keyframes foglayer_03_opacity {
   0% {
     opacity: 0.8;
   }
+
   27% {
     opacity: 0.2;
   }
+
   52% {
     opacity: 0.6;
   }
+
   68% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 0.8;
   }
 }
+
 @-moz-keyframes foglayer_03_opacity {
   0% {
     opacity: 0.8;
   }
+
   27% {
     opacity: 0.2;
   }
+
   52% {
     opacity: 0.6;
   }
+
   68% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 0.8;
   }
 }
+
 @-o-keyframes foglayer_03_opacity {
   0% {
     opacity: 0.8;
   }
+
   27% {
     opacity: 0.2;
   }
+
   52% {
     opacity: 0.6;
   }
+
   68% {
     opacity: 0.3;
   }
+
   100% {
     opacity: 0.8;
   }
 }
+
 @keyframes foglayer_03_opacity {
   0% {
     opacity: 0.85;
   }
+
   27% {
     opacity: 0.25;
   }
+
   52% {
     opacity: 0.65;
   }
+
   68% {
     opacity: 0.35;
   }
+
   100% {
     opacity: 0.85;
   }
 }
+
 /* ---------- Keyframe moveMe ---------- */
 @-webkit-keyframes foglayer_moveme {
   0% {
     left: 0;
   }
+
   100% {
     left: -100%;
   }
 }
+
 @-moz-keyframes foglayer_moveme {
   0% {
     left: 0;
   }
+
   100% {
     left: -100%;
   }
 }
+
 @-o-keyframes foglayer_moveme {
   0% {
     left: 0;
   }
+
   100% {
     left: -100%;
   }
 }
+
 @keyframes foglayer_moveme {
   0% {
     left: 0;
   }
+
   100% {
     left: -100%;
   }

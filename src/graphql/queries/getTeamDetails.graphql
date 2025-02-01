@@ -1,0 +1,18 @@
+query GetTeamDetails($eventId: ID!) {
+  myTeam(eventId: $eventId) {
+    ... on QueryMyTeamSuccess {
+      __typename
+      data {
+        attended
+        confirmed
+        id
+        leaderId
+        name
+      }
+    }
+    ... on Error {
+      __typename
+      message
+    }
+  }
+}

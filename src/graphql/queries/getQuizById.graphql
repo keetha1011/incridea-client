@@ -1,0 +1,32 @@
+query GetQuizById($id: String!) {
+  getQuizById(quizId: $id) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetQuizByIdSuccess {
+      __typename
+      data {
+        description
+        endTime
+        eventId
+        id
+        name
+        roundNo
+        startTime
+        questions {
+          id
+          description
+          image
+          isCode
+          question
+          options {
+            id
+            questionId
+            value
+          }
+        }
+      }
+    }
+  }
+}

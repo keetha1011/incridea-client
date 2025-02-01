@@ -27,7 +27,7 @@ const VieweventModal: FC<{
 
   const [showModal, setShowModal] = useState(false);
   const markup = draftToHtml(
-    JSON.parse(event?.description ?? "") as RawDraftContentState,
+    JSON.parse(event.description ?? "") as RawDraftContentState,
   );
 
   const getEventAttributes = () => {

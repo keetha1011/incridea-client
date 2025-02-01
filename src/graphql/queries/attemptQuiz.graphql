@@ -1,0 +1,19 @@
+query AttemptQuiz($quizId: ID!) {
+  attemptQuiz(quizId: $quizId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryAttemptQuizSuccess {
+      __typename
+      data {
+        id
+        leaderId
+        name
+        attended
+        confirmed
+        roundNo
+      }
+    }
+  }
+}
