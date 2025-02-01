@@ -68,7 +68,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
       ></div>
       {showLoader === "hide" ? (
         <>{children}</>
-      ) : showLoader === "show" ? (
+      ) : showLoader === "show" && router.pathname === "/" ? (
         <LoaderContext.Provider
           value={{
             show: showLoader,
@@ -79,7 +79,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
         >
           <BlackHoleLoader />
         </LoaderContext.Provider>
-      ) : null}{" "}
+      ) : null}
       {/** null */}
     </>
   );
