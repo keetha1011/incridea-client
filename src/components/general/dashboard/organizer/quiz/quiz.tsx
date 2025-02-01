@@ -732,21 +732,21 @@ const Quiz: React.FC<{
     <>
       {quizLoading && (
         <div className="flex justify-center items-center h-full">
-          <BiLoaderAlt className="animate-spin text-4xl" />
+          <BiLoaderAlt className="animate-spin text-4xl text-amber-500" />
         </div>
       )}
       <div className="my-12">
-        <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/90 p-6 px-8">
+        <div className="flex h-auto w-full flex-col items-start rounded-3xl bg-gradient-to-br from-[#002C1D] p-6 px-8 shadow-xl">
           <div className="flex flex-row w-full justify-between">
             <div className="flex flex-row items-center">
               <label
-                className="self-center font-gilroy text-lg text-white/85"
+                className="self-center font-gilroy text-lg text-amber-300/85"
                 htmlFor="quizTitle"
               >
                 Quiz Title:
               </label>
               <input
-                className=" self-center w-80 rounded-2xl ml-4 bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium outline-none backdrop-blur-3xl backdrop-filter text-white/70"
+                className="self-center w-80 rounded-2xl ml-4 bg-emerald-900/30 bg-clip-padding p-2 px-4 text-lg font-medium outline-none backdrop-blur-3xl backdrop-filter text-amber-100/70 border border-emerald-700/30"
                 placeholder="Enter quiz title"
                 id="quizTitle"
                 value={quizDetails.quizTitle}
@@ -757,12 +757,12 @@ const Quiz: React.FC<{
             <div className="flex flex-row font-gilroy text-xl self-center text-nowrap items-center">
               <label
                 htmlFor="startTime"
-                className="w-full text-lg text-white/85"
+                className="w-full text-lg text-amber-200/85"
               >
                 Start Time:
               </label>
               <input
-                className=" self-center w-80 rounded-2xl bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium backdrop-blur-3xl backdrop-filter text-white/70"
+                className="self-center w-80 rounded-2xl bg-emerald-900/80 bg-clip-padding p-2 px-4 text-lg font-medium backdrop-blur-3xl backdrop-filter text-amber-100/70 border border-emerald-700/30"
                 placeholder="Quiz Start Time"
                 id="startTime"
                 value={quizDetails.startTime}
@@ -770,12 +770,12 @@ const Quiz: React.FC<{
               />
               <label
                 htmlFor="startTime"
-                className="w-full ml-12 text-lg text-white/85"
+                className="w-full ml-12 text-lg text-amber-200/85"
               >
                 End Time:
               </label>
               <input
-                className=" self-center w-80 rounded-2xl bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium backdrop-blur-3xl backdrop-filter text-white/70"
+                className="self-center w-80 rounded-2xl bg-emerald-900/30 bg-clip-padding p-2 px-4 text-lg font-medium backdrop-blur-3xl backdrop-filter text-amber-100/70 border border-emerald-700/30"
                 placeholder="Quiz End Time"
                 id="endTime"
                 value={quizDetails.endTime}
@@ -790,7 +790,7 @@ const Quiz: React.FC<{
                 id="quizDescription"
                 rows={4}
                 readOnly
-                className="text-lg h-auto w-full mt-4 rounded-3xl bg-slate-800 bg-opacity-20 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter text-white/70"
+                className="text-lg h-auto w-full mt-4 rounded-3xl bg-amber-100/70 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter text-emerald-900/90 border border-emerald-700/20"
                 placeholder="Quiz Description"
                 value={quizDetails.description}
               ></textarea>
@@ -798,13 +798,13 @@ const Quiz: React.FC<{
           )}
           <div className="flex flex-row items-center mt-4">
             <label
-              className="self-center font-gilroy text-lg text-white/85"
+              className="self-center font-gilroy text-lg text-amber-200/85"
               htmlFor="quizPassword"
             >
               Quiz Password:
             </label>
             <input
-              className=" self-center w-80 rounded-2xl ml-4 bg-slate-800 bg-opacity-30 bg-clip-padding p-2 px-4 text-lg font-medium outline-none backdrop-blur-3xl backdrop-filter text-white/70"
+              className="self-center w-80 rounded-2xl ml-4 bg-emerald-900/30 bg-clip-padding p-2 px-4 text-lg font-medium outline-none backdrop-blur-3xl backdrop-filter text-amber-100/70 border border-emerald-700/30"
               placeholder="Enter quiz title"
               id="quizTitle"
               value={quizDetails.password}
@@ -841,7 +841,7 @@ const Quiz: React.FC<{
         </div>
         <div className="flex mt-4 items-center">
           <Button
-            className="rounded-md h-14 w-auto fixed bottom-12 left-12 z-50"
+            className="rounded-md h-14 w-auto fixed bottom-12 left-12 z-50 bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
             intent={saved ? "info" : "danger"}
             size={"large"}
             disabled={updateQuizLoading}
@@ -849,7 +849,7 @@ const Quiz: React.FC<{
           >
             {updateQuizLoading ? (
               <>
-                <BiLoaderAlt className="animate-spin text-xl" />
+                <BiLoaderAlt className="animate-spin text-xl text-amber-300" />
                 Saving Draft...{" "}
               </>
             ) : (
@@ -862,7 +862,7 @@ const Quiz: React.FC<{
         <Button
           intent={"success"}
           onClick={handleAddQuestions}
-          className="fixed bottom-12 font-bold rounded-lg right-12 h-14 w-auto bg-blue-500 text-white hover:bg-blue-600 z-50"
+          className="fixed bottom-12 font-bold rounded-lg right-12 h-14 w-auto bg-amber-600 hover:bg-amber-500 text-white transition-all duration-300 transform hover:scale-105 shadow-lg z-50"
         >
           Add Question +
         </Button>

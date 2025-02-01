@@ -51,7 +51,7 @@ const QuizImageUpload = React.memo(
       <>
         <div
           className={`bodyFont flex grow items-center justify-center rounded-b-md md:rounded-md ${
-            highlighted ? "bg-blue/20 ring-2 ring-blue-500" : "bg-black/20"
+            highlighted ? "bg-blue/20 ring-2 ring-amber-500" : "bg-black/20"
           }`}
           // onClick={() => {
           //   inputRef.current?.click();
