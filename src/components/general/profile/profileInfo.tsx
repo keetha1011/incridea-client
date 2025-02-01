@@ -245,9 +245,8 @@ const ProfileInfo: FC<{
 
         <p className="text-center">
           You need <br />
-          <span className="font-bold text-secondary-600">
-            {needMore} XP
-          </span> to level up!
+          <span className="font-bold text-secondary-600">{needMore} XP</span> to
+          level up!
         </p>
       </div>
 

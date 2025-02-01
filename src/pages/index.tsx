@@ -4,11 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { type NextRouter, useRouter } from "next/router";
 import Parallax from "parallax-js";
-import { type FC, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 
 import Button from "~/components/button";
-import ArcadeLoader from "~/components/loader/arcadeLoader";
 import Spinner from "~/components/spinner";
 import { env } from "~/env";
 import { useAuth } from "~/hooks/useAuth";
@@ -17,18 +16,17 @@ import { cn } from "~/lib/utils";
 export default function Landing() {
   const router = useRouter();
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  }, []);
+
   return (
     <main className="relative h-screen overflow-hidden">
-      {typeof window !== "undefined" && (
-        <>
-          {window.sessionStorage.getItem("arcadeLoader") ? null : (
-            <ArcadeLoader />
-          )}
-        </>
-      )}
       <div className="absolute top-0">
         <HomeUi />
-        <Menu router={router} />
+        {/* <Menu router={router} /> */}
         <HomeFooter />
       </div>
     </main>
@@ -46,7 +44,7 @@ export const HomeFooter = () => {
     return () => clearTimeout(timeout);
   }, [show]);
   return (
-    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4">
+    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4  pt-4">
       {show && (
         <ul className="mb-5 flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
           <li className="text-white transition-colors duration-300 hover:text-gray-300">
@@ -76,7 +74,8 @@ export const HomeFooter = () => {
             className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
             href="/team"
           >
-            Made with <BsFillSuitHeartFill className="mx-2" /> by Technical Team
+            Made with <BsFillSuitHeartFill className="mx-2 fill-red-700" /> by
+            Technical Team
           </Link>
           © Incridea 2024
         </p>
@@ -132,7 +131,7 @@ export const Menu: FC<{
       <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
         <h3
           className={cn(
-            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
+            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block"
             // VikingHell.className,
           )}
         >
@@ -185,111 +184,180 @@ export const Menu: FC<{
 
 export const HomeUi = () => {
   const sceneRef = useRef<HTMLElement>(null);
+  const largeClockRef = useRef(null);
+  const smallClockRef = useRef(null);
+  const floatingObjectsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    // Only run on client-side
+    if (typeof window === "undefined") return;
+
     if (sceneRef.current)
       new Parallax(sceneRef.current, {
         relativeInput: true,
       });
-  });
 
-  const Logo = useRef(null);
+    if (largeClockRef.current) {
+      gsap.to(largeClockRef.current, {
+        rotation: 360,
+        repeat: -1,
+        duration: 20,
+        ease: "linear",
+      });
+    }
+
+    if (smallClockRef.current) {
+      gsap.to(smallClockRef.current, {
+        rotation: -360,
+        repeat: -1,
+        duration: 20,
+        ease: "linear",
+      });
+    }
+  }, []);
 
   useGSAP(() => {
-    if (!Logo.current) return;
+    floatingObjectsRef.current.forEach((obj, index) => {
+      if (!obj) return;
 
-    gsap.from(Logo.current, {
-      delay: 0,
-      duration: 0,
-      scale: 3,
-      opacity: 0.6,
-      zIndex: 9999,
+      gsap.to(obj, {
+        translateY: `${Math.sin(index) * 4}px`,
+        translateX: `${Math.cos(index) * 4}px`,
+        rotation: index % 2 === 0 ? 2 : -2,
+        duration: 3 + index * 0.2,
+        repeat: -1,
+        yoyo: true,
+        ease: "power1.inOut",
+      });
     });
-
-    gsap.to(Logo.current, {
-      duration: 2,
-      scale: 1,
-      opacity: 1,
-    });
-  });
+  }, []);
 
   return (
     <>
-      {/* <CountDown /> */}
       <section
         ref={sceneRef}
-        className="relative min-h-screen bg-gradient-to-b from-[#00002a] via-[#1c23bb] to-pink-800/50"
+        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none"
       >
-        <div className="absolute h-screen w-screen">
-          <div id="foglayer_01" className="fog">
-            <div className="image01" />
-            <div className="image02" />
-          </div>
-          <div id="foglayer_02" className="fog">
-            <div className="image01" />
-            <div className="image02" />
-          </div>
-          <div id="foglayer_03" className="fog">
-            <div className="image01" />
-            <div className="image02" />
-          </div>
-        </div>
-
-        <div data-depth="0.5" className="absolute h-screen w-screen">
-          <div className="absolute bottom-0 left-[50%] aspect-video h-[75vh] -translate-x-1/2 translate-y-16 opacity-50 md:left-0 md:h-full md:w-full md:translate-x-0">
+        <div className="absolute h-screen w-screen" data-depth="0.2">
+          <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/moon.png`}
+              src={"/assets/landing/background.jpg"}
+              priority
               alt="Gradient"
               width={1920}
               height={1080}
-              className="h-full w-full object-contain object-bottom"
+              className="h-full w-full object-cover md:scale-100 scale-[110%] mt-12"
             />
           </div>
-        </div>
-        <div data-depth="0.4" className="absolute h-screen w-screen">
-          <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/stars.png`}
-            alt="Gradient"
-            width={1920}
-            height={1080}
-            className="absolute h-full w-full object-cover object-center"
-          />
         </div>
 
-        <div data-depth="0.3" className="absolute h-screen w-screen">
-          <div className="absolute bottom-0 right-0 aspect-video h-full translate-x-[18%] translate-y-[3%] sm:translate-x-[12%] md:translate-x-[10%] lg:translate-x-[4%]">
+        <div data-depth="0.4" className="absolute h-screen w-screen">
+          <div className="relative mx-auto w-fit h-fit my-auto p-5 md:mt-24 mt-28">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/portal.png`}
-              alt="Portal"
-              width={2050}
-              height={1080}
-              className="h-full w-full object-cover object-right-bottom"
-            />
-          </div>
-        </div>
-        <div
-          data-depth="0.2"
-          className="absolute flex h-screen w-screen items-center justify-center"
-        >
-          <div className="mx-auto mt-[3%] w-fit p-5" ref={Logo}>
-            <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/DoD.png`}
+              src={`/assets/landing/clock.png`}
+              priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="h-fit w-full max-w-xl object-contain object-center"
+              className="absolute h-fit w-full max-w-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-contain object-center md:scale-[75%] scale-[45%]"
+              ref={largeClockRef}
+            />
+            <Image
+              src={`/assets/landing/clock.png`}
+              priority
+              width={640}
+              height={640}
+              alt="Dice of Destiny"
+              className="relative h-fit w-full max-w-xl object-contain object-center md:scale-[55%] scale-[25%]"
+              ref={smallClockRef}
             />
           </div>
         </div>
-        <div data-depth="0.1" className="absolute h-screen w-screen">
-          <div className="absolute bottom-0 left-0 aspect-video h-full -translate-x-[20%] translate-y-[3%] sm:-translate-x-[18%] md:-translate-x-[12%] lg:-translate-x-[10%]">
+
+        <div className="absolute h-screen w-screen">
+          <div className="w-full h-full relative">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/ryoko.png`}
-              id="Ryoko"
-              alt="Ryoko looking at portal"
+              src={"/assets/landing/pillar.png"}
+              priority
+              alt="Gradient"
               width={1920}
               height={1080}
-              className="h-full w-full object-cover object-left-bottom"
+              className="md:h-[50rem] h-[35rem] absolute bottom-0 left-1/2 -translate-x-1/2 mt-auto w-full md:object-fill object-cover object-center"
+            />
+          </div>
+        </div>
+
+        {/* Floating Objects */}
+
+        {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => (
+          <div
+            data-depth="0.6"
+            className="absolute h-screen w-screen"
+            key={idx}
+          >
+            <div
+              ref={(el) => {
+                floatingObjectsRef.current[idx] = el;
+              }}
+              className="absolute lg:bottom-0 md:bottom-24 bottom-60 left-[50%] aspect-video w-screen md:scale-[90%] scale-[125%] -translate-x-1/2 -translate-y-16 transition-transform"
+            >
+              <Image
+                src={`/assets/landing/floatingObjects/${item}.png`}
+                priority
+                alt="Gradient"
+                width={1920}
+                height={1080}
+                className="h-full w-full object-contain object-bottom"
+              />
+            </div>
+          </div>
+        ))}
+
+        {/* EOE Text */}
+        <div
+          data-depth="0.1"
+          className="absolute flex h-screen w-screen items-center justify-center z-20"
+        >
+          <div className="mx-auto w-fit p-5 relative">
+            <Image
+              src={`/assets/landing/incridea.png`}
+              priority
+              width={640}
+              height={640}
+              alt="Dice of Destiny"
+              className="h-fit w-full scale-[50%] max-w-xl object-contain object-center md:translate-y-[90%] translate-y-[130%]"
+            />
+          </div>
+        </div>
+
+        <div
+          data-depth="0.1"
+          className="absolute flex h-screen w-screen items-center justify-center z-20"
+        >
+          <div className="mx-auto w-fit p-5 relative">
+            <Image
+              src={`/assets/landing/EOEText.png`}
+              priority
+              width={640}
+              height={640}
+              alt="Dice of Destiny"
+              className="h-fit w-full max-w-xl object-contain object-center md:translate-y-[161%] translate-y-[196%]"
+            />
+          </div>
+        </div>
+
+        <div
+          data-depth="0.05"
+          className="absolute flex h-screen w-screen items-center justify-center pointer-events-none"
+        >
+          <div className="mx-auto w-fit p-5 relative">
+            <Image
+              src={`/assets/landing/EOEShadow.png`}
+              priority
+              width={640}
+              height={640}
+              alt="Dice of Destiny"
+              className="h-fit w-full max-w-xl object-contain object-center z-0 md:translate-y-[160%] translate-y-[195%]  opacity-85 blur-sm"
             />
           </div>
         </div>
