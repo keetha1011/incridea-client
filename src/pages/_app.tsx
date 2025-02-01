@@ -17,8 +17,8 @@ import "~/styles/globals.css";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
-const LOADING_DELAY = 300; 
-const SLOW_SPEED_THRESHOLD = 0.5; 
+const LOADING_DELAY = 300;
+const SLOW_SPEED_THRESHOLD = 0.5;
 const SPEED_TEST_INTERVAL = 10000;
 export const VikingHell = LocalFont({
   src: "../font/Viking Hell.otf",
@@ -98,7 +98,7 @@ export default function App({
       if (!response.ok) return;
 
       const duration = endTime - startTime;
-      const speed = 1000 / duration; 
+      const speed = 1000 / duration;
 
       setIsSlowConnection(speed < SLOW_SPEED_THRESHOLD);
     } catch (err) {
@@ -146,7 +146,7 @@ export default function App({
   useEffect(() => {
     const handleSlowLoading = () => {
       const navigation = performance.getEntriesByType(
-        "navigation"
+        "navigation",
       )[0] as PerformanceNavigationTiming;
 
       if (navigation) {

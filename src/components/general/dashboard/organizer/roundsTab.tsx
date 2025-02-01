@@ -22,8 +22,8 @@ function RoundsTab({
 
   return (
     <div className="flex h-full flex-col gap-3 md:flex-row">
-      <Tab.Group>
-        <Tab.List className="flex w-full flex-row items-center gap-2 overflow-x-auto border-gray-600 bg-gray-900/30 p-3 backdrop-blur-md sm:rounded-lg sm:border md:max-w-xs md:flex-col">
+      <Tab.Group className="flex flex-col w-full gap-3 lg:flex-row">
+        <Tab.List className="flex w-full flex-row items-center justify-center gap-2 overflow-x-auto border-gray-600 bg-gray-900/30 p-3 backdrop-blur-md sm:rounded-lg sm:border md:max-w-xs md:flex-col">
           {rounds.map((round) => (
             <Tab key={round.roundNo} className="focus:outline-none md:w-full">
               {({ selected }) => (

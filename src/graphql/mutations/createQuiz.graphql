@@ -1,0 +1,31 @@
+mutation CreateQuiz(
+  $quizDescription: String = ""
+  $endTime: String = ""
+  $eventId: String = ""
+  $quizTitle: String = ""
+  $startTime: String = ""
+  $roundId: String = ""
+  $password: String = ""
+  $points: Int = 1
+  $qualifyNext: Int = 5
+) {
+  createQuiz(
+    endTime: $endTime
+    eventId: $eventId
+    name: $quizTitle
+    roundId: $roundId
+    startTime: $startTime
+    description: $quizDescription
+    password: $password
+    points: $points
+    qualifyNext: $qualifyNext
+  ) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationCreateQuizSuccess {
+      __typename
+    }
+  }
+}

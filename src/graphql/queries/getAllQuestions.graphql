@@ -1,0 +1,23 @@
+query GetAllQuestions($quizId: String!) {
+  getAllquestions(quizId: $quizId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetAllquestionsSuccess {
+      __typename
+      data {
+        id
+        question
+        image
+        isCode
+        description
+        options {
+          id
+          questionId
+          value
+        }
+      }
+    }
+  }
+}

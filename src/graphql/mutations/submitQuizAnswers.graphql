@@ -1,0 +1,26 @@
+mutation SubmitQuizAnswer(
+  $quizId: String!
+  $selectedAnswers: [SelectedOptions!]!
+  $teamId: Int!
+  $timeTaken: Float!
+) {
+  submitQuiz(
+    quizId: $quizId
+    selectedAnswers: $selectedAnswers
+    teamId: $teamId
+    timeTaken: $timeTaken
+  ) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationSubmitQuizSuccess {
+      __typename
+      data {
+        id
+        quizId
+        teamId
+      }
+    }
+  }
+}
