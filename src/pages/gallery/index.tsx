@@ -1,268 +1,142 @@
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { type NextPage } from "next";
-import Image from "next/image";
-import {
-  type MouseEventHandler,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
-import toast from "react-hot-toast";
-import { type Swiper as SwiperType } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Swiper, SwiperSlide } from "swiper/react";
-
 import { FooterBody } from "~/components/footer";
-import GallerySlide from "~/components/galleryslide";
-import ProgressBar from "~/components/galleryslide/progressBar/progress-bar";
-import styles from "~/components/galleryslide/styles/shadow.module.css";
-import { env } from "~/env";
+import Clock from "~/components/galleryComponents/clock";
+import Inc22 from "~/components/galleryComponents/scenes/Inc22";
+import Inc23 from "~/components/galleryComponents/scenes/Inc23";
+import Inc24 from "~/components/galleryComponents/scenes/Inc24";
+import Inc25 from "~/components/galleryComponents/scenes/Inc25";
+import Parallax from "parallax-js";
 
 const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
-  const swiperRef = useRef<SwiperType>();
-  const years = [2019, 2020, 2022, 2023, 2024] as const;
-  const imageCounts = [29, 12, 26, 26, 0] as const;
+
+  const backgroundImages: string[] = [
+    "/assets/galleryBg/inc22-gallerybg.jpg",
+    "/assets/galleryBg/inc23-gallerybg.jpg",
+    "/assets/galleryBg/inc24-gallerybg.jpg",
+    "/assets/galleryBg/inc24-gallerybg.jpg",
+  ];
+
+  const handleClockClick = (angle: number) => {
+    switch (angle) {
+      case 0:
+      case 2 * Math.PI:
+        setActiveYear(2);
+        break;
+      case Math.PI / 2:
+        setActiveYear(3);
+        break;
+      case (3 * Math.PI) / 2:
+      case -Math.PI / 2:
+        setActiveYear(1);
+        break;
+      case Math.PI:
+        setActiveYear(0);
+        break;
+    }
+  };
+
+  const years = [2022, 2023, 2024] as const;
+  const imageCounts = [12, 26, 26] as const;
 
   const generateImagePaths = (
     year: number,
     count: number,
     extension: string,
-  ) => {
-    const imagePaths = [];
-    for (let i = 1; i <= count; i++) {
-      imagePaths.push(`gallery/${year}/${i}.${extension}`);
-    }
-    return imagePaths;
+  ): string[] => {
+    return Array.from(
+      { length: count },
+      (_, i) => `gallery/${year}/${i + 1}.${extension}`,
+    );
   };
-  const x = useMotionValue(0.5);
-  const y = useMotionValue(0.5);
+
+  const imgArr = [
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+    "assets/jpeg/Nakash.jpeg",
+  ];
+
+  const img2022 = generateImagePaths(years[0], imageCounts[0], "jpg");
+  const img2023 = generateImagePaths(years[1], imageCounts[1], "jpg");
+  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg");
+
+  const renderActiveYearComponent = (): JSX.Element | null => {
+    const components = [
+      <Inc22 imgArr={imgArr} key={0} />,
+      <Inc23 imgArr={imgArr} key={1} />,
+      <Inc24 imgArr={imgArr} key={2} />,
+      <Inc25 imgArr={imgArr} key={3} />,
+    ];
+    return components[activeYear] ?? null;
+  };
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      toast.success(
-        "Feel free to interact with the console, Swipe the screens etc to interact!",
-        {
-          duration: 3000,
-          style: {
-            backgroundColor: "#7628D0",
-            color: "white",
-          },
-        },
-      );
-    }
-  }, []);
+    gsap.fromTo(
+      "#active-year-content",
+      { opacity: 0 },
+      { opacity: 1, duration: 1 },
+    );
 
-  useLayoutEffect(() => {
-    gsap.context(() => {
-      const t1 = gsap.timeline();
-      t1.from("#animation", {
-        delay: 0.3,
-        filter: "drop-shadow(0px 0px 0px white)",
-        y: -90,
-        // boxShadow: "0px 10px 67px 40px rgba(0,0,0,0.25)",
-      }).to("#animation", {
-        y: 0,
-        filter: "drop-shadow(0px 0px 2vw white)",
-        // boxShadow: "0px 10px 67px 90px rgba(0,0,0,0.25)",
-        duration: 0.5,
-      });
-    });
-    window?.addEventListener("deviceorientation", (evt) => {
-      const xAng = evt.gamma;
-      if (xAng) x.set(xAng / 100);
-      const yAng = evt.beta;
-      if (yAng) y.set(yAng / 100);
-    });
-  }, [activeYear, x, y]);
-  const img2019: string[] = generateImagePaths(years[0], imageCounts[0], "jpg");
-  const img2020: string[] = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2022: string[] = generateImagePaths(years[2], imageCounts[2], "jpg");
-  const img2023: string[] = generateImagePaths(years[3], imageCounts[3], "jpg");
-
-  //Not needed but refactoring not worth it
-  const img2024: string[] = generateImagePaths(years[4], imageCounts[4], "jpg");
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-  const rotateX = useTransform(
-    mouseYSpring,
-    [-1.8, 1.8],
-    ["150deg", "-150deg"],
-  );
-  const rotateY = useTransform(
-    mouseXSpring,
-    [-1.8, 1.8],
-    ["-150deg", "150deg"],
-  );
-  const tiltStars: MouseEventHandler<HTMLElement> = (e) => {
-    const xPct = (e.clientX / window.innerWidth - 0.5) * 0.4;
-    const yPct = (e.clientY / window.innerHeight - 0.5) * 0.4;
-    x.set(xPct);
-    y.set(yPct);
-  };
+    return () => {
+      gsap.to("#active-year-content", { opacity: 0, duration: 1 });
+    };
+  }, [activeYear]);
 
   return (
     <>
-      <section
-        className="relative flex h-screen w-full flex-col overflow-hidden bg-[url('/assets/png/galleryBg.png')] bg-cover bg-center"
-        onMouseMove={tiltStars}
-      >
-        <motion.div
-          className={
-            "absolute h-full w-full bg-[url('/assets/png/galleryBgStars.png')] bg-cover bg-center"
-          }
-          id="stars"
-          style={{ rotateY, rotateX }}
-        ></motion.div>
-        {/* Pc Section */}
-        <div className="z-0 min-h-screen overflow-y-auto">
-          {years.map((year, index) => {
-            if (index === 4) return;
-            return (
-              <h1
-                key={year}
-                id="animation"
-                className={
-                  styles["text-shadow"] +
-                  ` absolute top-28 z-50 w-full border-black text-center text-4xl font-extrabold text-white sm:text-6xl ${
-                    activeYear === index ? "block" : "hidden"
-                  }`
-                }
-              >
-                INCRIDEA <span className="tracking-tight">{year}</span>
-              </h1>
-            );
-          })}
+      <section className="relative flex h-screen w-full flex-col overflow-hidden bg-black bg-opacity-50">
+        <div
+          className="relative h-screen w-full z-0 overflow-hidden"
+          style={{
+            backgroundImage: `url(${backgroundImages[activeYear]})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
+        >
+          <div className="relative transform translate-y-10 md:-translate-y-10 z-20 top-28">
+            <Clock onClockClick={handleClockClick} />
+          </div>
 
-          {/* Slide Section */}
-          <Swiper
-            autoplay={false}
-            onBeforeInit={(swiper: SwiperType) => {
-              swiperRef.current = swiper;
-            }}
-            speed={900}
-            spaceBetween={200}
-            noSwiping={true}
-            allowTouchMove={false}
-            className="relative flex h-full sm:w-full"
-          >
-            <SwiperSlide className="flex items-center justify-center text-center">
-              <div className="relative flex h-full w-full items-center justify-center">
-                <GallerySlide title={2019} imgArr={img2019} emulator="gba" />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex items-center justify-center text-center">
-              <div className="relative flex h-full w-full items-center justify-center">
-                <GallerySlide
-                  title={2020}
-                  imgArr={img2020}
-                  emulator="retroPC"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex items-center justify-center text-center">
-              <div className="relative flex h-full w-full items-center justify-center">
-                <GallerySlide
-                  title={2022}
-                  imgArr={img2022}
-                  emulator="retroTV"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex items-center justify-center text-center">
-              <div className="relative flex h-full w-full items-center justify-center">
-                <GallerySlide
-                  title={2023}
-                  imgArr={img2023}
-                  emulator="console"
-                />
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="flex items-center justify-center text-center">
-              <div className="relative flex h-full w-full items-center justify-center">
-                <GallerySlide title={2024} imgArr={img2024} emulator="final" />
-              </div>
-            </SwiperSlide>
-            <div className="absolute bottom-32 z-20 mx-auto flex w-full justify-between gap-4 px-20 sm:bottom-[16%]">
-              <button
-                id="float"
-                onClick={async () => {
-                  if (activeYear !== 0) {
-                    await gsap.to("#animation", {
-                      y: -90,
-                      // boxShadow: "0px 10px 67px 20px rgba(0,0,0,0.25)",
-                      filter: "drop-shadow(0px 0px 0px white)",
-                      duration: 0.2,
-                    });
-                  }
-
-                  setActiveYear((cur) => {
-                    if (cur === 0) return cur;
-                    return --cur;
-                  });
-                  return swiperRef.current?.slidePrev();
-                }}
-                className={`z-20 h-6 w-auto transition-all duration-75 ease-in-out`}
-              >
-                <Image
-                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/8bitArrow.svg`}
-                  alt="arrow-previous"
-                  width={50}
-                  height={50}
-                  className="z-20 h-12 w-12 rotate-180 md:h-20 md:w-20"
-                  style={{
-                    filter:
-                      "drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)",
-                    WebkitFilter:
-                      "drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)",
-                  }}
-                ></Image>
-              </button>
-              <button
-                id="float"
-                onClick={async () => {
-                  if (activeYear < years.length) {
-                    await gsap.to("#animation", {
-                      y: -90,
-                      // boxShadow: "0px 10px 67px 20px rgba(0,0,0,0.25)",
-                      filter: "drop-shadow(0px 0px 0px white)",
-                      duration: 0.2,
-                    });
-                  }
-
-                  setActiveYear((cur) => {
-                    if (cur === years.length) return cur;
-                    return ++cur;
-                  });
-                  return swiperRef.current?.slideNext();
-                }}
-                className="z-[500] h-6 w-auto transition-all duration-75 ease-in-out"
-              >
-                <Image
-                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/svg/8bitArrow.svg`}
-                  alt="arrow-next"
-                  width={50}
-                  height={50}
-                  //  -webkit-filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black);filter: drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black);
-                  className="z-[500] h-12 w-12 md:h-20 md:w-20"
-                  style={{
-                    filter:
-                      "drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)",
-                    WebkitFilter:
-                      "drop-shadow(1px 1px 0 black) drop-shadow(-1px -1px 0 black)",
-                  }}
-                ></Image>
-              </button>
-            </div>
-          </Swiper>
+          <div id="active-year-content" className="relative h-full w-full z-10">
+            {renderActiveYearComponent()}
+          </div>
         </div>
       </section>
-      <ProgressBar year={activeYear}></ProgressBar>
+
       <FooterBody />
     </>
   );
