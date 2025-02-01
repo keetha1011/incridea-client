@@ -1,15 +1,19 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { cn } from "~/lib/utils";
 
 type Variant = "solid" | "ghost" | "outlined";
 
 const MetallicButton = ({
   variant = "solid",
   children,
+  className,
+  ...props
 }: {
   variant?: Variant;
   children: React.ReactNode;
-}) => {
+  className?: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const shineRef = useRef<HTMLDivElement>(null);
 
@@ -90,9 +94,15 @@ const MetallicButton = ({
   return (
     <button
       ref={buttonRef}
-      className={variants[variant as keyof typeof variants]}
+      className={cn(variants[variant as keyof typeof variants], className)}
+      {...props}
     >
-      <span className={`relative z-10 select-none ${textVariants[variant]}`}>
+      <span
+        className={cn(
+          `relative z-10 select-none ${textVariants[variant]}`,
+          className,
+        )}
+      >
         {children}
       </span>
       <div

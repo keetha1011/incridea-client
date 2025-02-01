@@ -14,11 +14,11 @@ export default function BackGroundGradient({
         bgRef.current,
         {
           background:
-            "linear-gradient(0deg, rgba(0,51,31,1) 0%, rgba(0,102,63,1) 20%, rgba(0,51,31,1) 100%)",
+            "linear-gradient(45deg, rgba(0,51,31,1) 10%, rgba(0,102,63,1) 20%, rgba(0,51,31,1) 90%)",
         },
         {
           background:
-            "linear-gradient(0deg, rgba(0,51,31,1) 0%, rgba(0,102,63,1) 80%, rgba(0,51,31,1) 100%)",
+            "linear-gradient(45deg, rgba(0,51,31,1) 10%, rgba(0,102,63,1) 80%, rgba(0,51,31,1) 90%)",
           repeat: -1,
           yoyo: true,
           duration: 6,

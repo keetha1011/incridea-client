@@ -11,6 +11,7 @@ import Button from "~/components/button";
 import Spinner from "~/components/spinner";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
+import MetallicButton from "~/components/copperButton";
 
 export default function Landing() {
   useEffect(() => {
@@ -184,6 +185,7 @@ export const HomeUi = () => {
   const largeClockRef = useRef(null);
   const smallClockRef = useRef(null);
   const floatingObjectsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     // Only run on client-side
@@ -349,6 +351,21 @@ export const HomeUi = () => {
             alt="Dice of Destiny"
             className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
           />
+        </div>
+
+        <div className="w-screen h-screen z-50 relative select-all pointer-events-auto">
+          <div className="bottom-[18%] left-1/2 -translate-x-1/2 absolute flex gap-4">
+            <MetallicButton onClick={() => router.push("/register")}>
+              Register
+            </MetallicButton>
+            <MetallicButton
+              variant={"ghost"}
+              onClick={() => router.push("/explore")}
+              className="bg-black/70 text-white"
+            >
+              Register
+            </MetallicButton>
+          </div>
         </div>
       </section>
     </>

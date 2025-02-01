@@ -52,7 +52,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
         },
         {
           opacity: 0,
-          backgroundColor: "rgb(0,44,77)",
+          backgroundColor: "#00331f",
           duration: 2,
           display: "none",
         },
