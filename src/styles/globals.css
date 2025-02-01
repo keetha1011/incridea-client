@@ -294,6 +294,10 @@ body {
   font-style: italic;
 }
 
+.PTSerif {
+  font-family: "PTSerif", system-ui;
+}
+
 @keyframes fly-up-down {
   0% {
     transform: translateY(0);
