@@ -790,7 +790,7 @@ const Quiz: React.FC<{
                 id="quizDescription"
                 rows={4}
                 readOnly
-                className="text-lg h-auto w-full mt-4 rounded-3xl bg-amber-100/70 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter text-emerald-900/90 border border-emerald-700/20"
+                className="text-lg h-auto w-full mt-4 rounded-3xl bg-amber-200/70 bg-clip-padding px-4 py-6 outline-none backdrop-blur-3xl backdrop-filter text-emerald-900/90 border border-emerald-700/20"
                 placeholder="Quiz Description"
                 value={quizDetails.description}
               ></textarea>
