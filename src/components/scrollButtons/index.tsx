@@ -33,14 +33,14 @@ export default function ScrollButtons() {
     <div className="fixed bottom-10 right-10 z-20">
       {showUpButton ? (
         <button
-          className="bg-white text-black bg-opacity-55 p-3 rounded-full shadow-md hover:bg-gray-800"
+          className="bg-white text-black bg-opacity-55 p-3 rounded-full shadow-md hover:bg-gray-200"
           onClick={scrollToTop}
         >
           <ChevronUp size={24} />
         </button>
       ) : showDownButton ? (
         <button
-          className="bg-white text-black bg-opacity-55 p-3 rounded-full shadow-md hover:bg-gray-800"
+          className="bg-white text-black bg-opacity-55 p-3 rounded-full shadow-md hover:bg-gray-200"
           onClick={scrollToBottom}
         >
           <ChevronDown size={24} />

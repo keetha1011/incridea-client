@@ -22,7 +22,7 @@ import {
   PublishedEventsSlugDocument,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
-// import { ScrollBar } from "~/components/ui/scroll-area";
+import ScrollButtons from "~/components/scrollButtons";
 
 type Props =
   | {
@@ -186,6 +186,7 @@ const Page = ({ event, error }: Props) => {
         <section
           className={`no-scrollbar flex mt-20 min-h-screen justify-center flex-col gap-5 overflow-y-scroll text-white lg:flex-row z-10 w-screen lg:px-10`}
         >
+          <ScrollButtons />
           <div className={`no-scrollbar px-3 lg:h-full lg:pb-8`}>
             <div
               className={`basis-1/3 rounded-xl border border-[#D79128] bg-[#054432] bg-opacity-70 p-5 backdrop-blur-xl backdrop-filter`}
