@@ -55,10 +55,13 @@ export const QRCodeScanner: React.FC<{
 
   return (
     <div className="relative flex flex-col items-center">
-      <video className="w-full rounded-lg border border-gray-400" ref={ref} />
+      <video
+        className="w-full rounded-lg border border-emerald-900"
+        ref={ref}
+      />
       {!result && (
         <div className="mt-2 text-center text-sm text-gray-400">
-          <span className="text-green-500">Note:</span> Detection is retried
+          <span className="text-amber-500">Note:</span> Detection is retried
           every 300ms. If you are not seeing the detection, try moving the
           camera closer to the QR code.
         </div>
