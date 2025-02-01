@@ -148,7 +148,7 @@ const SignIn: NextPage = () => {
       setRadius2("300vw");
       setScale1("1.4");
       setBottom1("80%");
-    } else if (screenWidth < 1000) {
+    } else if (screenWidth < 1400) {
       gear2Radius = screenWidth; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
@@ -156,7 +156,7 @@ const SignIn: NextPage = () => {
       setRadius2("160vw");
       setScale1("");
       setBottom1("80%");
-    } else if (screenWidth < 1024) {
+    } else if (screenWidth < 1500) {
       gear2Radius = screenWidth / 1; // Half the screen width
       gear1Radius = gear2Radius * 0.8; // Proportional size for smaller gear
       console.log("gear2Radius", gear2Radius);
@@ -167,7 +167,6 @@ const SignIn: NextPage = () => {
     } else {
       gear2Radius = screenWidth / 1;
       gear1Radius = gear2Radius * 0.8;
-
       setRadius1(gear1Radius);
       setRadius2(`${gear2Radius}px`);
       setScale1("");
@@ -266,7 +265,9 @@ const SignIn: NextPage = () => {
             }}
             className="absolute scale-150 translate-y-1/2"
           >
-            <img src="assets/svg/gear44.svg" alt="" className="size-full" />
+            <div className="relative size-full">
+              <Image src="assets/svg/gear44.svg" alt="" fill priority />
+            </div>
           </div>
           {/* <style jsx global>{`
             @keyframes rotateClockwise {
@@ -297,12 +298,9 @@ const SignIn: NextPage = () => {
             }}
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
-            <img
-              src="assets/svg/gear44.svg"
-              alt=""
-              className="absolute size-full"
-            />
-
+            <div className="absolute size-full">
+              <Image src="assets/svg/gear44.svg" alt="" priority fill />
+            </div>
             <div className="size-full relative">
               <LoginCard
                 whichForm="signIn"
