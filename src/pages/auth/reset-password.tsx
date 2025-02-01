@@ -89,7 +89,7 @@ const Reset: NextPage = () => {
       <Image
         fill={true}
         className="mt-16 object-cover"
-        src={`/assets/jpeg/copperbg.jpg`}
+        src={`/assets/png/bg-login.png`}
         alt={"loginBG"}
         quality={100}
         priority
@@ -118,7 +118,7 @@ const Reset: NextPage = () => {
             }}
             className="absolute scale-150 translate-y-1/2"
           >
-            <img src="/assets/svg/geardone2.svg" alt="" className="size-full" />
+            <img src="/assets/svg/gear44.svg" alt="" className="size-full" />
           </div>
           <div
             style={{
@@ -131,7 +131,7 @@ const Reset: NextPage = () => {
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
             <img
-              src="/assets/svg/geardone2.svg"
+              src="/assets/svg/gear44.svg"
               alt=""
               className="absolute size-full"
             />
