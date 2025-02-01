@@ -16,6 +16,12 @@ import { cn } from "~/lib/utils";
 export default function Landing() {
   const router = useRouter();
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  }, []);
+
   return (
     <main className="relative h-screen overflow-hidden">
       <div className="absolute top-0">
@@ -38,7 +44,7 @@ export const HomeFooter = () => {
     return () => clearTimeout(timeout);
   }, [show]);
   return (
-    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4">
+    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4  pt-4">
       {show && (
         <ul className="mb-5 flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
           <li className="text-white transition-colors duration-300 hover:text-gray-300">
@@ -68,7 +74,8 @@ export const HomeFooter = () => {
             className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
             href="/team"
           >
-            Made with <BsFillSuitHeartFill className="mx-2" /> by Technical Team
+            Made with <BsFillSuitHeartFill className="mx-2 fill-red-700" /> by
+            Technical Team
           </Link>
           © Incridea 2024
         </p>
@@ -124,7 +131,7 @@ export const Menu: FC<{
       <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
         <h3
           className={cn(
-            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
+            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block"
             // VikingHell.className,
           )}
         >
@@ -227,50 +234,55 @@ export const HomeUi = () => {
 
   return (
     <>
-      <section ref={sceneRef} className="relative min-h-screen bg-cover z-0">
-        <div className="absolute h-screen w-screen" data-depth="0.4">
-          <div className="absolute bottom-0 left-[50%] aspect-video h-[100vh] scale-110  md:left-0 md:h-full md:w-full md:-translate-x-0">
+      <section
+        ref={sceneRef}
+        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none"
+      >
+        <div className="absolute h-screen w-screen" data-depth="0.2">
+          <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
-              src={"/assets/landing/background.png"}
+              src={"/assets/landing/background.jpg"}
+              priority
               alt="Gradient"
               width={1920}
               height={1080}
-              className="h-full w-full object-coverß object-bottom"
+              className="h-full w-full object-cover md:scale-100 scale-[110%] mt-12"
             />
           </div>
         </div>
-        <div
-          data-depth="0.1"
-          className="absolute flex h-screen w-screen items-center justify-center"
-        >
-          <div className="relative mx-auto w-fit p-5">
+
+        <div data-depth="0.4" className="absolute h-screen w-screen">
+          <div className="relative mx-auto w-fit h-fit my-auto p-5 md:mt-24 mt-28">
             <Image
               src={`/assets/landing/clock.png`}
+              priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="absolute h-fit w-full max-w-xl object-contain object-center scale-[70%] -translate-x-8"
+              className="absolute h-fit w-full max-w-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-contain object-center md:scale-[75%] scale-[45%]"
               ref={largeClockRef}
             />
             <Image
               src={`/assets/landing/clock.png`}
+              priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="relative h-fit w-full max-w-xl object-contain object-center -translate-x-[1.25rem] translate-y-4 scale-[50%]"
+              className="relative h-fit w-full max-w-xl object-contain object-center md:scale-[55%] scale-[25%]"
               ref={smallClockRef}
             />
           </div>
         </div>
 
         <div className="absolute h-screen w-screen">
-          <div className="absolute bottom-0 left-[50%] aspect-video h-[75vh] scale-110  md:left-0 md:h-full md:w-full md:-translate-x-0">
+          <div className="w-full h-full relative">
             <Image
               src={"/assets/landing/pillar.png"}
+              priority
               alt="Gradient"
               width={1920}
               height={1080}
-              className="h-full w-full object-contain object-bottom"
+              className="md:h-[50rem] h-[35rem] absolute bottom-0 left-1/2 -translate-x-1/2 mt-auto w-full md:object-fill object-cover object-center"
             />
           </div>
         </div>
@@ -279,7 +291,7 @@ export const HomeUi = () => {
 
         {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => (
           <div
-            data-depth="0.1"
+            data-depth="0.6"
             className="absolute h-screen w-screen"
             key={idx}
           >
@@ -287,10 +299,11 @@ export const HomeUi = () => {
               ref={(el) => {
                 floatingObjectsRef.current[idx] = el;
               }}
-              className="absolute bottom-0 left-[50%] aspect-video h-[75vh] scale-95 -translate-x-1/2 -translate-y-16 md:left-0 md:h-full md:w-full md:-translate-x-0 transition-transform"
+              className="absolute lg:bottom-0 md:bottom-24 bottom-60 left-[50%] aspect-video w-screen md:scale-[90%] scale-[125%] -translate-x-1/2 -translate-y-16 transition-transform"
             >
               <Image
                 src={`/assets/landing/floatingObjects/${item}.png`}
+                priority
                 alt="Gradient"
                 width={1920}
                 height={1080}
@@ -302,31 +315,49 @@ export const HomeUi = () => {
 
         {/* EOE Text */}
         <div
-          data-depth="0.05"
+          data-depth="0.1"
           className="absolute flex h-screen w-screen items-center justify-center z-20"
         >
           <div className="mx-auto w-fit p-5 relative">
             <Image
-              src={`/assets/landing/EOEText.png`}
+              src={`/assets/landing/incridea.png`}
+              priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="h-fit w-full max-w-xl object-contain object-center  translate-y-[120%] -translate-x-4"
+              className="h-fit w-full scale-[50%] max-w-xl object-contain object-center md:translate-y-[90%] translate-y-[130%]"
             />
           </div>
         </div>
 
         <div
-          data-depth="0"
+          data-depth="0.1"
+          className="absolute flex h-screen w-screen items-center justify-center z-20"
+        >
+          <div className="mx-auto w-fit p-5 relative">
+            <Image
+              src={`/assets/landing/EOEText.png`}
+              priority
+              width={640}
+              height={640}
+              alt="Dice of Destiny"
+              className="h-fit w-full max-w-xl object-contain object-center md:translate-y-[161%] translate-y-[196%]"
+            />
+          </div>
+        </div>
+
+        <div
+          data-depth="0.05"
           className="absolute flex h-screen w-screen items-center justify-center pointer-events-none"
         >
           <div className="mx-auto w-fit p-5 relative">
             <Image
               src={`/assets/landing/EOEShadow.png`}
+              priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="h-fit w-full max-w-xl object-contain object-center z-0 translate-y-[120%]  opacity-85 blur-sm -translate-x-4"
+              className="h-fit w-full max-w-xl object-contain object-center z-0 md:translate-y-[160%] translate-y-[195%]  opacity-85 blur-sm"
             />
           </div>
         </div>
