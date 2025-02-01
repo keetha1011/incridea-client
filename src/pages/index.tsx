@@ -8,15 +8,12 @@ import { type FC, useEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 
 import Button from "~/components/button";
-import ArcadeLoader from "~/components/loader/arcadeLoader";
 import Spinner from "~/components/spinner";
-import { env } from "~/env";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
+import MetallicButton from "~/components/copperButton";
 
 export default function Landing() {
-  const router = useRouter();
-
   useEffect(() => {
     if (typeof window !== "undefined") {
       window.scrollTo(0, document.body.scrollHeight);
@@ -25,13 +22,6 @@ export default function Landing() {
 
   return (
     <main className="relative h-screen overflow-hidden">
-      {/* {typeof window !== "undefined" && (
-        <>
-          {window.sessionStorage.getItem("arcadeLoader") ? null : (
-            <ArcadeLoader />
-          )}
-        </>
-      )} */}
       <div className="absolute top-0">
         <HomeUi />
         {/* <Menu router={router} /> */}
@@ -52,7 +42,7 @@ export const HomeFooter = () => {
     return () => clearTimeout(timeout);
   }, [show]);
   return (
-    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4  pt-4">
+    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4 pt-4 bg-black/50 backdrop-blur-sm h-16">
       {show && (
         <ul className="mb-5 flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
           <li className="text-white transition-colors duration-300 hover:text-gray-300">
@@ -195,6 +185,7 @@ export const HomeUi = () => {
   const largeClockRef = useRef(null);
   const smallClockRef = useRef(null);
   const floatingObjectsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     // Only run on client-side
@@ -249,7 +240,7 @@ export const HomeUi = () => {
         <div className="absolute h-screen w-screen" data-depth="0.2">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
-              src={"/assets/landing/background.jpg"}
+              src={"/assets/landing/background.webp"}
               priority
               alt="Gradient"
               width={1920}
@@ -259,15 +250,18 @@ export const HomeUi = () => {
           </div>
         </div>
 
-        <div data-depth="0.4" className="absolute h-screen w-screen">
-          <div className="relative mx-auto w-fit h-fit my-auto p-5 md:mt-24 mt-28">
+        <div
+          data-depth="0.4"
+          className=" h-screen w-screen flex justify-center items-center"
+        >
+          <div className="p-5 w-screen h-screen flex justify-center items-center mb-10 relative">
             <Image
-              src={`/assets/landing/clock.png`}
+              src={`/assets/landing/clock.webp`}
               priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="absolute h-fit w-full max-w-xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 object-contain object-center md:scale-[75%] scale-[45%]"
+              className="left-1/2 -translate-x-1/2 absolute md:top-[10%] md:w-[20%] w-[40%] top-[20%] object-contain object-center"
               ref={largeClockRef}
             />
             <Image
@@ -276,7 +270,7 @@ export const HomeUi = () => {
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="relative h-fit w-full max-w-xl object-contain object-center md:scale-[55%] scale-[25%]"
+              className="absolute md:w-[12%] md:top-[17%] w-[20%] top-[25%] object-contain object-center"
               ref={smallClockRef}
             />
           </div>
@@ -285,12 +279,12 @@ export const HomeUi = () => {
         <div className="absolute h-screen w-screen">
           <div className="w-full h-full relative">
             <Image
-              src={"/assets/landing/pillar.png"}
+              src={"/assets/landing/pillar.webp"}
               priority
               alt="Gradient"
               width={1920}
               height={1080}
-              className="md:h-[50rem] h-[35rem] absolute bottom-0 left-1/2 -translate-x-1/2 mt-auto w-full md:object-fill object-cover object-center"
+              className="md:h-[80%] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 mt-auto w-full md:object-fill object-cover object-center"
             />
           </div>
         </div>
@@ -310,7 +304,7 @@ export const HomeUi = () => {
               className="absolute lg:bottom-0 md:bottom-24 bottom-60 left-[50%] aspect-video w-screen md:scale-[90%] scale-[125%] -translate-x-1/2 -translate-y-16 transition-transform"
             >
               <Image
-                src={`/assets/landing/floatingObjects/${item}.png`}
+                src={`/assets/landing/floatingObjects/${item}.webp`}
                 priority
                 alt="Gradient"
                 width={1920}
@@ -326,47 +320,51 @@ export const HomeUi = () => {
           data-depth="0.1"
           className="absolute flex h-screen w-screen items-center justify-center z-20"
         >
-          <div className="mx-auto w-fit p-5 relative">
+          <div className="mx-auto w-screen h-screen p-5 relative">
             <Image
               src={`/assets/landing/incridea.png`}
               priority
               width={640}
               height={640}
               alt="Dice of Destiny"
-              className="h-fit w-full scale-[50%] max-w-xl object-contain object-center md:translate-y-[90%] translate-y-[130%]"
+              className="absolute md:w-[15%] left-1/2 -translate-x-1/2 top-[25%] w-[40%] object-contain object-center"
             />
           </div>
         </div>
 
-        <div
-          data-depth="0.1"
-          className="absolute flex h-screen w-screen items-center justify-center z-20"
-        >
-          <div className="mx-auto w-fit p-5 relative">
-            <Image
-              src={`/assets/landing/EOEText.png`}
-              priority
-              width={640}
-              height={640}
-              alt="Dice of Destiny"
-              className="h-fit w-full max-w-xl object-contain object-center md:translate-y-[161%] translate-y-[196%]"
-            />
-          </div>
+        <div data-depth="0.1" className="absolute w-screen h-screen z-20">
+          <Image
+            src={`/assets/landing/EOEText.webp`}
+            priority
+            width={640}
+            height={640}
+            alt="Dice of Destiny"
+            className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
+          />
+        </div>
+        <div data-depth="0.05" className="absolute w-screen h-screen z-[19]">
+          <Image
+            src={`/assets/landing/EOEShadow.webp`}
+            priority
+            width={640}
+            height={640}
+            alt="Dice of Destiny"
+            className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
+          />
         </div>
 
-        <div
-          data-depth="0.05"
-          className="absolute flex h-screen w-screen items-center justify-center pointer-events-none"
-        >
-          <div className="mx-auto w-fit p-5 relative">
-            <Image
-              src={`/assets/landing/EOEShadow.png`}
-              priority
-              width={640}
-              height={640}
-              alt="Dice of Destiny"
-              className="h-fit w-full max-w-xl object-contain object-center z-0 md:translate-y-[160%] translate-y-[195%]  opacity-85 blur-sm"
-            />
+        <div className="w-screen h-screen z-50 relative select-all pointer-events-auto">
+          <div className="bottom-[18%] left-1/2 -translate-x-1/2 absolute flex gap-4">
+            <MetallicButton onClick={() => router.push("/register")}>
+              Register
+            </MetallicButton>
+            <MetallicButton
+              variant={"ghost"}
+              onClick={() => router.push("/explore")}
+              className="bg-black/70 text-white"
+            >
+              Register
+            </MetallicButton>
           </div>
         </div>
       </section>

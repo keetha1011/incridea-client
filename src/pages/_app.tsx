@@ -16,6 +16,7 @@ import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
 import BlackHoleLoader from "~/components/loader/blackholeLoader";
 import { LoaderProvider } from "~/components/loader/loaderContext";
+import BackGroundGradient from "~/components/layout/background";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
@@ -205,16 +206,18 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <LoaderProvider>
-          <Toaster />
-          <div className={cn("min-h-screen bg-primary-900")}>
-            {shouldRenderNavbar && <Navbar />}
-            <AnimatePresence mode="wait">
-              <Component key={router.pathname} {...pageProps} />
-            </AnimatePresence>
-            <Footer />
-          </div>
-        </LoaderProvider>
+        <BackGroundGradient>
+          <LoaderProvider>
+            <Toaster />
+            <div className={cn("min-h-screen")}>
+              {shouldRenderNavbar && <Navbar />}
+              <AnimatePresence mode="wait">
+                <Component key={router.pathname} {...pageProps} />
+              </AnimatePresence>
+              <Footer />
+            </div>
+          </LoaderProvider>
+        </BackGroundGradient>
       </ApolloProvider>
       <Analytics />
     </>
