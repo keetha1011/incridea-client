@@ -129,6 +129,7 @@
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/draftjs-to-html": "^0.8.4",
     "@types/eslint": "^8.56.10",
+    "@types/highlight.js": "^10.1.0",
     "@types/jsonwebtoken": "^9.0.7",
     "@types/locomotive-scroll": "^4.1.4",
     "@types/node": "^22.10.1",

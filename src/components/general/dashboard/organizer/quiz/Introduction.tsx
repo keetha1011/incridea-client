@@ -109,7 +109,7 @@ const IntroductionPage = ({
   if (attemptQuizLoading || quizLoading) {
     return (
       <div className="w-full h-screen grid justify-center items-center text-3xl">
-        {/* <p>Loading...</p> */}
+        <p>Loading...</p>
         <BiLoader
           size={100}
           className="animate-spin h-6 w-6 text-primary-500"
@@ -135,80 +135,93 @@ const IntroductionPage = ({
   }
 
   return (
-    <div className="max-w-full h-screen flex flex-col  bg-primary-300">
-      <div className="flex-grow flex flex-col justify-center items-center p-4">
-        <h1 className="mb-6 text-2xl md:text-3xl font-semibold text-center text-white font-grotesk">
-          {quizData?.name}
-        </h1>
-        <div className="bg-primary-500 max-w-lg w-full md:w-3/4 lg:w-1/2 p-6 rounded-md">
-          <h2 className="text-lg md:text-xl font-semibold text-center text-white font-grotesk">
-            You must enter the password to attempt the quiz.
-          </h2>
+    <div className="min-h-screen bg-gradient-to-br from-[#003d1c] via-[#002e1c]] to-[#004e2c] flex flex-col justify-evenly items-center p-4">
+      <h2 className="w-fit mx-auto text-3xl lg:text-5xl font-bold bg-gradient-to-r from-orange-400 to-amber-500 via-yellow-400 text-transparent bg-clip-text drop-shadow-md">
+        {quizData?.name}
+      </h2>
 
-          <div className="mt-6">
+      <div className="lg:w-1/2 mx-auto bg-amber-200/20 backdrop-blur-lg rounded-2xl shadow-xl border border-white/30 overflow-hidden">
+        {" "}
+        <div className="p-6 text-center">
+          <div className="bg-white/10 rounded-xl p-6 mt-4">
+            <h2 className="text-xl font-semibold text-amber-300 mb-4">
+              Password Required
+            </h2>
+
             {/* Password Input */}
-            <div className="mb-4">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-secondary-50 font-sora"
-              >
-                Enter Password:
-              </label>
-              <input
-                type="password"
-                id="password"
-                disabled={hasQuizEnded || !hasQuizStarted || !attended}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-secondary-700"
-                placeholder="Enter your password"
-              />
-              {errorMessage && (
-                <p className="mt-2 text-sm text-red-500 font-sora">
-                  {errorMessage}
+            <div className="space-y-4">
+              <div>
+                <label
+                  htmlFor="password"
+                  className="block text-[1rem] text-white/80 mb-2"
+                >
+                  Enter Quiz Password:
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  disabled={hasQuizEnded || !hasQuizStarted || !attended}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-3/4 mx-auto px-4 py-2 bg-white/20 backdrop-blur-sm text-white 
+                  border border-white/30 rounded-md 
+                  focus:outline-none focus:ring-2 focus:ring-amber-500
+                  placeholder-white/50"
+                  placeholder="Enter your password"
+                />
+                {errorMessage && (
+                  <p className="mt-2 text-sm font-medium text-red-300">
+                    {errorMessage}
+                  </p>
+                )}
+              </div>
+
+              {/* Rules Section */}
+              <div className="bg-white/10 rounded-md p-4 mt-4">
+                <p className="w-fit mx-auto text-lg font-semibold text-amber-300 border-b-[1px] border-amber-400 mb-2">
+                  Quiz Rules:
                 </p>
-              )}
+                <p className="text-[1rem] text-pretty text-gray-100">
+                  {quizData?.description}
+                </p>
+              </div>
             </div>
 
-            {/* Rules */}
-            <p className="text-sm md:text-base text-primary-700 mt-2">
-              Please note the following rules for the quiz:
-            </p>
-            <article className="pl-6 mt-2 text-sm md:text-base text-secondary-50 font-sora">
-              {quizData?.description}
-            </article>
-          </div>
-
-          <div className="mt-8 flex justify-center font-sora">
-            {!attended ? (
-              <div className="text-xl self-center text-white font-bold">
-                <p>You have to be present at the venue to attempt the quiz</p>{" "}
-              </div>
-            ) : hasQuizEnded ? (
-              <div className="text-xl self-center text-white font-bold">
-                <p>Quiz has ended</p>
-              </div>
-            ) : (
-              <>
-                {!hasQuizStarted ? (
-                  <div className="text-xl self-center text-white font-bold">
-                    <p>Quiz has not yet started</p>
-                  </div>
-                ) : (
-                  <button
-                    onClick={handlePasswordSubmit}
-                    disabled={verifyQuizLoading || !password}
-                    className="bg-secondary-700 text-white px-4 md:px-6 py-2 rounded-md shadow-md hover:bg-secondary-600 focus:outline-none disabled:bg-secondary-400"
-                  >
-                    {verifyQuizLoading ? (
-                      <BiLoader className="animate-spin h-6 w-6" />
-                    ) : (
-                      "Submit"
-                    )}
-                  </button>
-                )}
-              </>
-            )}
+            {/* Action Section */}
+            <div className="mt-6">
+              {!attended ? (
+                <div className="text-center text-white font-medium">
+                  You must be present at the venue to attempt the quiz
+                </div>
+              ) : hasQuizEnded ? (
+                <div className="text-center text-white font-medium">
+                  Quiz has ended
+                </div>
+              ) : (
+                <>
+                  {!hasQuizStarted ? (
+                    <div className="text-center text-white font-medium">
+                      Quiz has not yet started
+                    </div>
+                  ) : (
+                    <button
+                      onClick={handlePasswordSubmit}
+                      disabled={verifyQuizLoading || !password}
+                      className="mt-6 rounded-full w-3/4 lg:w-1/2 mx-auto bg-amber-500 text-white py-2
+                hover:bg-amber-600 transition-colors duration-300
+                disabled:bg-slate-400 disabled:cursor-not-allowed
+                flex justify-center items-center"
+                    >
+                      {verifyQuizLoading ? (
+                        <BiLoader className="animate-spin h-6 w-6" />
+                      ) : (
+                        "Submit Password"
+                      )}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

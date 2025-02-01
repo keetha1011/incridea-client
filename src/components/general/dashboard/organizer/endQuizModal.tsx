@@ -62,7 +62,7 @@ const EndQuizModal: FC<{
         title="End Quiz"
       >
         <div className="p-5 flex flex-col gap-y-4 items-center">
-          <Label className="lg:text-2xl md:text-xl text-lg font-normal select-none">
+          <Label className="text-yellow-100 lg:text-2xl md:text-xl text-lg font-normal select-none">
             To confirm, type &quot;
             <span className="font-bold">
               {quizName}/{quizId}

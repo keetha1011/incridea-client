@@ -27,15 +27,15 @@ export const HelperTooltip = () => {
 
   return (
     <div className="absolute w-36 -top-14 right-4 z-50 animate-fade-in">
-      <div className="bg-gradient-to-r from-cyan-500 to-fuchsia-500 p-[1px] rounded-lg">
-        <div className="bg-blue-950 px-3 py-2 rounded-lg flex items-center gap-2">
+      <div className="bg-gradient-to-r from-emerald-600 to-amber-500 p-[1px] rounded-lg">
+        <div className="bg-emerald-950/80 px-3 py-2 rounded-lg flex items-center gap-2">
           <AlertCircle className="w-6 h-6 text-cyan-400" />
           <p className="text-[0.7rem] text-white text-pretty">
             Click to toggle question navigator
           </p>
         </div>
       </div>
-      <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-t-[8px] border-fuchsia-500 absolute -bottom-2 right-0" />
+      <div className="w-0 h-0 border-l-[8px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-amber-400 -rotate-12 absolute -bottom-[4.75px] right-0" />
     </div>
   );
 };
