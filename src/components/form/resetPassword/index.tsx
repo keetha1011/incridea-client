@@ -63,7 +63,7 @@ const ResetPassword: FunctionComponent = () => {
       {data?.resetPassword.__typename === "MutationResetPasswordSuccess" ? (
         <div className="size-full absolute top-0 left-0 origin-center ">
           <div className="relative size-full">
-            <div className="absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-black/80 justify-center gap-4 px-7 py-9">
+            <div className="absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-gradient-to-br from-green-800/95 to-green-700/80 justify-center gap-4 px-7 py-9">
               <div className="flex flex-col items-center gap-2 rounded-md bg-secondary-300 p-4 pb-2 text-center font-semibold text-[#d7037f]">
                 <BiCheckCircle size={"2rem"} />
                 <div className="mb-5 flex flex-col items-center gap-3 rounded-md bg-secondary-300 text-center font-semibold">
@@ -87,7 +87,7 @@ const ResetPassword: FunctionComponent = () => {
         <div className="size-full absolute top-0 left-0 origin-center ">
           <div className="relative size-full">
             <form
-              className={`absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-black/80 justify-center gap-4 px-12 py-12 ${
+              className={`absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl text-accent-200 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-gradient-to-br from-green-800/95 to-green-700/80 justify-center gap-4 px-12 py-12 ${
                 loading && "pointer-events-none cursor-not-allowed"
               }`}
               onSubmit={handleSubmit}
@@ -141,7 +141,7 @@ const ResetPassword: FunctionComponent = () => {
               </Button>
 
               {loading && (
-                <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
+                <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg opacity-60">
                   <Spinner className="text-[#dd5c6e]" intent={"white"} />
                 </div>
               )}
