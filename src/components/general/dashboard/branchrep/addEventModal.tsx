@@ -3,7 +3,7 @@ import { type FC, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 
 import Button from "~/components/button";
-import TextInput from "~/components/input";
+import { TextInput } from "~/components/input";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
 import {

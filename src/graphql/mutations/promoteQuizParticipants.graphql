@@ -1,0 +1,21 @@
+mutation PromoteQuizParticipants(
+  $eventId: Int = 10
+  $quizId: String = ""
+  $roundId: Int = 10
+  $teams: [Int!] = 10
+) {
+  promoteQuizParticipants(
+    eventId: $eventId
+    quizId: $quizId
+    roundId: $roundId
+    teams: $teams
+  ) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationPromoteQuizParticipantsSuccess {
+      __typename
+    }
+  }
+}
