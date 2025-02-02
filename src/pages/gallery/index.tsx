@@ -7,7 +7,6 @@ import Inc22 from "~/components/galleryComponents/scenes/Inc22";
 import Inc23 from "~/components/galleryComponents/scenes/Inc23";
 import Inc24 from "~/components/galleryComponents/scenes/Inc24";
 import Inc25 from "~/components/galleryComponents/scenes/Inc25";
-import Parallax from "parallax-js";
 import {
   PiClockClockwiseBold,
   PiClockCounterClockwiseBold,
@@ -25,10 +24,9 @@ const Gallery: NextPage = () => {
   const [changedYear, setChangedYear] = useState<number>(0);
 
   const backgroundImages: string[] = [
-    "/assets/jpeg/inc20-gallerybg.jpg",
-    "/assets/jpeg/inc22-gallerybg.jpg",
-    "/assets/jpeg/inc23-gallerybg.jpg",
-    "/assets/landing/landing@2x.png",
+    "/assets/galleryBg/inc22-gallerybg.jpg",
+    "/assets/galleryBg/inc23-gallerybg.jpg",
+    "/assets/galleryBg/inc24-gallerybg.jpg",
   ];
 
   const handleClockClick = (angle: number) => {
@@ -39,7 +37,7 @@ const Gallery: NextPage = () => {
   };
 
   const years = [2022, 2023, 2024, 2025] as const;
-  const imageCounts = [12, 26, 26, 0] as const;
+  const imageCounts = [21, 12, 26, 0] as const;
 
   const generateImagePaths = (
     year: number,
@@ -67,17 +65,6 @@ const Gallery: NextPage = () => {
     ];
     return components[activeYear] ?? null;
   };
-
-  useEffect(() => {
-    const parallaxContainer = document.getElementById("parallax-container");
-    if (parallaxContainer) {
-      const parallaxInstance = new Parallax(parallaxContainer, {
-        relativeInput: true,
-        hoverOnly: false,
-      });
-      return () => parallaxInstance.destroy();
-    }
-  }, []);
 
   useEffect(() => {
     gsap.fromTo(
@@ -109,12 +96,6 @@ const Gallery: NextPage = () => {
           //   backgroundRepeat: "no-repeat",
           // }}
         >
-          {/* Parallax Effect */}
-          <div
-            id="parallax-container"
-            className="absolute inset-0 pointer-events-none"
-            style={{ zIndex: -2 }}
-          ></div>
           {/* Clock */}
           <div className="absolute transform h-auto translate-y-10 z-20 top-14 md:top-8 left-[50%] -translate-x-1/2 flex">
             <div
@@ -139,7 +120,6 @@ const Gallery: NextPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <FooterBody />
     </>
   );
