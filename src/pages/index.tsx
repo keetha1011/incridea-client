@@ -242,7 +242,7 @@ export const HomeUi = () => {
             <Image
               src={"/assets/landing/background.webp"}
               priority
-              alt="Gradient"
+              alt="Background"
               width={1920}
               height={1080}
               className="h-full w-full object-cover md:scale-100 scale-[110%] mt-12"
@@ -260,16 +260,16 @@ export const HomeUi = () => {
               priority
               width={640}
               height={640}
-              alt="Dice of Destiny"
+              alt="Clock 1"
               className="left-1/2 -translate-x-1/2 absolute md:top-[10%] md:w-[20%] w-[40%] top-[20%] object-contain object-center"
               ref={largeClockRef}
             />
             <Image
-              src={`/assets/landing/clock.png`}
+              src={`/assets/landing/clock.webp`}
               priority
               width={640}
               height={640}
-              alt="Dice of Destiny"
+              alt="Clock 2"
               className="absolute md:w-[12%] md:top-[17%] w-[20%] top-[25%] object-contain object-center"
               ref={smallClockRef}
             />
@@ -281,7 +281,7 @@ export const HomeUi = () => {
             <Image
               src={"/assets/landing/pillar.webp"}
               priority
-              alt="Gradient"
+              alt="Pillar"
               width={1920}
               height={1080}
               className="md:h-[80%] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 mt-auto w-full md:object-fill object-cover object-center"
@@ -306,7 +306,7 @@ export const HomeUi = () => {
               <Image
                 src={`/assets/landing/floatingObjects/${item}.webp`}
                 priority
-                alt="Gradient"
+                alt="Floating objects"
                 width={1920}
                 height={1080}
                 className="h-full w-full object-contain object-bottom"
@@ -322,11 +322,11 @@ export const HomeUi = () => {
         >
           <div className="mx-auto w-screen h-screen p-5 relative">
             <Image
-              src={`/assets/landing/incridea.png`}
+              src={`/assets/png/logo.png`}
               priority
               width={640}
               height={640}
-              alt="Dice of Destiny"
+              alt="Incridea"
               className="absolute md:w-[15%] left-1/2 -translate-x-1/2 top-[25%] w-[40%] object-contain object-center"
             />
           </div>
@@ -338,7 +338,7 @@ export const HomeUi = () => {
             priority
             width={640}
             height={640}
-            alt="Dice of Destiny"
+            alt="EOE"
             className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
           />
         </div>
@@ -348,7 +348,7 @@ export const HomeUi = () => {
             priority
             width={640}
             height={640}
-            alt="Dice of Destiny"
+            alt="EOE"
             className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
           />
         </div>
@@ -363,7 +363,7 @@ export const HomeUi = () => {
               onClick={() => router.push("/explore")}
               className="bg-black/70 text-white"
             >
-              Register
+              Explore
             </MetallicButton>
           </div>
         </div>
