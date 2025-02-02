@@ -1,6 +1,6 @@
 const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
-  console.log("Inc24");
+  console.log("Inc2425");
   return null;
 };
 
-export default Inc24
+export default Inc24;

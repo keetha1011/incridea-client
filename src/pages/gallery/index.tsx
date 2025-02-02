@@ -6,7 +6,6 @@ import Clock from "~/components/galleryComponents/clock";
 import Inc22 from "~/components/galleryComponents/scenes/Inc22";
 import Inc23 from "~/components/galleryComponents/scenes/Inc23";
 import Inc24 from "~/components/galleryComponents/scenes/Inc24";
-import Inc25 from "~/components/galleryComponents/scenes/Inc25";
 import Parallax from "parallax-js";
 
 const Gallery: NextPage = () => {
@@ -15,7 +14,6 @@ const Gallery: NextPage = () => {
   const backgroundImages: string[] = [
     "/assets/galleryBg/inc22-gallerybg.jpg",
     "/assets/galleryBg/inc23-gallerybg.jpg",
-    "/assets/galleryBg/inc24-gallerybg.jpg",
     "/assets/galleryBg/inc24-gallerybg.jpg",
   ];
 
@@ -39,7 +37,7 @@ const Gallery: NextPage = () => {
   };
 
   const years = [2022, 2023, 2024] as const;
-  const imageCounts = [12, 26, 26] as const;
+  const imageCounts = [21, 12, 26] as const;
 
   const generateImagePaths = (
     year: number,
@@ -89,16 +87,15 @@ const Gallery: NextPage = () => {
     "assets/jpeg/Nakash.jpeg",
   ];
 
-  const img2022 = generateImagePaths(years[0], imageCounts[0], "jpg");
-  const img2023 = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg");
+  const img2021 = generateImagePaths(years[0], imageCounts[0], "jpg");
+  const img2022 = generateImagePaths(years[1], imageCounts[1], "jpg");
+  const img2023 = generateImagePaths(years[2], imageCounts[2], "jpg");
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
-      <Inc22 imgArr={imgArr} key={0} />,
-      <Inc23 imgArr={imgArr} key={1} />,
-      <Inc24 imgArr={imgArr} key={2} />,
-      <Inc25 imgArr={imgArr} key={3} />,
+      <Inc22 imgArr={imgArr} key={1} />,
+      <Inc23 imgArr={imgArr} key={2} />,
+      <Inc24 imgArr={imgArr} key={3} />,
     ];
     return components[activeYear] ?? null;
   };

@@ -3,4 +3,4 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
   return null;
 };
 
-export default Inc22
+export default Inc22;
