@@ -52,7 +52,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
         },
         {
           opacity: 0,
-          backgroundColor: "rgb(0,44,77)",
+          backgroundColor: "#00331f",
           duration: 2,
           display: "none",
         },
@@ -68,7 +68,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
       ></div>
       {showLoader === "hide" ? (
         <>{children}</>
-      ) : showLoader === "show" ? (
+      ) : showLoader === "show" && router.pathname === "/" ? (
         <LoaderContext.Provider
           value={{
             show: showLoader,
@@ -79,7 +79,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
         >
           <BlackHoleLoader />
         </LoaderContext.Provider>
-      ) : null}{" "}
+      ) : null}
       {/** null */}
     </>
   );

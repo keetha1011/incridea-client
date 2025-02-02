@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import LocalFont from "next/font/local";
 import { Press_Start_2P } from "next/font/google";
@@ -14,14 +14,10 @@ import LoadingScreen from "~/components/loader";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
-import BlackHoleLoader from "~/components/loader/blackholeLoader";
-import { LoaderProvider } from "~/components/loader/loaderContext";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
-const LOADING_DELAY = 300;
-const SLOW_SPEED_THRESHOLD = 0.5;
-const SPEED_TEST_INTERVAL = 10000;
+// Font definitions
 export const VikingHell = LocalFont({
   src: "../font/Viking Hell.otf",
   variable: "--font-viking-hell",
@@ -30,11 +26,6 @@ export const VikingHell = LocalFont({
 export const garetFont = LocalFont({
   src: "../font/Garet-Book.otf",
   variable: "--font-Garet",
-});
-
-export const PTSerif = LocalFont({
-  src: "../font/PTSerif-Regular.ttf",
-  variable: "--font-PTSerif",
 });
 
 export const gilroy = LocalFont({
@@ -76,6 +67,7 @@ export const BlackChancery = LocalFont({
   src: "../font/BlackChancery.ttf",
   variable: "--font-BlackChancery",
 });
+
 export default function App({
   Component,
   pageProps: { session: _session, ...pageProps },
@@ -84,86 +76,26 @@ export default function App({
   const router = useRouter();
   const apolloClient = useApollo(initialApolloState);
   const [isLoading, setIsLoading] = useState(false);
-  const [shouldShowLoading, setShouldShowLoading] = useState(false);
-  const [isSlowConnection, setIsSlowConnection] = useState(false);
-  const speedTestInterval = useRef<NodeJS.Timeout>();
-
-  const measureConnectionSpeed = useCallback(async () => {
-    try {
-      const startTime = performance.now();
-      const response = await fetch("/api/ping", {
-        method: "HEAD",
-        cache: "no-cache",
-      });
-      const endTime = performance.now();
-
-      if (!response.ok) return;
-
-      const duration = endTime - startTime;
-      const speed = 1000 / duration;
-
-      setIsSlowConnection(speed < SLOW_SPEED_THRESHOLD);
-    } catch (err) {
-      console.log(err);
-      setIsSlowConnection(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    measureConnectionSpeed().catch((err) => console.log(err));
-
-    speedTestInterval.current = setInterval(() => {
-      measureConnectionSpeed().catch((err) => console.log(err));
-    }, SPEED_TEST_INTERVAL);
-
-    return () => {
-      if (speedTestInterval.current) {
-        clearInterval(speedTestInterval.current);
-      }
-    };
-  }, [measureConnectionSpeed]);
+  const loadingTimeout = useRef<NodeJS.Timeout>();
 
   const handleLoadingStart = useCallback(() => {
-    setIsLoading(true);
-
-    if (isSlowConnection) {
-      setShouldShowLoading(true);
-      return;
+    // Clear any existing timeout
+    if (loadingTimeout.current) {
+      clearTimeout(loadingTimeout.current);
     }
 
-    const timer = setTimeout(() => {
-      if (isLoading) {
-        setShouldShowLoading(true);
-      }
-    }, LOADING_DELAY);
-
-    return () => clearTimeout(timer);
-  }, [isLoading, isSlowConnection]);
-
-  const handleLoadingComplete = useCallback(() => {
-    setIsLoading(false);
-    setShouldShowLoading(false);
+    // Only show loading screen if loading takes more than 300ms
+    loadingTimeout.current = setTimeout(() => {
+      setIsLoading(true);
+    }, 300);
   }, []);
 
-  useEffect(() => {
-    const handleSlowLoading = () => {
-      const navigation = performance.getEntriesByType(
-        "navigation",
-      )[0] as PerformanceNavigationTiming;
-
-      if (navigation) {
-        const loadTime = navigation.loadEventEnd - navigation.fetchStart;
-        if (loadTime > 2000) {
-          setShouldShowLoading(true);
-        }
-      }
-    };
-
-    window.addEventListener("load", handleSlowLoading);
-
-    return () => {
-      window.removeEventListener("load", handleSlowLoading);
-    };
+  const handleLoadingComplete = useCallback(() => {
+    // Clear the timeout to prevent showing loader after completion
+    if (loadingTimeout.current) {
+      clearTimeout(loadingTimeout.current);
+    }
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
@@ -171,21 +103,13 @@ export default function App({
     router.events.on("routeChangeComplete", handleLoadingComplete);
     router.events.on("routeChangeError", handleLoadingComplete);
 
-    const observer = new PerformanceObserver((list) => {
-      list.getEntries().forEach((entry) => {
-        if (entry.duration > 3000) {
-          setShouldShowLoading(true);
-        }
-      });
-    });
-
-    observer.observe({ entryTypes: ["resource"] });
-
     return () => {
+      if (loadingTimeout.current) {
+        clearTimeout(loadingTimeout.current);
+      }
       router.events.off("routeChangeStart", handleLoadingStart);
       router.events.off("routeChangeComplete", handleLoadingComplete);
       router.events.off("routeChangeError", handleLoadingComplete);
-      observer.disconnect();
     };
   }, [router, handleLoadingStart, handleLoadingComplete]);
 
@@ -197,7 +121,7 @@ export default function App({
   return (
     <>
       <AnimatePresence mode="wait">
-        {shouldShowLoading && <LoadingScreen />}
+        {isLoading && <LoadingScreen />}
       </AnimatePresence>
 
       <ApolloProvider client={apolloClient}>
@@ -205,16 +129,14 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <LoaderProvider>
-          <Toaster />
-          <div className={cn("min-h-screen bg-primary-900")}>
-            {shouldRenderNavbar && <Navbar />}
-            <AnimatePresence mode="wait">
-              <Component key={router.pathname} {...pageProps} />
-            </AnimatePresence>
-            <Footer />
-          </div>
-        </LoaderProvider>
+        <Toaster />
+        <div className={cn("min-h-screen bg-[#7528cf]")}>
+          {shouldRenderNavbar && <Navbar />}
+          <AnimatePresence mode="wait">
+            <Component key={router.pathname} {...pageProps} />
+          </AnimatePresence>
+          <Footer />
+        </div>
       </ApolloProvider>
       <Analytics />
     </>

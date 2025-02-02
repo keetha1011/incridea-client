@@ -4,6 +4,7 @@ import Particles from "react-tsparticles";
 import gsap from "gsap";
 import styles from "./loader.module.css";
 
+
 const LoadingScreen = () => {
   const containerRef = useRef(null);
   const logoRef = useRef(null);
@@ -27,8 +28,8 @@ const LoadingScreen = () => {
 
 
     gsap.to(logo, {
-      scale: 1.2,
-      duration: 2,
+      scale: 1.25,
+      duration: 1.25,
       repeat: -1,
       yoyo: true,
       ease: "power1.inOut",
@@ -135,7 +136,8 @@ const LoadingScreen = () => {
         </div>
         <div 
           ref={logoRef}
-          className="absolute bottom-[8%] lg:bottom-[12%]"
+
+          className="absolute bottom-[30%] md:bottom-[20%]"
         >
           <Image
             src="/assets/png/Echoes_of_Eternity_Logo.png"
