@@ -278,7 +278,7 @@ export type Mutation = {
   joinTeam: MutationJoinTeamResult;
   leaveTeam: MutationLeaveTeamResult;
   login: MutationLoginResult;
-  notifyParticipants: Scalars["Boolean"]["output"];
+  notifyParticipants: Scalars["String"]["output"];
   organizerAddTeamMember: MutationOrganizerAddTeamMemberResult;
   organizerCreateTeam: MutationOrganizerCreateTeamResult;
   organizerDeleteTeam: MutationOrganizerDeleteTeamResult;
@@ -300,7 +300,7 @@ export type Mutation = {
   resetPassword: MutationResetPasswordResult;
   sendEmailVerification: MutationSendEmailVerificationResult;
   sendPasswordResetEmail: MutationSendPasswordResetEmailResult;
-  sendWinnerWhatsAppNotification: Scalars["Boolean"]["output"];
+  sendWinnerWhatsAppNotification: Scalars["String"]["output"];
   signUp: MutationSignUpResult;
   submitQuiz: MutationSubmitQuizResult;
   updateCard: MutationUpdateCardResult;
@@ -2544,7 +2544,7 @@ export type NotifyParticipantsMutationVariables = Exact<{
 
 export type NotifyParticipantsMutation = {
   __typename?: "Mutation";
-  notifyParticipants: boolean;
+  notifyParticipants: string;
 };
 
 export type OrganizerAddTeamMemberMutationVariables = Exact<{
@@ -2853,7 +2853,7 @@ export type SendWinnerWhatsAppNotificationMutationVariables = Exact<{
 
 export type SendWinnerWhatsAppNotificationMutation = {
   __typename?: "Mutation";
-  sendWinnerWhatsAppNotification: boolean;
+  sendWinnerWhatsAppNotification: string;
 };
 
 export type SignInMutationVariables = Exact<{
