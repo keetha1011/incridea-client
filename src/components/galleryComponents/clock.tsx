@@ -1,11 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import type * as THREE from "three";
+import * as THREE from "three";
 import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
 import type { GLTF } from "three-stdlib";
-
+import { angleToScenes } from "~/pages/gallery";
 type GLTFResult = GLTF & {
   nodes: {
     clock_face: THREE.Mesh;
@@ -37,6 +37,27 @@ const getSnapAngle = (angle: number): number => {
 
 const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
   const { nodes, materials } = useGLTF("/assets/3d/clock.glb") as GLTFResult;
+  const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
+
+  useEffect(() => {
+    if (window.innerWidth < 768) {
+      setScale(new THREE.Vector3(0.7, 0.7, 0.7));
+    } else {
+      setScale(new THREE.Vector3(1, 1, 1));
+    }
+
+    const resize = () => {
+      if (window.innerWidth < 768) {
+        setScale(new THREE.Vector3(0.7, 0.7, 0.7));
+      } else {
+        setScale(new THREE.Vector3(1, 1, 1));
+      }
+    };
+
+    window.addEventListener("resize", resize);
+
+    return () => window.removeEventListener("resize", resize);
+  }, []);
 
   return (
     <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
@@ -70,12 +91,15 @@ useGLTF.preload("/assets/3d/clock.glb");
 
 type ClockProps = {
   onClockClick?: (angle: number) => void;
+  year: number;
 };
 
-const Clock = ({ onClockClick }: ClockProps) => {
+const Clock = ({ onClockClick, year }: ClockProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const handRef = useRef<THREE.Group>(null);
   const gsapContextRef = useRef<gsap.Context | null>(null);
+  const [totalRotation, setTotalRotation] = useState(0); // Total accumulated rotation in radians
+  const previousAngleRef = useRef<number | null>(null); // Tracks the last angle during drag
 
   useEffect(() => {
     // Create GSAP context
@@ -89,6 +113,43 @@ const Clock = ({ onClockClick }: ClockProps) => {
       }
     };
   }, []);
+
+  const normalizeAngle = (angle: number) => {
+    while (angle > Math.PI) angle -= 2 * Math.PI;
+    while (angle < -Math.PI) angle += 2 * Math.PI;
+    return angle;
+  };
+
+  const calculateShortestPath = (current: number, target: number) => {
+    const normalizedCurrent = normalizeAngle(current);
+    const delta = normalizeAngle(target - normalizedCurrent);
+    return normalizedCurrent + delta;
+  };
+
+  useEffect(() => {
+    console.log("Year changed to", year);
+    if (!handRef.current) return;
+
+    const scene = Object.entries(angleToScenes).find(
+      ([key]) => Number(key) === year,
+    );
+    console.log("Scene", scene);
+    const targetAngle = scene?.[1][0] ?? 0;
+
+    const currentAngle = normalizeAngle(handRef.current.rotation.y);
+    const shortestPathAngle = calculateShortestPath(currentAngle, targetAngle);
+
+    gsap.fromTo(
+      handRef.current.rotation,
+      { y: currentAngle },
+      {
+        y: shortestPathAngle,
+        duration: 1,
+        ease: "power2.out",
+        overwrite: true,
+      },
+    );
+  }, [year]);
 
   const getAngleFromCenter = (x: number, y: number) => {
     if (!containerRef.current) return 0;
@@ -105,24 +166,49 @@ const Clock = ({ onClockClick }: ClockProps) => {
 
     return angle;
   };
+  useEffect(() => {
+    console.log("Rotation changed to", totalRotation);
+  }, [totalRotation]);
 
   const bind = useDrag(
     ({ active, xy: [x, y], first, last }) => {
       if (!handRef.current) return;
 
       const currentAngle = getAngleFromCenter(x, y);
-
-      if (active) {
-        // During drag, update rotation immediately
-        gsap.to(handRef.current.rotation, {
-          y: currentAngle - Math.PI / 2,
-          duration: 0,
-          overwrite: true,
-        });
+      if (first) {
+        previousAngleRef.current = currentAngle;
+        return;
       }
 
+      const previousAngle = previousAngleRef.current ?? 0;
+      let delta = currentAngle - previousAngle;
+      delta =
+        delta > Math.PI
+          ? delta - 2 * Math.PI
+          : delta < -Math.PI
+            ? delta + 2 * Math.PI
+            : delta;
+
+      // Accumulate the total rotation
+      const newTotalRotation = totalRotation + delta;
+      setTotalRotation(newTotalRotation);
+
+      previousAngleRef.current = currentAngle;
+
+      // Direct rotation application
+      if (handRef.current) {
+        handRef.current.rotation.y = currentAngle - Math.PI / 2;
+      }
+
+      // if (active) {
+      //   gsap.to(handRef.current.rotation, {
+      //     y: currentAngle - Math.PI / 2,
+      //     duration: 0,
+      //     overwrite: true,
+      //   });
+      // }
+
       if (last) {
-        // On release, snap to nearest quarter position with animation
         const snappedAngle = getSnapAngle(currentAngle);
         gsap.to(handRef.current.rotation, {
           y: snappedAngle - Math.PI / 2,
@@ -135,6 +221,7 @@ const Clock = ({ onClockClick }: ClockProps) => {
             }
           },
         });
+        setTotalRotation(0);
       }
     },
     {
@@ -146,7 +233,7 @@ const Clock = ({ onClockClick }: ClockProps) => {
   return (
     <div
       ref={containerRef}
-      className="absolute top-[10%] left-[50%] -translate-x-1/2 cursor-pointer z-10 aspect-square md:w-[180px] w-[200px] touch-none"
+      className="cursor-pointer z-10 aspect-square md:w-[320px] sm:w-[250px] w-[200px] touch-none rounded-full overflow-hidden"
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>

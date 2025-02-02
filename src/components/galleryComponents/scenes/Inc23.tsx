@@ -116,7 +116,7 @@ function Model() {
 const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
   return (
     <Canvas>
-      <ambientLight intensity={15} />
+      <directionalLight position={[0, 0, 5]} intensity={10} />
       <Suspense fallback={null}>
         <Model />
       </Suspense>
