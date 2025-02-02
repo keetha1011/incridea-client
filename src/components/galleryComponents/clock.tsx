@@ -6,7 +6,6 @@ import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
 import type { GLTF } from "three-stdlib";
 import { angleToScenes } from "~/pages/gallery";
-
 type GLTFResult = GLTF & {
   nodes: {
     clock_face: THREE.Mesh;
@@ -167,7 +166,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
 
     return angle;
   };
-
   useEffect(() => {
     console.log("Rotation changed to", totalRotation);
   }, [totalRotation]);
@@ -177,7 +175,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
       if (!handRef.current) return;
 
       const currentAngle = getAngleFromCenter(x, y);
-
       if (first) {
         previousAngleRef.current = currentAngle;
         return;

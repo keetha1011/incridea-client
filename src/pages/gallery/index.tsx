@@ -49,7 +49,6 @@ const Gallery: NextPage = () => {
       (_, i) => `gallery/${year}/${i + 1}.${extension}`,
     );
   };
-
   const img2020 = generateImagePaths(years[0], imageCounts[0], "jpg");
   const img2022 = generateImagePaths(years[1], imageCounts[1], "jpg");
   const img2023 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
@@ -112,8 +111,6 @@ const Gallery: NextPage = () => {
               <PiClockClockwiseBold fill="#ebe5e3" className="size-10" />
             </div>
           </div>
-
-          {/* Render Active Year Component with Fade Animation */}
           <div id="active-year-content" className="relative h-full w-full z-10">
             {renderActiveYearComponent()}
           </div>
