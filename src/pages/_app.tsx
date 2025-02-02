@@ -14,6 +14,7 @@ import LoadingScreen from "~/components/loader";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
+import BackGroundGradient from "~/components/layout/background";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
@@ -129,14 +130,16 @@ export default function App({
           title="Incridea"
           description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <Toaster />
-        <div className={cn("min-h-screen bg-[#7528cf]")}>
-          {shouldRenderNavbar && <Navbar />}
-          <AnimatePresence mode="wait">
-            <Component key={router.pathname} {...pageProps} />
-          </AnimatePresence>
-          <Footer />
-        </div>
+        <BackGroundGradient>
+          <Toaster />
+          <div className={cn("min-h-screen]")}>
+            {shouldRenderNavbar && <Navbar />}
+            <AnimatePresence mode="wait">
+              <Component key={router.pathname} {...pageProps} />
+            </AnimatePresence>
+            <Footer />
+          </div>
+        </BackGroundGradient>
       </ApolloProvider>
       <Analytics />
     </>
