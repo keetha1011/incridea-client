@@ -84,7 +84,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
               }}
               type="email"
               required
-              className="md:focus:border-[#dd5c6e]-500 border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-slate-400"
+              className="md:focus:border-[#dd5c6e]-500 border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-white"
               placeholder="Email"
             />
 
@@ -93,7 +93,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
             </Button>
 
             {loading && (
-              <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
+              <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg opacity-60">
                 <Spinner className="text-[#dd5c6e]" intent={"white"} />
               </div>
             )}
