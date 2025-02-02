@@ -53,7 +53,7 @@ const Modal: FC<ModalProps> = ({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel
-                className={`w-full max-w-6xl transform overflow-hidden rounded-${rounded} bg-primary-300/70 text-left align-middle text-gray-100 shadow-xl backdrop-blur-xl transition-all`}
+                className={`w-full max-w-6xl transform overflow-hidden rounded-${rounded} bg-emerald-600/70 text-left align-middle text-gray-100 shadow-xl backdrop-blur-xl transition-all`}
               >
                 <Dialog.Title
                   as="div"
@@ -62,7 +62,7 @@ const Modal: FC<ModalProps> = ({
                   }`}
                 >
                   <h3
-                    className={`bodyFont text-lg font-medium leading-6 text-white ${
+                    className={`bodyFont text-lg font-medium leading-6 text-amber-200 ${
                       size === "small" && "text-center"
                     }`}
                   >

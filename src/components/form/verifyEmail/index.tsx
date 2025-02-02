@@ -4,11 +4,13 @@ import { useRouter } from "next/router";
 import { type FunctionComponent, useState, useEffect } from "react";
 import { GiConfirmed } from "react-icons/gi";
 import { MdError } from "react-icons/md";
+import { toast } from "sonner";
 
 import Spinner from "~/components/spinner";
 import { VerifyEmailDocument } from "~/generated/generated";
 
 const VerifyEmailComponent: FunctionComponent = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [isMutationExecuted, setIsMutationExecuted] = useState<boolean>(false);
 

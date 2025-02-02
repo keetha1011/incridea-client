@@ -2,7 +2,8 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import Particles from "react-tsparticles";
 import gsap from "gsap";
-import styles from "src/components/loader/loader.module.css";
+import styles from "./loader.module.css";
+
 
 const LoadingScreen = () => {
   const containerRef = useRef(null);
@@ -135,6 +136,7 @@ const LoadingScreen = () => {
         </div>
         <div 
           ref={logoRef}
+
           className="absolute bottom-[30%] md:bottom-[20%]"
         >
           <Image
