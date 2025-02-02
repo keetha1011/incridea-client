@@ -75,6 +75,21 @@ export type Card = {
   submissions: Array<Submission>;
 };
 
+export type ChampionshipPoint = {
+  __typename?: "ChampionshipPoint";
+  bronzeCount: Counts;
+  championshipPoints: Scalars["Int"]["output"];
+  coreCount: Scalars["Int"]["output"];
+  diamondCount: Counts;
+  goldCount: Counts;
+  id: Scalars["Int"]["output"];
+  isEligible: Scalars["Boolean"]["output"];
+  name: Scalars["String"]["output"];
+  nonTechCount: Scalars["Int"]["output"];
+  silverCount: Counts;
+  techCount: Scalars["Int"]["output"];
+};
+
 export type College = {
   __typename?: "College";
   id: Scalars["ID"]["output"];
@@ -96,6 +111,13 @@ export type Comments = {
   roundNo: Scalars["Int"]["output"];
   team: Team;
   teamId: Scalars["ID"]["output"];
+};
+
+export type Counts = {
+  __typename?: "Counts";
+  runner_up: Scalars["Int"]["output"];
+  second_runner_up: Scalars["Int"]["output"];
+  winner: Scalars["Int"]["output"];
 };
 
 export type CreateCriteriaInput = {
@@ -180,6 +202,18 @@ export type EventPaymentOrder = {
   id: Scalars["ID"]["output"];
   orderId: Scalars["ID"]["output"];
   status: Status;
+};
+
+export type EventRegistrationsCount = {
+  __typename?: "EventRegistrationsCount";
+  externalRegistrations: Scalars["Int"]["output"];
+  internalRegistrations: Scalars["Int"]["output"];
+};
+
+export type EventStatus = {
+  __typename?: "EventStatus";
+  eventName: Scalars["String"]["output"];
+  status: Scalars["String"]["output"];
 };
 
 export enum EventType {
@@ -1257,6 +1291,12 @@ export type ProniteRegistration = {
   userId: Scalars["ID"]["output"];
 };
 
+export type ProniteRegistrationCounts = {
+  __typename?: "ProniteRegistrationCounts";
+  day1Count: Scalars["Int"]["output"];
+  day2Count: Scalars["Int"]["output"];
+};
+
 export type Query = {
   __typename?: "Query";
   accommodationRequestByDay: Array<UserInHotel>;
@@ -1280,15 +1320,20 @@ export type Query = {
   getBranch: Branch;
   getBranches: Array<Branch>;
   getCards: QueryGetCardsResult;
+  getChampionshipLeaderboard: QueryGetChampionshipLeaderboardResult;
   getComment: QueryGetCommentResult;
+  getEventStatus: Array<EventStatus>;
   getLevelXp: QueryGetLevelXpResult;
+  getProniteRegistrations: ProniteRegistrationCounts;
   getQuizByEventRound: QueryGetQuizByEventRoundResult;
   getQuizById: QueryGetQuizByIdResult;
   getQuizScores: QueryGetQuizScoresResult;
+  getRevenue: QueryGetRevenueResult;
   getRoundStatus: QueryGetRoundStatusResult;
   getScore: QueryGetScoreResult;
   getScoreSheetJuryView: QueryGetScoreSheetJuryViewResult;
   getSubmissionByUser: Array<AllSubmissions>;
+  getTotalRegistrations: EventRegistrationsCount;
   getTotalScores: QueryGetTotalScoresResult;
   getUserAccommodation?: Maybe<UserInHotel>;
   getUserLevelScore: QueryGetUserLevelScoreResult;
@@ -1305,7 +1350,6 @@ export type Query = {
   submissionsByUser: QuerySubmissionsByUserResult;
   teamDetails: QueryTeamDetailsResult;
   teamsByRound: QueryTeamsByRoundConnection;
-  totalRegistrations: Scalars["Int"]["output"];
   userById: QueryUserByIdResult;
   users: QueryUsersConnection;
   verifyQuizPassword: QueryVerifyQuizPasswordResult;
@@ -1413,6 +1457,11 @@ export type QueryGetSubmissionByUserArgs = {
   teamId: Scalars["String"]["input"];
 };
 
+export type QueryGetTotalRegistrationsArgs = {
+  date?: InputMaybe<Scalars["DateTime"]["input"]>;
+  last?: InputMaybe<Scalars["Int"]["input"]>;
+};
+
 export type QueryGetTotalScoresArgs = {
   eventId: Scalars["ID"]["input"];
   roundNo: Scalars["Int"]["input"];
@@ -1451,11 +1500,6 @@ export type QueryTeamsByRoundArgs = {
   first?: InputMaybe<Scalars["Int"]["input"]>;
   last?: InputMaybe<Scalars["Int"]["input"]>;
   roundNo: Scalars["Int"]["input"];
-};
-
-export type QueryTotalRegistrationsArgs = {
-  date?: InputMaybe<Scalars["DateTime"]["input"]>;
-  last?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 export type QueryUserByIdArgs = {
@@ -1553,6 +1597,15 @@ export type QueryGetCardsSuccess = {
   data: Array<Card>;
 };
 
+export type QueryGetChampionshipLeaderboardResult =
+  | Error
+  | QueryGetChampionshipLeaderboardSuccess;
+
+export type QueryGetChampionshipLeaderboardSuccess = {
+  __typename?: "QueryGetChampionshipLeaderboardSuccess";
+  data: Array<ChampionshipPoint>;
+};
+
 export type QueryGetCommentResult = Error | QueryGetCommentSuccess;
 
 export type QueryGetCommentSuccess = {
@@ -1589,6 +1642,15 @@ export type QueryGetQuizScoresSuccess = {
   __typename?: "QueryGetQuizScoresSuccess";
   data: Array<QuizScore>;
 };
+
+export type QueryGetRevenueResult = Error | QueryGetRevenueSuccess;
+
+export type QueryGetRevenueSuccess = {
+  __typename?: "QueryGetRevenueSuccess";
+  data: Scalars["Int"]["output"];
+};
+
+
 
 export type QueryGetRoundStatusResult = Error | QueryGetRoundStatusSuccess;
 
@@ -3653,6 +3715,53 @@ export type BranchesQuery = {
   }>;
 };
 
+export type GetChampionshipLeaderboardQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetChampionshipLeaderboardQuery = {
+  __typename?: "Query";
+  getChampionshipLeaderboard:
+    | { __typename?: "Error" }
+    | {
+        __typename: "QueryGetChampionshipLeaderboardSuccess";
+        data: Array<{
+          __typename?: "ChampionshipPoint";
+          id: number;
+          name: string;
+          isEligible: boolean;
+          championshipPoints: number;
+          techCount: number;
+          nonTechCount: number;
+          coreCount: number;
+          diamondCount: {
+            __typename?: "Counts";
+            winner: number;
+            runner_up: number;
+            second_runner_up: number;
+          };
+          goldCount: {
+            __typename?: "Counts";
+            winner: number;
+            runner_up: number;
+            second_runner_up: number;
+          };
+          silverCount: {
+            __typename?: "Counts";
+            winner: number;
+            runner_up: number;
+            second_runner_up: number;
+          };
+          bronzeCount: {
+            __typename?: "Counts";
+            winner: number;
+            runner_up: number;
+            second_runner_up: number;
+          };
+        }>;
+      };
+};
+
 export type GetCommentQueryVariables = Exact<{
   eventId: Scalars["ID"]["input"];
   roundNo: Scalars["Int"]["input"];
@@ -3667,6 +3776,17 @@ export type GetCommentQuery = {
         __typename: "QueryGetCommentSuccess";
         data: { __typename?: "Comments"; comment: string };
       };
+};
+
+export type GetEventStatusQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetEventStatusQuery = {
+  __typename?: "Query";
+  getEventStatus: Array<{
+    __typename?: "EventStatus";
+    eventName: string;
+    status: string;
+  }>;
 };
 
 export type GetXpLeaderboardQueryVariables = Exact<{ [key: string]: never }>;
@@ -3694,6 +3814,28 @@ export type GetXpLeaderboardQuery = {
           };
         }>;
       };
+};
+
+export type GetProniteRegistrationsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetProniteRegistrationsQuery = {
+  __typename?: "Query";
+  getProniteRegistrations: {
+    __typename?: "ProniteRegistrationCounts";
+    day1Count: number;
+    day2Count: number;
+  };
+};
+
+export type GetRevenueQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetRevenueQuery = {
+  __typename?: "Query";
+  getRevenue:
+    | { __typename: "Error"; message: string }
+    | { __typename: "QueryGetRevenueSuccess"; data: number };
 };
 
 export type GetQuizByEventRoundQueryVariables = Exact<{
@@ -3844,6 +3986,19 @@ export type GetScoreSheetJuryQuery = {
           }>;
         }>;
       };
+};
+
+export type GetTotalRegistrationsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetTotalRegistrationsQuery = {
+  __typename?: "Query";
+  getTotalRegistrations: {
+    __typename?: "EventRegistrationsCount";
+    externalRegistrations: number;
+    internalRegistrations: number;
+  };
 };
 
 export type GetTeamDetailsQueryVariables = Exact<{
@@ -15036,6 +15191,188 @@ export const BranchesDocument = {
     },
   ],
 } as unknown as DocumentNode<BranchesQuery, BranchesQueryVariables>;
+export const GetChampionshipLeaderboardDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetChampionshipLeaderboard" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getChampionshipLeaderboard" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryGetChampionshipLeaderboardSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "isEligible" },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "championshipPoints",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "techCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "nonTechCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "coreCount" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "diamondCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "goldCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "silverCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "bronzeCount" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "winner" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "runner_up" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "second_runner_up",
+                                    },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetChampionshipLeaderboardQuery,
+  GetChampionshipLeaderboardQueryVariables
+>;
 export const GetCommentDocument = {
   kind: "Document",
   definitions: [
@@ -15170,6 +15507,32 @@ export const GetCommentDocument = {
     },
   ],
 } as unknown as DocumentNode<GetCommentQuery, GetCommentQueryVariables>;
+export const GetEventStatusDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetEventStatus" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getEventStatus" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "eventName" } },
+                { kind: "Field", name: { kind: "Name", value: "status" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetEventStatusQuery, GetEventStatusQueryVariables>;
 export const GetXpLeaderboardDocument = {
   kind: "Document",
   definitions: [
@@ -15310,6 +15673,96 @@ export const GetXpLeaderboardDocument = {
   GetXpLeaderboardQuery,
   GetXpLeaderboardQueryVariables
 >;
+export const GetProniteRegistrationsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetProniteRegistrations" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getProniteRegistrations" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "day1Count" } },
+                { kind: "Field", name: { kind: "Name", value: "day2Count" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetProniteRegistrationsQuery,
+  GetProniteRegistrationsQueryVariables
+>;
+export const GetRevenueDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetRevenue" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getRevenue" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "QueryGetRevenueSuccess" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "data" } },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<GetRevenueQuery, GetRevenueQueryVariables>;
 export const GetQuizByEventRoundDocument = {
   kind: "Document",
   definitions: [
@@ -16153,6 +16606,41 @@ export const GetScoreSheetJuryDocument = {
 } as unknown as DocumentNode<
   GetScoreSheetJuryQuery,
   GetScoreSheetJuryQueryVariables
+>;
+export const GetTotalRegistrationsDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetTotalRegistrations" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getTotalRegistrations" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "externalRegistrations" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "internalRegistrations" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetTotalRegistrationsQuery,
+  GetTotalRegistrationsQueryVariables
 >;
 export const GetTeamDetailsDocument = {
   kind: "Document",
