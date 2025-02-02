@@ -275,8 +275,8 @@ export default function Leaderboard() {
         </table>
       </div>
       {popupData && (
-        <div className="fixed inset-0 bg-white/10 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="bg-primary-300 rounded-lg p-6 max-w-sm w-full border border-white/20">
+        <div className="fixed inset-0 bg-white/10 flex items-center justify-center z-50">
+          <div className="bg-primary-600 rounded-lg p-6 max-w-sm w-full border border-white/20">
             <h3 className="text-xl font-bold mb-4 text-white">{popupTitle}</h3>
             <h6 className="text-lg font-bold mb-4 text-white">
               {popupData.CATEGORY}

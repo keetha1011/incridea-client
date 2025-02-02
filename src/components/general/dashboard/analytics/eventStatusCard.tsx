@@ -75,9 +75,9 @@ export default function EventStatusCard() {
           )}
         </div>
       </div>
-      <div className="p-6 overflow-x-auto max-h-80 overflow-scroll">
+      <div className="p-6 overflow-y-auto max-h-80 overflow-x-auto">
         {/* Table Header */}
-        <div className="flex border-b border-white/20 sm:py-3 md:py-5">
+        <div className="flex border-b border-white/20 py-4">
           <div className="w-3/12 px-4 text-sm font-semibold text-gray-300">
             Sl No
           </div>
@@ -90,22 +90,20 @@ export default function EventStatusCard() {
         </div>
 
         {/* Table Rows */}
-        {Array.from({ length: 20 }, () => filteredEvents)
-          .flat()
-          .map((event, index) => (
+        {filteredEvents.map((event, index) => (
+          <div
+            key={index}
+            className="flex border-b border-white/20 hover:bg-white/5 py-3"
+          >
+            <div className="w-3/12 px-4 text-white">{index + 1}</div>
+            <div className="w-5/12 px-4 text-white">{event.eventName}</div>
             <div
-              key={index}
-              className="flex border-b border-white/20 hover:bg-white/5 py-3"
+              className={`w-4/12 px-4 text-center font-semibold ${getStatusColor(event.status)}`}
             >
-              <div className="w-3/12 px-4 text-white">{index + 1}</div>
-              <div className="w-5/12 px-4 text-white">{event.eventName}</div>
-              <div
-                className={`w-4/12 px-4 text-center font-semibold ${getStatusColor(event.status)}`}
-              >
-                {event.status}
-              </div>
+              {event.status}
             </div>
-          ))}
+          </div>
+        ))}
       </div>
     </div>
   );
