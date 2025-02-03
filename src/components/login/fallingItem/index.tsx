@@ -6,17 +6,17 @@ type Prop = {
 };
 
 const elements: string[] = [
-  "loginTrophy.png",
-  "dice.png",
-  "sword.png",
-  "witchHat.png",
-  "pawn.png",
-  "pacman.png",
-  "sheild.png",
-  "bomb.png",
-  "coin.png",
-  "potion.png",
-  "bowArrow.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
+  "timestone.png",
 ] as const;
 
 const getElement: () => number = () => {
@@ -24,7 +24,7 @@ const getElement: () => number = () => {
 };
 
 const getSize: () => { width: number; height: number } = () => {
-  const size = Math.floor(Math.random() * 20) + 40;
+  const size = Math.floor(Math.random() * 40) + 40;
   return { width: size, height: size };
 };
 
@@ -50,7 +50,7 @@ const FallingItem: FunctionComponent<Prop> = ({ delay }) => {
 
   return (
     <div
-      className={"pointer-events-none absolute animate-free-fall"}
+      className={"pointer-events-none absolute animate-free-fall hue-rotate-0"}
       style={{
         animationDelay: `${delay}ms`,
         top: "0px",
@@ -60,10 +60,14 @@ const FallingItem: FunctionComponent<Prop> = ({ delay }) => {
       }}
     >
       <Image
-        src={`/assets/png/${src}`}
+        src={`/2025/leaderboard/${src}`}
         alt={src}
         width={size.width}
         height={size.height}
+        style={{
+filter: `hue-rotate(${[0,60,90,180][Math.floor(Math.random() * 7)]}deg)`
+        }}
+  
       />
     </div>
   );

@@ -6,12 +6,49 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import styles from "~/components/event/styles.module.css";
+import EasterBomb from "~/components/login/easterBomb";
+import FallingItem from "~/components/login/fallingItem";
 import Spinner from "~/components/spinner";
 import { env } from "~/env";
 import { GetXpLeaderboardDocument } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
 const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
+
+const rankColors = {
+  1: {
+    background: "linear-gradient(180deg, #F9F39F 10%, #D1A300 100%, #D1A300 100%)",
+    text: "#000000",
+    border: "#D1A300"
+  },
+  2: {
+    background: "linear-gradient(180deg, #FFFFFD 0%, #666666 100%);",
+    text: "#000000",
+    border: "#353535"
+  },
+  3: {
+    background: "linear-gradient(180deg, #E5B77C, #5F3316);",
+    text: "#000000",
+    border: " #5F3316"
+  },
+  4: {
+    background: "linear-gradient(90deg, #4B0082 0%, #800080 100%)",
+    text: "#FFFFFF",
+    border: "#4B0082"
+  },
+  5: {
+    background: "linear-gradient(90deg, #006400 0%, #228B22 100%)",
+    text: "#FFFFFF",
+    border: "#006400"
+  }
+};
+
+const getRankStyle = (rank: number) => {
+  if (rank <= 3) {
+    return rankColors[rank as keyof typeof rankColors];
+  }
+  return rankColors[5];
+};
 
 const LeaderBoard: NextPage = () => {
   type UserTotalPoints = {
@@ -102,13 +139,13 @@ const LeaderBoard: NextPage = () => {
 
   const getColor = (i: number) => {
     if (i === 1) {
-      return "bg-gradient-to-b from-amber-400 to-yellow-700";
+      return "bg-gradient-to-b from-amber-400 to-yellow-700"; // Gold
     } else if (i === 2) {
-      return "bg-gradient-to-b from-slate-500 to-slate-700";
+      return "bg-gradient-to-b from-slate-400 to-slate-600"; // Silver
     } else if (i === 3) {
-      return "bg-gradient-to-b from-amber-700 to-amber-900";
+      return "bg-gradient-to-b from-amber-700 to-amber-900"; // Bronze
     } else {
-      return "bg-gradient-to-r from-slate-900 to-slate-700";
+      return "bg-gradient-to-b from-green-900 to-green-700"; // Green for all other positions
     }
   };
 
@@ -116,9 +153,21 @@ const LeaderBoard: NextPage = () => {
 
   return (
     <div
-      className={``}
+      className={`bg-transparent`}
       style={{ willChange: "transform", overflowX: "hidden" }}
+    
     >
+      <div className="absolute -top-[10vh] left-2/4 -z-40 h-0 w-[65vw] -translate-x-2/4 md:w-[1000px]">
+          <FallingItem delay={0} />
+          <FallingItem delay={2000} />
+          <FallingItem delay={4000} />
+          <FallingItem delay={6000} />
+          <FallingItem delay={8000} />
+        </div>
+
+        <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
+          <EasterBomb />
+        </div>
       {sortedLeaderboard.length > 0 && (
         <div className={`${styles.container} overflow-hidden`}>
           {Array.from({ length: 30 }).map((_, i) => (
@@ -126,17 +175,29 @@ const LeaderBoard: NextPage = () => {
           ))}
         </div>
       )}
-      <div className="relative min-h-screen bg-gradient-to-b from-primary-300 to-primary-400">
-        <div className="relative min-h-screen bg-white bg-gradient-to-bl py-32">
-          <h1
-            className={`text-center font-VikingHell text-5xl text-white md:text-5xl`}
-          >
-            XP Leaderboard
-          </h1>
-          <h3 className="mx-2 my-6 text-center text-xl text-white md:mx-0 md:text-3xl">
-            Embark on an XP Quest: Uncover Hidden Easter Eggs and Level Up Your
+      <div className="relative min-h-screen bg-gradient-to-b">
+        <div className="relative min-h-screen py-32">
+          <div className="flex flex-col justify-center items-center relative">
+            <div className="h-[300px] w-[500px] relative">
+              <Image 
+                src={"/2025/leaderboard/tablet.png"} 
+                alt="XP LeaderBoard" 
+                fill
+                className="object-contain"
+              />
+            </div>
+            <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-3xl absolute top-60">
+            Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
             Experience!
           </h3>
+          </div>
+          
+          {/* <h1
+            className={`text-center font-VikingHell text-5xl text-white md:text-5xl ribbon`}
+          >
+            XP Leaderboard
+          </h1> */}
+         
           <div className="mx-5 mb-2 mt-10 flex h-16 items-center justify-evenly rounded-lg rounded-t-lg border border-primary-200/80 bg-primary-500 bg-opacity-20 bg-clip-padding p-1 text-sm font-bold text-white backdrop-blur-lg backdrop-filter md:mx-36 md:mt-7 md:text-2xl">
             <h1 className="basis-1/4 text-center">Position</h1>
             <h1 className="basis-1/4 text-center">Player Id</h1>
@@ -152,19 +213,22 @@ const LeaderBoard: NextPage = () => {
             {sortedLeaderboard.map((user, i) => (
               <div
                 key={user.userId}
-                className={`${getColor(
-                  i + 1,
-                )} flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl`}
+                style={{ 
+                  background: getRankStyle(i + 1).background,
+                  color: getRankStyle(i + 1).text,
+                  borderColor: getRankStyle(i + 1).border 
+                }}
+                className="border-2 p-4 flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl"
               >
                 <h1 className="flex basis-1/4 items-center justify-center text-center text-base md:gap-1 md:text-xl">
                   {i + 1}.
                   <Image
                     src={
-                      i + 1 === 1
+                      i === 0
                         ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level3.png`
-                        : i + 1 === 2
+                        : i === 1
                           ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level2.png`
-                          : i + 1 === 3
+                          : i === 2
                             ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level1.png`
                             : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level4.png`
                     }
@@ -183,11 +247,11 @@ const LeaderBoard: NextPage = () => {
                 <h1 className="flex basis-1/4 flex-row items-center justify-center text-center text-sm font-semibold md:text-xl">
                   {user.levelPoints}
                   <Image
-                    src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/XP.png`}
-                    width={isMobile ? 20 : 40}
-                    height={isMobile ? 20 : 40}
-                    alt="medal"
-                    className="ml-1 w-10 bg-transparent text-5xl md:w-10"
+                    src={"/2025/leaderboard/timestone.png"}
+                    width={isMobile ? 40 : 100}
+                    height={isMobile ? 40 : 100}
+                    alt="Time Stone"
+                    className="ml-1 w-8 md:w-12 lg:w-16 bg-transparent transition-all"
                   />
                 </h1>
               </div>
@@ -202,9 +266,10 @@ const LeaderBoard: NextPage = () => {
               </div>
             )}
           </div>
+         </div>
         </div>
       </div>
-    </div>
+   
   );
 };
 
