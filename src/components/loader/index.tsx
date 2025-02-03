@@ -137,7 +137,7 @@ const LoadingScreen = () => {
         <div 
           ref={logoRef}
 
-          className="absolute bottom-[30%] md:bottom-[20%]"
+          className="absolute bottom-[27%] md:bottom-[20%]"
         >
           <Image
             src="/assets/png/Echoes_of_Eternity_Logo.png"
