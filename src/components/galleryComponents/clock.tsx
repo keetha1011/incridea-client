@@ -41,16 +41,16 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
 
   useEffect(() => {
     if (window.innerWidth < 768) {
-      setScale(new THREE.Vector3(0.7, 0.7, 0.7));
+      setScale(new THREE.Vector3(0.9, 0.9, 0.9));
     } else {
-      setScale(new THREE.Vector3(1, 1, 1));
+      setScale(new THREE.Vector3(0.8, 0.8, 0.8));
     }
 
     const resize = () => {
       if (window.innerWidth < 768) {
-        setScale(new THREE.Vector3(0.7, 0.7, 0.7));
+        setScale(new THREE.Vector3(0.9, 0.9, 0.9));
       } else {
-        setScale(new THREE.Vector3(1, 1, 1));
+        setScale(new THREE.Vector3(0.8, 0.8, 0.8));
       }
     };
 
@@ -60,7 +60,7 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
   }, []);
 
   return (
-    <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
+    <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={scale}>
       <mesh
         name="clock_face"
         castShadow
@@ -237,8 +237,8 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={5} />
-        <directionalLight position={[0, 0, 3]} intensity={10} />
+        <ambientLight intensity={2} />
+        <directionalLight position={[0, 0, 3]} intensity={4} />
         <Model handRef={handRef} />
       </Canvas>
     </div>

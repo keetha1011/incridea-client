@@ -23,11 +23,11 @@ const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
   const [changedYear, setChangedYear] = useState<number>(0);
 
-  const backgroundImages: string[] = [
-    "/assets/galleryBg/inc22-gallerybg.jpg",
-    "/assets/galleryBg/inc23-gallerybg.jpg",
-    "/assets/galleryBg/inc24-gallerybg.jpg",
-  ];
+  // const backgroundImages: string[] = [
+  //   "/assets/galleryBg/inc22-gallerybg.jpg",
+  //   "/assets/galleryBg/inc23-gallerybg.jpg",
+  //   "/assets/galleryBg/inc24-gallerybg.jpg",
+  // ];
 
   const handleClockClick = (angle: number) => {
     const year = Object.entries(angleToScenes).find(([key, value]) =>
@@ -36,8 +36,8 @@ const Gallery: NextPage = () => {
     setActiveYear(Number(year?.[0]) ?? 0);
   };
 
-  const years = [2022, 2023, 2024, 2025] as const;
-  const imageCounts = [21, 12, 26, 0] as const;
+  const years = [2022, 2023, 2024] as const;
+  const imageCounts = [21, 12, 26] as const;
 
   const generateImagePaths = (
     year: number,
@@ -49,17 +49,17 @@ const Gallery: NextPage = () => {
       (_, i) => `gallery/${year}/${i + 1}.${extension}`,
     );
   };
-  const img2020 = generateImagePaths(years[0], imageCounts[0], "jpg");
-  const img2022 = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2023 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
+  const img2022 = generateImagePaths(years[0], imageCounts[0], "jpg");
+  const img2023 = generateImagePaths(years[1], imageCounts[1], "jpg");
+  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
     (path) => (path.startsWith("/") ? path : `/${path}`),
   );
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
-      <Inc22 imgArr={img2020} key={0} />,
-      <Inc23 imgArr={img2022} key={1} />,
-      <Inc24 imgArr={img2023} key={2} />,
+      <Inc22 imgArr={img2022} key={0} />,
+      <Inc23 imgArr={img2023} key={1} />,
+      <Inc24 imgArr={img2024} key={2} />,
       <Inc25 key={3} />,
     ];
     return components[activeYear] ?? null;
@@ -96,7 +96,7 @@ const Gallery: NextPage = () => {
           // }}
         >
           {/* Clock */}
-          <div className="absolute transform h-auto translate-y-10 z-20 top-14 md:top-8 left-[50%] -translate-x-1/2 flex">
+          <div className="absolute transform h-auto z-20 top-14 md:top-8 left-[50%] -translate-x-1/2 flex">
             <div
               className={`absolute -translate-x-[55px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 0 ? "hidden" : ""}`}
               onClick={() => handleYearChange(-1)}
