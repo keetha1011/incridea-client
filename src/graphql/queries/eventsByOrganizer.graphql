@@ -5,6 +5,21 @@ query EventByOrganizer($organizerId: ID!) {
       roundNo
       eventId
       date
+      quiz {
+        id
+        name
+        description
+        startTime
+        endTime
+        password
+        points
+        qualifyNext
+        allowAttempts
+        completed
+        questions {
+          id
+        }
+      }
       criteria {
         id
         name

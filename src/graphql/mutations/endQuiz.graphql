@@ -1,0 +1,11 @@
+mutation EndQuiz($quizId: String = "") {
+  endQuiz(quizId: $quizId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationEndQuizSuccess {
+      __typename
+    }
+  }
+}
