@@ -12,7 +12,6 @@ import Spinner from "~/components/spinner";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 import MetallicButton from "~/components/copperButton";
-import styles from "./styles.module.css";
 
 export default function Landing() {
   return (
@@ -39,8 +38,7 @@ export const HomeFooter = () => {
   return (
     <footer
       className={cn(
-        styles.footer,
-        "absolute bottom-2 flex w-full flex-col gap-2 text-gray-200 md:gap-4 pt-4 h-16",
+        "absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4 pt-4 h-14 bg-black/40 backdrop-blur",
       )}
     >
       {show && (
@@ -67,7 +65,7 @@ export const HomeFooter = () => {
         </ul>
       )}
       {!show && (
-        <p className="py-4 text-center text-xs mx-auto">
+        <p className="text-center text-xs mx-auto">
           <Link
             className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
             href="/team"
