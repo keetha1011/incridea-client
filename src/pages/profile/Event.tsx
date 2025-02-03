@@ -7,15 +7,15 @@ import { RiNumbersLine } from "react-icons/ri";
 
 import { idToPid, idToTeamId } from "~/utils/id";
 
-import ConfirmTeamModal from "./confirmTeam";
-import DeleteTeamModal from "./deleteTeam";
-import EditTeamModal from "./editTeam";
 import {
   EventType,
   type RegisterdEventsQuery,
   type RegisterdEventsQueryVariables,
 } from "~/generated/generated";
 import { type QueryResult } from "@apollo/client";
+import EditTeamModal from "~/components/general/profile/editTeam";
+import DeleteTeamModal from "~/components/general/profile/deleteTeam";
+import ConfirmTeamModal from "~/components/general/profile/confirmTeam";
 
 const EventCard: FC<{
   teams: Extract<
@@ -49,7 +49,7 @@ const EventCard: FC<{
       key={event.id}
       className="flex w-[19rem] cursor-pointer items-start justify-evenly rounded-lg border border-primary-200/70 bg-primary-400 p-5 transition-transform duration-300 hover:scale-[1.02]"
     >
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center text-black">
         <div className="relative">
           <Image
             src={`https://res.cloudinary.com/dqy4wpxhn/image/upload/v1682653090/Events/VOCAL_TWIST_%28WESTERN%29_1682653088345.jpg`}
@@ -64,7 +64,7 @@ const EventCard: FC<{
           </h1>
         </div>
         <div className="mt-4 flex w-full flex-col items-center justify-end px-5">
-          <div className="flex flex-wrap justify-between gap-2 text-gray-200">
+          <div className="flex flex-wrap justify-between gap-2 text-gray-800">
             <div className="flex w-full items-center justify-center gap-2 rounded-full border border-secondary-400/40 bg-primary-200/30 px-3 py-1 text-left">
               <IoLocationOutline />
               <p className="truncate text-xs font-medium md:text-sm">
@@ -92,8 +92,8 @@ const EventCard: FC<{
                   size={75}
                   bgColor="transparent"
                 />
-                <div className="flex flex-col justify-between gap-2 text-white">
-                  <p className="cursor-pointer text-sm font-bold text-white lg:text-lg">
+                <div className="flex flex-col justify-between gap-2 text-black">
+                  <p className="cursor-pointer text-sm font-bold text-black lg:text-lg">
                     {solo ? idToPid(userId) : idToTeamId(team.id)}
                   </p>
 
@@ -121,7 +121,7 @@ const EventCard: FC<{
                       />
                     )}
                 </div>
-                <div className="mt-1 w-fit overflow-hidden text-ellipsis rounded-full border border-primary-200/80 px-3 py-1 text-center text-sm text-white">
+                <div className="mt-1 w-fit overflow-hidden text-ellipsis rounded-full border border-primary-200/80 px-3 py-1 text-center text-sm text-black">
                   {team.confirmed ? (
                     <p>{solo ? "You are " : "Your team is "} confirmed!</p>
                   ) : (

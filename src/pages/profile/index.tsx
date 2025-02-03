@@ -1,26 +1,26 @@
 import { useMutation } from "@apollo/client";
 import "locomotive-scroll/dist/locomotive-scroll.css";
-import { type NextPage } from "next";
-import Image from "next/image";
-import Link from "next/link";
+import { type HTMLAttributes, useEffect } from "react";
+import toast from "react-hot-toast";
+import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
+import Loader from "~/components/loader";
+import { useAuth } from "~/hooks/useAuth";
+import ProfileCard from "./ProfileCard";
+import UserEvents from "./UserEvents";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
-
-import Button from "~/components/button";
-import ProfileInfo from "~/components/general/profile/profileInfo";
-import UserEvents from "~/components/general/profile/registeredEvents";
-import Loader from "~/components/loader";
+import { type NextPage } from "next";
+import Image from "next/image";
 import { env } from "~/env";
-import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
-import { useAuth } from "~/hooks/useAuth";
+import Link from "next/link";
+import { cn } from "~/lib/utils";
 
 const Profile: NextPage = () => {
-  const { error, user, loading } = useAuth();
+  const { error, user: user, loading } = useAuth();
   const containerRef = useRef(null);
   const router = useRouter();
   const [bombXp, setBombXp] = useState<boolean>(false);
+  const [showQr, setShowQr] = useState<boolean>(false);
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
       levelId: "2",
@@ -55,7 +55,7 @@ const Profile: NextPage = () => {
     }
   }, [addXp, bombXp]);
 
-  if (loading) return <Loader />; // Todo: Loading page here
+  if (loading) return <Loader />;
 
   if (!user)
     return (
@@ -73,7 +73,7 @@ const Profile: NextPage = () => {
           Hey there! You need to login to view your profile page.
         </h1>
         <Link href="/login" className="-translate-y-5">
-          <Button intent={"primary"}>Login / Register</Button>
+          <Button>Login / Register</Button>
         </Link>
       </div>
     );
@@ -85,17 +85,24 @@ const Profile: NextPage = () => {
           Something went wrong. Please try again later.
         </h1>
       </div>
-    ); // Error page here
+    );
 
   return (
     <main ref={containerRef} className="bodyFont mx-auto w-[98vw]">
-      <div className="flex flex-col-reverse gap-5 py-[5rem] lg:grid lg:grid-cols-3">
-        <div className="col-span-2 h-full w-full overflow-auto">
-          <UserEvents userId={user?.id} />
+      <div className="flex flex-col gap-5 py-[5rem] lg:grid lg:grid-cols-4">
+        <div className="w-full h-[calc(100vh-7rem)] rounded-lg overflow-hidden border-green-600 border-4 flex flex-col">
+          <div className="w-full h-full">
+            <ProfileCard user={user} showQR={showQr} />
+          </div>
+          <div className="w-full bg-green-500 grid grid-cols-1 gap-2 md:grid-cols-2 p-2 h-max">
+            <Button onClick={() => setShowQr((s) => !s)}>
+              {showQr ? "Show details" : "show QR"}
+            </Button>
+            <Button>Logout</Button>
+          </div>
         </div>
-
-        <div className="w-full rounded-xl">
-          <ProfileInfo user={user} />
+        <div className="col-span-3 w-full lg:h-[calc(100vh-7rem)] h-full">
+          <UserEvents userId={user?.id} />
         </div>
       </div>
     </main>
@@ -103,3 +110,21 @@ const Profile: NextPage = () => {
 };
 
 export default Profile;
+
+function Button({
+  children,
+  className,
+  ...rest
+}: HTMLAttributes<HTMLButtonElement>) {
+  return (
+    <button
+      {...rest}
+      className={cn(
+        className,
+        "-skew-x-12 mx-1 px-4 py-2 bg-[#D79128] text-white font-bold rounded-md shadow-md hover:bg-yellow-500",
+      )}
+    >
+      {children}
+    </button>
+  );
+}
