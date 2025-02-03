@@ -13,12 +13,12 @@ export default function BackGroundGradient({
   const bgRef = useRef<HTMLDivElement>(null);
 
   const particlesInit = useCallback(async (engine: Engine) => {
-    await loadSlim(engine);
+    await loadSlim(engine, true);
   }, []);
 
   const particlesLoaded = useCallback(
     async (container: Container | undefined) => {
-      await new Promise((resolve) => resolve());
+      await new Promise<void>((resolve) => resolve());
     },
     [],
   );
@@ -46,16 +46,15 @@ export default function BackGroundGradient({
   return (
     <div
       ref={bgRef}
-      className="w-screen min-h-screen bg-[rgb(0,51,31)] backdrop-blur-3xl"
+      className="w-screen min-h-screen relative bg-[rgb(0,51,31)] backdrop-blur-3xl"
     >
       <Particles
-        id="tsparticles"
         init={particlesInit}
         options={particlesConfig}
         loaded={particlesLoaded}
-        className="z-10"
+        className="absolute top-0 left-0 w-full h-full z-0"
       />
-      {children}
+      <div className="relative z-10">{children}</div>
     </div>
   );
 }

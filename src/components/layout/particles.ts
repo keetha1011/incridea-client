@@ -1,46 +1,21 @@
 export const particlesConfig = {
-  autoPlay: true,
-  backgroundMask: {
-    composite: "destination-out",
-    cover: {
-      opacity: 1,
-      color: {
-        value: "",
-      },
+  background: {
+    color: {
+      value: "#00000",
     },
-    enable: false,
-  },
-  clear: true,
-  defaultThemes: {},
-  delay: 0,
-  fullScreen: {
-    enable: true,
-    zIndex: -1,
   },
   detectRetina: true,
-  duration: 0,
   fpsLimit: 120,
   interactivity: {
     detectsOn: "window",
     events: {
       onClick: {
-        enable: false,
-        mode: [],
-      },
-      onDiv: {
-        selectors: [],
-        enable: false,
-        mode: [],
-        type: "circle",
+        enable: true,
+        mode: "push",
       },
       onHover: {
-        enable: false,
-        mode: [],
-        parallax: {
-          enable: false,
-          force: 2,
-          smooth: 10,
-        },
+        enable: true,
+        mode: "attract",
       },
       resize: {
         delay: 0.5,
@@ -61,35 +36,6 @@ export const particlesConfig = {
         maxSpeed: 50,
         speed: 1,
       },
-      bounce: {
-        distance: 200,
-      },
-      bubble: {
-        distance: 200,
-        duration: 0.4,
-        mix: false,
-        divs: {
-          distance: 200,
-          duration: 0.4,
-          mix: false,
-          selectors: [],
-        },
-      },
-      connect: {
-        distance: 80,
-        links: {
-          opacity: 0.5,
-        },
-        radius: 60,
-      },
-      grab: {
-        distance: 100,
-        links: {
-          blink: false,
-          consent: false,
-          opacity: 1,
-        },
-      },
       push: {
         default: true,
         groups: [],
@@ -97,27 +43,6 @@ export const particlesConfig = {
       },
       remove: {
         quantity: 2,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
-        factor: 100,
-        speed: 1,
-        maxSpeed: 50,
-        easing: "ease-out-quad",
-        divs: {
-          distance: 200,
-          duration: 0.4,
-          factor: 100,
-          speed: 1,
-          maxSpeed: 50,
-          easing: "ease-out-quad",
-          selectors: [],
-        },
-      },
-      slow: {
-        factor: 3,
-        radius: 200,
       },
       particle: {
         replaceCursor: false,
@@ -145,7 +70,6 @@ export const particlesConfig = {
       },
     },
   },
-  manualParticles: [],
   particles: {
     bounce: {
       horizontal: {
@@ -207,46 +131,6 @@ export const particlesConfig = {
         },
       },
     },
-    effect: {
-      close: true,
-      fill: true,
-      options: {},
-      type: [],
-    },
-    groups: {
-      z5000: {
-        number: {
-          value: 70,
-        },
-        zIndex: {
-          value: 50,
-        },
-      },
-      z7500: {
-        number: {
-          value: 30,
-        },
-        zIndex: {
-          value: 75,
-        },
-      },
-      z2500: {
-        number: {
-          value: 50,
-        },
-        zIndex: {
-          value: 25,
-        },
-      },
-      z1000: {
-        number: {
-          value: 40,
-        },
-        zIndex: {
-          value: 10,
-        },
-      },
-    },
     move: {
       angle: {
         offset: 0,
@@ -293,20 +177,7 @@ export const particlesConfig = {
         top: "out",
       },
       random: true,
-      size: false,
       speed: 5,
-      spin: {
-        acceleration: 0,
-        enable: false,
-      },
-      straight: false,
-      trail: {
-        enable: false,
-        length: 10,
-        fill: {},
-      },
-      vibrate: false,
-      warp: false,
     },
     number: {
       density: {
@@ -334,7 +205,6 @@ export const particlesConfig = {
         destroy: "none",
       },
     },
-    reduceDuplicates: false,
     shadow: {
       blur: 0,
       color: {
@@ -368,12 +238,6 @@ export const particlesConfig = {
     },
     stroke: {
       width: 0,
-    },
-    zIndex: {
-      value: 5,
-      opacityRate: 0.5,
-      sizeRate: 1,
-      velocityRate: 1,
     },
     destroy: {
       bounds: {},
@@ -424,7 +288,7 @@ export const particlesConfig = {
         opacity: 1,
       },
       particles: {
-        enable: false,
+        enable: true,
         frequency: 0.05,
         opacity: 1,
       },
