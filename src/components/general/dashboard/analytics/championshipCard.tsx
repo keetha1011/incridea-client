@@ -157,7 +157,7 @@ export default function Leaderboard() {
           <select
             value={eligibilityFilter}
             onChange={(e) => setEligibilityFilter(e.target.value)}
-            className="rounded-md border border-white px-4 py-2 h-10 text-sm text-white bg-primary-700 backdrop-blur-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
+            className="rounded-md border border-white px-4 py-2 h-10 text-sm text-white bg-primary-800 backdrop-blur-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-white/30"
           >
             <option value="all">All Colleges</option>
             <option value="eligible">Eligible</option>
@@ -276,7 +276,7 @@ export default function Leaderboard() {
       </div>
       {popupData && (
         <div className="fixed inset-0 bg-white/10 flex items-center justify-center z-50">
-          <div className="bg-primary-600 rounded-lg p-6 max-w-sm w-full border border-white/20">
+          <div className="bg-primary-800 rounded-lg p-6 max-w-sm w-full border border-white/20">
             <h3 className="text-xl font-bold mb-4 text-white">{popupTitle}</h3>
             <h6 className="text-lg font-bold mb-4 text-white">
               {popupData.CATEGORY}
