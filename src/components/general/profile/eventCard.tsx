@@ -52,8 +52,8 @@ const EventCard: FC<{
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <Image
-            // src={`https://res.cloudinary.com/dqy4wpxhn/image/upload/v1682653090/Events/VOCAL_TWIST_%28WESTERN%29_1682653088345.jpg`}
-            src={event.image ?? ""}
+            src={`https://res.cloudinary.com/dqy4wpxhn/image/upload/v1682653090/Events/VOCAL_TWIST_%28WESTERN%29_1682653088345.jpg`}
+            // src={event.image ?? ""}
             alt={event.name}
             height={300}
             width={300}

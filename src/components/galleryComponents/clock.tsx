@@ -37,30 +37,30 @@ const getSnapAngle = (angle: number): number => {
 
 const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
   const { nodes, materials } = useGLTF("/assets/3d/clock.glb") as GLTFResult;
-  const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
+  // const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
 
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setScale(new THREE.Vector3(0.9, 0.9, 0.9));
-    } else {
-      setScale(new THREE.Vector3(0.8, 0.8, 0.8));
-    }
+  // useEffect(() => {
+  //   if (window.innerWidth < 768) {
+  //     setScale(new THREE.Vector3(0.9, 0.9, 0.9));
+  //   } else {
+  //     setScale(new THREE.Vector3(0.8, 0.8, 0.8));
+  //   }
 
-    const resize = () => {
-      if (window.innerWidth < 768) {
-        setScale(new THREE.Vector3(0.9, 0.9, 0.9));
-      } else {
-        setScale(new THREE.Vector3(0.8, 0.8, 0.8));
-      }
-    };
+  //   const resize = () => {
+  //     if (window.innerWidth < 768) {
+  //       setScale(new THREE.Vector3(0.9, 0.9, 0.9));
+  //     } else {
+  //       setScale(new THREE.Vector3(0.8, 0.8, 0.8));
+  //     }
+  //   };
 
-    window.addEventListener("resize", resize);
+  //   window.addEventListener("resize", resize);
 
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+  //   return () => window.removeEventListener("resize", resize);
+  // }, []);
 
   return (
-    <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={scale}>
+    <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
       <mesh
         name="clock_face"
         castShadow
@@ -233,7 +233,7 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
   return (
     <div
       ref={containerRef}
-      className="cursor-pointer z-10 aspect-square md:w-[320px] sm:w-[250px] w-[200px] touch-none rounded-full overflow-hidden"
+      className="cursor-pointer z-10 aspect-square sm:w-[230px] w-[200px] touch-none rounded-full overflow-hidden"
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>

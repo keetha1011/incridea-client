@@ -36,8 +36,8 @@ const Gallery: NextPage = () => {
     setActiveYear(Number(year?.[0]) ?? 0);
   };
 
-  const years = [2022, 2023, 2024] as const;
-  const imageCounts = [21, 12, 26] as const;
+  const years = [2022, 2023, 2024, 2025] as const;
+  const imageCounts = [21, 12, 26, 0] as const;
 
   const generateImagePaths = (
     year: number,
@@ -85,7 +85,7 @@ const Gallery: NextPage = () => {
 
   return (
     <>
-      <section className="relative flex h-screen w-full flex-col overflow-hidden bg-[#00331f]">
+      <section className="relative flex h-screen w-full flex-col overflow-hidden bg-transparent">
         <div
           className="relative h-screen w-full z-0 overflow-hidden"
           // style={{
@@ -96,21 +96,31 @@ const Gallery: NextPage = () => {
           // }}
         >
           {/* Clock */}
-          <div className="absolute transform h-auto z-20 top-14 md:top-8 left-[50%] -translate-x-1/2 flex">
+          <div className="absolute transform h-auto translate-y-10 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
+            <p className="absolute left-[50%] lifeCraft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-widest">
+              INCRIDEA &nbsp;{years[activeYear]}
+            </p>
             <div
-              className={`absolute -translate-x-[55px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 0 ? "hidden" : ""}`}
+              className={`absolute -translate-x-[40px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 0 ? "hidden" : ""}`}
               onClick={() => handleYearChange(-1)}
             >
-              <PiClockCounterClockwiseBold fill="#ebe5e3" className="size-10" />
+              <PiClockCounterClockwiseBold
+                fill="#ebe5e3"
+                className="sm:size-8 size-7"
+              />
             </div>
             <Clock onClockClick={handleClockClick} year={changedYear} />
             <div
-              className={`absolute md:translate-x-[320px] sm:translate-x-[250px] translate-x-[200px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 3 ? "hidden" : ""}`}
+              className={`absolute sm:translate-x-[230px] translate-x-[200px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 3 ? "hidden" : ""}`}
               onClick={() => handleYearChange(1)}
             >
-              <PiClockClockwiseBold fill="#ebe5e3" className="size-10" />
+              <PiClockClockwiseBold
+                fill="#ebe5e3"
+                className="sm:size-8 size-7"
+              />
             </div>
           </div>
+
           <div id="active-year-content" className="relative h-full w-full z-10">
             {renderActiveYearComponent()}
           </div>

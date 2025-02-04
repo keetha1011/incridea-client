@@ -52,7 +52,7 @@ const MetallicButton = ({
   }, []);
 
   const baseStyles =
-    "relative overflow-hidden px-16 py-4 rounded-3xl text-lg font-medium transition-all duration-100 ease-in-out transform";
+    "relative overflow-hidden md:px-16 md:py-4 px-8 py-2 rounded-3xl text-lg font-medium transition-all duration-100 ease-in-out transform";
 
   const variants = {
     solid: `
