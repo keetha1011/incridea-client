@@ -196,7 +196,7 @@ const SignIn: NextPage = () => {
       <Image
         fill={true}
         className="mt-16 object-cover blur-[3px]"
-        src={`/assets/jpeg/bg-login.jpeg`}
+        src={`/2025/login/bg-login.jpeg`}
         alt={"loginBG"}
         quality={100}
         priority
@@ -229,7 +229,7 @@ const SignIn: NextPage = () => {
             className="absolute scale-150 translate-y-1/2"
           >
             <div className="relative size-full">
-              <Image src="/assets/png/gear.webp" alt="" fill priority />
+              <Image src="/2025/login/gear.webp" alt="" fill priority />
             </div>
           </div>
           <div
@@ -243,7 +243,7 @@ const SignIn: NextPage = () => {
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
             <div className="absolute size-full">
-              <Image src="/assets/png/gear.webp" alt="" priority fill />
+              <Image src="/2025/login/gear.webp" alt="" priority fill />
             </div>
             <div className="size-full relative">
               <LoginCard
