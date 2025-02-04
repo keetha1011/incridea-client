@@ -23,11 +23,11 @@ const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
   const [changedYear, setChangedYear] = useState<number>(0);
 
-  const backgroundImages: string[] = [
-    "/assets/galleryBg/inc22-gallerybg.jpg",
-    "/assets/galleryBg/inc23-gallerybg.jpg",
-    "/assets/galleryBg/inc24-gallerybg.jpg",
-  ];
+  // const backgroundImages: string[] = [
+  //   "/assets/galleryBg/inc22-gallerybg.jpg",
+  //   "/assets/galleryBg/inc23-gallerybg.jpg",
+  //   "/assets/galleryBg/inc24-gallerybg.jpg",
+  // ];
 
   const handleClockClick = (angle: number) => {
     const year = Object.entries(angleToScenes).find(([key, value]) =>
@@ -49,18 +49,17 @@ const Gallery: NextPage = () => {
       (_, i) => `gallery/${year}/${i + 1}.${extension}`,
     );
   };
-
-  const img2020 = generateImagePaths(years[0], imageCounts[0], "jpg");
-  const img2022 = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2023 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
+  const img2022 = generateImagePaths(years[0], imageCounts[0], "jpg");
+  const img2023 = generateImagePaths(years[1], imageCounts[1], "jpg");
+  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
     (path) => (path.startsWith("/") ? path : `/${path}`),
   );
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
-      <Inc22 imgArr={img2020} key={0} />,
-      <Inc23 imgArr={img2022} key={1} />,
-      <Inc24 imgArr={img2023} key={2} />,
+      <Inc22 imgArr={img2022} key={0} />,
+      <Inc23 imgArr={img2023} key={1} />,
+      <Inc24 imgArr={img2024} key={2} />,
       <Inc25 key={3} />,
     ];
     return components[activeYear] ?? null;
@@ -102,7 +101,7 @@ const Gallery: NextPage = () => {
               INCRIDEA &nbsp;{years[activeYear]}
             </p>
             <div
-              className={`absolute -translate-x-[55px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 0 ? "hidden" : ""}`}
+              className={`absolute -translate-x-[40px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 0 ? "hidden" : ""}`}
               onClick={() => handleYearChange(-1)}
             >
               <PiClockCounterClockwiseBold
@@ -122,7 +121,6 @@ const Gallery: NextPage = () => {
             </div>
           </div>
 
-          {/* Render Active Year Component with Fade Animation */}
           <div id="active-year-content" className="relative h-full w-full z-10">
             {renderActiveYearComponent()}
           </div>

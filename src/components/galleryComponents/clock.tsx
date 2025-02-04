@@ -6,7 +6,6 @@ import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
 import type { GLTF } from "three-stdlib";
 import { angleToScenes } from "~/pages/gallery";
-
 type GLTFResult = GLTF & {
   nodes: {
     clock_face: THREE.Mesh;
@@ -38,27 +37,27 @@ const getSnapAngle = (angle: number): number => {
 
 const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
   const { nodes, materials } = useGLTF("/assets/3d/clock.glb") as GLTFResult;
-  const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
+  // const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
 
-  useEffect(() => {
-    if (window.innerWidth < 768) {
-      setScale(new THREE.Vector3(0.7, 0.7, 0.7));
-    } else {
-      setScale(new THREE.Vector3(1, 1, 1));
-    }
+  // useEffect(() => {
+  //   if (window.innerWidth < 768) {
+  //     setScale(new THREE.Vector3(0.9, 0.9, 0.9));
+  //   } else {
+  //     setScale(new THREE.Vector3(0.8, 0.8, 0.8));
+  //   }
 
-    const resize = () => {
-      if (window.innerWidth < 768) {
-        setScale(new THREE.Vector3(0.7, 0.7, 0.7));
-      } else {
-        setScale(new THREE.Vector3(1, 1, 1));
-      }
-    };
+  //   const resize = () => {
+  //     if (window.innerWidth < 768) {
+  //       setScale(new THREE.Vector3(0.9, 0.9, 0.9));
+  //     } else {
+  //       setScale(new THREE.Vector3(0.8, 0.8, 0.8));
+  //     }
+  //   };
 
-    window.addEventListener("resize", resize);
+  //   window.addEventListener("resize", resize);
 
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+  //   return () => window.removeEventListener("resize", resize);
+  // }, []);
 
   return (
     <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
@@ -167,7 +166,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
 
     return angle;
   };
-
   useEffect(() => {
     console.log("Rotation changed to", totalRotation);
   }, [totalRotation]);
@@ -177,7 +175,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
       if (!handRef.current) return;
 
       const currentAngle = getAngleFromCenter(x, y);
-
       if (first) {
         previousAngleRef.current = currentAngle;
         return;
@@ -240,8 +237,8 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={5} />
-        <directionalLight position={[0, 0, 3]} intensity={10} />
+        <ambientLight intensity={2} />
+        <directionalLight position={[0, 0, 3]} intensity={4} />
         <Model handRef={handRef} />
       </Canvas>
     </div>

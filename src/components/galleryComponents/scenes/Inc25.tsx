@@ -113,13 +113,13 @@ const Inc25 = () => {
           <Link
             target="_blank"
             href="https://capture.incridea.in"
-            className="px-6 py-2 text-lg rounded-full text-white flex justify-center items-center font-semibold cursor-pointer"
+            className="px-6 text-lg rounded-full text-white flex justify-center items-center font-semibold cursor-pointer"
           >
             Visit&nbsp;&nbsp;
             <img
               src="/assets/png/capture-logo.png"
               alt="Capture"
-              className="h-6"
+              className="h-6 cursor-pointer"
             />
           </Link>
         </div>
