@@ -7,7 +7,6 @@ import sponsors from "~/constants/sponsors";
 const Sponsors: NextPage = () => {
   return (
     <div className="relative w-full">
-
       <div style={{ height: `${sponsors.length * 100}vh` }} />
       <SponsorGearCarousel sponsors={sponsors} />
     </div>
