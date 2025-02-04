@@ -236,7 +236,7 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
   return (
     <div
       ref={containerRef}
-      className="cursor-pointer z-10 aspect-square md:w-[320px] sm:w-[250px] w-[200px] touch-none rounded-full overflow-hidden"
+      className="cursor-pointer z-10 aspect-square sm:w-[230px] w-[200px] touch-none rounded-full overflow-hidden"
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>

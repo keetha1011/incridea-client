@@ -19,9 +19,9 @@ import BackGroundGradient from "~/components/layout/background";
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
 // Font definitions
-export const VikingHell = LocalFont({
-  src: "../font/Viking Hell.otf",
-  variable: "--font-viking-hell",
+export const LifeCraft = LocalFont({
+  src: "../font/LifeCraft.ttf",
+  variable: "--font-lifeCraft",
 });
 
 export const garetFont = LocalFont({
