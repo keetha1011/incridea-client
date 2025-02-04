@@ -1,0 +1,6 @@
+query GetEventStatus {
+  getEventStatus {
+    eventName
+    status
+  }
+}

@@ -117,14 +117,36 @@ const RoundsSidebar: FC<{
 
   const handleNotify = async () => {
     const roundNo = rounds[selectedIndex]?.roundNo ?? 0;
+
     const promise = notifyParticipants({
       variables: {
         eventId,
         roundNo,
       },
+    }).then((response) => {
+      const message = response.data?.notifyParticipants;
+      if (!message) {
+        throw new Error("Failed to send notifications");
+      }
+      if (message.includes("already sent")) {
+        throw new Error("Notifications were already sent for this round");
+      }
+      if (message.includes("Failed")) {
+        throw new Error(message);
+      }
+      return message;
     });
 
-    await createToast(promise, "Sending notifications...");
+    try {
+      await createToast(promise, "Sending notifications...");
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      await createToast(
+        Promise.reject(error),
+        "Sending notifications...",
+        error.message,
+      );
+    }
   };
 
   const handlePublishQuiz = async (quizId: string, allowAttempts: boolean) => {
