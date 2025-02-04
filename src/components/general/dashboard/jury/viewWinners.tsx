@@ -29,8 +29,32 @@ const ViewWinners = ({ eventId }: { eventId: string }) => {
   );
 
   const handleNotifyWinners = async () => {
-    const promise = sendNotification();
-    await createToast(promise, "Sending notifications...");
+    const promise = sendNotification().then((response) => {
+      const message = response.data?.sendWinnerWhatsAppNotification;
+      if (!message) {
+        throw new Error("Failed to send notifications");
+      }
+      if (message.includes("already sent")) {
+        throw new Error(
+          "Notifications were already sent for this event winners",
+        );
+      }
+      if (message.includes("Failed")) {
+        throw new Error(message);
+      }
+      return message;
+    });
+
+    try {
+      await createToast(promise, "Sending notifications...");
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      await createToast(
+        Promise.reject(error),
+        "Sending notifications...",
+        error.message,
+      );
+    }
   };
 
   return (
