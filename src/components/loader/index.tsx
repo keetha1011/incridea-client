@@ -127,7 +127,7 @@ const LoadingScreen = () => {
           className={styles.hourglass}
         >
           <Image
-            src="/assets/png/hourglass.png"
+            src="/2025/loading/hourglass.png"
             width={150}
             height={150}
             alt="Echoes of Eternity Logo"
@@ -137,10 +137,10 @@ const LoadingScreen = () => {
         <div 
           ref={logoRef}
 
-          className="absolute bottom-[27%] md:bottom-[20%]"
+          className="absolute bottom-[24%] md:bottom-[20%] xl:bottom-[22%]"
         >
           <Image
-            src="/assets/png/Echoes_of_Eternity_Logo.png"
+            src="/2025/loading/Echoes_of_Eternity_Logo.png"
             width={300}
             height={300}
             alt="Echoes of Eternity Logo"
