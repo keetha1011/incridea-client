@@ -27,12 +27,14 @@ import Image from "next/image";
 // import "prismjs/components/prism-markup";
 import hljs from "highlight.js";
 import "highlight.js/styles/atom-one-dark.css";
+import { createPortal } from "react-dom";
 
 import {
   Check,
   ChevronLeft,
   ChevronRight,
   HourglassIcon,
+  Maximize2,
   Sliders,
   X,
 } from "lucide-react";
@@ -127,12 +129,10 @@ const QuizPage = () => {
   const questionsPerPage = 6;
   const totalPages = Math.ceil(questions.length / questionsPerPage);
 
-  // Calculate which questions to show in the tracker
   const startIndex = trackerPage * questionsPerPage;
   const endIndex = Math.min(startIndex + questionsPerPage, questions.length);
   const visibleQuestions = questions.slice(startIndex, endIndex);
 
-  // Auto-adjust tracker page when current question is out of view
   useEffect(() => {
     const newPage = Math.floor(currentSlide / questionsPerPage);
     if (newPage !== trackerPage) {
@@ -142,12 +142,14 @@ const QuizPage = () => {
 
   const handleNextTrackerPage = () => {
     if (trackerPage < totalPages - 1) {
+      setIsOpen(false);
       setTrackerPage((prev) => prev + 1);
     }
   };
 
   const handlePrevTrackerPage = () => {
     if (trackerPage > 0) {
+      setIsOpen(false);
       setTrackerPage((prev) => prev - 1);
     }
   };
@@ -204,9 +206,49 @@ const QuizPage = () => {
     }
   };
 
+  const imageRef = React.useRef<HTMLImageElement>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="relative flex flex-col justify-between items-center bg-gradient-to-tr from-emerald-800 via-green-800 to-emerald-800 text-white">
-      {/* Header */}
+      {isOpen &&
+        imageRef.current &&
+        createPortal(
+          <div
+            className="fixed h-full w-full inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50" // Zoom effect
+          >
+            <div
+              className="fixed inset-0"
+              onClick={() => setIsOpen(false)}
+            ></div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 bg-black/60 p-2 rounded-full hover:bg-black/80 transition"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>{" "}
+            <div
+              className="rounded-xl border border-cyan-500/20 transition-transform duration-200 ease-out"
+              style={{
+                position: "absolute",
+                width: "auto",
+                maxWidth: "90vw",
+                height: "auto",
+                maxHeight: "90vh",
+              }}
+            >
+              {imageRef.current && (
+                <img
+                  src={imageRef.current.src}
+                  alt="question_image"
+                  className="rounded-xl"
+                />
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
 
       <header className="w-3/4 mx-auto mt-16 backdrop-blur-lg bg-black/30 border-b-[1.5px] border-amber-200 border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -222,7 +264,6 @@ const QuizPage = () => {
         </div>
       </header>
 
-      {/* Progress Bar */}
       <div className="max-w-3xl mx-auto mt-6 px-4">
         <div className="w-60 md:w-96 h-3 bg-blue-950/50 rounded-full overflow-hidden">
           <div
@@ -246,6 +287,7 @@ const QuizPage = () => {
           spaceBetween={24}
           slidesPerView={1}
           allowTouchMove={false}
+          autoHeight={true}
         >
           {questions.map((question, index) => (
             <SwiperSlide key={index}>
@@ -262,15 +304,19 @@ const QuizPage = () => {
                       </p>
                     </div>
                     {question.image && (
-                      <Image
-                        width={300}
-                        height={300}
-                        src={question.image}
-                        alt="question_image"
-                        className="mx-auto w-3/4 rounded-xl border border-cyan-500/20"
-                      />
+                      <>
+                        <Image
+                          ref={imageRef}
+                          width={300}
+                          height={300}
+                          src={question.image}
+                          alt="question_image"
+                          className="mx-auto w-2/3 rounded-xl border border-cyan-500/20"
+                          onClick={() => setIsOpen(true)}
+                          priority
+                        />
+                      </>
                     )}
-
                     {question.description && question.isCode && (
                       <div className="bg-teal-950/50 rounded-xl p-4 border border-cyan-500/20 shadow-lg">
                         <h3 className="text-amber-300 mb-2 font-semibold">

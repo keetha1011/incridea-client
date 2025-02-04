@@ -196,7 +196,7 @@ const SignIn: NextPage = () => {
       <Image
         fill={true}
         className="mt-16 object-cover blur-[3px]"
-        src={`/assets/png/bg-login.png`}
+        src={`/assets/jpeg/bg-login.jpeg`}
         alt={"loginBG"}
         quality={100}
         priority
@@ -208,42 +208,9 @@ const SignIn: NextPage = () => {
         {/* <LoginPortal isTop={true} /> */}
 
         {/* TODO: Change the time delay here according to time delay set for free-fall animation in tailwind.config.js */}
-        <div className="absolute -top-[10vh] left-2/4 -z-40 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
-          <FallingItem delay={0} />
-          <FallingItem delay={2000} />
-          <FallingItem delay={4000} />
-          <FallingItem delay={6000} />
-          <FallingItem delay={8000} />
-        </div>
-
+        {/* 
         <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
           <EasterBomb />
-        </div>
-
-        {/* <div className="relative size-full">
-          <img
-            src="assets/svg/geardone2.svg"
-            style={{
-              width: radius1,
-              height: radius1,
-              right: "8%",
-            }}
-            className="absolute -translate-y-1/2 -translate-x-1/2"
-            alt=""
-          />
-          <img
-            src="assets/svg/geardone2.svg"
-            style={{
-              width: radius2,
-              height: radius2,
-              // left: `10% + ${gearDistance * Math.cos(45)}px`,
-              left: "130%",
-              bottom: "0%",
-              // transform: `translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`,
-            }}
-            className="absolute -translate-x-[70%] translate-y-full scale-150 overflow-hidden"
-            alt=""
-          />
         </div> */}
 
         <div className="relative w-[500vw] h-[160vh] flex items-center justify-center self-center">
@@ -257,37 +224,14 @@ const SignIn: NextPage = () => {
               rotate: "18deg",
               transform: `rotate(${rotationAngle1}deg)`,
               transition: "transform 2s ease-in-out",
-              // animation:
-              //   secondsAnimation !== "0s"
-              //     ? `rotateClockwise ${secondsAnimation} linear infinite`
-              //     : "rotateClockwise 20000s linear infinite",
               scale: scale1,
             }}
             className="absolute scale-150 translate-y-1/2"
           >
             <div className="relative size-full">
-              <Image src="assets/svg/gear44.svg" alt="" fill priority />
+              <Image src="/assets/png/gear.webp" alt="" fill priority />
             </div>
           </div>
-          {/* <style jsx global>{`
-            @keyframes rotateClockwise {
-              0% {
-                transform: rotate(0deg);
-              }
-              100% {
-                transform: rotate(360deg);
-              }
-            }
-            @keyframes rotateAntiClock {
-              0% {
-                transform: rotate(0deg);
-              }
-              100% {
-                transform: rotate(-360deg);
-              }
-            }
-          `}</style> */}
-
           <div
             style={{
               top: "18%",
@@ -299,7 +243,7 @@ const SignIn: NextPage = () => {
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
             <div className="absolute size-full">
-              <Image src="assets/svg/gear44.svg" alt="" priority fill />
+              <Image src="/assets/png/gear.webp" alt="" priority fill />
             </div>
             <div className="size-full relative">
               <LoginCard
@@ -326,21 +270,7 @@ const SignIn: NextPage = () => {
               />
             </div>
           </div>
-
-          {/* <img
-            src="assets/svg/geardone2.svg"
-            style={{
-              width: "1000px",
-              height: "1000px",
-              left: "100%",
-              top: "100%",
-            }}
-            className="absolute -translate-y-1/2 scale-150  -translate-x-full"
-            alt=""
-          /> */}
         </div>
-
-        {/* <LoginPortal isTop={false} /> */}
       </div>
     </>
   );

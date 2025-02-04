@@ -297,7 +297,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                       <Combobox.Option
                         className={({ active }) =>
                           `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
-                            active ? "bg-[#dd5c6e] text-white" : "text-gray-900"
+                            active
+                              ? "bg-secondary-600 text-white"
+                              : "text-gray-900"
                           }`
                         }
                         key={college?.id}
@@ -424,7 +426,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       )}
 
       {(error ?? mutationError ?? emailVerificationError) && (
-        <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
+        <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
           <BiErrorCircle className="shrink-0" />
           <div>
             {error}

@@ -67,12 +67,11 @@ const Reset: NextPage = () => {
       setBottom1("80%");
     }
 
-    // Calculate positioning for gear1 to attach to gear2
-    const distancegear = gear1Radius / 2 + gear2Radius / 2; // Edge-to-edge distance
+    const distancegear = gear1Radius / 2 + gear2Radius / 2;
     setGearDistance(distancegear);
-    const angle = 0; // Horizontal attachment, adjust angle for diagonal placement
-    const x = gear2Radius - gear1Radius; // Attach gear1 to left edge of gear2
-    const y = 0; // No vertical offset for alignment
+    const angle = 0;
+    const x = gear2Radius - gear1Radius;
+    const y = 0;
 
     setGearPosition({ x, y });
   };
@@ -89,7 +88,7 @@ const Reset: NextPage = () => {
       <Image
         fill={true}
         className="mt-16 object-cover"
-        src={`/assets/png/bg-login.png`}
+        src={`/assets/jpeg/bg-login.jpeg`}
         alt={"loginBG"}
         quality={100}
         priority
@@ -98,8 +97,6 @@ const Reset: NextPage = () => {
       <div
         className={`relative flex min-h-[93vh] flex-col justify-between overflow-hidden [perspective:500px] [transform-style:preserve-3d]`}
       >
-        {/* <LoginPortal isTop={true} /> */}
-
         <div className="relative w-[500vw] h-[100vh] flex items-center justify-center self-center">
           <div
             style={{
@@ -110,15 +107,11 @@ const Reset: NextPage = () => {
               rotate: "18deg",
               transform: `rotate(${rotationAngle1}deg)`,
               transition: "transform 2s ease-in-out",
-              // animation:
-              //   secondsAnimation !== "0s"
-              //     ? `rotateClockwise ${secondsAnimation} linear infinite`
-              //     : "rotateClockwise 20000s linear infinite",
               scale: scale1,
             }}
             className="absolute scale-150 translate-y-1/2"
           >
-            <img src="/assets/svg/gear44.svg" alt="" className="size-full" />
+            <img src="/assets/png/gear.webp" alt="" className="size-full" />
           </div>
           <div
             style={{
@@ -131,7 +124,7 @@ const Reset: NextPage = () => {
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
             <img
-              src="/assets/svg/gear44.svg"
+              src="/assets/png/gear.webp"
               alt=""
               className="absolute size-full"
             />
@@ -141,7 +134,6 @@ const Reset: NextPage = () => {
             </div>
           </div>
         </div>
-        {/* <LoginPortal isTop={false} /> */}
       </div>
     </>
   );
