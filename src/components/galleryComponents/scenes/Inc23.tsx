@@ -3,9 +3,10 @@ import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three-stdlib";
 import { DRACOLoader } from "three-stdlib";
 import { Canvas } from "@react-three/fiber";
+import Image from "next/image";
 import { useDrag } from "@use-gesture/react";
-import { GroupProps } from "@react-three/fiber";
 import gsap from "gsap";
+import { GroupProps } from "@react-three/fiber";
 import * as THREE from "three";
 
 gsap.registerPlugin();
@@ -27,69 +28,65 @@ function Model({
     loader.setDRACOLoader(dracoLoader);
   });
 
-  const nodes = gltf.nodes as Record<string, THREE.Mesh>;
-  const materials = gltf.materials as Record<string, THREE.Material>;
+  const nodes = gltf.nodes as unknown as { [key: string]: THREE.Mesh };
+  const materials: { [key: string]: THREE.Material } = gltf.materials;
   const pendulumGroupRef = useRef<THREE.Group | null>(null);
   const isDragging = useRef(false);
-  const limitr = Math.PI / 6;
-  const limitl = -Math.PI / 6;
+  const limitRight = Math.PI / 8;
+  const limitLeft = -Math.PI / 8;
 
   useEffect(() => {
     if (!pendulumGroupRef.current) return;
 
-    // Start GSAP animation if not dragging
     if (!isDragging.current) {
-      pendulumGroupRef.current.rotation.z = limitl;
-      timeline.to(
-        pendulumGroupRef.current.rotation,
-        {
-          z: limitr,
-          duration: 2,
-          yoyo: true,
-          repeat: -1,
-          ease: "sine.inOut",
-          onRepeat: () => {
-            setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length);
-          },
-        },
-        0,
-      );
-    }
-  }, [timeline, setCurrentIndex, imgArr.length]);
+      gsap.killTweensOf(pendulumGroupRef.current.rotation); // Stop any existing animation
+      pendulumGroupRef.current.rotation.z = limitLeft;
 
-  // Handle Drag Gesture
-  const bind = useDrag(({ offset: [x] }) => {
-    if (!pendulumGroupRef.current) return;
-    isDragging.current = true;
-
-    const newRotation = THREE.MathUtils.clamp(x * 0.002, limitl, limitr);
-    pendulumGroupRef.current.rotation.z = newRotation;
-
-    // If dragged to the limit, switch image and restart GSAP
-    if (newRotation === limitl || newRotation === limitr) {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length);
-      isDragging.current = false;
-
-      // Restart GSAP animation after drag ends
-      timeline.clear();
-      pendulumGroupRef.current.rotation.z = limitl;
+      timeline.clear(); // Clear previous timeline animations
       timeline.to(pendulumGroupRef.current.rotation, {
-        z: limitr,
-        duration: 2,
+        z: limitRight,
+        duration: 1,
         yoyo: true,
         repeat: -1,
         ease: "sine.inOut",
+        onRepeat: () => {
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length);
+        },
       });
     }
+  }, [timeline, setCurrentIndex, imgArr.length, limitLeft, limitRight]);
+
+  const bind = useDrag(({ offset: [x], last, first }) => {
+    if (!pendulumGroupRef.current) return;
+
+    if (first) {
+      timeline.pause();
+      gsap.killTweensOf(pendulumGroupRef.current.rotation);
+    }
+    isDragging.current = true;
+    //csonvert x movement to pendulum rotation
+    const newRotation = THREE.MathUtils.clamp(x * 0.002, limitLeft, limitRight);
+    gsap.to(pendulumGroupRef.current.rotation, {
+      z: newRotation,
+      duration: 0.1,
+      ease: "power2.out",
+    });
+
+    if (last) {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length);
+      isDragging.current = false;
+      timeline.resume();
+    }
   });
+  const bindProps = bind() as unknown as Partial<GroupProps>;
 
   return (
     <group
-      {...(pendulumGroupRef as unknown as GroupProps)} // Fix ref type mismatch
       ref={pendulumGroupRef}
+      {...bindProps}
       dispose={null}
-      scale={[0.75, 0.75, 0.75]}
-      position={[0, 2.2, 0]}
+      scale={[1, 1, 0.75]}
+      position={[0, 3.8, 0]}
     >
       <mesh
         castShadow
@@ -173,20 +170,25 @@ const Carousel = ({
         zIndex = 0;
       }
 
-      timeline.to(
-        img,
-        {
-          x: xOffset,
-          scale: scale,
-          opacity: opacity,
-          duration: 1,
-          ease: "power2.inOut",
-          zIndex: zIndex,
-        },
-        0,
-      );
+      //initial
+      gsap.set(img, {
+        x: xOffset,
+        scale: scale,
+        opacity: opacity,
+        zIndex: zIndex,
+      });
+
+      //on currentIndex changes
+      gsap.to(img, {
+        x: xOffset,
+        scale: scale,
+        opacity: opacity,
+        duration: 1,
+        ease: "power2.inOut",
+        zIndex: zIndex,
+      });
     });
-  }, [currentIndex, imgArr.length, timeline]);
+  }, [currentIndex, imgArr.length, timeline, isMobile]);
 
   return (
     <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
@@ -207,14 +209,16 @@ const Carousel = ({
             return null;
 
           return (
-            <img
+            <Image
               key={index}
               ref={(el) => {
                 imgRefs.current[index] = el;
               }}
               src={img}
               alt="Slide"
-              className="absolute rounded-lg shadow-lg w-1/3 h-48 md:h-64 transition-opacity duration-500"
+              width={48}
+              height={48}
+              className="absolute rounded-lg shadow-lg w-1/3 transition-opacity duration-500"
             />
           );
         })}
@@ -224,6 +228,14 @@ const Carousel = ({
 };
 
 const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
+  // const imgArr = [
+  //   "/assets/galleryBg/inc22-gallerybg.jpg",
+  //   "/assets/galleryBg/inc23-gallerybg.jpg",
+  //   "/assets/galleryBg/inc24-gallerybg.jpg",
+  //   "/assets/jpeg/DhvaniBhanushali.jpeg",
+  //   "/assets/jpeg/download.jpeg",
+  //   "/assets/jpeg/Nakash.jpeg",
+  // ];
   const [currentIndex, setCurrentIndex] = useState(0);
   const timeline = useRef(gsap.timeline({ repeat: -1, yoyo: true })).current;
 
