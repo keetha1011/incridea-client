@@ -29,6 +29,7 @@ import { useRouter } from "next/router";
 import createToast from "~/components/toast";
 import { HelperTooltip } from "~/components/general/dashboard/organizer/quiz/HelperToolTip";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 const QuizPage = ({
   questions,
@@ -182,6 +183,9 @@ const QuizPage = ({
     }
   };
 
+  const imageRef = React.useRef<HTMLImageElement>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   useEffect(() => {
     if (!startTime || !endTime) return;
 
@@ -257,7 +261,43 @@ const QuizPage = ({
 
   return (
     <div className="relative flex flex-col justify-between items-center bg-gradient-to-tr from-emerald-800 via-green-800 to-emerald-800 text-white">
-      {/* Header */}
+      {isOpen &&
+        imageRef.current &&
+        createPortal(
+          <div
+            className="fixed h-full w-full inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50" // Zoom effect
+          >
+            <div
+              className="fixed inset-0"
+              onClick={() => setIsOpen(false)}
+            ></div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 bg-black/60 p-2 rounded-full hover:bg-black/80 transition"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>{" "}
+            <div
+              className="rounded-xl border border-cyan-500/20 transition-transform duration-200 ease-out"
+              style={{
+                position: "absolute",
+                width: "auto",
+                maxWidth: "90vw",
+                height: "auto",
+                maxHeight: "90vh",
+              }}
+            >
+              {imageRef.current && (
+                <img
+                  src={imageRef.current.src}
+                  alt="question_image"
+                  className="rounded-xl"
+                />
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
 
       <header className="w-3/4 mx-auto mt-16 backdrop-blur-lg bg-black/30 border-b-[1.5px] border-b-white border-white/10">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -277,7 +317,6 @@ const QuizPage = ({
         </div>
       </header>
 
-      {/* Progress Bar */}
       <div className="max-w-3xl mx-auto mt-6 px-4">
         <div className="w-60 md:w-96 h-3 bg-blue-950/50 rounded-full overflow-hidden">
           <div
@@ -291,7 +330,7 @@ const QuizPage = ({
           Question {currentSlide + 1} of {questions.length}
         </p>
       </div>
-      {/* Main Content with Swiper */}
+
       <main className="w-[90%] md:w-3/4 mx-auto mt-8 px-2">
         <Swiper
           onSwiper={setSwiper}
@@ -300,6 +339,7 @@ const QuizPage = ({
           spaceBetween={24}
           slidesPerView={1}
           allowTouchMove={false}
+          autoHeight={true}
         >
           {questions.map((question, index) => (
             <SwiperSlide key={index} className="">
@@ -317,11 +357,14 @@ const QuizPage = ({
                     </div>
                     {question.image && (
                       <Image
+                        ref={imageRef}
                         width={360}
                         height={360}
                         src={question.image}
                         alt="question_image"
-                        className="mx-auto rounded-xl border border-cyan-500/20"
+                        className="mx-auto w-2/3 rounded-xl border border-cyan-500/20"
+                        onClick={() => setIsOpen(true)}
+                        priority
                       />
                     )}
 
@@ -670,7 +713,7 @@ const SuccessDialog = ({ isOpen }: { isOpen: boolean }) => {
 
   return (
     <div className="fixed inset-0 bg-emerald-950/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-gradient-to-bl from-emerald-900/90 to-amber-900/90 backdrop-blur-md border-2 border-gradient-to-r from-amber-600/40 to-emerald-800/40 border-yellow-500 rounded-2xl p-8 max-w-md w-full shadow-xl">
+      <div className="bg-gradient-to-bl backdrop-blur-md border-2 border-gradient-to-r from-amber-600/40 to-emerald-800/40 border-yellow-500 rounded-2xl p-8 max-w-md w-full shadow-xl">
         <div className="flex flex-col items-center gap-6">
           <div className="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-400 rounded-full flex items-center justify-center shadow-lg">
             <Check className="w-8 h-8 text-emerald-800" />
