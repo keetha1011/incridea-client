@@ -1,0 +1,6 @@
+query GetTotalRegistrations {
+  getTotalRegistrations {
+    externalRegistrations
+    internalRegistrations
+  }
+}

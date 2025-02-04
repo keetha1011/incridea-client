@@ -1,0 +1,12 @@
+query GetRevenue {
+  getRevenue {
+    ... on QueryGetRevenueSuccess {
+      __typename
+      data
+    }
+    ... on Error {
+      __typename
+      message
+    }
+  }
+}

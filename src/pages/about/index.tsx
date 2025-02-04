@@ -12,11 +12,10 @@ const images = [
   { id: 15, alt: "big rocks with some trees" },
   { id: 15, alt: "a waterfall, trees and a view from the sky" },
   { id: 15, alt: "a cool landscape" },
-  { id: 15, alt: "inside a town between two big buildings" }
+  { id: 15, alt: "inside a town between two big buildings" },
 ];
 
 const About = () => {
-
   const [isActive, setIsActive] = useState(false);
 
   return (
@@ -37,7 +36,6 @@ const About = () => {
               className="top-0 h-full w-3/4 object-contain object-center md:w-1/3"
               height={500}
               width={500}
-           
             />
             <div className="max-w-3xl text-justify">
               Nitte Mahalinga Adyantaya Memorial Institute of Technology
@@ -91,41 +89,46 @@ const About = () => {
               }
 
               .gallery > img {
-                
                 position: absolute;
                 width: 100%;
                 height: 100%;
                 grid-area: 1/1;
                 border-radius: 50%;
                 object-fit: cover;
-                transform: scale(.5);
+                transform: scale(0.5);
                 opacity: 0;
-                transition: transform 1s ease, opacity 0.5s ease;
+                transition:
+                  transform 1s ease,
+                  opacity 0.5s ease;
               }
 
-              ${images.map((_, index) => `
+              ${images
+                .map(
+                  (_, index) => `
                 .gallery > img:nth-of-type(${index + 2}) {
                   --i: ${index + 1};
                   transition-delay: ${index * 0.1}s;
                 }
-              `).join('\n')}
+              `,
+                )
+                .join("\n")}
 
               .gallery > img.active {
                 opacity: 1;
                 transform: rotate(calc(var(--i) * 360deg / 8))
-                          translate(calc(1.5 * var(--s)))
-                          rotate(calc(var(--i) * -360deg / 8));
+                  translate(calc(1.5 * var(--s)))
+                  rotate(calc(var(--i) * -360deg / 8));
               }
 
               @media (max-width: 1024px) {
                 .gallery {
                   --s: min(100px, 60vw);
                 }
-                
+
                 .gallery > img.active {
                   transform: rotate(calc(var(--i) * 360deg / 8))
-                            translate(calc(1.2 * var(--s)))
-                            rotate(calc(var(--i) * -360deg / 8));
+                    translate(calc(1.2 * var(--s)))
+                    rotate(calc(var(--i) * -360deg / 8));
                 }
               }
 
@@ -133,11 +136,11 @@ const About = () => {
                 .gallery {
                   --s: min(95px, 60vw);
                 }
-                
+
                 .gallery > img.active {
                   transform: rotate(calc(var(--i) * 360deg / 8))
-                            translate(calc(1 * var(--s)))
-                            rotate(calc(var(--i) * -360deg / 8));
+                    translate(calc(1 * var(--s)))
+                    rotate(calc(var(--i) * -360deg / 8));
                 }
               }
 
@@ -153,7 +156,7 @@ const About = () => {
                 src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-rim-white.png`}
                 alt="Incridea Logo"
                 loading="lazy"
-                className={`object-contain logo ${isActive ? 'active' : ''} object-contain origin-bottom animate-shakelogo` }
+                className={`object-contain logo ${isActive ? "active" : ""} object-contain origin-bottom animate-shakelogo`}
                 height={400}
                 width={400}
               />
@@ -162,7 +165,7 @@ const About = () => {
                   key={id}
                   src={`https://picsum.photos/id/${id}/300/300`}
                   alt={alt}
-                  className={isActive ? 'active ' : ''}
+                  className={isActive ? "active " : ""}
                 />
               ))}
             </div>
@@ -178,18 +181,19 @@ const About = () => {
               <span className="font-bold">Innovate, Create and Ideate</span> at
               the highest standard possible by becoming a symbol of technology,
               passion, culture and conviction among students. Incridea is
-              conducted with the help of many services and technology created and
-              operated by students, making it one of the most indigenous college
-              fests with resources and capabilities beyond expectations.
+              conducted with the help of many services and technology created
+              and operated by students, making it one of the most indigenous
+              college fests with resources and capabilities beyond expectations.
               <br />
               <br />
               Pronites of Incridea has seen a wide range of popular and talented
               artists, DJs, and bands. The fest constitutes over{" "}
-              <span className="font-bold">40+ events</span> and expected footfall
-              of around <span className="font-bold">45,000</span>, making it one
-              of the most happening fests in the region. With grand successes over
-              the years and a flair for perfection, we intend to make Incridea
-              &apos;24 and grand success and the best one so far.
+              <span className="font-bold">40+ events</span> and expected
+              footfall of around <span className="font-bold">45,000</span>,
+              making it one of the most happening fests in the region. With
+              grand successes over the years and a flair for perfection, we
+              intend to make Incridea &apos;24 and grand success and the best
+              one so far.
             </div>
           </div>
         </div>

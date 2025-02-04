@@ -4,7 +4,6 @@ import Particles from "react-tsparticles";
 import gsap from "gsap";
 import styles from "./loader.module.css";
 
-
 const LoadingScreen = () => {
   const containerRef = useRef(null);
   const logoRef = useRef(null);
@@ -19,13 +18,12 @@ const LoadingScreen = () => {
     gsap.fromTo(
       container,
       { opacity: 0 },
-      { 
-        opacity: 1, 
+      {
+        opacity: 1,
         duration: 0.4,
-        ease: "power2.inOut"
-      }
+        ease: "power2.inOut",
+      },
     );
-
 
     gsap.to(logo, {
       scale: 1.25,
@@ -34,7 +32,6 @@ const LoadingScreen = () => {
       yoyo: true,
       ease: "power1.inOut",
     });
-
 
     return () => {
       gsap.killTweensOf([container, logo, hourglass]);
@@ -113,19 +110,13 @@ const LoadingScreen = () => {
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={styles.loadingScreen}
-    >
+    <div ref={containerRef} className={styles.loadingScreen}>
       <div className="relative h-screen w-screen flex flex-col items-center justify-center">
         <div className={styles.background}>
           <div className={styles.particlesContainer}></div>
           <Particles options={particlesOptions} />
         </div>
-        <div 
-          ref={hourglassRef}
-          className={styles.hourglass}
-        >
+        <div ref={hourglassRef} className={styles.hourglass}>
           <Image
             src="/assets/png/hourglass.png"
             width={150}
@@ -134,11 +125,7 @@ const LoadingScreen = () => {
             priority
           />
         </div>
-        <div 
-          ref={logoRef}
-
-          className="absolute bottom-[27%] md:bottom-[20%]"
-        >
+        <div ref={logoRef} className="absolute bottom-[27%] md:bottom-[20%]">
           <Image
             src="/assets/png/Echoes_of_Eternity_Logo.png"
             width={300}

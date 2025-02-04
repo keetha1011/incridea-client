@@ -236,7 +236,7 @@ const config: Config = {
           "100%": {
             transform: "translate(0, 0) rotate(0deg)",
           },
-        }
+        },
       },
       transitionTimingFunction: {
         "suck-in": "cubic-bezier(0.65, 0, 0.35, 1)",
