@@ -112,5 +112,6 @@ export default function Footer() {
   if (router.pathname === "/gallery") return null;
   if (router.pathname === "/pronites") return null;
   if (router.pathname.startsWith("/event/")) return null;
+  if (router.pathname === "/explore/spear/play") return null;
   return <FooterBody />;
 }

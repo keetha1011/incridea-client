@@ -1,0 +1,6 @@
+query GetProniteRegistrations {
+  getProniteRegistrations {
+    day1Count
+    day2Count
+  }
+}

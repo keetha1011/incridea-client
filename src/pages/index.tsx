@@ -14,12 +14,6 @@ import { cn } from "~/lib/utils";
 import MetallicButton from "~/components/copperButton";
 
 export default function Landing() {
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-  }, []);
-
   return (
     <main className="relative h-screen overflow-hidden">
       <div className="absolute top-0">
@@ -42,9 +36,13 @@ export const HomeFooter = () => {
     return () => clearTimeout(timeout);
   }, [show]);
   return (
-    <footer className="absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4 pt-4 bg-black/50 backdrop-blur-sm h-16">
+    <footer
+      className={cn(
+        "absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4 pt-4 h-14 bg-black/40 backdrop-blur",
+      )}
+    >
       {show && (
-        <ul className="mb-5 flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
+        <ul className="mb-5 mx-auto flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
           <li className="text-white transition-colors duration-300 hover:text-gray-300">
             <Link href="/privacy">Privacy Policy</Link>
           </li>
@@ -67,7 +65,7 @@ export const HomeFooter = () => {
         </ul>
       )}
       {!show && (
-        <p className="pb-3 text-center text-xs">
+        <p className="text-center text-xs mx-auto">
           <Link
             className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
             href="/team"
