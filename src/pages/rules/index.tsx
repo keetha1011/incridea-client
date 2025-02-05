@@ -520,7 +520,7 @@ const Terms: NextPage = () => {
             {" "}
             incridea@nmamit.in
           </a>
-          <p className="mt-2">Phone: +91 94488 15186 or +91 63641 72219</p>
+          <p className="mt-2">Phone: +91 94488 46524 or +91 96863 56123</p>
         </div>
       </div>
     </div>

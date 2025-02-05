@@ -67,8 +67,11 @@ const Refund: NextPage = () => {
             >
               incridea@nmamit.in
             </a>{" "}
-            or <span className="mr-1 inline-block">+91 63641 72219</span>, and
-            we will be happy to assist you.
+            or{" "}
+            <span className="mr-1 inline-block">
+              +91 94488 46524 or +91 96863 56123{" "}
+            </span>
+            , and we will be happy to assist you.
           </p>
         </div>
       </div>

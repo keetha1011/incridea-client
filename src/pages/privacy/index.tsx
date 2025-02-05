@@ -197,7 +197,7 @@ const Privacy: NextPage = () => {
             </a>{" "}
             or{" "}
             <a href="tel:9448815186" className="hover:underline">
-              +91 9448815186
+              +91 94488 46524
             </a>
             .
           </p>
