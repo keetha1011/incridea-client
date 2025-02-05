@@ -1,5 +1,4 @@
 import { type NextPage } from "next";
-import Link from "next/link";
 
 const Refund: NextPage = () => {
   return (
@@ -35,14 +34,7 @@ const Refund: NextPage = () => {
             back to your account automatically within 5-7 business days. Please
             note that this refund is only applicable in the case of an
             unsuccessful transaction due to processing errors and not for any
-            other reasons. Please fill out the form :{" "}
-            <Link
-              href="https://forms.gle/t1cELV9MBEmMENms8"
-              className="underline"
-              target="_blank"
-            >
-              https://forms.gle/t1cELV9MBEmMENms8
-            </Link>
+            other reasons.
           </p>
 
           <h2 className="mt-4 text-2xl font-semibold">
@@ -75,8 +67,8 @@ const Refund: NextPage = () => {
             >
               incridea@nmamit.in
             </a>{" "}
-            <span className="mr-1 inline-block">+91 63641 72219</span>, and we
-            will be happy to assist you.
+            or <span className="mr-1 inline-block">+91 63641 72219</span>, and
+            we will be happy to assist you.
           </p>
         </div>
       </div>

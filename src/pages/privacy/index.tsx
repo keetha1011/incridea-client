@@ -9,7 +9,7 @@ const Privacy: NextPage = () => {
         <h1
           className={`mb-3 pt-24 text-center font-gilroy text-5xl font-bold tracking-tight`}
         >
-          Incridea 2024 Privacy Policy
+          Incridea 2025 Privacy Policy
         </h1>
         <div className="bodyFont mt-10">
           <p>
