@@ -12,8 +12,8 @@ type GLTFResult = GLTF & {
     clock_hand: THREE.Mesh;
   };
   materials: {
-    ["Material.005"]: THREE.MeshStandardMaterial;
-    ["Material.008"]: THREE.MeshStandardMaterial;
+    ["Material"]: THREE.MeshStandardMaterial;
+    ["pointer_Mat.001"]: THREE.MeshStandardMaterial;
   };
 };
 
@@ -60,29 +60,30 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
   // }, []);
 
   return (
-    <group dispose={null} rotation={[Math.PI / 2, 0, 0]} scale={[1, 1, 1]}>
+    <group
+      dispose={null}
+      rotation={[Math.PI / 2, 0, 0]}
+      scale={[1.9, 1.9, 1.9]}
+    >
       <mesh
-        name="clock_face"
         castShadow
         receiveShadow
         geometry={nodes.clock_face.geometry}
-        material={materials["Material.005"]}
-        scale={[2, 0.1, 2]}
-      />
-      <group
-        position={[0, 0.5, 0]}
-        ref={handRef}
-        rotation={[Math.PI, Math.PI, 0]}
+        material={materials.Material}
+        scale={[1.11, 0.067, 1.11]}
       >
-        <mesh
-          name="clock_hand"
-          castShadow
-          receiveShadow
-          geometry={nodes.clock_hand.geometry}
-          material={materials["Material.008"]}
-          scale={[0.015, 0.015, 0.015]}
-        />
-      </group>
+        <group position={[0, 0.5, 0]} ref={handRef} rotation={[0, 0, 0]}>
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.clock_hand.geometry}
+            material={materials["pointer_Mat.001"]}
+            position={[0.005, 1.179, -0.14]}
+            rotation={[Math.PI / 2, 0, 2.193]}
+            scale={[0.013, 0.013, 0.2]} // Increased thickness, width, and length
+          />
+        </group>
+      </mesh>
     </group>
   );
 };
@@ -238,7 +239,7 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
         <ambientLight intensity={2} />
-        <directionalLight position={[0, 0, 3]} intensity={4} />
+        <directionalLight position={[0, 0, 3]} intensity={1} />
         <Model handRef={handRef} />
       </Canvas>
     </div>
