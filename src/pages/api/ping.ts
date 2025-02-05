@@ -34,3 +34,4 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 //   const speedMbps = 1000 / duration;
 //   return speedMbps;
 // }
+
