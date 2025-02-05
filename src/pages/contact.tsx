@@ -31,20 +31,24 @@ const Contact: NextPage = () => {
             <a>Phone Numbers</a>
           </div>
           <p className="mt-2">
-            Phone: +91{" "}
-            <a href="tel:9448815186" className="hover:underline">
-              94488 15186
+            General Query: +91{" "}
+            <a href="tel:9513295282" className="hover:underline">
+              95132 95282
             </a>{" "}
-            or +91{" "}
-            <a href="tel:96863 56123" className="hover:underline">
-              96863 56123
-            </a>
+            {/* or +91{" "}
+            <a href="tel:9686356123" className="hover:underline">
+               96863 56123
+            </a> */}
           </p>
           <p className="mt-2">
-            Tecnichal : +91{" "}
-            <a href="tel:94488 46524" className="hover:underline">
+            Tecnichal Query: +91{" "}
+            <a href="tel:9448846524" className="hover:underline">
               94488 46524
             </a>{" "}
+            or +91{" "}
+            <a href="tel:9686356123" className="hover:underline">
+              96863 56123
+            </a>
           </p>
           <div className="mt-5 flex items-center space-x-2 text-base font-semibold md:text-2xl">
             <MdLocationOn />
