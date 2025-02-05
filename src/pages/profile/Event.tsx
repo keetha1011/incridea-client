@@ -89,7 +89,7 @@ const EventCard: FC<{
                     {solo ? idToPid(userId) : idToTeamId(team.id)}
                   </p>
                   <p className="text-secondary-300 text-sm border-2 border-secondary-500 rounded-full px-2">
-                    {team.confirmed ? "Entry confirmed" : "Pending"}
+                    {team.confirmed ? "confirmed" : "Pending"}
                   </p>
                   {/* {!team.confirmed && (
                     <div className="flex items-start">
@@ -101,6 +101,8 @@ const EventCard: FC<{
                   )} */}
                 </div>
               </div>
+
+              <div>edit</div>
 
               {/* <div className="flex flex-col-reverse">
                 <div className="flex justify-start">

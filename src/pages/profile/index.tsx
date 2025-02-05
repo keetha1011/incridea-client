@@ -91,14 +91,14 @@ const Profile: NextPage = () => {
   return (
     <main
       ref={containerRef}
-      className="bodyFont h-[calc(100vh-5rem)] flex w-screen p-8 mb-8"
+      className="bodyFont md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
     >
-      <div className="lg:grid lg:grid-cols-4 w-full p-2 gap-8">
-        <div className="w-full rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">
+      <div className="flex md:flex-row flex-col w-full p-2 gap-8">
+        <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">
           <div className="w-full h-full">
             <ProfileCard user={user} showQR={showQr} />
           </div>
-          <div className="w-full grid grid-cols-1 gap-2 md:grid-cols-2 h-max p-2">
+          <div className="w-full grid sm:grid-cols-2 grid-cols-1 gap-2 md:grid-cols-2 p-2">
             <Button onClick={() => setShowQr((s) => !s)}>
               {showQr ? "Show details" : "show QR"}
             </Button>
@@ -111,7 +111,7 @@ const Profile: NextPage = () => {
             </Button>
           </div>
         </div>
-        <div className="w-full h-full col-span-3">
+        <div className="w-full md:h-full h-[85vh] col-span-3">
           <UserEvents userId={user?.id} />
         </div>
       </div>
