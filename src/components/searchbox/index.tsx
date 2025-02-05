@@ -1,7 +1,7 @@
 import React from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 
-import TextInput from "~/components/input";
+import { TextInput } from "~/components/input";
 
 type Props = {
   value: string;

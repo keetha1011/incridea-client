@@ -1,7 +1,12 @@
-import { useQuery } from "@apollo/client";
-
-import { WinnersByEventDocument } from "~/generated/generated";
+import { useQuery, useMutation } from "@apollo/client";
+import {
+  WinnersByEventDocument,
+  SendWinnerWhatsAppNotificationDocument,
+} from "~/generated/generated";
 import { idToTeamId } from "~/utils/id";
+import createToast from "~/components/toast";
+import Button from "~/components/button";
+import { BiLoaderAlt } from "react-icons/bi";
 
 import ViewTeamModal from "./viewTeamModal";
 
@@ -15,6 +20,42 @@ const ViewWinners = ({ eventId }: { eventId: string }) => {
       skip: !eventId,
     },
   );
+
+  const [sendNotification, { loading: notifyLoading }] = useMutation(
+    SendWinnerWhatsAppNotificationDocument,
+    {
+      variables: { eventId },
+    },
+  );
+
+  const handleNotifyWinners = async () => {
+    const promise = sendNotification().then((response) => {
+      const message = response.data?.sendWinnerWhatsAppNotification;
+      if (!message) {
+        throw new Error("Failed to send notifications");
+      }
+      if (message.includes("already sent")) {
+        throw new Error(
+          "Notifications were already sent for this event winners",
+        );
+      }
+      if (message.includes("Failed")) {
+        throw new Error(message);
+      }
+      return message;
+    });
+
+    try {
+      await createToast(promise, "Sending notifications...");
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error(String(err));
+      await createToast(
+        Promise.reject(error),
+        "Sending notifications...",
+        error.message,
+      );
+    }
+  };
 
   return (
     <div>
@@ -60,6 +101,20 @@ const ViewWinners = ({ eventId }: { eventId: string }) => {
                 </div>
               );
             })}
+        </div>
+        <div className="mt-4">
+          <Button
+            variant="outline"
+            onClick={handleNotifyWinners}
+            disabled={notifyLoading}
+            className="flex items-center justify-center gap-2 mx-auto"
+          >
+            {notifyLoading ? (
+              <BiLoaderAlt className="animate-spin" />
+            ) : (
+              "Notify Winners"
+            )}
+          </Button>
         </div>
       </>
     </div>

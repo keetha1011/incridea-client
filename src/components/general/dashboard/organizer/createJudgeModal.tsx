@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import { type FC, useState } from "react";
 
 import Button from "~/components/button";
-import TextInput from "~/components/input";
+import { TextInput } from "~/components/input";
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";

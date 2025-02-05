@@ -47,7 +47,11 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         if (res?.error) {
           setLoading(false);
           if (res.error.includes("verify")) setVerifyError(true);
-          setError(res.error);
+          if (res.error.includes("CredentialsSignin")) {
+            setError("Invalid credentials");
+          } else {
+            setError(res.error);
+          }
           setGotDialogBox(true);
         }
 
@@ -84,7 +88,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           value={userInfo.email}
           id="email"
           onChange={handleChange}
-          className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
+          className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
           type="email"
           name="email"
           placeholder="Email"
@@ -95,7 +99,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
             value={userInfo.password}
             id="password"
             onChange={handleChange}
-            className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
+            className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
@@ -123,13 +127,13 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         </Button>
 
         {loading && (
-          <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97]/60 to-[#090d4b]/60">
+          <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg">
             <Spinner className="text-[#dd5c6e]" intent={"white"} />
           </div>
         )}
 
         {error && (
-          <div className="flex min-w-full max-w-[20px] items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
+          <div className="flex min-w-full max-w-[20px] items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
             <BiErrorCircle className="shrink-0" />
             <div>
               {error}

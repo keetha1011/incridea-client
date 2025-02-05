@@ -235,7 +235,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             required
             className={`${
               selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
-            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]`}
+            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
             placeholder="Name"
           />
 
@@ -255,7 +255,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                   required
                   placeholder="College"
                   displayValue={(college: { name: string }) => college.name}
-                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-slate-400 md:text-base"
+                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-white md:text-base"
                   onChange={(e) => setQuery(e.target.value)}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -297,7 +297,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                       <Combobox.Option
                         className={({ active }) =>
                           `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
-                            active ? "bg-[#dd5c6e] text-white" : "text-gray-900"
+                            active
+                              ? "bg-secondary-600 text-white"
+                              : "text-gray-900"
                           }`
                         }
                         key={college?.id}
@@ -348,7 +350,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               className={`${
                 selectedCollege?.name == "N.M.A.M. Institute of Technology" &&
                 "pr-28"
-              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]`}
+              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
               placeholder="Email"
             />
             {selectedCollege?.name === "N.M.A.M. Institute of Technology" && (
@@ -365,7 +367,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               type={showPassword ? "text" : "password"}
               required
               placeholder="Password"
-              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
+              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
             />
             <button
               type="button"
@@ -382,7 +384,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             type="text"
             required
             placeholder="Mobile"
-            className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-slate-400 md:text-base md:focus:border-[#dd5c6e]"
+            className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
           />
 
           <div className="flex">
@@ -400,7 +402,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               }
             />
             <label htmlFor="termsCheckbox">
-              <span className="text-xs text-slate-400 md:text-base lg:text-sm">
+              <span className="text-xs text-white md:text-base lg:text-sm">
                 I agree to all the{" "}
                 <Link
                   href="/rules"
@@ -424,7 +426,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       )}
 
       {(error ?? mutationError ?? emailVerificationError) && (
-        <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
+        <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
           <BiErrorCircle className="shrink-0" />
           <div>
             {error}
@@ -483,7 +485,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       </div>
 
       {(loading || emailVerificationLoading) && (
-        <div className="absolute inset-0 z-10 flex h-full w-full cursor-not-allowed flex-col items-center justify-center gap-4 rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
+        <div className="absolute inset-0 z-10 flex h-full w-full cursor-not-allowed flex-col items-center justify-center gap-4 rounded-lg opacity-60">
           <Spinner className="my-0 h-fit text-[#dd5c6e]" intent={"white"} />
           {emailVerificationLoading && (
             <p className="font-semibold">Sending Verification Email</p>
