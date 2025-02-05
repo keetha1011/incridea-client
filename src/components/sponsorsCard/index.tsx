@@ -196,7 +196,7 @@ const SponsorGearCarousel = ({ sponsors }: { sponsors: Sponsor[] }) => {
         >
           <div className="w-72 h-72 sm:w-[301px] sm:h-[301px] md:w-72 md:h-72 lg:w-[291px] lg:h-[291px]">
             <img
-              src="/assets/png/GearClock.png"
+              src="/2025/sponsors/GearClock.png"
               alt="SmallGear"
               className="w-full h-full"
             />
@@ -209,7 +209,7 @@ const SponsorGearCarousel = ({ sponsors }: { sponsors: Sponsor[] }) => {
         >
           <div className="sm:w-[541px] sm:h-[541px] md:w-[581px] md:h-[581px] lg:w-[721px] lg:h-[721px]">
             <img
-              src="/assets/png/GearClock.png"
+              src="/2025/sponsors/GearClock.png"
               alt="LargerGear"
               className="w-full h-full"
             />
