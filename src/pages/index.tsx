@@ -233,7 +233,7 @@ export const HomeUi = () => {
     <>
       <section
         ref={sceneRef}
-        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none"
+        className="relative min-h-screen bg-cover z-0 scale-[120%] select-none pointer-events-none"
       >
         <div className="absolute h-screen w-screen" data-depth="0.2">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
