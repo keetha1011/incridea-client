@@ -189,7 +189,7 @@ export const particlesConfig = {
         mode: "delete",
         value: 0,
       },
-      value: 200,
+      value: 100,
     },
     opacity: {
       value: 1,
