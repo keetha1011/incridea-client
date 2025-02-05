@@ -54,7 +54,7 @@ const ComingSoonComponent = () => {
       <div className="absolute w-full h-full z-20">{renderStars()}</div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/2025/Incridea Stroke Font.png"
+        src="/2025/logo.png"
         alt="logo"
         className="w-52 lg:w-96 aspect-auto"
       />
