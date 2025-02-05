@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
-import React from "react";
+import { stat } from "fs";
+import React, { useEffect } from "react";
 import { type FC, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 
@@ -22,12 +23,21 @@ const AddAccommodateDetails: FC<{
   const [showModal, setShowModal] = useState(false);
   const [hotelDetails, setHotelDetails] = useState("");
   const [roomNo, setRoomNo] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<string>(AccommodationStatus.pending);
 
   const { data: allHotels } = useQuery(GetAllHotelsDocument);
 
+  useEffect(() => {
+    if (allHotels?.getAllHotels?.[0]?.id) {
+      setHotelDetails(allHotels.getAllHotels[0].id);
+    } else {
+      setHotelDetails(""); // Fallback if no valid id exists
+    }
+  }, [allHotels]);
+
   const [updateStatus] = useMutation(UpdateAccommodationStatusDocument);
   const handleUpdate = async () => {
+    console.log(hotelDetails, roomNo, accId, status);
     const promise = updateStatus({
       variables: {
         hotelId: hotelDetails,
