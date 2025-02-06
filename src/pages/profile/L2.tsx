@@ -11,7 +11,7 @@ import {
 } from "~/generated/generated";
 
 const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
-function LeaderBoard() {
+function L2() {
   const router = useRouter();
 
   const [level, setLevel] = useState(0);
@@ -140,7 +140,7 @@ function LeaderBoard() {
   }, [Leaderboard, userId]);
 
   return (
-    <div className="w-full flex flex-col  items-center justify-evenly row-span-1 border-secondary-500/50 border-2 rounded-xl p-2">
+    <div className="w-full flex flex-col  items-center justify-between row-span-1 border-secondary-500/50 border-2 rounded-xl p-2">
       <div className="w-full h-fit relative overflow-hidden rounded-xl border-secondary-500/50 border-2">
         <div className={`h-2 bg-red-600 w-[${progress}%]`}></div>
       </div>
@@ -156,16 +156,16 @@ function LeaderBoard() {
         </div>
       </div>
 
-      <div className="w-full flex justify-between flex-wrap">
+      <div className="w-full flex justify-between gap-2">
         <Button onClick={() => router.push("/leaderboard")} className="h-fit">
           <FaAward className="mr-1 inline-block" />
-          Leaderboard
+          Leade
         </Button>
 
-        <Button className="h-fit">accomdation</Button>
+        <Button className="h-fit">accomonda</Button>
       </div>
     </div>
   );
 }
 
-export default LeaderBoard;
+export default L2;
