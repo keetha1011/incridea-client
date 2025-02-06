@@ -242,10 +242,9 @@ const config: Config = {
         "suck-in": "cubic-bezier(0.65, 0, 0.35, 1)",
       },
       fontFamily: {
-        VikingHell: "var(--font-viking-hell)",
-        PressStart: "var(--font-Press_Start_2P)",
-        Garet: "var(--font-Garet)",
-        gilroy: "var(--font-gilroy)",
+        trap: "var(--font-trap)",
+        "life-craft": "var(--font-life-craft)",
+        "black-chancery": "var(--font-black-chancery)",
       },
       colors: {
         primary: {

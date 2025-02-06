@@ -31,12 +31,22 @@ const Contact: NextPage = () => {
             <a>Phone Numbers</a>
           </div>
           <p className="mt-2">
-            Phone: +91{" "}
-            <a href="tel:9448815186" className="hover:underline">
-              94488 15186
+            General Query: +91{" "}
+            <a href="tel:9513295282" className="hover:underline">
+              95132 95282
+            </a>{" "}
+            {/* or +91{" "}
+            <a href="tel:9686356123" className="hover:underline">
+               96863 56123
+            </a> */}
+          </p>
+          <p className="mt-2">
+            Tecnichal Query: +91{" "}
+            <a href="tel:9448846524" className="hover:underline">
+              94488 46524
             </a>{" "}
             or +91{" "}
-            <a href="tel:96863 56123" className="hover:underline">
+            <a href="tel:9686356123" className="hover:underline">
               96863 56123
             </a>
           </p>
@@ -58,6 +68,18 @@ const Contact: NextPage = () => {
               <p>Medical Sciences Complex,</p>
               <p>Deralakatte, Mangaluru - 575018</p>
               <p>Karnataka, India</p>
+            </div>
+
+            <div className="relative w-full h-96 flex justify-center items-center m-auto mt-8">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3884.6730538655893!2d74.92911808195412!3d13.183002554024787!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbb56415ad85e5b%3A0x10b77ac6f6afc7fa!2sNitte%20Mahalinga%20Adyantaya%20Memorial%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1738765768735!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
           </p>
         </div>

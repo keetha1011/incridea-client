@@ -1,7 +1,5 @@
 import Image from "next/image";
 
-import { env } from "~/env";
-
 export default function Loader({ loading }: { loading: boolean }) {
   return (
     <div
@@ -13,7 +11,7 @@ export default function Loader({ loading }: { loading: boolean }) {
       }}
     >
       <Image
-        src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/loader/dodLogo.png`}
+        src={`/2025/Echoes Of Eternity.png`}
         alt=""
         height={180}
         width={180}

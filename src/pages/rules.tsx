@@ -22,7 +22,7 @@ const Terms: NextPage = () => {
           </p>
           <p className="mt-2">
             By visiting our site and/or participating in our college fest
-            Incridea 2024, you engage in our &ldquo;Service&rdquo; and agree to
+            Incridea 2025, you engage in our &ldquo;Service&rdquo; and agree to
             be bound by the following terms and conditions (&ldquo;Terms of
             Service&rdquo;, &ldquo;Terms&rdquo;), including those additional
             terms and conditions and policies referenced herein and/or available
@@ -32,7 +32,7 @@ const Terms: NextPage = () => {
           </p>
           <p className="mt-2">
             Please read these Terms of Service carefully before accessing or
-            participating in Incridea 2024. By accessing or participating in any
+            participating in Incridea 2025. By accessing or participating in any
             part of the event, you agree to be bound by these Terms of Service.
             If you do not agree to all the terms and conditions of this
             agreement, then you may not participate in the event. If these Terms
@@ -52,7 +52,7 @@ const Terms: NextPage = () => {
             acceptance of those changes.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
-            SECTION 1 - INCRIDEA 2024 PARTICIPATION TERMS
+            SECTION 1 - INCRIDEA 2025 PARTICIPATION TERMS
           </h2>
           <p className="mt-2">
             You may not use our event platform for any illegal or unauthorized
@@ -71,7 +71,7 @@ const Terms: NextPage = () => {
             as deemed necessary by NMAM Institute of Technology.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
-            SECTION 2 - GENERAL CONDITIONS FOR INCRIDEA 2024 PARTICIPATION
+            SECTION 2 - GENERAL CONDITIONS FOR INCRIDEA 2025 PARTICIPATION
           </h2>
           <p className="mt-2">
             We reserve the right to refuse participation to anyone for any
@@ -97,12 +97,12 @@ const Terms: NextPage = () => {
           </p>
           <h2 className="my-6 text-2xl font-semibold">
             SECTION 3 - ACCURACY, COMPLETENESS AND TIMELINESS OF INFORMATION FOR
-            INCRIDEA 2024 PARTICIPATION
+            INCRIDEA 2025 PARTICIPATION
           </h2>
           <p className="mt-2">
             We, the student organizers, and college staff of NMAM Institute of
             Technology, strive to ensure that all information provided on the
-            Incridea 2024 event platform is accurate, complete, and timely.
+            Incridea 2025 event platform is accurate, complete, and timely.
             However, we cannot guarantee the accuracy, completeness, or
             timeliness of all information provided.
           </p>
@@ -123,30 +123,30 @@ const Terms: NextPage = () => {
             responsibility to monitor changes to the platform.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
-            SECTION 4 - MODIFICATIONS TO INCRIDEA 2024 AND REGISTRATION PRICES
+            SECTION 4 - MODIFICATIONS TO INCRIDEA 2025 AND REGISTRATION PRICES
           </h2>
           <p className="mt-2">
-            Prices for registration and events at Incridea 2024, organized by
+            Prices for registration and events at Incridea 2025, organized by
             NMAM Institute of Technology student organizers, are subject to
             change without notice.
           </p>
           <p className="mt-2">
             We reserve the right at any time to modify or discontinue any aspect
-            of Incridea 2024 (or any part or content thereof) without notice at
+            of Incridea 2025 (or any part or content thereof) without notice at
             any time.
           </p>
           <p className="mt-2">
             NMAM Institute of Technology student organizers and college staff
             shall not be liable to you or to any third-party for any
             modification, price change, suspension, or discontinuance of
-            Incridea 2024.
+            Incridea 2025.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
-            SECTION 5 - EVENTS AND SERVICES AT INCRIDEA 2024
+            SECTION 5 - EVENTS AND SERVICES AT INCRIDEA 2025
           </h2>
           <p className="mt-2">
             Certain events and services may be available exclusively through the
-            Incridea 2024 website, organized by NMAM Institute of Technology
+            Incridea 2025 website, organized by NMAM Institute of Technology
             student organizers. These events and services may have limited
             capacities and are subject to availability.
           </p>
@@ -169,7 +169,7 @@ const Terms: NextPage = () => {
           </p>
           <p className="mt-2">
             We do not warrant that the quality of any events, services,
-            information, or other material obtained by you at Incridea 2024 will
+            information, or other material obtained by you at Incridea 2025 will
             meet your expectations, or that any errors in the Service will be
             corrected.
           </p>
@@ -178,7 +178,7 @@ const Terms: NextPage = () => {
           </h2>
           <p className="mt-2">
             We reserve the right to refuse attendance or participation in any
-            event or service organized by Incridea 2024, held by NMAM Institute
+            event or service organized by Incridea 2025, held by NMAM Institute
             of Technology, to any person who has provided inaccurate,
             incomplete, or outdated registration or account information.
           </p>
@@ -194,7 +194,7 @@ const Terms: NextPage = () => {
           <p className="mt-2">
             You agree to provide current, complete, and accurate registration
             and account information for all events and services organized by
-            Incridea 2024. You agree to promptly update your account and other
+            Incridea 2025. You agree to promptly update your account and other
             information, including your email address and payment information,
             so that we can complete your transactions and contact you as needed.
           </p>
@@ -202,25 +202,25 @@ const Terms: NextPage = () => {
             SECTION 7 - OPTIONAL TOOLS
           </h2>
           <p className="mt-2">
-            Incridea 2024, held by NMAM Institute of Technology, may provide you
+            Incridea 2025, held by NMAM Institute of Technology, may provide you
             with access to third-party tools over which we have no control or
             input.
           </p>
           <p className="mt-2">
-            You acknowledge and agree that Incridea 2024 provides access to such
+            You acknowledge and agree that Incridea 2025 provides access to such
             tools &quot;as is&quot; and &quot;as available&quot; without any
             warranties, representations, or conditions of any kind and without
             any endorsement. We shall have no liability whatsoever arising from
             or relating to your use of optional third-party tools.
           </p>
           <p className="mt-2">
-            Any use by you of optional tools offered through Incridea 2024 is
+            Any use by you of optional tools offered through Incridea 2025 is
             entirely at your own risk and discretion, and you should ensure that
             you are familiar with and approve of the terms on which tools are
             provided by the relevant third-party provider(s).
           </p>
           <p className="mt-2">
-            Incridea 2024 may also offer new services and/or features through
+            Incridea 2025 may also offer new services and/or features through
             the event (including the release of new tools and resources). Such
             new features and/or services shall also be subject to these Terms
             and Conditions.
@@ -232,12 +232,12 @@ const Terms: NextPage = () => {
             SECTION 8 - THIRD-PARTY LINKS
           </h2>
           <p className="mt-2">
-            Certain content, products, and services available via Incridea 2024,
+            Certain content, products, and services available via Incridea 2025,
             the college fest organized by student organizers of NMAM Institute
             of Technology, may include materials from third parties.
           </p>
           <p className="mt-2">
-            Third-party links on the Incridea 2024 website may direct you to
+            Third-party links on the Incridea 2025 website may direct you to
             third-party websites that are not affiliated with the college staff.
             We, the college staff, are not responsible for examining or
             evaluating the content or accuracy, and we do not warrant and will
@@ -259,7 +259,7 @@ const Terms: NextPage = () => {
           </h2>
           <p className="mt-2">
             If, at our request, you send certain specific submissions related to
-            Incridea 2024, the college fest organized by student organizers of
+            Incridea 2025, the college fest organized by student organizers of
             NMAM Institute of Technology (for example, contest entries), or
             without a request from us, you send creative ideas, suggestions,
             proposals, plans, or other materials, whether online, by email, by
@@ -273,13 +273,13 @@ const Terms: NextPage = () => {
           </p>
           <p className="mt-2">
             We may, but have no obligation to, monitor, edit, or remove content
-            related to Incridea 2024 that we determine in our sole discretion
+            related to Incridea 2025 that we determine in our sole discretion
             are unlawful, offensive, threatening, libellous, defamatory,
             pornographic, obscene, or otherwise objectionable or violates any
             party&rsquo;s intellectual property or these Terms of Service.
           </p>
           <p className="mt-2">
-            You agree that your comments related to Incridea 2024 will not
+            You agree that your comments related to Incridea 2025 will not
             violate any right of any third-party, including copyright,
             trademark, privacy, personality, or other personal or proprietary
             right. You further agree that your comments will not contain
@@ -289,15 +289,15 @@ const Terms: NextPage = () => {
             not use a false e-mail address, pretend to be someone other than
             yourself, or otherwise mislead us or third parties as to the origin
             of any comments. You are solely responsible for any comments you
-            make related to Incridea 2024 and their accuracy. We, the college
+            make related to Incridea 2025 and their accuracy. We, the college
             staff, take no responsibility and assume no liability for any
-            comments posted by you or any third-party related to Incridea 2024.
+            comments posted by you or any third-party related to Incridea 2025.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
             SECTION 10 - PERSONAL INFORMATION
           </h2>
           <p className="mt-2">
-            Your submission of personal information through the Incridea 2024
+            Your submission of personal information through the Incridea 2025
             website is governed by our Privacy Policy. The student organizers
             and college staff take the privacy of our participants and attendees
             seriously and are committed to protecting their personal
@@ -308,7 +308,7 @@ const Terms: NextPage = () => {
             SECTION 11 - ERRORS, INACCURACIES AND OMISSIONS
           </h2>
           <p className="mt-2">
-            Occasionally there may be information on the Incridea 2024 website
+            Occasionally there may be information on the Incridea 2025 website
             or in the Service that contains typographical errors, inaccuracies
             or omissions that may relate to event details, schedules, locations,
             pricing, promotions, offers, or any other related information. We
@@ -327,7 +327,7 @@ const Terms: NextPage = () => {
           </h2>
           <p className="mt-2">
             In addition to other prohibitions as set forth in these terms and
-            conditions, all participants of Incridea 2024 are prohibited from
+            conditions, all participants of Incridea 2025 are prohibited from
             using the event or its content: (a) for any unlawful purpose; (b) to
             solicit others to perform or participate in any unlawful acts; (c)
             to violate any international, federal, provincial or state
@@ -356,7 +356,7 @@ const Terms: NextPage = () => {
           </h2>
           <p className="mt-2">
             We do not guarantee, represent, or warrant that your use of our
-            service, i.e., the Incridea 2024 event, will be uninterrupted,
+            service, i.e., the Incridea 2025 event, will be uninterrupted,
             timely, secure, or error-free.
           </p>
           <p className="mt-2">
@@ -414,20 +414,20 @@ const Terms: NextPage = () => {
             third-party due to or arising out of your breach of these Terms of
             Service or the documents they incorporate by reference, or your
             violation of any law or the rights of a third-party in relation to
-            your participation in Incridea 2024.
+            your participation in Incridea 2025.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
             SECTION 15 - SEVERABILITY
           </h2>
           <p className="my-6">
             In the event that any provision of these Terms of Service related to
-            Incridea 2024, held by NMAM Institute of Technology, is determined
+            Incridea 2025, held by NMAM Institute of Technology, is determined
             to be unlawful, void or unenforceable, such provision shall
             nonetheless be enforceable to the fullest extent permitted by
             applicable law, and the unenforceable portion shall be deemed to be
             severed from these Terms of Service. Such determination shall not
             affect the validity and enforceability of any other remaining
-            provisions that remain relevant to Incridea 2024.
+            provisions that remain relevant to Incridea 2025.
           </p>
           <h2 className="my-6 text-2xl font-semibold">
             SECTION 16 - TERMINATION
@@ -439,7 +439,7 @@ const Terms: NextPage = () => {
           </p>
           <p className="mt-2">
             These Terms of Service are effective unless and until terminated by
-            either the student organizers or the college staff of Incridea 2024,
+            either the student organizers or the college staff of Incridea 2025,
             held by NMAM Institute of Technology. The student organizers or
             college staff may terminate these Terms of Service at any time by
             notifying the other party that they no longer wish to continue with
@@ -461,14 +461,14 @@ const Terms: NextPage = () => {
           </h2>
           <p className="mt-2">
             The failure of either the student organizers or the college staff of
-            Incridea 2024, held by NMAM Institute of Technology, to exercise or
+            Incridea 2025, held by NMAM Institute of Technology, to exercise or
             enforce any right or provision of these Terms of Service shall not
             constitute a waiver of such right or provision.
           </p>
           <p className="mt-2">
             These Terms of Service and any policies or operating rules posted by
             the student organizers or the college staff in respect to the
-            college fest, Incridea 2024, constitutes the entire agreement and
+            college fest, Incridea 2025, constitutes the entire agreement and
             understanding between the student organizers and the college staff,
             and govern their organization of the fest, superseding any prior or
             contemporaneous agreements, communications, and proposals, whether
@@ -485,7 +485,7 @@ const Terms: NextPage = () => {
           </h2>
           <p className="mt-2">
             These Terms of Service and any separate agreements whereby the
-            student organizers or the college staff of Incridea 2024, held by
+            student organizers or the college staff of Incridea 2025, held by
             NMAM Institute of Technology, provide services for the fest, shall
             be governed by and construed in accordance with the laws of India
             and the jurisdiction of Karkala, Karnataka.
@@ -494,7 +494,7 @@ const Terms: NextPage = () => {
             SECTION 19 - CHANGES TO TERMS OF SERVICE
           </h2>
           <p className="mt-2">
-            The student organizers or the college staff of Incridea 2024, held
+            The student organizers or the college staff of Incridea 2025, held
             by NMAM Institute of Technology, may modify, update, or replace any
             part of these Terms of Service at their sole discretion by posting
             updates and changes on the website. The most current version of the
@@ -511,7 +511,7 @@ const Terms: NextPage = () => {
             SECTION 20 - CONTACT INFORMATION
           </h2>
           <p className="mt-2">
-            Any questions about the Terms of Service of Incridea 2024, held by
+            Any questions about the Terms of Service of Incridea 2025, held by
             NMAM Institute of Technology, should be directed to the student
             organizers and college staff at the following contact information:
           </p>
@@ -520,7 +520,7 @@ const Terms: NextPage = () => {
             {" "}
             incridea@nmamit.in
           </a>
-          <p className="mt-2">Phone: +91 94488 15186 or +91 63641 72219</p>
+          <p className="mt-2">Phone: +91 94488 46524 or +91 96863 56123</p>
         </div>
       </div>
     </div>
