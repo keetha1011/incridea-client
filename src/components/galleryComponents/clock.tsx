@@ -6,6 +6,11 @@ import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
 import type { GLTF } from "three-stdlib";
 import { angleToScenes } from "~/pages/gallery";
+import {
+  EffectComposer,
+  Bloom,
+  BrightnessContrast,
+} from "@react-three/postprocessing";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -222,8 +227,17 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={3} />
-        <directionalLight position={[0, 0, 3]} intensity={1} />
+        {/* <ambientLight intensity={3} /> */}
+        <directionalLight position={[0, 0, 1]} intensity={2.2} />
+        <EffectComposer>
+          <Bloom
+            intensity={0.5}
+            luminanceThreshold={0.9}
+            luminanceSmoothing={0.025}
+            height={500}
+          />
+          <BrightnessContrast contrast={0.5}></BrightnessContrast>
+        </EffectComposer>
         <Model handRef={handRef} />
       </Canvas>
     </div>
