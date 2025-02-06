@@ -114,7 +114,7 @@ const LoadingScreen = () => {
       <div className="relative h-screen w-screen flex flex-col items-center justify-center">
         <div className={styles.background}>
           <div className={styles.particlesContainer}></div>
-          <Particles options={particlesOptions} />
+          {/* <Particles options={particlesOptions} /> */}
         </div>
         <div ref={hourglassRef} className={styles.hourglass}>
           <Image
