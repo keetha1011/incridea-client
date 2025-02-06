@@ -125,9 +125,8 @@ const LoadingScreen = () => {
             priority
           />
         </div>
-        <div 
+        <div
           ref={logoRef}
-
           className="absolute bottom-[24%] md:bottom-[20%] xl:bottom-[22%]"
         >
           <Image

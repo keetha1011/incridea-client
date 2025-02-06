@@ -7,7 +7,7 @@ const Guidelines: NextPage = () => {
         <h1
           className={`mb-3 pt-24 text-center text-5xl font-extrabold tracking-tight`}
         >
-          Guidelines and Regulations for Participating in Incridea 2024
+          Guidelines and Regulations for Participating in Incridea 2025
         </h1>
         <div className="">
           <p className="mt-2 text-center">
@@ -25,13 +25,13 @@ const Guidelines: NextPage = () => {
               website of Incridea (https://incridea.in).
             </li>
             <li>
-              The are two different categories of participants, who will have
+              There are two different categories of participants, who will have
               access to all the events and pronites.
             </li>
-            <li>Students of NMAM Institute of Technology, Nitte - ₹ 250</li>
+            <li>Students of NMAM Institute of Technology, Nitte - ₹ 350</li>
             <li>
               Students of external engineering colleges and Nitte sister
-              institutions - ₹ 350
+              institutions - ₹ 450
             </li>
             <li>
               Event registrations can be done either through website or on-spot,
@@ -48,9 +48,8 @@ const Guidelines: NextPage = () => {
               authenticity.
             </li>
             <li>
-              Attendees must present their physical college IDs along with a
-              valid government-issued ID proof (Aadhaar, driver&apos;s license,
-              Voter ID, etc.) to access the events and pronites.
+              Attendees must present their physical college IDs to access the
+              events and pronites.
             </li>
             <li>
               Any participant found to have provided false or misleading
@@ -80,52 +79,6 @@ const Guidelines: NextPage = () => {
               Other rules pertaining to the respective events are given in their
               respective web-pages.
             </li>
-          </ul>
-
-          <h2 className="my-6 text-2xl font-semibold">Championship Rules</h2>
-          <ul className="mt-2 list-disc pl-4">
-            <li>
-              <p className="font-semibold">
-                Events will be classified into 3 categories:
-              </p>
-              <div className="my-3 flex w-max flex-row border-2 text-center md:ml-4">
-                <div className="flex flex-col border-r-2 font-semibold">
-                  <div className="border-b-2 p-2">Event Category</div>
-                  <div className="border-b-2 p-2">Winner</div>
-                  <div className="border-b-2 p-2">Runner-Up</div>
-                  <div className="p-2"> Second Runner-Up</div>
-                </div>
-                <div className="flex flex-col border-r-2">
-                  <div className="border-b-2 p-2 font-semibold">Gold</div>
-                  <div className="border-b-2 p-2">500</div>
-                  <div className="border-b-2 p-2">450</div>
-                  <div className="p-2">400</div>
-                </div>
-                <div className="flex flex-col border-r-2">
-                  <div className="border-b-2 p-2 font-semibold">Silver</div>
-                  <div className="border-b-2 p-2">350</div>
-                  <div className="border-b-2 p-2">300</div>
-                  <div className="p-2">250</div>
-                </div>
-                <div className="flex flex-col">
-                  <div className="border-b-2 p-2 font-semibold">Bronze</div>
-                  <div className="border-b-2 p-2">200</div>
-                  <div className="border-b-2 p-2">150</div>
-                  <div className="p-2">100</div>
-                </div>
-              </div>
-            </li>
-            <li>
-              College must enter the final round of at least 3 technical events
-              and 2 non-technical events to be eligible for championship.
-            </li>
-            <li>
-              The college which has accumulated the highest points will be
-              announced as winners and the college which is next to it as
-              runner-up. Second runner-up will not be recognized with a prize,
-              it is only assigned for the calculation of the championship.
-            </li>
-            <li>The point system does not apply to special events.</li>
           </ul>
 
           <h2 className="my-6 text-2xl font-semibold">Prohibited Conduct</h2>
@@ -200,6 +153,9 @@ const Guidelines: NextPage = () => {
               and regulations of the campus.
             </li>
             <li>
+              If found guilty of any violations, strict actions will be taken.
+            </li>
+            <li>
               Contact concerned organisers, core team, security officials or any
               other concerned authorities for any help or grievances.
             </li>
@@ -219,6 +175,60 @@ const Guidelines: NextPage = () => {
             For further information regarding the fest and live updates, check
             out our website and Instagram handle.
           </p>
+
+          <h2 className="my-6 text-2xl font-semibold">Championship Rules</h2>
+          <ul className="mt-2 list-disc pl-4">
+            <li>
+              <p className="font-semibold">
+                Events will be classified into 4 categories:
+              </p>
+              <div className="my-3 flex w-max flex-row border-2 text-center md:ml-4">
+                <div className="flex flex-col border-r-2 font-semibold">
+                  <div className="border-b-2 p-2">Event Category</div>
+                  <div className="border-b-2 p-2">Winner</div>
+                  <div className="border-b-2 p-2">Runner-Up</div>
+                  <div className="p-2"> Second Runner-Up</div>
+                </div>
+                <div className="flex flex-col border-r-2">
+                  <div className="border-b-2 p-2 font-semibold">Diamond</div>
+                  <div className="border-b-2 p-2">600</div>
+                  <div className="border-b-2 p-2">550</div>
+                  <div className="p-2">500</div>
+                </div>
+                <div className="flex flex-col border-r-2">
+                  <div className="border-b-2 p-2 font-semibold">Gold</div>
+                  <div className="border-b-2 p-2">450</div>
+                  <div className="border-b-2 p-2">400</div>
+                  <div className="p-2">350</div>
+                </div>
+                <div className="flex flex-col border-r-2">
+                  <div className="border-b-2 p-2 font-semibold">Silver</div>
+                  <div className="border-b-2 p-2">300</div>
+                  <div className="border-b-2 p-2">250</div>
+                  <div className="p-2">200</div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="border-b-2 p-2 font-semibold">Bronze</div>
+                  <div className="border-b-2 p-2">150</div>
+                  <div className="border-b-2 p-2">100</div>
+                  <div className="p-2">50</div>
+                </div>
+              </div>
+            </li>
+            <li>
+              To be eligible for the championship, a college must qualify for
+              the final round of at least 3 technical events and 2 non-technical
+              events.
+            </li>
+            <li>
+              The college that accumulates the highest points will be announced
+              as the winner, and the college with the second-highest points will
+              be declared the runner-up. The second runner-up will not be
+              recognized with a prize; it is included only for calculating the
+              championship points.
+            </li>
+            <li>The point system does not apply to special events.</li>
+          </ul>
         </div>
       </div>
     </div>
