@@ -93,8 +93,7 @@ const Gallery: NextPage = () => {
           //   backgroundRepeat: "no-repeat",
           // }}
         >
-          {/* Clock */}
-          <div className="absolute transform h-auto translate-y-10 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
+          <div className="absolute transform h-auto -translate-y-5 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
             <p className="absolute left-[50%] lifeCraft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-widest">
               INCRIDEA &nbsp;{years[activeYear]}
             </p>
