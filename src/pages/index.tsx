@@ -38,28 +38,28 @@ export const HomeFooter = () => {
   return (
     <footer
       className={cn(
-        "absolute bottom-0 flex w-full flex-col gap-2 text-gray-200 md:gap-4 pt-4 h-14 bg-black/40 backdrop-blur",
+        "absolute bottom-0 flex w-full flex-col gap-2 text-green-950 shadow-zinc-950 font-bold md:gap-4 pt-4 h-14 ",
       )}
     >
       {show && (
-        <ul className="mb-5 mx-auto flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
-          <li className="text-white transition-colors duration-300 hover:text-gray-300">
+        <ul className="mb-5 mx-auto  flex flex-1 flex-row flex-wrap shadow-zinc-950 items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
+          <li className="transition-colors duration-300 hover:text-green-900">
             <Link href="/privacy">Privacy Policy</Link>
           </li>
           |
-          <li className="text-white transition-colors duration-300 hover:text-gray-300">
+          <li className="transition-colors duration-300 hover:text-green-900">
             <Link href="/rules">Terms & Conditions</Link>
           </li>
           |
-          <li className="text-white transition-colors duration-300 hover:text-gray-300">
+          <li className="transition-colors duration-300 hover:text-green-900">
             <Link href="/guidelines">Guidelines</Link>
           </li>
           |
-          <li className="text-white transition-colors duration-300 hover:text-gray-300">
+          <li className="transition-colors duration-300 hover:text-green-900">
             <Link href="/refund">Refund Policy</Link>
           </li>
           |
-          <li className="text-white transition-colors duration-300 hover:text-gray-300">
+          <li className="transition-colors duration-300 hover:text-green-900">
             <Link href="/contact">Contact Us</Link>
           </li>
         </ul>
@@ -67,13 +67,13 @@ export const HomeFooter = () => {
       {!show && (
         <p className="text-center text-xs mx-auto">
           <Link
-            className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-gray-300"
+            className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-green-900"
             href="/team"
           >
             Made with <BsFillSuitHeartFill className="mx-2 fill-red-700" /> by
             Technical Team
           </Link>
-          © Incridea 2024
+          © Incridea 2025
         </p>
       )}
     </footer>
@@ -233,7 +233,7 @@ export const HomeUi = () => {
     <>
       <section
         ref={sceneRef}
-        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none"
+        className="relative min-h-screen bg-cover z-0 scale-[120%] select-none pointer-events-none"
       >
         <div className="absolute h-screen w-screen" data-depth="0.2">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
@@ -320,27 +320,27 @@ export const HomeUi = () => {
         >
           <div className="mx-auto w-screen h-screen p-5 relative">
             <Image
-              src={`/assets/png/logo.png`}
+              src={`/2025/logo.png`}
               priority
               width={640}
               height={640}
-              alt="Incridea"
-              className="absolute md:w-[15%] left-1/2 -translate-x-1/2 top-[25%] w-[40%] object-contain object-center"
+              alt="Incridea Logo"
+              className="absolute md:w-[15%] left-1/2 -translate-x-1/2 top-[20%] w-[45%] object-contain object-center"
             />
           </div>
         </div>
 
         <div data-depth="0.1" className="absolute w-screen h-screen z-20">
           <Image
-            src={`/assets/landing/EOEText.webp`}
+            src={`/2025/eoelogo.png`}
             priority
             width={640}
             height={640}
-            alt="EOE"
-            className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
+            alt="EOE Logo"
+            className="md:w-[30%] w-[85%] left-1/2 absolute -translate-x-1/2 md:top-[30%] top-[30%] object-contain object-center"
           />
         </div>
-        <div data-depth="0.05" className="absolute w-screen h-screen z-[19]">
+        {/* <div data-depth="0.05" className="absolute w-screen h-screen z-[19]">
           <Image
             src={`/assets/landing/EOEShadow.webp`}
             priority
@@ -349,20 +349,22 @@ export const HomeUi = () => {
             alt="EOE"
             className="md:w-[30%] w-[70%] left-1/2 absolute -translate-x-1/2 md:top-[40%] top-[50%] object-contain object-center"
           />
-        </div>
+        </div> */}
 
         <div className="w-screen h-screen z-50 relative select-all pointer-events-auto">
           <div className="bottom-[18%] left-1/2 -translate-x-1/2 absolute flex gap-4">
-            <MetallicButton onClick={() => router.push("/register")}>
+            <button
+              className="bg-black text-white  px-4 py-2 bg-black text-white  px-4 py-2 rounded"
+              onClick={() => router.push("/register")}
+            >
               Register
-            </MetallicButton>
-            <MetallicButton
-              variant={"ghost"}
+            </button>
+            <button
               onClick={() => router.push("/explore")}
-              className="bg-black/70 text-white"
+              className="bg-black text-white  px-4 py-2 rounded-3xl"
             >
               Explore
-            </MetallicButton>
+            </button>
           </div>
         </div>
       </section>

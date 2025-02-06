@@ -17,30 +17,31 @@ const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
 
 const rankColors = {
   1: {
-    background: "linear-gradient(180deg, #F9F39F 10%, #D1A300 100%, #D1A300 100%)",
+    background:
+      "linear-gradient(180deg, #F9F39F 10%, #D1A300 100%, #D1A300 100%)",
     text: "#000000",
-    border: "#D1A300"
+    border: "#D1A300",
   },
   2: {
     background: "linear-gradient(180deg, #FFFFFD 0%, #666666 100%);",
     text: "#000000",
-    border: "#353535"
+    border: "#353535",
   },
   3: {
     background: "linear-gradient(180deg, #E5B77C, #5F3316);",
     text: "#000000",
-    border: " #5F3316"
+    border: " #5F3316",
   },
   4: {
     background: "linear-gradient(90deg, #4B0082 0%, #800080 100%)",
     text: "#FFFFFF",
-    border: "#4B0082"
+    border: "#4B0082",
   },
   5: {
     background: "linear-gradient(90deg, #006400 0%, #228B22 100%)",
     text: "#FFFFFF",
-    border: "#006400"
-  }
+    border: "#006400",
+  },
 };
 
 const getRankStyle = (rank: number) => {
@@ -155,19 +156,18 @@ const LeaderBoard: NextPage = () => {
     <div
       className={`bg-transparent`}
       style={{ willChange: "transform", overflowX: "hidden" }}
-    
     >
       <div className="absolute -top-[10vh] left-2/4 -z-40 h-0 w-[65vw] -translate-x-2/4 md:w-[1000px]">
-          <FallingItem delay={0} />
-          <FallingItem delay={2000} />
-          <FallingItem delay={4000} />
-          <FallingItem delay={6000} />
-          <FallingItem delay={8000} />
-        </div>
+        <FallingItem delay={0} />
+        <FallingItem delay={2000} />
+        <FallingItem delay={4000} />
+        <FallingItem delay={6000} />
+        <FallingItem delay={8000} />
+      </div>
 
-        <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
-          <EasterBomb />
-        </div>
+      <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
+        <EasterBomb />
+      </div>
       {sortedLeaderboard.length > 0 && (
         <div className={`${styles.container} overflow-hidden`}>
           {Array.from({ length: 30 }).map((_, i) => (
@@ -179,25 +179,25 @@ const LeaderBoard: NextPage = () => {
         <div className="relative min-h-screen py-32">
           <div className="flex flex-col justify-center items-center relative">
             <div className="h-[300px] w-[500px] relative">
-              <Image 
-                src={"/2025/leaderboard/tablet.png"} 
-                alt="XP LeaderBoard" 
+              <Image
+                src={"/2025/leaderboard/tablet.png"}
+                alt="XP LeaderBoard"
                 fill
                 className="object-contain"
               />
             </div>
             <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-3xl absolute top-60">
-            Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
-            Experience!
-          </h3>
+              Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
+              Experience!
+            </h3>
           </div>
-          
+
           {/* <h1
             className={`text-center font-VikingHell text-5xl text-white md:text-5xl ribbon`}
           >
             XP Leaderboard
           </h1> */}
-         
+
           <div className="mx-5 mb-2 mt-10 flex h-16 items-center justify-evenly rounded-lg rounded-t-lg border border-primary-200/80 bg-primary-500 bg-opacity-20 bg-clip-padding p-1 text-sm font-bold text-white backdrop-blur-lg backdrop-filter md:mx-36 md:mt-7 md:text-2xl">
             <h1 className="basis-1/4 text-center">Position</h1>
             <h1 className="basis-1/4 text-center">Player Id</h1>
@@ -213,10 +213,10 @@ const LeaderBoard: NextPage = () => {
             {sortedLeaderboard.map((user, i) => (
               <div
                 key={user.userId}
-                style={{ 
+                style={{
                   background: getRankStyle(i + 1).background,
                   color: getRankStyle(i + 1).text,
-                  borderColor: getRankStyle(i + 1).border 
+                  borderColor: getRankStyle(i + 1).border,
                 }}
                 className="border-2 p-4 flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl"
               >
@@ -266,10 +266,9 @@ const LeaderBoard: NextPage = () => {
               </div>
             )}
           </div>
-         </div>
         </div>
       </div>
-   
+    </div>
   );
 };
 

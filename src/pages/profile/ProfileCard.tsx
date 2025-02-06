@@ -33,6 +33,7 @@ import { damp } from "maath/easing";
 import { useEffect, useRef, useState } from "react";
 import { type GLTF } from "three-stdlib";
 import qrcodeDataURI from "~/utils/qr";
+import { idToPid } from "~/utils/id";
 
 type BadgeGLTF = GLTF &
   ObjectMap & {
@@ -56,14 +57,12 @@ function ProfileCard({ user, showQR }: { user: User; showQR: boolean }) {
     <Canvas
       camera={{ position: [0, 0, 13], fov: 25 }}
       style={{
-        backgroundImage: "url('/assets/png/id_bg.jpg')",
+        // backgroundImage: "url('/assets/png/id_bg.jpg')",
         touchAction: "none",
       }}
-      className="bg-cover bg-top "
+      className="bg-cover bg-top bg-gradient-to-br  from-primary-900/80 via-primary-700/80 to-primary-900/80 backdrop-blur-sm border-secondary-500/50 border-1 rounded-xl"
       onTouchStartCapture={handlePointerDown}
-      onTouchMoveCapture={() => console.log("move")}
       onTouchEndCapture={handlePointerUp}
-      onTouchCancelCapture={() => console.log("cancel")}
     >
       <Intermediate user={user} showQR={showQR} />
     </Canvas>
@@ -187,9 +186,9 @@ function Band({
         ref.current.lerped = new THREE.Vector3().copy(
           ref.current.translation(),
         );
-        //@ts-expect-error  it exits ts is just mad
         const clampedDistance = Math.max(
           0.1,
+          //@ts-expect-error  it exits ts is just mad
           Math.min(1, ref.current.lerped.distanceTo(ref.current.translation())),
         );
         //@ts-expect-error  it exits ts is just mad
@@ -286,8 +285,8 @@ function Band({
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={2.25}
-            position={[0, -1.2, -0.05]}
+            scale={2.5}
+            position={[0, -1.5, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={(e) => {
@@ -336,23 +335,25 @@ function Band({
                     width={465}
                     height={465}
                     flexDirection="row"
+                    backgroundColor="#1b1b1c"
                   >
                     <Container
+                      backgroundColor="#1b1b1c"
                       width={470}
                       alignItems="center"
                       justifyContent="space-evenly"
                       flexDirection={"column"}
                     >
                       <Container
-                        backgroundColor="#e8ab1c"
+                        backgroundColor="#1b1b1c"
                         width={"100%"}
-                        height="55%"
-                        alignItems="center"
+                        height="53%"
+                        alignItems="flex-end"
                         justifyContent="center"
                       >
                         <ThreeImage
-                          src={user.profileImage ?? "assets/png/ryoko.png"}
-                          width={120}
+                          src={"assets/png/ryoko.png"}
+                          width={130}
                           aspectRatio={0.7}
                           borderRadius={6}
                           objectFit={"cover"}
@@ -363,9 +364,8 @@ function Band({
                       <Container
                         alignItems="center"
                         justifyContent="center"
-                        gap={6}
+                        gap={24}
                         flexDirection={"column"}
-                        backgroundColor="white"
                         width={"100%"}
                         flexGrow={1}
                       >
@@ -373,45 +373,58 @@ function Band({
                           fontSize={28}
                           fontWeight="bold"
                           transformScaleY={1.4}
-                          color="black"
+                          color="white"
                         >
                           {user.name}
                         </Text>
                         <Text
+                          overflow={"hidden"}
                           fontSize={18}
-                          color="black"
+                          color="white"
                           transformScaleY={1.4}
                           textAlign={"center"}
                         >
                           {user.college?.name ?? ""}
                         </Text>
+
+                        <Text
+                          overflow={"hidden"}
+                          fontSize={16}
+                          color="white"
+                          transformScaleY={1.4}
+                          textAlign={"center"}
+                        >
+                          {user.phoneNumber ?? ""}
+                        </Text>
                       </Container>
                     </Container>
                     <Container
                       width={470}
-                      backgroundColor="#02a35d"
+                      // backgroundColor="#038f57"
+                      backgroundColor="#1b1b1c"
                       alignItems="center"
                       justifyContent="center"
                       flexDirection="column"
                       gap={24}
                     >
-                      <Text
-                        fontSize={16}
-                        fontWeight="bold"
-                        transformScaleY={1.4}
-                        color="black"
-                      >
-                        {user.id}
-                      </Text>
                       <ThreeImage
                         src={qrcodeDataURI({
-                          value: "1",
+                          value: idToPid(user.id),
                           bgColor: "transparent",
-                          fgColor: "darkslate",
+                          fgColor: "white",
                         })}
                         width={180}
                         aspectRatio={0.7}
                       />
+
+                      <Text
+                        fontSize={16}
+                        fontWeight="bold"
+                        transformScaleY={1.4}
+                        color="white"
+                      >
+                        {idToPid(user.id)}
+                      </Text>
                     </Container>
                   </Root>
                 </RenderTexture>

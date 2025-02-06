@@ -65,9 +65,8 @@ const FallingItem: FunctionComponent<Prop> = ({ delay }) => {
         width={size.width}
         height={size.height}
         style={{
-filter: `hue-rotate(${[0,60,90,180][Math.floor(Math.random() * 7)]}deg)`
+          filter: `hue-rotate(${[0, 60, 90, 180][Math.floor(Math.random() * 7)]}deg)`,
         }}
-  
       />
     </div>
   );
