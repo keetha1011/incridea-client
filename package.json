@@ -82,6 +82,7 @@
     "embla-carousel-react": "^8.5.1",
     "framer-motion": "^11.13.1",
     "graphql": "^16.9.0",
+    "graphql-ws": "^6.0.3",
     "gsap": "^3.12.5",
     "highlight.js": "^11.11.1",
     "input-otp": "^1.4.1",

@@ -26,7 +26,8 @@ const Valedictory: NextPage = () => {
   }
 
   // 2. Redirect to profile if user is not a admin
-  if (user && user.role !== Role.Jury) void router.push("/profile");
+  if (user && user.role !== Role.Jury && user.role !== Role.Admin)
+    void router.push("/profile");
 
   return (
     <Dashboard>
