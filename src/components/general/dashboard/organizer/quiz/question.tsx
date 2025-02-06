@@ -38,7 +38,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
   return (
     <div key={props.id} id={props.id} className="flex pt-8 pb-3">
       <div
-        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gradient-to-br from-[#002C1D]/70 py-6 px-8 ${props.questionMode === "edit" ? "border-2 border-yellow-500" : props.questionMode === "new" ? "border-2 border-emerald-700" : ""}`}
+        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gradient-to-br from-[#002C1D]/95 py-6 px-8 ${props.questionMode === "edit" ? "border-2 border-blue-500" : props.questionMode === "new" ? "border-2 border-green-500" : ""}`}
       >
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">

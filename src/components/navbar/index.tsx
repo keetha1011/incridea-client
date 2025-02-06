@@ -25,7 +25,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 w-full flex justify-center">
+      <nav className="fixed top-0 w-full flex justify-center z-50">
         <div className="relative flex w-[55rem] justify-center">
           <div className="absolute bg-red-500 skew-x-[60deg] h-[4rem] w-full top-0 -translate-x-32 z-30"></div>
           <div className="absolute bg-red-500 skew-x-[-60deg] h-[4rem] w-full top-0 z-40 translate-x-32"></div>
@@ -55,6 +55,8 @@ const Navbar = () => {
           </div>
         </div>
       </nav>
+      {/* space top */}
+      <div className="h-16"></div>
     </>
   );
 };

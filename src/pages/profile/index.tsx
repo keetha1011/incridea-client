@@ -14,6 +14,7 @@ import Image from "next/image";
 import { env } from "~/env";
 import Link from "next/link";
 import { cn } from "~/lib/utils";
+import { signOut } from "next-auth/react";
 
 const Profile: NextPage = () => {
   const { error, user: user, loading } = useAuth();
@@ -59,7 +60,7 @@ const Profile: NextPage = () => {
 
   if (!user)
     return (
-      <div className="flex h-screen flex-col items-center justify-center space-y-3 bg-gradient-to-b from-primary-300 to-primary-500 text-center">
+      <div className="flex h-screen flex-col items-center justify-center space-y-3 text-center">
         {/* Todo: Any graphic to fill space */}
         <div className="z-10 mt-8 flex h-96 items-center justify-center">
           <Image
@@ -88,20 +89,29 @@ const Profile: NextPage = () => {
     );
 
   return (
-    <main ref={containerRef} className="bodyFont mx-auto w-[98vw]">
-      <div className="flex flex-col gap-5 py-[5rem] lg:grid lg:grid-cols-4">
-        <div className="w-full h-[calc(100vh-7rem)] rounded-lg overflow-hidden border-green-600 border-4 flex flex-col">
+    <main
+      ref={containerRef}
+      className="bodyFont md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
+    >
+      <div className="flex md:flex-row flex-col w-full p-2 gap-8">
+        <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">
           <div className="w-full h-full">
             <ProfileCard user={user} showQR={showQr} />
           </div>
-          <div className="w-full bg-green-500 grid grid-cols-1 gap-2 md:grid-cols-2 p-2 h-max">
+          <div className="w-full grid sm:grid-cols-2 grid-cols-1 gap-2 md:grid-cols-2 p-2">
             <Button onClick={() => setShowQr((s) => !s)}>
               {showQr ? "Show details" : "show QR"}
             </Button>
-            <Button>Logout</Button>
+            <Button
+              onClick={async () => {
+                await signOut();
+              }}
+            >
+              Logout
+            </Button>
           </div>
         </div>
-        <div className="col-span-3 w-full lg:h-[calc(100vh-7rem)] h-full">
+        <div className="w-full md:h-full h-[85vh] col-span-3">
           <UserEvents userId={user?.id} />
         </div>
       </div>

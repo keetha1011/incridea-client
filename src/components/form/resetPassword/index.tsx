@@ -147,7 +147,7 @@ const ResetPassword: FunctionComponent = () => {
               )}
 
               {(error ?? MutationError) && (
-                <div className="flex items-center gap-3 rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
+                <div className="flex items-center gap-3 rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
                   <BiErrorCircle className="shrink-0" />
                   <div>{error ?? MutationError?.message}</div>
                 </div>

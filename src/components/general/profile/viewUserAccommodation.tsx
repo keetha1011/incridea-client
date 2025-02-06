@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import Link from "next/link";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
@@ -20,8 +20,23 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
   const { data: userdetails, loading: userLoading } = useQuery(
     AccommodationRequestsByUserDocument,
   );
+  const [data, setData] = useState<{
+    name: string;
+    price: number | string;
+    room: string;
+    checkIn?: Date | null;
+    checkOut?: Date | null;
+    status: string;
+  }>({
+    name: "Unavailable",
+    price: "Unavailable",
+    room: "Unavailable",
+    checkIn: null,
+    checkOut: null,
+    status: "Unavailable",
+  });
 
-  const dataRef = useRef<{
+  /*   const dataRef = useRef<{
     name: string;
     price: number | string;
     room: string;
@@ -29,9 +44,10 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
     checkOut?: Date | null;
     status: string;
   }>();
-
+ */
   useEffect(() => {
-    dataRef.current = {
+    /*  dataRef.current = { */
+    setData({
       name:
         userdetails?.accommodationRequestsByUser[0]?.hotel?.name ??
         "Unavailable",
@@ -43,8 +59,10 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
       checkOut: userdetails?.accommodationRequestsByUser[0]?.checkOut,
       status:
         userdetails?.accommodationRequestsByUser[0]?.status ?? "Unavailable",
-    };
-  });
+    });
+
+    /*  }; */
+  }, [userdetails]);
 
   return (
     <Modal
@@ -70,11 +88,11 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
                   <div>Status</div>
                 </div>
                 <div className="flex flex-col text-lg font-semibold">
-                  <div>{dataRef.current?.name}</div>
-                  <div>{dataRef.current?.price}</div>
-                  <div>{dataRef.current?.room}</div>
+                  <div>{data?.name}</div>
+                  <div>{data?.price}</div>
+                  <div>{data?.room}</div>
                   <div>
-                    {dataRef.current?.checkIn?.toLocaleString("en-GB", {
+                    {data?.checkIn?.toLocaleString("en-GB", {
                       day: "numeric",
                       month: "numeric",
                       year: "numeric",
@@ -84,7 +102,7 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
                     })}
                   </div>
                   <div>
-                    {dataRef.current?.checkOut?.toLocaleString("en-GB", {
+                    {data?.checkOut?.toLocaleString("en-GB", {
                       day: "numeric",
                       month: "numeric",
                       year: "numeric",
@@ -93,7 +111,7 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
                       hour12: true,
                     })}
                   </div>
-                  <div>{dataRef.current?.status}</div>
+                  <div>{data?.status}</div>
                 </div>
               </div>
             </div>

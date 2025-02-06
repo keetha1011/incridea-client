@@ -2,9 +2,8 @@ import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import gsap from "gsap";
 import Modal from "../gallery-modal";
 import PreviewComponent from "../previewComponent/preview-component";
-import CenteredLoader from "../afterMovieLoader";
-import YouTube, { YouTubePlayer, type YouTubeProps } from "react-youtube";
 import Link from "next/link";
+import Image from "next/image";
 
 const Inc25 = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -15,12 +14,30 @@ const Inc25 = () => {
   // Memoize afterMovies array to prevent unnecessary re-renders
   const afterMovies = useMemo(
     () => [
-      ["/thumbnails/incridea18.webp", "GqqK4c2rDhM"],
-      ["/thumbnails/incridea19.webp", "gmF72fu1w6A"],
-      ["/thumbnails/incridea20.webp", "w0phDNAnUgA"],
-      ["/thumbnails/incridea22.webp", "JHgT5PzLc4Q"],
-      ["/thumbnails/incridea23.webp", "8Veb3u0xEoE"],
-      ["/thumbnails/incridea24.webp", "YoWeuaSMytk"],
+      [
+        "/thumbnails/incridea18.webp",
+        "https://www.youtube.com/embed/GqqK4c2rDhM?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
+      ],
+      [
+        "/thumbnails/incridea19.webp",
+        "https://www.youtube.com/embed/gmF72fu1w6A?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
+      ],
+      [
+        "/thumbnails/incridea20.webp",
+        "https://www.youtube.com/embed/w0phDNAnUgA?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
+      ],
+      [
+        "/thumbnails/incridea22.webp",
+        "https://www.youtube.com/embed/JHgT5PzLc4Q?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
+      ],
+      [
+        "/thumbnails/incridea23.webp",
+        "https://www.youtube.com/embed/8Veb3u0xEoE?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
+      ],
+      [
+        "/thumbnails/incridea24.webp",
+        "https://www.youtube.com/embed/YoWeuaSMytk?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
+      ],
     ],
     [],
   );
@@ -143,7 +160,14 @@ const Inc25 = () => {
               }}
             >
               <div className="absolute top-0 left-0 w-full h-full z-50 cursor-pointer" />
-              <MiniPlayer src={src[1] ?? ""} isMobile={isMobile} />
+              <Image
+                src={src[0] ?? ""}
+                alt="Incridea"
+                layout="fill"
+                objectFit="cover"
+                className="z-10 object-cover"
+                priority
+              />
             </span>
           ))}
         </div>
@@ -201,88 +225,6 @@ const GlowingStars = ({ numStars }: { numStars: number }) => {
   return (
     <div ref={starsRef} className="absolute w-full h-full">
       {stars}
-    </div>
-  );
-};
-
-// Optimized MiniPlayer component
-const MiniPlayer = ({ src, isMobile }: { src: string; isMobile: boolean }) => {
-  const [clickThru, setClickThru] = useState(true);
-  const [isZoomed, setIsZoomed] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const blackScreenRef = useRef<HTMLDivElement>(null);
-  const YTPlayerRef = useRef<YouTubePlayer>(null);
-
-  const onReady: YouTubeProps["onReady"] = (e) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    YTPlayerRef.current = e.target;
-    (YTPlayerRef.current as YouTubePlayerPatch).playVideo();
-  };
-
-  const onPlay = useCallback<NonNullable<YouTubeProps["onPlay"]>>(() => {
-    if (blackScreenRef.current) {
-      blackScreenRef.current.style.display = "none";
-    }
-    setClickThru(false);
-
-    setTimeout(() => setIsZoomed(false), 3000);
-  }, []);
-
-  useEffect(() => {
-    if (!isZoomed && containerRef.current) {
-      gsap.to(containerRef.current, {
-        scale: 1,
-        duration: 3,
-        ease: "power2.out",
-      });
-    }
-  }, [isZoomed]);
-
-  const youtubeOpts = useMemo(
-    () => ({
-      playerVars: {
-        autoplay: 1,
-        showinfo: 0,
-        controls: 0,
-        modestbranding: 0,
-        disablekb: 1,
-        fs: 0,
-        loop: 0,
-        playsinline: 0,
-        rel: 0,
-        mute: 1,
-      },
-    }),
-    [],
-  );
-
-  return (
-    <div className="absolute h-full w-full overflow-hidden bg-black">
-      <div
-        className={`absolute z-40 h-full w-full ${clickThru ? "pointer-events-none" : "pointer-events-auto"}`}
-      />
-      <div
-        ref={blackScreenRef}
-        className="absolute z-40 flex h-full w-full items-center justify-center bg-black"
-      >
-        <CenteredLoader />
-      </div>
-      <div
-        ref={containerRef}
-        className="relative h-full w-full"
-        style={{ transform: `scale(${isMobile ? 3 : 2})` }}
-      >
-        <YouTube
-          videoId={src}
-          className="h-full w-full"
-          iframeClassName="absolute h-full w-full"
-          title="afterMovie"
-          loading="eager"
-          opts={youtubeOpts}
-          onReady={onReady}
-          onPlay={onPlay}
-        />
-      </div>
     </div>
   );
 };

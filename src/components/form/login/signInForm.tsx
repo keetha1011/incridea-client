@@ -47,7 +47,11 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         if (res?.error) {
           setLoading(false);
           if (res.error.includes("verify")) setVerifyError(true);
-          setError(res.error);
+          if (res.error.includes("CredentialsSignin")) {
+            setError("Invalid credentials");
+          } else {
+            setError(res.error);
+          }
           setGotDialogBox(true);
         }
 
@@ -129,7 +133,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         )}
 
         {error && (
-          <div className="flex min-w-full max-w-[20px] items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
+          <div className="flex min-w-full max-w-[20px] items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
             <BiErrorCircle className="shrink-0" />
             <div>
               {error}

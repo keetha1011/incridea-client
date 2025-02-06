@@ -40,15 +40,7 @@ const EventCard: FC<{
   const router = useRouter();
 
   return (
-    <div
-      onClick={() =>
-        router.push(
-          `/event/${event.name.toLowerCase().replaceAll(" ", "-")}-${event.id}`,
-        )
-      }
-      key={event.id}
-      className="flex w-[19rem] cursor-pointer items-start justify-evenly rounded-lg border border-primary-200/70 bg-primary-400 p-5 transition-transform duration-300 hover:scale-[1.02]"
-    >
+    <div className="flex flex-col h-fit items-center justify-center text-black bg-gradient-to-r from-primary-950/50 to-primary-950/50 via-primary-800 w-fit p-4 rounded-xl shadow-2xl shadow-black/80 border border-secondary-300">
       <div className="flex flex-col items-center justify-center text-black">
         <div className="relative">
           <Image
@@ -57,21 +49,21 @@ const EventCard: FC<{
             alt={event.name}
             height={300}
             width={300}
-            className="rounded-xl"
+            className="rounded-md"
           />
           <h1 className="absolute bottom-0 w-full rounded-xl bg-gradient-to-t from-black to-transparent pb-3 text-center text-sm font-bold text-white md:text-xl">
             {event.name}
           </h1>
         </div>
         <div className="mt-4 flex w-full flex-col items-center justify-end px-5">
-          <div className="flex flex-wrap justify-between gap-2 text-gray-800">
-            <div className="flex w-full items-center justify-center gap-2 rounded-full border border-secondary-400/40 bg-primary-200/30 px-3 py-1 text-left">
+          <div className="flex flex-wrap justify-between gap-2 text-black/80">
+            <div className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-secondary-600 to-secondary-600 via-secondary-300 px-3 py-1 text-left">
               <IoLocationOutline />
               <p className="truncate text-xs font-medium md:text-sm">
                 {event?.venue}
               </p>
             </div>
-            <div className="flex w-full items-center justify-center gap-2 rounded-full border border-secondary-400/40 bg-primary-200/30 px-3 py-1 text-left">
+            <div className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-br from-secondary-600 to-secondary-600 via-secondary-300 px-3 py-1 text-left">
               <RiNumbersLine />
               <p className="text-center text-xs font-medium md:text-sm">
                 {event?.rounds.length} Round{event?.rounds.length > 1 && "s"}
@@ -82,7 +74,7 @@ const EventCard: FC<{
           {teams?.map((team, i) => (
             <div
               key={i}
-              className="mt-5 flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-primary-200/80 p-3"
+              className="mt-5 flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-secondary-300 p-3"
             >
               <div className="flex items-center gap-5">
                 <QRCodeSVG
@@ -92,23 +84,27 @@ const EventCard: FC<{
                   size={75}
                   bgColor="transparent"
                 />
-                <div className="flex flex-col justify-between gap-2 text-black">
-                  <p className="cursor-pointer text-sm font-bold text-black lg:text-lg">
+                <div className="flex flex-col justify-evenly items-center gap-2 text-black">
+                  <p className="cursor-pointer text-sm font-bold text-primary-300 lg:text-lg">
                     {solo ? idToPid(userId) : idToTeamId(team.id)}
                   </p>
-
-                  {!team.confirmed && (
+                  <p className="text-secondary-300 text-sm border-2 border-secondary-500 rounded-full px-2">
+                    {team.confirmed ? "confirmed" : "Pending"}
+                  </p>
+                  {/* {!team.confirmed && (
                     <div className="flex items-start">
                       {!solo && team.leaderId?.toString() == userId && (
                         <EditTeamModal userId={userId} team={team} />
                       )}
                       {solo && <DeleteTeamModal teamId={team.id} solo={solo} />}
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
 
-              <div className="flex flex-col-reverse">
+              <div>edit</div>
+
+              {/* <div className="flex flex-col-reverse">
                 <div className="flex justify-start">
                   {!team.confirmed &&
                     Number(team.leaderId) === Number(userId) && (
@@ -130,7 +126,7 @@ const EventCard: FC<{
                     </p>
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
