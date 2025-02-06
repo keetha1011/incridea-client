@@ -6,7 +6,7 @@ import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
 import Loader from "~/components/loader";
 import { useAuth } from "~/hooks/useAuth";
 import ProfileCard from "./ProfileCard";
-import UserEvents from "./UserEvents";
+import UserEvents from "~/components/profile/UserEvents";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { type NextPage } from "next";
@@ -91,9 +91,9 @@ const Profile: NextPage = () => {
   return (
     <main
       ref={containerRef}
-      className="bodyFont md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
+      className="bodyFont md:h-screen h-fit flex w-screen md:p-8 p-2 pb-8 md:mb-8"
     >
-      <div className="flex md:flex-row flex-col w-full p-2 gap-8">
+      <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8">
         <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">
           <div className="w-full h-full">
             <ProfileCard user={user} showQR={showQr} />

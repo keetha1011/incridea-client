@@ -16,6 +16,7 @@ import { type QueryResult } from "@apollo/client";
 import EditTeamModal from "~/components/general/profile/editTeam";
 import DeleteTeamModal from "~/components/general/profile/deleteTeam";
 import ConfirmTeamModal from "~/components/general/profile/confirmTeam";
+import LeaveTeamModal from "../general/profile/leaveTeamModal";
 
 const EventCard: FC<{
   teams: Extract<
@@ -45,13 +46,17 @@ const EventCard: FC<{
         <div className="relative">
           <Image
             src={`https://res.cloudinary.com/dqy4wpxhn/image/upload/v1682653090/Events/VOCAL_TWIST_%28WESTERN%29_1682653088345.jpg`}
-            // src={event.image ?? ""}
             alt={event.name}
             height={300}
             width={300}
             className="rounded-md"
           />
-          <h1 className="absolute bottom-0 w-full rounded-xl bg-gradient-to-t from-black to-transparent pb-3 text-center text-sm font-bold text-white md:text-xl">
+          <h1
+            onClick={async () =>
+              await router.push("/event/" + event.id.toString())
+            }
+            className="absolute cursor-pointer underline bottom-0 w-full rounded-xl bg-gradient-to-t from-black to-transparent pb-3 text-center text-sm font-bold text-white md:text-xl"
+          >
             {event.name}
           </h1>
         </div>
@@ -91,42 +96,32 @@ const EventCard: FC<{
                   <p className="text-secondary-300 text-sm border-2 border-secondary-500 rounded-full px-2">
                     {team.confirmed ? "confirmed" : "Pending"}
                   </p>
-                  {/* {!team.confirmed && (
-                    <div className="flex items-start">
-                      {!solo && team.leaderId?.toString() == userId && (
-                        <EditTeamModal userId={userId} team={team} />
-                      )}
-                      {solo && <DeleteTeamModal teamId={team.id} solo={solo} />}
-                    </div>
-                  )} */}
                 </div>
               </div>
 
-              <div>edit</div>
-
-              {/* <div className="flex flex-col-reverse">
-                <div className="flex justify-start">
-                  {!team.confirmed &&
-                    Number(team.leaderId) === Number(userId) && (
-                      <ConfirmTeamModal
+              {team.confirmed && (
+                <div className="flex flex-col gap-1 mt-2">
+                  <div className="flex flex-row flex-nowrap gap-2">
+                    <EditTeamModal userId={userId} team={team} />
+                    {team.leaderId?.toString() === userId && false ? (
+                      <DeleteTeamModal
                         teamId={team.id}
-                        canConfirm={
-                          team.members.length >= team.event.minTeamSize
-                        }
-                        needMore={team.event.minTeamSize - team.members.length}
+                        solo={solo}
+                        isLeader={team.leaderId?.toString() === userId}
                       />
+                    ) : (
+                      <LeaveTeamModal refetch="MyTeam" teamId={team.id} />
                     )}
-                </div>
-                <div className="mt-1 w-fit overflow-hidden text-ellipsis rounded-full border border-primary-200/80 px-3 py-1 text-center text-sm text-black">
-                  {team.confirmed ? (
-                    <p>{solo ? "You are " : "Your team is "} confirmed!</p>
-                  ) : (
-                    <p>
-                      {solo ? "You are " : "Your team is "} not confirmed yet.
-                    </p>
+                  </div>
+                  {team.leaderId?.toString() === userId && (
+                    <ConfirmTeamModal
+                      teamId={team.id}
+                      canConfirm={team.members.length >= team.event.minTeamSize}
+                      needMore={team.event.minTeamSize - team.members.length}
+                    />
                   )}
                 </div>
-              </div> */}
+              )}
             </div>
           ))}
         </div>
