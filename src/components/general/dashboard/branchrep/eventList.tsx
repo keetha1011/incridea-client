@@ -25,8 +25,11 @@ const EventList: FC<{
   });
 
   // Get Branch Name
-  const branch = events?.eventsByBranchRep.find((event) => event.branch.name)
-    ?.branch.name;
+  const branch =
+    events?.eventsByBranchRep.__typename === "QueryEventsByBranchRepSuccess"
+      ? events.eventsByBranchRep.data.find((event) => event.branch.name)?.branch
+          .name
+      : undefined;
 
   return (
     <>
@@ -55,52 +58,56 @@ const EventList: FC<{
         )}
 
         {/* Events list */}
-        {events?.eventsByBranchRep.map((event, i) => (
-          <div
-            key={event.id}
-            className={`bg-white/10 ${
-              i === events.eventsByBranchRep.length - 1 && "md:rounded-b-lg"
-            } flex flex-col items-start justify-between gap-3 rounded-lg p-3 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-5`}
-          >
-            <h1 className="inline-flex flex-wrap gap-2 overflow-x-auto text-start text-xl font-bold md:basis-1/5">
-              {event.name}{" "}
-              <span className="block text-lg font-light md:hidden">
-                ({event.eventType})
-              </span>
-            </h1>
-            <h1 className="hidden text-center text-lg md:block md:basis-1/5">
-              {event.eventType}
-            </h1>
-            <div className="text-center md:basis-1/5">
-              <h1
-                className={`mx-auto w-fit rounded-full border px-3 text-center leading-7 ${
-                  event.published
-                    ? "border-green-500 text-green-500"
-                    : "border-red-500 text-red-500"
-                }`}
-              >
-                {event.published ? "Published" : "Pending"}
+        {events?.eventsByBranchRep.__typename ===
+          "QueryEventsByBranchRepSuccess" &&
+          events.eventsByBranchRep.data.map((event, i, arr) => (
+            <div
+              key={event.id}
+              className={`bg-white/10 ${
+                i === arr.length - 1 && "md:rounded-b-lg"
+              } flex flex-col items-start justify-between gap-3 rounded-lg p-3 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-5`}
+            >
+              <h1 className="inline-flex flex-wrap gap-2 overflow-x-auto text-start text-xl font-bold md:basis-1/5">
+                {event.name}{" "}
+                <span className="block text-lg font-light md:hidden">
+                  ({event.eventType})
+                </span>
               </h1>
+              <h1 className="hidden text-center text-lg md:block md:basis-1/5">
+                {event.eventType}
+              </h1>
+              <div className="text-center md:basis-1/5">
+                <h1
+                  className={`mx-auto w-fit rounded-full border px-3 text-center leading-7 ${
+                    event.published
+                      ? "border-green-500 text-green-500"
+                      : "border-red-500 text-red-500"
+                  }`}
+                >
+                  {event.published ? "Published" : "Pending"}
+                </h1>
+              </div>
+              <ViewEventModal event={event} />
+              <div className="text-center md:basis-1/5">
+                <AddOrganizerModal
+                  eventId={event.id}
+                  organizers={event.organizers}
+                  eventsRefetch={eventsRefetch}
+                  eventName={event.name}
+                />
+              </div>
+              <div className="text-end md:basis-1/5">
+                <DeleteEvent eventId={event.id} published={event.published} />
+              </div>
             </div>
-            <ViewEventModal event={event} />
-            <div className="text-center md:basis-1/5">
-              <AddOrganizerModal
-                eventId={event.id}
-                organizers={event.organizers}
-                eventsRefetch={eventsRefetch}
-                eventName={event.name}
-              />
+          ))}
+        {events?.eventsByBranchRep.__typename ===
+          "QueryEventsByBranchRepSuccess" &&
+          events.eventsByBranchRep.data.length === 0 && (
+            <div className="rounded-md bg-white/10 p-10 text-center text-xl italic text-gray-300 md:rounded-t-none">
+              No events found
             </div>
-            <div className="text-end md:basis-1/5">
-              <DeleteEvent eventId={event.id} published={event.published} />
-            </div>
-          </div>
-        ))}
-        {events?.eventsByBranchRep.length === 0 && (
-          <div className="rounded-md bg-white/10 p-10 text-center text-xl italic text-gray-300 md:rounded-t-none">
-            no events found
-          </div>
-        )}
+          )}
       </div>
     </>
   );

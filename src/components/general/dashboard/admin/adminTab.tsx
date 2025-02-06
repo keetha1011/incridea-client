@@ -119,23 +119,24 @@ const AdminTab: FC<{
               </div>
             )}
             <div className="max-h-60 overflow-y-auto md:h-64 md:max-h-64">
-              {branches?.getBranches?.map((branch, i) => (
-                <div
-                  key={i}
-                  className={`mb-3 flex flex-col items-start justify-between gap-3 rounded-lg bg-white/10 p-3 md:my-0 md:ml-0 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-4`}
-                >
-                  <h1 className="basis-1/2 py-0.5 pl-2 text-start text-lg">
-                    {branch?.name}
-                  </h1>
-                  <h1 className="flex basis-1/2 justify-end py-0.5 pr-1 text-end text-lg">
-                    <AddBranchRep
-                      branchId={branch?.id}
-                      branchName={branch?.name}
-                      branchReps={branch?.branchReps}
-                    />
-                  </h1>
-                </div>
-              ))}
+              {branches?.getBranches.__typename === "QueryGetBranchesSuccess" &&
+                branches.getBranches.data?.map((branch, i) => (
+                  <div
+                    key={i}
+                    className={`mb-3 flex flex-col items-start justify-between gap-3 rounded-lg bg-white/10 p-3 md:my-0 md:ml-0 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-4`}
+                  >
+                    <h1 className="basis-1/2 py-0.5 pl-2 text-start text-lg">
+                      {branch?.name}
+                    </h1>
+                    <h1 className="flex basis-1/2 justify-end py-0.5 pr-1 text-end text-lg">
+                      <AddBranchRep
+                        branchId={branch?.id}
+                        branchName={branch?.name}
+                        branchReps={branch?.branchReps}
+                      />
+                    </h1>
+                  </div>
+                ))}
             </div>
             <AddBranchModal />
           </div>
