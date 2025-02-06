@@ -6,6 +6,7 @@ import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
 import type { GLTF } from "three-stdlib";
 import { angleToScenes } from "~/pages/gallery";
+
 type GLTFResult = GLTF & {
   nodes: {
     clock_face: THREE.Mesh;
@@ -37,27 +38,6 @@ const getSnapAngle = (angle: number): number => {
 
 const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
   const { nodes, materials } = useGLTF("/assets/3d/clock.glb") as GLTFResult;
-  // const [scale, setScale] = useState(new THREE.Vector3(1, 1, 1));
-
-  // useEffect(() => {
-  //   if (window.innerWidth < 768) {
-  //     setScale(new THREE.Vector3(0.9, 0.9, 0.9));
-  //   } else {
-  //     setScale(new THREE.Vector3(0.8, 0.8, 0.8));
-  //   }
-
-  //   const resize = () => {
-  //     if (window.innerWidth < 768) {
-  //       setScale(new THREE.Vector3(0.9, 0.9, 0.9));
-  //     } else {
-  //       setScale(new THREE.Vector3(0.8, 0.8, 0.8));
-  //     }
-  //   };
-
-  //   window.addEventListener("resize", resize);
-
-  //   return () => window.removeEventListener("resize", resize);
-  // }, []);
 
   return (
     <group
@@ -70,9 +50,13 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
         receiveShadow
         geometry={nodes.clock_face.geometry}
         material={materials.Material}
-        scale={[1.11, 0.067, 1.11]}
+        scale={[1.25, 0.067, 1.25]}
       >
-        <group position={[0, 0.5, 0]} ref={handRef} rotation={[0, 0, 0]}>
+        <group
+          position={[0, 0.5, 0]}
+          ref={handRef}
+          rotation={[Math.PI, Math.PI, Math.PI]}
+        >
           <mesh
             castShadow
             receiveShadow
@@ -238,7 +222,7 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
       {...bind()}
     >
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={2} />
+        <ambientLight intensity={3} />
         <directionalLight position={[0, 0, 3]} intensity={1} />
         <Model handRef={handRef} />
       </Canvas>

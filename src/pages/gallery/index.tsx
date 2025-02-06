@@ -51,9 +51,7 @@ const Gallery: NextPage = () => {
   };
   const img2022 = generateImagePaths(years[0], imageCounts[0], "jpg");
   const img2023 = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg").map(
-    (path) => (path.startsWith("/") ? path : `/${path}`),
-  );
+  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg");
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
@@ -126,8 +124,6 @@ const Gallery: NextPage = () => {
           </div>
         </div>
       </section>
-
-      <FooterBody />
     </>
   );
 };

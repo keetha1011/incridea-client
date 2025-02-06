@@ -172,7 +172,7 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
       }
 
       const imageAnimation = createMotionPathAnimation(imageRef, index);
-      animationTimelineRef.current?.add(imageAnimation, index * 2);
+      animationTimelineRef.current?.add(imageAnimation, index * 1);
     });
 
     animationTimelineRef.current.play();
