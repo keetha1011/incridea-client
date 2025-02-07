@@ -6,6 +6,7 @@ import gsap from "gsap";
 
 const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [prevIndex, setPrevIndex] = useState(0);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -16,22 +17,42 @@ const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
             imgArr={imgArr}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
+            setPrevIndex={setPrevIndex}
           />
         </Suspense>
       </Canvas>
-
       {/* Image Carousel Overlay */}
-      <div className="absolute top-[50%] left-1/2 transform -translate-x-1/2 flex gap-4 space-x-10">
+      <div className="absolute top-[60%] left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-40">
         {imgArr.length > 0 &&
           [-1, 0, 1].map((offset) => {
             const index =
               (currentIndex + offset + imgArr.length) % imgArr.length;
-            const scale = offset === 0 ? "scale-125" : "scale-100 opacity-70"; // Middle image is larger
+            const isCenter = offset === 0;
+
+            // Calculate xPos based on offset
+            const xPos = offset === -1 ? -400 : offset === 1 ? 400 : 0;
+
+            // Adjust opacity for left and right images
+            const opacity = isCenter ? 1 : 0.5;
+
             return (
-              <div className="w-80 h-40 relative" key={index}>
+              <div
+                key={index}
+                className={`absolute w-80 h-52 transition-all duration-700 ease-in-out ${
+                  isCenter ? "scale-150 z-10" : "scale-100"
+                }`}
+                style={{
+                  transform: `translateX(${xPos}px) translateY(${
+                    isCenter ? "-20px" : "0px"
+                  })`,
+                  opacity: opacity,
+                  transition:
+                    "transform 1s ease-in-out, opacity 1s ease-in-out",
+                }}
+              >
                 <img
                   src={imgArr[index]}
-                  className={`object-fit object-center transition-all duration-500 ${scale}`}
+                  className="object-cover w-full h-full rounded-lg shadow-lg transition-transform duration-700 ease-in-out"
                   alt={`Carousel image ${index}`}
                 />
               </div>
@@ -46,10 +67,12 @@ const Model = ({
   imgArr,
   currentIndex,
   setCurrentIndex,
+  setPrevIndex,
 }: {
   imgArr: string[];
   currentIndex: number;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
+  setPrevIndex: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const pendulumRef = useRef<THREE.Object3D | null>(null);
   const pivotRef = useRef<THREE.Group | null>(null);
@@ -76,7 +99,8 @@ const Model = ({
         repeat: -1,
         yoyo: true,
         onRepeat: () => {
-          setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length); // Change image every oscillation
+          setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length);
+          setPrevIndex((prevIndex) => (prevIndex - 1) % imgArr.length);
         },
       });
     }
