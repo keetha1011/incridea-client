@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
-import React from "react";
+import { stat } from "fs";
+import React, { useEffect } from "react";
 import { type FC, useState } from "react";
 import { MdModeEditOutline } from "react-icons/md";
 
@@ -22,12 +23,24 @@ const AddAccommodateDetails: FC<{
   const [showModal, setShowModal] = useState(false);
   const [hotelDetails, setHotelDetails] = useState("");
   const [roomNo, setRoomNo] = useState("");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<string>(AccommodationStatus.pending);
 
   const { data: allHotels } = useQuery(GetAllHotelsDocument);
 
+  useEffect(() => {
+    if (
+      allHotels?.getAllHotels.__typename === "QueryGetAllHotelsSuccess" &&
+      allHotels?.getAllHotels.data[0]?.id
+    ) {
+      setHotelDetails(allHotels.getAllHotels.data[0].id);
+    } else {
+      setHotelDetails(""); // Fallback if no valid id exists
+    }
+  }, [allHotels]);
+
   const [updateStatus] = useMutation(UpdateAccommodationStatusDocument);
   const handleUpdate = async () => {
+    console.log(hotelDetails, roomNo, accId, status);
     const promise = updateStatus({
       variables: {
         hotelId: hotelDetails,
@@ -78,11 +91,13 @@ const AddAccommodateDetails: FC<{
               id="hotelName"
               className="block w-11/12 rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
             >
-              {allHotels?.getAllHotels.map((hot) => (
-                <option key={hot.id} value={hot.id}>
-                  {hot.name}
-                </option>
-              ))}
+              {allHotels?.getAllHotels.__typename ===
+                "QueryGetAllHotelsSuccess" &&
+                allHotels?.getAllHotels.data.map((hot) => (
+                  <option key={hot.id} value={hot.id}>
+                    {hot.name}
+                  </option>
+                ))}
             </select>
           </div>
           <div className="flex w-full flex-col items-start">

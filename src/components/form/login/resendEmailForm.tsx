@@ -98,12 +98,12 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
               }}
               type="email"
               required
-              className="border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-gray-500 md:focus:border-red-500"
+              className="border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-white md:focus:border-red-500"
               placeholder="Email"
             />
 
             {(error ?? emailVerificationError) && (
-              <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-red-100 p-2 px-4 font-semibold text-red-500">
+              <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
                 <BiErrorCircle size={"1.3rem"} />
                 {error ?? emailVerificationError?.message}
               </div>
@@ -114,7 +114,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
             </Button>
 
             {loading && (
-              <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg bg-gradient-to-b from-[#1f2e97] to-[#090d4b] opacity-60">
+              <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg opacity-60">
                 <Spinner className="text-[#dd5c6e]" intent={"white"} />
               </div>
             )}

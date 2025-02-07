@@ -1,173 +1,162 @@
 import { ApolloProvider, type NormalizedCacheObject } from "@apollo/client";
 import { Analytics } from "@vercel/analytics/react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import type { AppProps } from "next/app";
 import dynamic from "next/dynamic";
-import { Press_Start_2P } from "next/font/google";
-import LocalFont from "next/font/local";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
-import ComingSoonComponent from "~/components/coming-soon";
-
+import LocalFont from "next/font/local";
 import Footer from "~/components/footer";
 import HeadComponent from "~/components/head";
-import Loader from "~/components/loader";
-import { env } from "~/env";
+import LoadingScreen from "~/components/loader";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
+import BackGroundGradient from "~/components/layout/background";
+import { LoaderProvider } from "~/components/loader/loaderContext";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
-export const VikingHell = LocalFont({
-  src: "../font/Viking Hell.otf",
-  variable: "--font-viking-hell",
-});
-
-export const garetFont = LocalFont({
-  src: "../font/Garet-Book.otf",
-  variable: "--font-Garet",
-});
-
-export const gilroy = LocalFont({
+export const trap = LocalFont({
   src: [
     {
-      path: "../font/Gilroy-Regular.ttf",
+      path: "../font/Trap-Black.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../font/Gilroy-Bold.ttf",
+      path: "../font/Trap-Light.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Trap-Medium.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Trap-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Trap-Bold.otf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../font/Gilroy-ExtraBold.ttf",
+      path: "../font/Trap-ExtraBold.otf",
       weight: "800",
       style: "normal",
     },
+
     {
-      path: "../font/Gilroy-SemiBold.ttf",
+      path: "../font/Trap-SemiBold.otf",
       weight: "500",
       style: "normal",
     },
   ],
-  variable: "--font-gilroy",
+  variable: "--font-trap",
   display: "swap",
 });
 
-export const pressStart = Press_Start_2P({
-  weight: ["400"],
-  subsets: ["latin"],
-  style: ["normal"],
+export const lifeCraft = LocalFont({
+  src: "../font/LifeCraft.ttf",
+  weight: "400",
+  variable: "--font-life-craft",
   display: "swap",
-  variable: "--font-Press_Start_2P",
+  style: "normal",
 });
 
-export const BlackChancery = LocalFont({
+export const blackChancery = LocalFont({
   src: "../font/BlackChancery.ttf",
-  variable: "--font-BlackChancery",
+  weight: "400",
+  variable: "--font-black-chancery",
+  display: "swap",
+  style: "normal",
 });
-
-type PageProps = {
-  initialApolloState?: NormalizedCacheObject;
-};
 
 export default function App({
   Component,
   pageProps: { session: _session, ...pageProps },
   initialApolloState,
-}: AppProps & PageProps) {
+}: AppProps & { initialApolloState?: NormalizedCacheObject }) {
   const router = useRouter();
-
   const apolloClient = useApollo(initialApolloState);
-  const [isLoading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const loadingTimeout = useRef<NodeJS.Timeout>();
+
+  const handleLoadingStart = useCallback(() => {
+    // Clear any existing timeout
+    if (loadingTimeout.current) {
+      clearTimeout(loadingTimeout.current);
+    }
+
+    // Only show loading screen if loading takes more than 300ms
+    loadingTimeout.current = setTimeout(() => {
+      setIsLoading(true);
+    }, 300);
+  }, []);
+
+  const handleLoadingComplete = useCallback(() => {
+    // Clear the timeout to prevent showing loader after completion
+    if (loadingTimeout.current) {
+      clearTimeout(loadingTimeout.current);
+    }
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
-    if (env.NEXT_PUBLIC_NODE_ENV !== "development")
-      void router.push("/coming-soon");
-  });
+    router.events.on("routeChangeStart", handleLoadingStart);
+    router.events.on("routeChangeComplete", handleLoadingComplete);
+    router.events.on("routeChangeError", handleLoadingComplete);
 
-  if (env.NEXT_PUBLIC_NODE_ENV !== "development")
-    return <ComingSoonComponent />;
+    return () => {
+      if (loadingTimeout.current) {
+        clearTimeout(loadingTimeout.current);
+      }
+      router.events.off("routeChangeStart", handleLoadingStart);
+      router.events.off("routeChangeComplete", handleLoadingComplete);
+      router.events.off("routeChangeError", handleLoadingComplete);
+    };
+  }, [router, handleLoadingStart, handleLoadingComplete]);
 
-  if (
-    router.pathname === "/theme" ||
-    router.pathname === "/test" ||
-    router.pathname === "/"
-  )
-    return (
-      <ApolloProvider client={apolloClient}>
-        <HeadComponent
-          title="Incridea"
-          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-        />
-        <div
-          className={cn(
-            "min-h-scree",
-            // VikingHell.variable,
-            // pressStart.variable,
-            // garetFont.variable,
-            // gilroy.variable,
-          )}
-        >
-          <Component {...pageProps} />
-          <Toaster />
-        </div>
-      </ApolloProvider>
-    );
-  if (router.pathname.startsWith("/explore"))
-    return (
-      <ApolloProvider client={apolloClient}>
-        <HeadComponent
-          title="Incridea"
-          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-        />
-        <Loader />
-        <div
-          className={cn(
-            "min-h-screen",
-            // VikingHell.variable,
-            // pressStart.variable,
-            // garetFont.variable,
-          )}
-        >
-          <Component {...pageProps} />
-          <Toaster />
-        </div>
-      </ApolloProvider>
-    );
+  const shouldRenderNavbar =
+    router.pathname !== "/" &&
+    !router.pathname.startsWith("/explore") &&
+    !router.pathname.startsWith("/theme");
+
   return (
     <>
+      <AnimatePresence mode="wait">
+        {isLoading && <LoadingScreen />}
+      </AnimatePresence>
+
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
-        <Toaster />
-        <Loader />
-        <div
-          className={cn(
-            "min-h-screen bg-[#7528cf]",
-            // VikingHell.variable,
-            // pressStart.variable,
-            // garetFont.variable,
-          )}
-        >
-          {!isLoading && <Navbar />}
-          <AnimatePresence mode="wait">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="min-h-screen"
+        <LoaderProvider>
+          <BackGroundGradient>
+            <Toaster />
+            <div
+              className={cn(
+                trap.className,
+                lifeCraft.className,
+                blackChancery.className,
+                "min-h-screen",
+              )}
             >
-              <Component setLoading={setLoading} {...pageProps} />
-            </motion.div>
-          </AnimatePresence>
-          <Footer />
-        </div>
+              {shouldRenderNavbar && <Navbar />}
+              <AnimatePresence mode="wait">
+                <Component key={router.pathname} {...pageProps} />
+              </AnimatePresence>
+              <Footer />
+            </div>
+          </BackGroundGradient>
+        </LoaderProvider>
       </ApolloProvider>
       <Analytics />
     </>

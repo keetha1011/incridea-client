@@ -163,24 +163,29 @@ const QuizLeaderboard = () => {
         className={``}
         style={{ willChange: "transform", overflowX: "hidden" }}
       >
-        <div className="relative min-h-screen mt-10">
-          <div className="text-center font-sans text-4xl text-white md:text-4xl font-bold flex justify-between w-full px-10">
-            <p>Hello, {user.name}</p>
-            <p>
+        <h1 className="w-fit mx-auto text-3xl lg:text-5xl text-amber-400 border-b-[1.45px] border-b-amber-400">
+          Leaderboards
+        </h1>
+        <div className="relative min-h-screen mt-6">
+          <p className="w-fit mr-auto font-sans text-4xl bg-gradient-to-tr from-amber-600 to-amber-400 via-amber-500 bg-clip-text text-transparent md:text-4xl font-bold ">
+            Hello, {user.name}
+          </p>
+          <div className="text-right mt-6 p-2 ">
+            <p className="w-fit mx-auto text-2xl md:text-4xl bg-gradient-to-tr from-amber-600 to-amber-400 via-amber-500 bg-clip-text text-transparent">
               {round?.quiz?.name} of {event?.name}(Round {round?.roundNo})
             </p>
           </div>
-          <div className="relative min-h-screen flex gap-x-4 mt-4">
+          <div className="relative min-h-screen flex gap-x-4 mt-6">
             {quizScoresLoading && (
               <div className="mt-10 flex items-center justify-center">
-                <Spinner className="text-gray-300" />
+                <Spinner className="text-amber-300/90" />
               </div>
             )}
 
-            <div className="w-1/2 bg-primary-800 rounded-t-xl overflow-clip h-screen">
-              <div className="h-20 flex w-full bg-[#35436F] text-3xl items-center p-4 relative">
+            <div className="w-1/2 bg-gradient-to-bl from-emerald-900/90 to-green-800/95 via-emerald-800/90 rounded-3xl overflow-clip h-screen shadow-2xl border-[1.5px] border-amber-200">
+              <div className="h-20 flex w-full bg-[#1a3d16] text-3xl items-center p-4 relative">
                 <input
-                  className="h-full border-0 bg-white/20 text-xl p-2 w-full rounded-md"
+                  className="h-full border-2 border-amber-600/30 bg-emerald-900/20 text-xl p-2 w-full rounded-md text-amber-100 placeholder-amber-300/50 focus-within:outline-double"
                   placeholder="Search by name or PID"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
@@ -188,10 +193,10 @@ const QuizLeaderboard = () => {
                 />
                 <AiOutlineSearch
                   size={"1.4rem"}
-                  className="absolute right-7 text-white/60"
+                  className="absolute right-7 text-amber-300/60"
                 />
               </div>
-              <div className="m-4 grid grid-cols-5 h-16 items-center rounded-lg rounded-t-lg bg-primary-500 bg-opacity-20 text-sm font-bold text-white text-center md:text-xl">
+              <div className="m-4 grid grid-cols-5 h-16 items-center rounded-lg rounded-t-lg bg-emerald-900/95 bg-opacity-30 text-sm font-bold text-amber-100 text-center md:text-xl">
                 <h1>Name</h1>
                 <h1>ID</h1>
                 <h1>Score</h1>
@@ -212,15 +217,14 @@ const QuizLeaderboard = () => {
                       !user.selected && (
                         <div
                           key={user.teamId}
-                          className="h-16 mx-4 grid grid-cols-5 items-center justify-items-center rounded-lg shadow-2xl text-sm md:text-xl"
+                          className="h-16 mx-4 my-2 grid grid-cols-5 items-center justify-items-center rounded-lg shadow-xl text-sm md:text-xl bg-emerald-800/30 hover:bg-emerald-700/40 transition-all duration-300 text-amber-100"
                         >
-                          {/* <p className="border rounded-2xl border-green-700 text-green-700 absolute left-20">Qualified</p> */}
                           <p>{user.teamName}</p>
                           <p>{user.teamId}</p>
                           <p>{user.score}</p>
                           <p>{user.timeTaken.toFixed(3)}</p>
                           <Button
-                            className={`h-8 w-8 bg-green-500 hover:bg-green-700 justify-self-center aspect-square p-1`}
+                            className={`h-8 w-8 bg-emerald-600 hover:bg-emerald-500 justify-self-center aspect-square p-1 transition-all duration-300 transform hover:scale-110`}
                             onClick={() => {
                               const leaderboard = [...sortedLeaderboard];
                               leaderboard.forEach((team) => {
@@ -230,7 +234,7 @@ const QuizLeaderboard = () => {
                               setSortedLeaderboard(leaderboard);
                             }}
                           >
-                            <AiOutlineCheck />
+                            <AiOutlineCheck className="text-amber-100" />
                           </Button>
                         </div>
                       )
@@ -238,11 +242,11 @@ const QuizLeaderboard = () => {
                   })}
               </div>
             </div>
-            <div className="w-1/2 bg-primary-800 rounded-t-xl overflow-clip h-screen">
-              <div className="h-20 flex w-full text-3xl items-center p-4 bg-[#35436F]">
+            <div className="w-1/2 bg-gradient-to-tr from-green-500/90 to-emerald-600/95 via-emerald-600  overflow-clip h-screen shadow-2xl rounded-3xl">
+              <div className="h-20 flex w-full text-3xl items-center p-4 bg-[#133d0f] text-amber-100">
                 Selected Teams
               </div>
-              <div className="m-4 grid grid-cols-9 h-16 justify-items-center items-center rounded-lg rounded-t-lg bg-primary-500 bg-opacity-20 text-sm font-bold text-white md:text-xl">
+              <div className="m-4 grid grid-cols-9 h-16 justify-items-center items-center rounded-lg rounded-t-lg bg-amber-900/30 text-sm font-bold text-amber-100 md:text-xl">
                 <h1 className="col-span-2">Name</h1>
                 <h1 className="col-span-2">ID</h1>
                 <h1 className="col-span-2">Score</h1>
@@ -254,9 +258,8 @@ const QuizLeaderboard = () => {
                     user.selected && (
                       <div
                         key={user.teamId}
-                        className="h-16 mx-4 grid grid-cols-9 items-center rounded-lg shadow-2xl justify-items-center text-sm md:text-xl"
+                        className="h-16 mx-4 my-2 grid grid-cols-9 items-center rounded-lg shadow-xl justify-items-center text-sm md:text-xl bg-amber-800/30 hover:bg-amber-700/40 transition-all duration-300 text-amber-100"
                       >
-                        {/* <p className="border rounded-2xl border-green-700 text-green-700 absolute left-20">Qualified</p> */}
                         <h1 className="col-span-2">{user.teamName}</h1>
                         <h1 className="col-span-2">{user.teamId}</h1>
                         <h1 className="col-span-2">{user.score}</h1>
@@ -264,7 +267,7 @@ const QuizLeaderboard = () => {
                           {user.timeTaken.toFixed(3)}
                         </h1>
                         <Button
-                          className="bg-red-500 right-0 mx-[5%] aspect-square p-1 hover:bg-red-700"
+                          className="bg-red-700 right-0 mx-[5%] aspect-square p-1 hover:bg-red-600 transition-all duration-300 transform hover:scale-110"
                           onClick={() => {
                             const leaderboard = [...sortedLeaderboard];
                             leaderboard.forEach((team) => {
@@ -274,7 +277,7 @@ const QuizLeaderboard = () => {
                             setSortedLeaderboard(leaderboard);
                           }}
                         >
-                          <AiOutlineClose />
+                          <AiOutlineClose className="text-amber-100" />
                         </Button>
                       </div>
                     )
@@ -283,12 +286,27 @@ const QuizLeaderboard = () => {
               </div>
               {sortedLeaderboard.filter((team) => team.selected).length > 0 && (
                 <Button
-                  className="text-2xl p-5 m-5 bg-green-500 hover:bg-green-700"
+                  className="px-8 py-3 text-[1rem] min-w-[12rem] text-center ml-10 md:text-[20px] 
+                  bg-amber-500 hover:bg-orange-400/90 
+                  text-amber-100
+                  transition-all duration-300 
+                  hover:opacity-90
+                  relative
+                  before:absolute before:inset-0
+                  before:bg-amber-500 
+                  before:skew-x-[20deg] 
+                  before:-z-10
+                  hover:before:bg-orange-400/90"
+                  style={{
+                    clipPath: "polygon(5% 0%, 90% 0%, 85% 100%, 2% 100%)",
+                  }}
                   onClick={handlePromote}
                 >
-                  {promoteQuizParticipantsLoading
-                    ? "Promoting..."
-                    : "Confirm Teams"}
+                  <span className="relative z-10 mr-4">
+                    {promoteQuizParticipantsLoading
+                      ? "Promoting..."
+                      : "Confirm Teams"}
+                  </span>
                 </Button>
               )}
             </div>

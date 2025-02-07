@@ -1,0 +1,36 @@
+query GetChampionshipLeaderboard {
+  getChampionshipLeaderboard {
+    ... on QueryGetChampionshipLeaderboardSuccess {
+      __typename
+      data {
+        id
+        name
+        isEligible
+        championshipPoints
+        techCount
+        nonTechCount
+        coreCount
+        diamondCount {
+          winner
+          runner_up
+          second_runner_up
+        }
+        goldCount {
+          winner
+          runner_up
+          second_runner_up
+        }
+        silverCount {
+          winner
+          runner_up
+          second_runner_up
+        }
+        bronzeCount {
+          winner
+          runner_up
+          second_runner_up
+        }
+      }
+    }
+  }
+}

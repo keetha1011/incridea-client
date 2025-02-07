@@ -1,10 +1,19 @@
 query GetAllHotels {
   getAllHotels {
-    createdAt
-    details
-    id
-    name
-    price
-    updatedAt
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetAllHotelsSuccess {
+      __typename
+      data {
+        createdAt
+        details
+        id
+        name
+        price
+        updatedAt
+      }
+    }
   }
 }

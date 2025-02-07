@@ -108,11 +108,6 @@ body {
   overflow-x: hidden;
 }
 
-.remove-scrolling {
-  height: 100%;
-  overflow: hidden;
-}
-
 /* create a youtube-like scrollbar */
 ::-webkit-scrollbar {
   width: 0.4rem;
@@ -132,112 +127,6 @@ body {
   @apply bg-gray-300;
 }
 
-/* Markdown Rendering styles */
-.rendered-markdown h1 {
-  @apply text-3xl;
-  @apply font-bold;
-  @apply mb-4;
-}
-
-.rendered-markdown h2 {
-  @apply text-2xl;
-  @apply font-bold;
-  @apply mb-4;
-}
-
-.rendered-markdown h3 {
-  @apply text-xl;
-  @apply font-bold;
-  @apply mb-4;
-}
-
-.rendered-markdown h4 {
-  @apply text-lg;
-  @apply font-bold;
-  @apply mb-4;
-}
-
-.rendered-markdown h5 {
-  @apply text-base;
-  @apply font-bold;
-  @apply mb-4;
-}
-
-.rendered-markdown h6 {
-  @apply text-sm;
-  @apply font-bold;
-  @apply mb-4;
-}
-
-.rendered-markdown p {
-  @apply mb-4;
-}
-
-.rendered-markdown ul {
-  @apply list-disc;
-  @apply list-inside;
-  @apply mb-4;
-}
-
-.rendered-markdown ol {
-  @apply list-decimal;
-  @apply list-inside;
-  @apply mb-4;
-}
-
-.rendered-markdown li {
-  @apply mb-2;
-}
-
-.rendered-markdown a {
-  @apply text-blue-500;
-  @apply underline;
-}
-
-.rendered-markdown blockquote {
-  @apply border-l-4;
-  @apply border-gray-400;
-  @apply pl-4;
-  @apply italic;
-  @apply mb-4;
-}
-
-.rendered-markdown code {
-  @apply bg-gray-800;
-  @apply text-gray-200;
-  @apply px-1;
-  @apply rounded;
-}
-
-.rendered-markdown pre {
-  @apply bg-gray-800;
-  @apply text-gray-200;
-  @apply px-4;
-  @apply py-2;
-  @apply rounded;
-  @apply mb-4;
-}
-
-.rendered-markdown table {
-  @apply border-collapse;
-  @apply border border-gray-400;
-  @apply mb-4;
-}
-
-.rendered-markdown th {
-  @apply border border-gray-400;
-  @apply bg-gray-800;
-  @apply text-gray-200;
-  @apply px-4;
-  @apply py-2;
-}
-
-.rendered-markdown td {
-  @apply border border-gray-400;
-  @apply px-4;
-  @apply py-2;
-}
-
 .scroll-hide::-webkit-scrollbar {
   display: none;
 }
@@ -247,73 +136,104 @@ body {
   scrollbar-width: none;
 }
 
-.gradient-bg {
-  background: linear-gradient(
-    -170deg,
-    #a5b4fc,
-    #818cf8,
-    #22d3ee,
-    #fefce8,
-    #fff,
-    #fff
-  );
-}
-
 .glass-button {
   backdrop-filter: blur(10px);
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .glass-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .glass-button:hover {
   background-image: linear-gradient(
     45deg,
-    rgba(0, 255, 255, 0.5),
-    rgba(255, 0, 255, 0.5),
-    rgba(255, 192, 203, 0.5)
+    rgba(16, 185, 129, 0.5),
+    /* emerald-500 */ rgba(245, 158, 11, 0.5),
+    /* amber-500 */ rgba(234, 179, 8, 0.5)
   );
+  /* yellow-500 */
   background-size: 200% auto;
   animation: gradient-animation 1s linear infinite alternate;
 }
 
+/* Ensuring we use the same animation keyframes as before */
 @keyframes gradient-animation {
   0% {
-    background-position: 0% 25%;
-    /* Start position */
-  }
-
-  25% {
-    background-position: 25% 50%;
-  }
-
-  50% {
-    background-position: 50% 75%;
-  }
-
-  75% {
-    background-position: 75% 100%;
+    background-position: 0% 50%;
   }
 
   100% {
-    background-position: 100% 0%;
-    /* Return to start */
+    background-position: 100% 50%;
   }
 }
 
 .progress-bar-effect {
-  background-image: linear-gradient(
-    55deg,
-    #13ccccf6,
-    #c522c5fd,
-    rgba(236, 56, 155, 0.767)
+  background: linear-gradient(
+    110deg,
+    #2d5a27,
+    #4a7a3f,
+    #7ba166,
+    #e7ca46,
+    #c5a53c,
+    #6ec04d,
+    #2d5a27
   );
-  background-size: 250% auto;
-  animation: gradient-animation 2s ease-in infinite alternate;
+  background-size: 200% 100%;
+  animation: gradient-flow 12s ease infinite;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Slower, smoother gradient movement */
+@keyframes gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Optional shimmer effect */
+.shimmer {
+  position: relative;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 45%,
+    rgba(255, 255, 255, 0.1) 48%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 52%,
+    transparent 55%
+  );
+  animation: shimmer 8s infinite linear;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }
 
 @media (max-width: 768px) {
@@ -326,44 +246,8 @@ body {
   } */
 }
 
-/* Workaround for disappearing elements (scope: locomotive scroll) */
-.has-scroll-smooth {
-  position: fixed;
-  inset: 0;
-}
-
-.outline-text {
-  -webkit-text-stroke: 2px white;
-  -webkit-text-fill-color: transparent;
-}
-
-/* .titleFont {
-  font-family: "Roboto Slab", cursive;
-} */
-
-.bodyFont {
-  font-family: "arvo", sans-serif;
-}
-
 .event-description * {
   font-family: "arvo", sans-serif !important;
-}
-
-.pressStart {
-  font-family: "Press_Start_2P", system-ui;
-}
-
-.vikingHell {
-  font-family: "VikingHell", system-ui;
-}
-
-.blackChancery {
-  font-family: "BlackChancery", system-ui;
-}
-
-.black-ops {
-  font-family: "Black Ops One", system-ui;
-  font-style: italic;
 }
 
 @keyframes fly-up-down {
@@ -388,25 +272,6 @@ body {
 .title {
   @apply text-xl md:text-2xl lg:text-3xl;
   @apply font-bold;
-}
-
-.heading {
-  @apply text-lg md:text-xl lg:text-2xl;
-  @apply font-bold;
-}
-
-.subheading {
-  @apply text-base md:text-lg lg:text-xl;
-  /* @apply font-bold; */
-}
-
-.body {
-  @apply text-sm md:text-base lg:text-lg;
-}
-
-.caption {
-  @apply text-xs md:text-sm lg:text-base;
-  @apply tracking-wider;
 }
 
 /* layout */
@@ -862,8 +727,4 @@ body {
   #foglayer_03 .image02 {
     width: 100%;
   }
-}
-
-.titleFont {
-  @apply !font-VikingHell;
 }

@@ -38,7 +38,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
   return (
     <div key={props.id} id={props.id} className="flex pt-8 pb-3">
       <div
-        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gray-900/70 py-6 px-8 ${props.questionMode === "edit" ? "border-2 border-blue-500" : props.questionMode === "new" ? "border-2 border-green-500" : ""}`}
+        className={`flex h-auto w-full flex-col items-start rounded-3xl bg-gradient-to-br from-[#002C1D]/95 py-6 px-8 ${props.questionMode === "edit" ? "border-2 border-blue-500" : props.questionMode === "new" ? "border-2 border-green-500" : ""}`}
       >
         <div className="flex align-middle justify-between w-full">
           <div className="flex flex-row gap-10">
@@ -96,7 +96,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                 required
                 type="checkbox"
                 // {...(props.isCode ? { checked: true } : {})}
-                className="mr-2 w-4 h-4"
+                className="mr-2 w-4 h-4 checked:accent-amber-300"
                 id="code-${props.id}"
                 checked={props.isCode} // new change
                 onChange={() => props.handleIsCode(props.id)}
@@ -162,7 +162,7 @@ const QuestionComp: React.FC<QuestionProps> = (props) => {
                       type="radio"
                       value={opt}
                       name={`ans-${props.id}`}
-                      className="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                      className="h-4 w-4 border-gray-300 bg-gray-100 order-amber-300 text-emerald-700 focus:ring-2 focus:ring-emerald-700"
                       checked={props.ansIndex === index2}
                       onChange={(e) =>
                         props.handleAnswerChange(props.id, index2, e)

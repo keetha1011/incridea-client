@@ -54,7 +54,7 @@ const ComingSoonComponent = () => {
       <div className="absolute w-full h-full z-20">{renderStars()}</div>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/2025/Incridea Stroke Font.png"
+        src="/2025/logo.png"
         alt="logo"
         className="w-52 lg:w-96 aspect-auto"
       />
@@ -62,7 +62,7 @@ const ComingSoonComponent = () => {
       <div className="md:w-[60%] w-[80%] h-52 lg:h-96 z-20 flex justify-center items-center">
         <MorphingText
           texts={["Coming Soon", "Echoes of Eternity"]}
-          className="blackChancery lg:text-[9rem] md:text-[6rem] text-[4rem] text-yellow-400 text-center min-w-full self-center justify-self-center"
+          className="font-black-chancery lg:text-[9rem] md:text-[6rem] text-[4rem] text-yellow-400 text-center min-w-full self-center justify-self-center"
         />
       </div>
       <div className="absolute w-full h-full z-20">

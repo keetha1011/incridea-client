@@ -16,10 +16,11 @@ const RoundsDone: FC<{
   let total = 0,
     done = 0;
 
-  data?.roundsByEvent.map((round) => {
-    //checks if the rounds are completed or not
-    return round.completed ? done++ : total++;
-  });
+  //checks if the rounds are completed or not
+  if (data?.roundsByEvent.__typename === "QueryRoundsByEventSuccess")
+    data.roundsByEvent.data.map((round) =>
+      round.completed ? done++ : total++,
+    );
 
   return (
     <>

@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        2000: "2000ms",
+      },
       animation: {
         "spin-slow": "spin 2s linear infinite",
         scroll: "scroll 60s linear infinite",
@@ -16,6 +19,7 @@ const config: Config = {
         "free-fall":
           "gravity 10s cubic-bezier(0.33333, 0, 0.66667, 0.33333) infinite",
         shake: "shake 0.3s linear infinite",
+        shakelogo: "shakelogo 3.32s ease infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         vibrate: "vibrate 5s ease-in-out",
@@ -25,6 +29,7 @@ const config: Config = {
         splatter4: "splatter4 1s ease-out forwards",
         splatter5: "splatter5 1s ease-out forwards",
         splatter6: "splatter6 1s ease-out forwards",
+        rotateClockwise: "rotateClockwise 1s linear infinite",
       },
       keyframes: {
         vibrate: {
@@ -118,6 +123,7 @@ const config: Config = {
             transform: "translate(0, 0) rotate(0deg)",
           },
         },
+
         scroll: {
           "0%": {
             transform: "translateX(0)",
@@ -166,59 +172,123 @@ const config: Config = {
             height: "0",
           },
         },
+        rotateClockwise: {
+          "0%": {
+            transform: "rotate(0deg)",
+          },
+          "100%": {
+            transform: "rotate(360deg)",
+          },
+        },
+
+        shakelogo: {
+          "0%": {
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+          "1.25%": {
+            transform: "translate(2px, 0) rotate(2deg)",
+          },
+          "2.5%": {
+            transform: "translate(4px, 0) rotate(4deg)",
+          },
+          "3.75%": {
+            transform: "translate(2px, 0) rotate(2deg)",
+          },
+          "5%": {
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+          "6.25%": {
+            transform: "translate(-2px, 0) rotate(-2deg)",
+          },
+          "7.5%": {
+            transform: "translate(-4px, 0) rotate(-4deg)",
+          },
+          "8.75%": {
+            transform: "translate(-2px, 0) rotate(-2deg)",
+          },
+          "10%": {
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+          "11.25%": {
+            transform: "translate(2px, 0) rotate(2deg)",
+          },
+          "12.5%": {
+            transform: "translate(4px, 0) rotate(4deg)",
+          },
+          "13.75%": {
+            transform: "translate(2px, 0) rotate(2deg)",
+          },
+          "15%": {
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+          "16.25%": {
+            transform: "translate(-2px, 0) rotate(-2deg)",
+          },
+          "17.5%": {
+            transform: "translate(-4px, 0) rotate(-4deg)",
+          },
+          "18.75%": {
+            transform: "translate(-2px, 0) rotate(-2deg)",
+          },
+          "20%": {
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+          "100%": {
+            transform: "translate(0, 0) rotate(0deg)",
+          },
+        },
       },
       transitionTimingFunction: {
         "suck-in": "cubic-bezier(0.65, 0, 0.35, 1)",
       },
       fontFamily: {
-        VikingHell: "var(--font-viking-hell)",
-        PressStart: "var(--font-Press_Start_2P)",
-        Garet: "var(--font-Garet)",
-        gilroy: "var(--font-gilroy)",
+        trap: "var(--font-trap)",
+        "life-craft": "var(--font-life-craft)",
+        "black-chancery": "var(--font-black-chancery)",
       },
       colors: {
         primary: {
-          50: "#E7D9F8",
-          100: "#D2B6F1",
-          200: "#A46EE3",
-          300: "#7628D0",
-          400: "#6623B4",
-          500: "#551D96",
-          600: "#441778",
-          700: "#33115A",
-          800: "#220C3C",
-          900: "#11061E",
-          950: "#07020D",
+          50: "#e6fff5",
+          100: "#ccffeb",
+          200: "#99ffd8",
+          300: "#66ffc4",
+          400: "#33ffb1",
+          500: "#00ff9d",
+          600: "#00cc7e",
+          700: "#00995e",
+          800: "#00663f",
+          900: "#00331f",
+          950: "#001a10",
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          50: "#FFF0F9",
-          100: "#FFE5F4",
-          200: "#FFC7E8",
-          300: "#FFADDD",
-          400: "#FF94D2",
-          500: "#FF75C6",
-          600: "#FF5CBB",
-          700: "#FF40B1",
-          800: "#D6007D",
-          900: "#6B003E",
-          950: "#33001E",
+          50: "#fbf4e9",
+          100: "#f7e9d4",
+          200: "#efd3a9",
+          300: "#e7bd7e",
+          400: "#dfa753",
+          500: "#d79128",
+          600: "#ac7420",
+          700: "#815718",
+          800: "#563a10",
+          900: "#2b1d08",
+          950: "#160f04",
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         accent: {
-          50: "#F2FBFD",
-          100: "#E5F6FA",
-          200: "#CFEFF7",
-          300: "#B5E6F2",
-          400: "#9BDDED",
-          500: "#86D6E9",
-          600: "#6CCDE5",
-          700: "#52C4E0",
-          800: "#3ABCDC",
-          900: "#156275",
-          950: "#0B333D",
+          50: "#e7fdf7",
+          100: "#d0fbef",
+          200: "#a0f8df",
+          300: "#71f4cf",
+          400: "#41f1bf",
+          500: "#12edaf",
+          600: "#0ebe8c",
+          700: "#0b8e69",
+          800: "#075f46",
+          900: "#042f23",
+          950: "#021812",
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
         },
