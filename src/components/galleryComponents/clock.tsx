@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { useEffect, useRef } from "react";
+import { Canvas, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
-import type { GLTF } from "three-stdlib";
+import { DRACOLoader, GLTFLoader, type GLTF } from "three-stdlib";
 import { angleToScenes } from "~/pages/gallery";
 import {
   EffectComposer,
@@ -42,7 +41,13 @@ const getSnapAngle = (angle: number): number => {
 };
 
 const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
-  const { nodes, materials } = useGLTF("/assets/3d/clock.glb") as GLTFResult;
+  const gltf = useLoader(GLTFLoader, "/assets/3d/clock.glb", (loader) => {
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
+    loader.setDRACOLoader(dracoLoader);
+  }) as GLTFResult;
+
+  const { nodes, materials } = gltf;
 
   return (
     <group
@@ -69,15 +74,13 @@ const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
             material={materials["pointer_Mat.001"]}
             position={[0.005, 1.179, -0.14]}
             rotation={[Math.PI / 2, 0, 2.193]}
-            scale={[0.013, 0.013, 0.2]} // Increased thickness, width, and length
+            scale={[0.013, 0.013, 0.2]}
           />
         </group>
       </mesh>
     </group>
   );
 };
-
-useGLTF.preload("/assets/3d/clock.glb");
 
 type ClockProps = {
   onClockClick?: (angle: number) => void;
@@ -88,7 +91,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const handRef = useRef<THREE.Group>(null);
   const gsapContextRef = useRef<gsap.Context | null>(null);
-  const [totalRotation, setTotalRotation] = useState(0); // Total accumulated rotation in radians
   const previousAngleRef = useRef<number | null>(null); // Tracks the last angle during drag
 
   useEffect(() => {
@@ -156,9 +158,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
 
     return angle;
   };
-  useEffect(() => {
-    console.log("Rotation changed to", totalRotation);
-  }, [totalRotation]);
 
   const bind = useDrag(
     ({ active, xy: [x, y], first, last }) => {
@@ -178,10 +177,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
           : delta < -Math.PI
             ? delta + 2 * Math.PI
             : delta;
-
-      // Accumulate the total rotation
-      const newTotalRotation = totalRotation + delta;
-      setTotalRotation(newTotalRotation);
 
       previousAngleRef.current = currentAngle;
 
@@ -211,7 +206,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
             }
           },
         });
-        setTotalRotation(0);
       }
     },
     {

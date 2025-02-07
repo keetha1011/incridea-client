@@ -24,40 +24,48 @@ const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
       {/* Image Carousel Overlay */}
       <div className="absolute top-[60%] left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-40">
         {imgArr.length > 0 &&
-          [-1, 0, 1].map((offset) => {
-            const index =
-              (currentIndex + offset + imgArr.length) % imgArr.length;
-            const isCenter = offset === 0;
+          (window.innerWidth < 768 ? [-1, 0, 1] : [-2, -1, 0, 1, 2]).map(
+            (offset) => {
+              const index =
+                (currentIndex + offset + imgArr.length) % imgArr.length;
+              const isCenter = offset === 0;
 
-            // Calculate xPos based on offset
-            const xPos = offset === -1 ? -400 : offset === 1 ? 400 : 0;
+              // Calculate xPos based on offset
+              const xPos =
+                offset === -2
+                  ? -1000
+                  : offset === -1
+                    ? -500
+                    : offset === 1
+                      ? 500
+                      : offset === 2
+                        ? 1000
+                        : 0;
 
-            // Adjust opacity for left and right images
-            const opacity = isCenter ? 1 : 0.5;
+              // Adjust opacity for left and right images
+              const opacity = isCenter ? 1 : 0.6;
 
-            return (
-              <div
-                key={index}
-                className={`absolute w-80 h-52 transition-all duration-700 ease-in-out ${
-                  isCenter ? "scale-150 z-10" : "scale-100"
+              return (
+                <div
+                  key={index}
+                  className={`absolute md:w-80 w-64 md:h-52 h-40 transition-all duration-700 ease-in-out]
                 }`}
-                style={{
-                  transform: `translateX(${xPos}px) translateY(${
-                    isCenter ? "-20px" : "0px"
-                  })`,
-                  opacity: opacity,
-                  transition:
-                    "transform 1s ease-in-out, opacity 1s ease-in-out",
-                }}
-              >
-                <img
-                  src={imgArr[index]}
-                  className="object-cover w-full h-full rounded-lg shadow-lg transition-transform duration-700 ease-in-out"
-                  alt={`Carousel image ${index}`}
-                />
-              </div>
-            );
-          })}
+                  style={{
+                    transform: `translateX(${xPos}px) scale(${isCenter ? 1.3 : 1})`,
+                    opacity: opacity,
+                    transition:
+                      "transform 1s ease-in-out, opacity 1s ease-in-out",
+                  }}
+                >
+                  <img
+                    src={imgArr[index]}
+                    className="object-cover w-full h-full rounded-lg shadow-lg transition-transform duration-700 ease-in-out"
+                    alt={`Carousel image ${index}`}
+                  />
+                </div>
+              );
+            },
+          )}
       </div>
     </div>
   );

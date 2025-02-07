@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { type NextPage } from "next";
-import { FooterBody } from "~/components/footer";
 import Clock from "~/components/galleryComponents/clock";
 import Inc22 from "~/components/galleryComponents/scenes/Inc22";
 import Inc23 from "~/components/galleryComponents/scenes/Inc23";
@@ -29,6 +28,18 @@ const Gallery: NextPage = () => {
   //   "/assets/galleryBg/inc24-gallerybg.jpg",
   // ];
 
+  const images22: string[] = [
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6R0y97VshMbdqu9Dv5sClAGzH4NFEa8xgrwZW",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD63kfzz9uyGThZ7z4KLvCYJEoXsRPUlefFnuwk",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD656UKEcozf8HJFAlsQ20KwyZNUIoLmOVecu4g",
+    "assets/galleryBg/inc24-gallerybg.jpg",
+    "assets/galleryBg/inc23-gallerybg.jpg",
+    "assets/galleryBg/inc22-gallerybg.jpg",
+  ];
+
   const handleClockClick = (angle: number) => {
     const year = Object.entries(angleToScenes).find(([key, value]) =>
       value.includes(angle),
@@ -55,9 +66,9 @@ const Gallery: NextPage = () => {
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
-      <Inc22 imgArr={img2022} key={0} />,
-      <Inc23 imgArr={img2023} key={1} />,
-      <Inc24 imgArr={img2024} key={2} />,
+      <Inc22 imgArr={images22} key={0} />,
+      <Inc23 imgArr={images22} key={1} />,
+      <Inc24 imgArr={images22} key={2} />,
       <Inc25 key={3} />,
     ];
     return components[activeYear] ?? null;
@@ -83,7 +94,7 @@ const Gallery: NextPage = () => {
 
   return (
     <>
-      <section className="relative flex h-screen w-full flex-col overflow-hidden bg-transparent">
+      <section className="fixed flex h-screen w-full flex-col overflow-hidden bg-transparent">
         <div
           className="relative h-screen w-full z-0 overflow-hidden"
           // style={{
@@ -93,8 +104,9 @@ const Gallery: NextPage = () => {
           //   backgroundRepeat: "no-repeat",
           // }}
         >
-          <div className="absolute transform h-auto -translate-y-5 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
-            <p className="absolute left-[50%] lifeCraft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-widest">
+          {/* Clock */}
+          <div className="absolute transform h-auto translate-y-10 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
+            <p className="absolute left-[50%] font-life-craft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-widest">
               INCRIDEA &nbsp;{years[activeYear]}
             </p>
             <div
