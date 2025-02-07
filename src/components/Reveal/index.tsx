@@ -13,7 +13,6 @@ function Reveal() {
   const [showEgg, setShowEgg] = useState(true);
   const [showGif, setShowGif] = useState(false);
   const [splinterVisible, setSplinterVisible] = useState(false);
-  const [finalmsg, setFinalmsg] = useState(false); // Controls visibility of the message
   const images = [
     "/reveal/egg1.png",
     "/reveal/egg2.png",

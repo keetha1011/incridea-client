@@ -19,7 +19,10 @@ export default function EventStatusCard() {
     );
   }
 
-  const eventStatuses = data?.getEventStatus ?? [];
+  const eventStatuses =
+    data?.getEventStatus.__typename === "QueryGetEventStatusSuccess"
+      ? data.getEventStatus.data
+      : [];
 
   const filteredEvents = eventStatuses.filter((event) =>
     event.eventName.toLowerCase().includes(searchTerm.toLowerCase()),
