@@ -45,7 +45,9 @@ export const env = createEnv({
       .default(process.env.NODE_ENV === "production" ? "true" : "false")
       .refine((val) => val === "true" || val === "false")
       .transform((val) => val === "true"),
+    // TODO(Omkar): Rename
     NEXT_PUBLIC_SERVER_URL: z.string().url(),
+    NEXT_PUBLIC_SERVER_WEBSOCKET_URL: z.string().url(),
     NEXT_PUBLIC_BASE_IMAGE_URL: z.string().url(),
     NEXT_PUBLIC_BASE_AUDIO_URL: z.string().url(),
   },
@@ -63,6 +65,8 @@ export const env = createEnv({
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_LOGGING_DISABLED: process.env.NEXT_PUBLIC_LOGGING_DISABLED,
     NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    NEXT_PUBLIC_SERVER_WEBSOCKET_URL:
+      process.env.NEXT_PUBLIC_SERVER_WEBSOCKET_URL,
     NEXT_PUBLIC_BASE_IMAGE_URL: process.env.NEXT_PUBLIC_BASE_IMAGE_URL,
     NEXT_PUBLIC_BASE_AUDIO_URL: process.env.NEXT_PUBLIC_BASE_AUDIO_URL,
   },

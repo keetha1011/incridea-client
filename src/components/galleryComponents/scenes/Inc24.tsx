@@ -59,7 +59,7 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
           curviness: 2,
         },
         opacity: 1,
-        duration: 18,
+        duration: 28,
         ease: "power2.out",
         onComplete: () => {
           setQueue((prevQueue) =>
@@ -120,9 +120,16 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
   }, []);
 
   useEffect(() => {
-    const extendedImgArr = [...imgArr, ...imgArr, ...imgArr];
+    const extendedImgArr = [
+      ...structuredClone(imgArr),
+      ...structuredClone(imgArr),
+      ...structuredClone(imgArr),
+      ...structuredClone(imgArr),
+      ...structuredClone(imgArr),
+    ];
     setQueue(extendedImgArr);
 
+    animationTimelineRef.current?.clear();
     animationTimelineRef.current = gsap.timeline({ repeat: -1 });
 
     const draggableInstances: Draggable[] = [];
@@ -172,7 +179,7 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
       }
 
       const imageAnimation = createMotionPathAnimation(imageRef, index);
-      animationTimelineRef.current?.add(imageAnimation, index * 1);
+      animationTimelineRef.current?.add(imageAnimation, index * 2);
     });
 
     animationTimelineRef.current.play();
@@ -209,18 +216,26 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
       />
       <div className="relative flex justify-center items-center h-screen translate-y-2/3">
         {queue.map((img, index) => (
-          <div
-            key={`${img}-${index}`}
+          // <div
+          //   key={index}
+          //   ref={setImageRef(img)}
+          //   onClick={() => handleClick(index)}
+          //   className="absolute h-[160px] sm:h-[220px] lg:h-[300px] sm:p-[20px] translate-y-2/3 aspect-square bg-[#dedcdc] shadow-lg cursor-grab active:cursor-grabbing"
+          // >
+          //   <img
+          //     src={img}
+          //     className="aspect-square border-black border"
+          //     alt={`Inc 2022 ${index}`}
+          //   />
+          // </div>
+          <img
+            key={index}
             ref={setImageRef(img)}
+            src={img}
             onClick={() => handleClick(index)}
-            className="absolute h-[160px] sm:h-[220px] lg:h-[300px] sm:p-[20px] translate-y-2/3 aspect-square bg-[#dedcdc] shadow-lg cursor-grab active:cursor-grabbing"
-          >
-            <img
-              src={img}
-              className="aspect-square border-black border"
-              alt={`Inc 2022 ${index}`}
-            />
-          </div>
+            className="absolute h-[160px] sm:h-[220px] lg:h-[280px] rounded-lg translate-y-1/3 aspect-square bg-[#dedcdc] shadow-lg cursor-grab active:cursor-grabbing"
+            alt={`Inc 2022 ${index}`}
+          />
         ))}
         <Modal
           showModal={activeModal}

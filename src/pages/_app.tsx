@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import LocalFont from "next/font/local";
-import { Press_Start_2P } from "next/font/google";
 import Footer from "~/components/footer";
 import HeadComponent from "~/components/head";
 import LoadingScreen from "~/components/loader";
@@ -19,55 +18,63 @@ import { LoaderProvider } from "~/components/loader/loaderContext";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
-// Font definitions
-export const LifeCraft = LocalFont({
-  src: "../font/LifeCraft.ttf",
-  variable: "--font-lifeCraft",
-});
-
-export const garetFont = LocalFont({
-  src: "../font/Garet-Book.otf",
-  variable: "--font-Garet",
-});
-
-export const gilroy = LocalFont({
+export const trap = LocalFont({
   src: [
     {
-      path: "../font/Gilroy-Regular.ttf",
+      path: "../font/Trap-Black.otf",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../font/Gilroy-Bold.ttf",
+      path: "../font/Trap-Light.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Trap-Medium.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Trap-Regular.otf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../font/Trap-Bold.otf",
       weight: "700",
       style: "normal",
     },
     {
-      path: "../font/Gilroy-ExtraBold.ttf",
+      path: "../font/Trap-ExtraBold.otf",
       weight: "800",
       style: "normal",
     },
+
     {
-      path: "../font/Gilroy-SemiBold.ttf",
+      path: "../font/Trap-SemiBold.otf",
       weight: "500",
       style: "normal",
     },
   ],
-  variable: "--font-gilroy",
+  variable: "--font-trap",
   display: "swap",
 });
 
-export const pressStart = Press_Start_2P({
-  weight: ["400"],
-  subsets: ["latin"],
-  style: ["normal"],
+export const lifeCraft = LocalFont({
+  src: "../font/LifeCraft.ttf",
+  weight: "400",
+  variable: "--font-life-craft",
   display: "swap",
-  variable: "--font-Press_Start_2P",
+  style: "normal",
 });
 
-export const BlackChancery = LocalFont({
+export const blackChancery = LocalFont({
   src: "../font/BlackChancery.ttf",
-  variable: "--font-BlackChancery",
+  weight: "400",
+  variable: "--font-black-chancery",
+  display: "swap",
+  style: "normal",
 });
 
 export default function App({
@@ -129,12 +136,19 @@ export default function App({
       <ApolloProvider client={apolloClient}>
         <HeadComponent
           title="Incridea"
-          description="Official Website of Incridea 2024, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
+          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <LoaderProvider>
           <BackGroundGradient>
             <Toaster />
-            <div className={cn("min-h-screen]")}>
+            <div
+              className={cn(
+                trap.className,
+                lifeCraft.className,
+                blackChancery.className,
+                "min-h-screen",
+              )}
+            >
               {shouldRenderNavbar && <Navbar />}
               <AnimatePresence mode="wait">
                 <Component key={router.pathname} {...pageProps} />

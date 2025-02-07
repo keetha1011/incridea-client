@@ -4,16 +4,28 @@ import { from, split } from "@apollo/client/link/core";
 import { HttpLink } from "@apollo/client/link/http";
 import { getOperationAST, Kind, OperationTypeNode } from "graphql";
 import { getSession } from "next-auth/react";
+import { createClient } from "graphql-ws";
+import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 
 import { env } from "~/env";
 import { LogLink } from "~/lib/apollo/links/log";
-import { SSELink } from "~/lib/apollo/links/sse";
 
 const URI = `${env.NEXT_PUBLIC_SERVER_URL}/graphql`;
 
-const sseLink = new SSELink({
-  uri: URI,
-});
+const wsLink = new GraphQLWsLink(
+  createClient({
+    // url: env.NEXT_PUBLIC_SERVER_WEBSOCKET_URL,
+    url: `${env.NEXT_PUBLIC_SERVER_WEBSOCKET_URL}/graphql`,
+    connectionParams: async () => {
+      const session = await getSession();
+      const token = session?.accessToken;
+
+      return {
+        Authorization: token ? `Bearer ${token}` : "",
+      };
+    },
+  }),
+);
 
 const logLink = new LogLink();
 
@@ -46,7 +58,7 @@ const splitLink = split(
       definition.operation === OperationTypeNode.SUBSCRIPTION
     );
   },
-  sseLink,
+  wsLink,
   authLink.concat(httpLink),
 );
 

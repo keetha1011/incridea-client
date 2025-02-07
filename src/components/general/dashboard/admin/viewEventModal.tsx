@@ -1,4 +1,3 @@
-import draftToHtml from "draftjs-to-html";
 import Link from "next/link";
 import { type FC, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
@@ -18,7 +17,6 @@ import { type EventsQuery } from "~/generated/generated";
 
 import EditEventModal from "./editEvent";
 import TeamModal from "./teamModal";
-import { type RawDraftContentState } from "draft-js";
 
 const VieweventModal: FC<{
   Event: EventsQuery["events"]["edges"][0];
@@ -26,12 +24,10 @@ const VieweventModal: FC<{
   const event = Event?.Event?.node;
 
   const [showModal, setShowModal] = useState(false);
-  const markup = draftToHtml(
-    JSON.parse(event.description ?? "") as RawDraftContentState,
-  );
 
   const getEventAttributes = () => {
     let teamSizeText = "";
+
     if (event?.minTeamSize === event?.maxTeamSize) {
       teamSizeText += event?.minTeamSize;
       if (event?.minTeamSize === 1) {
@@ -138,7 +134,9 @@ const VieweventModal: FC<{
               //TODO: fix styling of rendered HTML
               <div
                 className={`${styles.markup} event-description w-full`}
-                dangerouslySetInnerHTML={{ __html: markup }}
+                dangerouslySetInnerHTML={{
+                  __html: event.description ?? "",
+                }}
               ></div>
             ) : (
               <p className="italic text-gray-400">no description added</p>

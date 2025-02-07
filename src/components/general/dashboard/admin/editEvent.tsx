@@ -1,16 +1,10 @@
 import { useMutation } from "@apollo/client";
-import {
-  EditorState,
-  type RawDraftContentState,
-  convertFromRaw,
-  convertToRaw,
-} from "draft-js";
 import dynamic from "next/dynamic";
 import { type FC } from "react";
 import { useState, useEffect } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { AiOutlineEdit } from "react-icons/ai";
 import { toast } from "react-hot-toast";
+import "react-quill/dist/quill.snow.css";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
@@ -21,13 +15,11 @@ import { type EventsQuery } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
 
-const Editor = dynamic(
-  async () => {
-    const mod = await import("react-draft-wysiwyg");
-    return mod.Editor;
-  },
-  { ssr: false },
-);
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 const EditEvent: FC<{
   Event: EventsQuery["events"]["edges"][0];
@@ -45,9 +37,7 @@ const EditEvent: FC<{
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty(),
-  );
+  const [editorState, setEditorState] = useState<string>("");
   const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
     refetchQueries: ["Events"],
   });
@@ -65,9 +55,7 @@ const EditEvent: FC<{
         venue,
         fees,
         eventType: eventType as EventType,
-        description: JSON.stringify(
-          convertToRaw(editorState.getCurrentContent()),
-        ),
+        description: editorState,
       },
     }).then((res) => {
       if (res.data?.updateEvent.__typename === "Error") {
@@ -80,10 +68,7 @@ const EditEvent: FC<{
   useEffect(() => {
     const description = event?.description;
     try {
-      const editorState = JSON.parse(description ?? "") as RawDraftContentState;
-      setEditorState(
-        EditorState.createWithContent(convertFromRaw(editorState)),
-      );
+      setEditorState(description ?? "");
     } catch (error) {
       console.log(error);
     }
@@ -143,13 +128,15 @@ const EditEvent: FC<{
               >
                 Event Description
               </label>
-              <Editor
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
-                wrapperClassName="wrapper-class"
-                editorClassName="bg-gray-600 p-2 rounded-md text-white"
-                toolbarClassName="bg-gray-600 text-white"
-              />
+              <div className="w-full h-60">
+                <ReactQuill
+                  theme="snow"
+                  value={editorState}
+                  onChange={(value) => {
+                    setEditorState(value);
+                  }}
+                />
+              </div>
             </div>
             <div className="mb-6 flex flex-wrap justify-between gap-6">
               <div className="grow basis-full md:basis-1/3">

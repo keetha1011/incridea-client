@@ -56,7 +56,6 @@ const Navbar = () => {
         </div>
       </nav>
       {/* space top */}
-      <div className="h-16"></div>
     </>
   );
 };

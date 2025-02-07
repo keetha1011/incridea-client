@@ -1,17 +1,26 @@
 query Branches {
   getBranches {
-    id
-    name
-    branchReps {
-      branchId
-      userId
-      user {
-        email
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetBranchesSuccess {
+      __typename
+      data {
         id
-        isVerified
         name
-        phoneNumber
-        role
+        branchReps {
+          branchId
+          userId
+          user {
+            email
+            id
+            isVerified
+            name
+            phoneNumber
+            role
+          }
+        }
       }
     }
   }

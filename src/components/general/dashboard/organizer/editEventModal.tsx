@@ -1,15 +1,9 @@
 import { useMutation } from "@apollo/client";
-import {
-  EditorState,
-  type RawDraftContentState,
-  convertFromRaw,
-  convertToRaw,
-} from "draft-js";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import toast from "react-hot-toast";
 import { AiOutlineEdit } from "react-icons/ai";
+import "react-quill/dist/quill.snow.css";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
@@ -24,13 +18,11 @@ import {
 } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 
-const Editor = dynamic(
-  async () => {
-    const mod = await import("react-draft-wysiwyg");
-    return mod.Editor;
-  },
-  { ssr: false },
-);
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
 
 export default function EditEventModal({
   event,
@@ -53,9 +45,7 @@ export default function EditEventModal({
     setShowModal(false);
   }
 
-  const [editorState, setEditorState] = useState<EditorState>(
-    EditorState.createEmpty(),
-  );
+  const [editorState, setEditorState] = useState<string>("");
 
   const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
     refetchQueries: ["EventByOrganizer"],
@@ -75,9 +65,7 @@ export default function EditEventModal({
         eventType: eventType as EventType,
         image: banner,
         category: category as EventCategory,
-        description: JSON.stringify(
-          convertToRaw(editorState.getCurrentContent()),
-        ),
+        description: editorState,
       },
     }).then((res) => {
       if (res.data?.updateEvent.__typename === "Error") {
@@ -89,12 +77,7 @@ export default function EditEventModal({
 
   useEffect(() => {
     try {
-      const editorState = JSON.parse(
-        event.description ?? "",
-      ) as RawDraftContentState;
-      setEditorState(
-        EditorState.createWithContent(convertFromRaw(editorState)),
-      );
+      setEditorState(event.description ?? "");
     } catch (error) {
       console.log(error);
     }
@@ -154,12 +137,12 @@ export default function EditEventModal({
               >
                 Event Description
               </label>
-              <Editor
-                editorState={editorState}
-                onEditorStateChange={setEditorState}
-                wrapperClassName="wrapper-class"
-                editorClassName="bg-gray-600 p-2 rounded-md text-white"
-                toolbarClassName="bg-gray-600 text-white"
+              <ReactQuill
+                theme="snow"
+                value={editorState}
+                onChange={(value) => {
+                  setEditorState(value);
+                }}
               />
             </div>
             <div className="mb-6 flex flex-wrap justify-between gap-6">
