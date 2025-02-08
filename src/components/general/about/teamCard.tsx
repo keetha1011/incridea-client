@@ -16,7 +16,7 @@ const TeamCard: FC<{
   avatar: string;
 }> = ({ name, role, linkedin, github, quote, instagram, image }) => {
   return (
-    <div className="flex w-[20rem] gap-4 rounded-xl border border-primary-200/70 bg-primary-500 px-5 pt-5 duration-200 hover:scale-[1.02]">
+    <div className="flex w-[20rem] gap-4 rounded-xl border border-primary-200/80 bg-primary-500 bg-opacity-20 bg-clip-padding px-5 pt-5 duration-200 hover:scale-[1.02]"  >
       <div className="flex h-full w-full flex-col gap-4">
         <Image
           src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/` + image}
@@ -39,7 +39,7 @@ const TeamCard: FC<{
             href={github}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full bg-primary-300 p-2 duration-300 hover:scale-105"
+            className="rounded-full border border-[#2b6f3d] bg-primary-500 bg-opacity-20 bg-clip-padding p-2 duration-300 hover:scale-105"
           >
             <AiFillGithub className="text-white" size={20} />
           </a>
@@ -47,7 +47,7 @@ const TeamCard: FC<{
             href={instagram}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full bg-primary-300 p-2 duration-300 hover:scale-105"
+            className="rounded-full border border-[#2b6f3d] bg-primary-500 bg-opacity-20 bg-clip-padding p-2 duration-300 hover:scale-105"
           >
             <AiFillInstagram className="text-white" size={20} />
           </a>
@@ -55,7 +55,7 @@ const TeamCard: FC<{
             href={linkedin}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full bg-primary-300 p-2 duration-300 hover:scale-105"
+            className="rounded-full border border-[#2b6f3d] bg-primary-500 bg-opacity-20 bg-clip-padding p-2 duration-300 hover:scale-105"
           >
             <RiLinkedinFill className="text-white" size={20} />
           </a>
