@@ -114,7 +114,7 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden flex items-center justify-center"
+      className="relative w-full h-screen overflow-hidden flex items-center justify-center md:top-[3%]"
     >
       {imgArr.map((img, index) => (
         <div

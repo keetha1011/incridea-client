@@ -10,6 +10,7 @@ import {
   PiClockClockwiseBold,
   PiClockCounterClockwiseBold,
 } from "react-icons/pi";
+import Parallax from "parallax-js";
 
 export const angleToScenes: { [key: number]: number[] } = {
   0: [Math.PI],
@@ -26,6 +27,7 @@ const Gallery: NextPage = () => {
     x: 0,
     y: 0,
   });
+  const sceneRef = useRef(null);
 
   useEffect(() => {
     const updateClockPosition = () => {
@@ -107,20 +109,51 @@ const Gallery: NextPage = () => {
     setChangedYear(newYear);
   };
 
+  useEffect(() => {
+    if (!sceneRef.current) return; // ✅ Prevents 'null' error
+
+    const parallaxInstance = new Parallax(sceneRef.current as HTMLElement, {
+      relativeInput: false, // Disable cursor-based movement
+      hoverOnly: false, // Enable motion-based movement
+    });
+
+    const handleOrientation = (event: DeviceOrientationEvent) => {
+      if (event.gamma === null || event.beta === null) return;
+
+      const tiltX = event.gamma / 45; // Left/Right tilt (-45 to 45 → -1 to 1)
+      const tiltY = event.beta / 45; // Forward/Backward tilt (-45 to 45 → -1 to 1)
+
+      parallaxInstance.friction(tiltX * 0.1, tiltY * 0.1);
+    };
+
+    window.addEventListener("deviceorientation", handleOrientation);
+
+    return () => {
+      window.removeEventListener("deviceorientation", handleOrientation);
+      parallaxInstance.destroy();
+    };
+  }, []);
+
   return (
     <>
-      <section className="fixed flex h-screen w-full flex-col overflow-hidden bg-transparent">
+      <section
+        ref={sceneRef}
+        data-depth="1"
+        className="fixed flex h-screen w-full flex-col overflow-hidden bg-transparent justify-center items-center"
+      >
         <div
-          className="relative h-screen w-full z-0 overflow-hidden"
-          // style={{
-          //   backgroundImage: `url(/2025/gallery/galleryBg.png)`,
-          //   backgroundSize: "cover",
-          //   backgroundPosition: "center",
-          //   backgroundRepeat: "no-repeat",
-          // }}
-        >
-          {/* Clock */}
-          <div className="absolute transform h-auto translate-y-10 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
+          data-depth="0.4"
+          className="absolute -z-10 
+             w-[140%] h-[140%] -mt-[20%] -mb-[20%]  /* Mobile adjustments */
+             sm:w-[130%] sm:h-[130%] sm:-mt-[15%] sm:-mb-[15%]  /* Small screens */
+             md:w-[120%] md:h-[120%] md:-mt-[10%] md:-mb-[10%]  /* Desktops */
+             bg-[url('/2025/gallery/galleryBg.webp')] bg-cover bg-center bg-no-repeat 
+             blur-[5px] brightness-75"
+        ></div>
+      </section>
+      <div className="fixed flex h-screen w-full z-0 overflow-hidden">
+        <div className="relative h-full w-full">
+          <div className="absolute transform h-auto translate-y-20 md:translate-y-10 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
             <p className="absolute left-[50%] font-life-craft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-widest">
               INCRIDEA &nbsp;{years[activeYear]}
             </p>
@@ -151,7 +184,7 @@ const Gallery: NextPage = () => {
             {renderActiveYearComponent()}
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 };
