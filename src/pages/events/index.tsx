@@ -138,7 +138,7 @@ const Page = ({ data }: Props) => {
   return (
     <div
       style={{ willChange: "transform" }}
-      className="relative flex min-h-screen justify-center overflow-hidden bg-gradient-to-b from-primary-300 to-primary-400"
+      className="relative flex min-h-screen justify-center overflow-hidden"
     >
       <div className={styles.area}>
         <ul className={styles.circles}>
@@ -170,14 +170,14 @@ const Page = ({ data }: Props) => {
             >
               <h1
                 data-scroll
-                className={`text-center font-VikingHell text-7xl tracking-wide text-white md:text-8xl`}
+                className={`text-center font-life-craft text-7xl tracking-wide text-white md:text-8xl`}
               >
                 Events
               </h1>
 
               <h2
                 data-scroll
-                className={`text-md mx-2 mb-6 mt-2 text-center tracking-wide text-white md:mt-4 md:text-xl`}
+                className={`text-md mx-2 mb-6 mt-2 text-center tracking-wide text-white md:mt-4 md:text-xl font`}
               >
                 Navigate Your Digital Playground with Our Ultimate Event
                 Collection!
@@ -187,7 +187,7 @@ const Page = ({ data }: Props) => {
                 <input
                   value={query}
                   onChange={handleSearch}
-                  className="w-full rounded-full border border-primary-200/80 bg-black/30 p-3 pl-6 pr-14 text-white placeholder:text-gray-200 focus:outline-none"
+                  className="w-full rounded-full border border-primary-800/80 bg-black/30 p-3 pl-6 pr-14 text-white placeholder:text-gray-200 focus:outline-none"
                   placeholder="Search epic quests here..."
                   type="text"
                 />
@@ -227,7 +227,7 @@ const Page = ({ data }: Props) => {
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Menu.Items className="absolute top-11  mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
+                      <Menu.Items className="absolute top-11  mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-300/80 bg-primary-800 p-2 text-center shadow-2xl shadow-black/80">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
                             {() => (
@@ -236,7 +236,7 @@ const Page = ({ data }: Props) => {
                                   currentDayFilter === filter
                                     ? "bg-white/20"
                                     : "bg-black/10"
-                                } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                } w-36 rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                 onClick={() => setCurrentDayFilter(filter)}
                               >
                                 {
@@ -303,7 +303,7 @@ const Page = ({ data }: Props) => {
                       leaveFrom="transform scale-100 opacity-100"
                       leaveTo="transform scale-95 opacity-0"
                     >
-                      <Menu.Items className="absolute top-11  mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-200/80 bg-primary-300 p-2 text-center shadow-2xl shadow-black/80">
+                      <Menu.Items className="absolute top-11  mt-1 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-300/80 bg-primary-800 p-2 text-center shadow-2xl shadow-black/70">
                         {[
                           Object.keys(EventCategory),
                           Object.keys(AllCategory),
