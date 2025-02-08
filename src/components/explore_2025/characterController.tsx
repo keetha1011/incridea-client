@@ -275,6 +275,7 @@ export const CharacterController = () => {
           newVisibility[index] = false;
           setVisibility(newVisibility);
           localStorage.setItem("stoneVisibility", JSON.stringify(newVisibility));
+          toast.success("Shh 🤫")
         }
       });
 
@@ -304,10 +305,10 @@ export const CharacterController = () => {
 
                 count -= 1;
                 if (count <= 0) {
+                  setThrowOutOfThePage(true);
                   clearInterval(timer);
                   countdowns.current.delete(location.id);
                   void router.push(location.href);
-                  // setThrowOutOfThePage(true);
                 } else {
                   toast(
                     (t) => (

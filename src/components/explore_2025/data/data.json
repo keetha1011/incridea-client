@@ -37,20 +37,15 @@
       "href": "/events"
     },
     {
-      "id": 3,
-      "pos": [-12, -13],
-      "href": "/"
-    },
-    {
       "id": 4,
       "pos": [-4, -2.8],
-      "href": "/explore/level3"
+      "href": "/explore/outro"
     }
   ],
   "links" : [
     {
       "id": 1,
-      "link": "https://incridea.in"
+      "link": "/"
     },
     {
       "id": 2,
