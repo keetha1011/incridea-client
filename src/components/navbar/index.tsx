@@ -1,94 +1,157 @@
+import React, { useEffect, useRef } from "react";
+import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { type FC } from "react";
-
-import CharacterAnimation from "~/components/animation/character";
-import Button from "~/components/button";
-import { env } from "~/env";
-import { AuthStatus, useAuth } from "~/hooks/useAuth";
-
-import AuthenticatedButtons from "./authenticatedButtons";
+import MobileNav from "./mobileNav";
+import { useAuth } from "~/hooks/useAuth";
 import { Role } from "~/generated/generated";
 
 const Navbar = () => {
-  const links = [
-    { label: "Home", url: "/" },
-    { label: "Events", url: "/events" },
-    { label: "Pronites", url: "/pronites" },
-    { label: "Gallery", url: "/gallery" },
-    { label: "Explore", url: "/explore" },
-    { label: "About", url: "/about" },
+  const logoRef = useRef(null);
+  const textRef = useRef(null);
+  const { user } = useAuth();
+
+  const tabs: {
+    id: number;
+    label: string;
+    href: string;
+  }[] = [
+    {
+      id: 3,
+      label: "Home",
+      href: "/",
+    },
+    {
+      id: 2,
+      label: "Explore",
+      href: "/explore",
+    },
+    {
+      id: 1,
+      label: "Events",
+      href: "/events",
+    },
+    {
+      id: 4,
+      label: "Sponsors",
+      href: "/sponsors",
+    },
+    {
+      id: 5,
+      label: "Pronites",
+      href: "/pronites",
+    },
+    {
+      id: 6,
+      label: "About",
+      href: "/about",
+    },
   ];
 
-  const router = useRouter();
+  useEffect(() => {
+    gsap.set(textRef.current, { opacity: 1 });
+    gsap.set(logoRef.current, { opacity: 0 });
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    tl.to(textRef.current, {
+      opacity: 0,
+      duration: 0.3,
+    })
+      .to(logoRef.current, {
+        opacity: 1,
+        duration: 0.3,
+      })
+
+      .to(logoRef.current, {
+        opacity: 1,
+        duration: 1.7,
+      })
+      .to(logoRef.current, {
+        opacity: 0,
+        duration: 0.3,
+      })
+      .to(textRef.current, {
+        opacity: 1,
+        duration: 0.3,
+      })
+
+      .to(textRef.current, {
+        opacity: 1,
+        duration: 1.7,
+      });
+  }, []);
 
   return (
     <>
-      <nav className="fixed top-0 w-full flex justify-center z-50">
-        <div className="relative flex w-[55rem] justify-center">
-          <div className="absolute bg-red-500 skew-x-[60deg] h-[4rem] w-full top-0 -translate-x-32 z-30"></div>
-          <div className="absolute bg-red-500 skew-x-[-60deg] h-[4rem] w-full top-0 z-40 translate-x-32"></div>
-          <div className="w-full flex justify-between z-50 pt-2">
-            <Link href="/">
-              <Image
-                className="w-24 transition-opacity hover:opacity-75"
-                src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo.png`}
-                alt="Logo"
-                width={100}
-                height={80}
-                priority
-              />
+      {/* PC Nav */}
+      <nav
+        style={{
+          clipPath:
+            "polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%)",
+        }}
+        className="fixed w-full top-0 bg-white/10 backdrop-blur-2xl h-16 md:flex hidden items-center justify-center rounded-full"
+      >
+        <div className="flex items-center 2xl:mr-[20rem] lg:mr-[15rem] mr-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8">
+          {tabs.slice(0, 3).map((tab) => (
+            <Link
+              href={tab.href}
+              key={tab.id}
+              className="py-2 text-gray-300 hover:text-white transition-colors font-semibold"
+            >
+              {tab.label}
             </Link>
-            {/* <div className="flex space-x-8">
-              {links.map((link) => (
-                <Link key={link.url} href={link.url}>
-                  <span className="text-lg font-semibold text-gray-300 hover:text-white">
-                    {link.label}
-                  </span>
+          ))}
+        </div>
+
+        <button
+          style={{
+            clipPath: "polygon(0 0, 100% 0, 75% 100%, 25% 100%)",
+          }}
+          className="absolute top-0 bg-white px-12 py-2 text-black shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%] "
+        >
+          <div className="relative w-16 h-6 flex justify-center items-center">
+            <Image
+              ref={logoRef}
+              src="/2025/vertical_logo.png"
+              alt="Logo"
+              className="absolute size-5 opacity-0 translate-y-1"
+              width={40}
+              height={40}
+            />
+            {user?.role === Role.User ? (
+              <>
+                <Link href="/profile" ref={textRef}>
+                  PROFILE
                 </Link>
-              ))}
-            </div> */}
-            <div>
-              <AuthButtons />
-            </div>
+              </>
+            ) : (
+              <Link
+                href={"/register"}
+                ref={textRef}
+                className="absolute scale-[60%] translate-y-1 font-semibold"
+              >
+                REGISTER
+              </Link>
+            )}
           </div>
+        </button>
+
+        <div className="flex items-center 2xl:ml-[20rem] lg:ml-[15rem] ml-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8">
+          {tabs.slice(3).map((tab) => (
+            <Link
+              href={tab.href}
+              key={tab.id}
+              className=" py-2 text-gray-300 hover:text-white transition-colors font-semibold"
+            >
+              {tab.label}
+            </Link>
+          ))}
         </div>
       </nav>
-      {/* space top */}
-      <div className="h-16"></div>
+      <MobileNav />
     </>
   );
 };
-
-const AuthButtons: FC<{ className?: string }> = ({ className }) => {
-  const { status, user } = useAuth();
-  return (
-    <div className={`flex space-x-3 ${className}`}>
-      {status === AuthStatus.AUTHENTICATED && (
-        <AuthenticatedButtons user={user} />
-      )}
-      {status === AuthStatus.NOT_AUTHENTICATED && (
-        <>
-          <Link href={"/login"} as="/login">
-            <Button intent={"primary"} className="bg-red-500 hover:bg-red-600">
-              Login
-            </Button>
-          </Link>
-          <Link href={"/login?whichForm=signUp"} as="/login">
-            <Button
-              intent={"ghost"}
-              className="border-red-500 text-red-500 hover:bg-red-500/10"
-            >
-              Sign Up
-            </Button>
-          </Link>
-        </>
-      )}
-    </div>
-  );
-};
-
-// Removed MobileButtons component
 
 export default Navbar;
