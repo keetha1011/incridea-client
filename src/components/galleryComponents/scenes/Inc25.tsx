@@ -15,27 +15,27 @@ const Inc25 = () => {
   const afterMovies = useMemo(
     () => [
       [
-        "/thumbnails/incridea18.webp",
+        "/2025/gallery/thumbnails/incridea18.webp",
         "https://www.youtube.com/embed/GqqK4c2rDhM?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
       ],
       [
-        "/thumbnails/incridea19.webp",
+        "/2025/gallery/thumbnails/incridea19.webp",
         "https://www.youtube.com/embed/gmF72fu1w6A?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
       ],
       [
-        "/thumbnails/incridea20.webp",
+        "/2025/gallery/thumbnails/incridea20.webp",
         "https://www.youtube.com/embed/w0phDNAnUgA?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
       ],
       [
-        "/thumbnails/incridea22.webp",
+        "/2025/gallery/thumbnails/incridea22.webp",
         "https://www.youtube.com/embed/JHgT5PzLc4Q?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
       ],
       [
-        "/thumbnails/incridea23.webp",
+        "/2025/gallery/thumbnails/incridea23.webp",
         "https://www.youtube.com/embed/8Veb3u0xEoE?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
       ],
       [
-        "/thumbnails/incridea24.webp",
+        "/2025/gallery/thumbnails/incridea24.webp",
         "https://www.youtube.com/embed/YoWeuaSMytk?autoplay=1&playsinline=1&rel=0&fs=1&controls=1&mute=1",
       ],
     ],
@@ -134,7 +134,7 @@ const Inc25 = () => {
           >
             Visit&nbsp;&nbsp;
             <img
-              src="/assets/png/capture-logo.png"
+              src="/2025/gallery/capture-logo.png"
               alt="Capture"
               className="h-6 cursor-pointer"
             />

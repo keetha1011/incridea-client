@@ -205,12 +205,12 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
   return (
     <>
       <img
-        src="/assets/portal3.gif"
+        src="/2025/gallery/portal3.gif"
         alt=""
         className="absolute -bottom-20 scale-y-[2] scale-x-150 lg:scale-x-100 -translate-y-1/2 h-40 w-full "
       />
       <img
-        src="/assets/portal3-bottom.gif"
+        src="/2025/gallery/portal3-bottom.gif"
         alt=""
         className="absolute -bottom-20 scale-x-150 lg:scale-x-100 h-40 w-full z-[99999]"
       />
@@ -245,8 +245,8 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
           <PreviewComponent
             imgArr={imgArr}
             index={activeIndex}
-            afterMovieLink="gmF72fu1w6A"
-            thumbnailSrc="/thumbnails/incridea22.jpg"
+            afterMovieLink="YoWeuaSMytk"
+            thumbnailSrc="public/2025/gallery/thumbnails/incridea24.webp"
           />
         </Modal>
       </div>

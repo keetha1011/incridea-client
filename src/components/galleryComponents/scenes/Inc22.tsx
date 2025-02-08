@@ -18,13 +18,11 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
     setActiveModal(true);
   };
 
-  
-
   useLayoutEffect(() => {
     if (!containerRef.current) return;
 
     const items = gsap.utils.toArray<HTMLElement>(
-      containerRef.current.querySelectorAll(".stack-item")
+      containerRef.current.querySelectorAll(".stack-item"),
     );
 
     const offset = 20;
@@ -67,9 +65,8 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
           const direction = this.getDirection("start");
 
           if (direction == "left") {
-           
             gsap.to(topItem, {
-               x: "-100vw",
+              x: "-100vw",
               opacity: 0,
               duration: 0.2,
               ease: "power1.in",
@@ -106,7 +103,6 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
 
     updatePositions();
     makeTopItemDraggable();
-    
 
     return () => {
       items.forEach((item) => {
@@ -114,7 +110,6 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
       });
     };
   }, [currentItem, imgArr, isFirstMount]);
- 
 
   return (
     <div
@@ -129,7 +124,7 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
         >
           <div className="relative translate-y-[10%] right-[8%] w-[90vw] sm:w-[200vw] h-[100vh] sm:h-[50vh] max-w-[1000px] max-h-[800px] sm:translate-y-[70%] sm:right-[4%]">
             <Image
-              src="/assets/png/tablet.png"
+              src="/2025/gallery/tablet.png"
               alt="Tablet frame"
               layout="fill"
               objectFit="contain"
@@ -163,8 +158,8 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
             <PreviewComponent
               imgArr={imgArr}
               index={activeIndex}
-              afterMovieLink="gmF72fu1w6A"
-              thumbnailSrc="/thumbnails/incridea22.jpg"
+              afterMovieLink="JHgT5PzLc4Q"
+              thumbnailSrc="/2025/gallery/thumbnails/incridea22.webp"
             />
           </Modal>
         </div>

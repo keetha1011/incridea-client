@@ -41,7 +41,7 @@ const getSnapAngle = (angle: number): number => {
 };
 
 const Model = ({ handRef }: { handRef: React.RefObject<THREE.Group> }) => {
-  const gltf = useLoader(GLTFLoader, "/assets/3d/clock.glb", (loader) => {
+  const gltf = useLoader(GLTFLoader, "/2025/gallery/3d/clock.glb", (loader) => {
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
     loader.setDRACOLoader(dracoLoader);

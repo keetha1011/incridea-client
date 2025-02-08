@@ -42,12 +42,6 @@ const Gallery: NextPage = () => {
     return () => window.removeEventListener("resize", updateClockPosition);
   }, []);
 
-  // const backgroundImages: string[] = [
-  //   "/assets/galleryBg/inc22-gallerybg.jpg",
-  //   "/assets/galleryBg/inc23-gallerybg.jpg",
-  //   "/assets/galleryBg/inc24-gallerybg.jpg",
-  // ];
-
   const images22: string[] = [
     "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP",
     "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS",
@@ -55,9 +49,10 @@ const Gallery: NextPage = () => {
     "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR",
     "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD63kfzz9uyGThZ7z4KLvCYJEoXsRPUlefFnuwk",
     "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD656UKEcozf8HJFAlsQ20KwyZNUIoLmOVecu4g",
-    "assets/galleryBg/inc24-gallerybg.jpg",
-    "assets/galleryBg/inc23-gallerybg.jpg",
-    "assets/galleryBg/inc22-gallerybg.jpg",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6R0y97VshMbdqu9Dv5sClAGzH4NFEa8xgrwZW",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP",
+    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS",
   ];
 
   const handleClockClick = (angle: number) => {
@@ -118,7 +113,7 @@ const Gallery: NextPage = () => {
         <div
           className="relative h-screen w-full z-0 overflow-hidden"
           // style={{
-          //   backgroundImage: `url(${backgroundImages[activeYear]})`,
+          //   backgroundImage: `url(/2025/gallery/galleryBg.png)`,
           //   backgroundSize: "cover",
           //   backgroundPosition: "center",
           //   backgroundRepeat: "no-repeat",

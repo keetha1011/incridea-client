@@ -1,6 +1,8 @@
 import { Canvas, useLoader } from "@react-three/fiber";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { useCallback, Suspense, useEffect, useRef, useState } from "react";
 import { GLTFLoader, DRACOLoader } from "three-stdlib";
+import Modal from "../gallery-modal";
+import PreviewComponent from "../previewComponent/preview-component";
 import * as THREE from "three";
 import gsap from "gsap";
 
@@ -13,6 +15,13 @@ const Inc23 = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
+  const [activeModal, setActiveModal] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleImageClick = useCallback((index: number) => {
+    setActiveModal(true);
+    setActiveIndex(index);
+  }, []);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
@@ -66,6 +75,7 @@ const Inc23 = ({
                 >
                   <img
                     src={imgArr[index]}
+                    onClick={() => handleImageClick(index)}
                     className="object-cover w-full h-full rounded-lg shadow-lg transition-transform duration-700 ease-in-out"
                     alt={`Carousel image ${index}`}
                   />
@@ -74,6 +84,18 @@ const Inc23 = ({
             },
           )}
       </div>
+      <Modal
+        showModal={activeModal}
+        title="Gallery"
+        onClose={() => setActiveModal(false)}
+      >
+        <PreviewComponent
+          imgArr={imgArr}
+          index={activeIndex}
+          afterMovieLink="gmF72fu1w6A"
+          thumbnailSrc="/2025/gallery/thumbnails/incridea22.webp"
+        />
+      </Modal>
     </div>
   );
 };
@@ -120,13 +142,17 @@ const Model = ({
     pivotRef.current.position.set(worldPos.x, worldPos.y, worldPos.z);
   }, [clockPos]);
 
-  const gltf = useLoader(GLTFLoader, "assets/3d/pendulum.glb", (loader) => {
-    const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath(
-      "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
-    );
-    loader.setDRACOLoader(dracoLoader);
-  });
+  const gltf = useLoader(
+    GLTFLoader,
+    "/2025/gallery/3d/pendulum.glb",
+    (loader) => {
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath(
+        "https://www.gstatic.com/draco/versioned/decoders/1.5.7/",
+      );
+      loader.setDRACOLoader(dracoLoader);
+    },
+  );
   const { nodes, materials } = gltf;
   const meshBottom = nodes.Mesh_1 as THREE.Mesh;
 
