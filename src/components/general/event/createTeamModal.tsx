@@ -34,7 +34,7 @@ const CreateTeamModal = ({ eventId }: { eventId: Event["id"] }) => {
   return (
     <>
       <Button
-        className="bodyFont w-full !skew-x-0 items-center !justify-center rounded-full !tracking-normal"
+        className="bodyFont w-full !skew-x-0 items-center !justify-center rounded-full !tracking-normal text-[#002C1B] bg-[#D79128]"
         onClick={() => setOpen(true)}
         intent={"primary"}
       >
