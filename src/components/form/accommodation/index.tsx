@@ -94,7 +94,9 @@ const AccommodationForm: FunctionComponent = () => {
               </Button>
             </Link>
           </div>
-        ) : accommodationData?.accommodationRequestsByUser[0]?.status ? (
+        ) : accommodationData?.accommodationRequestsByUser.__typename ===
+            "QueryAccommodationRequestsByUserSuccess" &&
+          accommodationData.accommodationRequestsByUser.data[0]?.status ? (
           <div className="flex flex-col md:flex-row">
             <div className="flex justify-center">
               We are processing your request. Please bear with us.

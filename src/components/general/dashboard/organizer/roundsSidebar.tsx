@@ -125,14 +125,14 @@ const RoundsSidebar: FC<{
       },
     }).then((response) => {
       const message = response.data?.notifyParticipants;
-      if (!message) {
+      if (!message || message.__typename === "Error") {
         throw new Error("Failed to send notifications");
       }
-      if (message.includes("already sent")) {
+      if (message.data.includes("already sent")) {
         throw new Error("Notifications were already sent for this round");
       }
-      if (message.includes("Failed")) {
-        throw new Error(message);
+      if (message.data.includes("Failed")) {
+        throw new Error(message.data);
       }
       return message;
     });

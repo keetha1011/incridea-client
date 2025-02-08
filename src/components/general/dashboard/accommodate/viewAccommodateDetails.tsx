@@ -49,45 +49,64 @@ const ViewAccommodateDetails: FC<{
               <div>CheckIn</div>
               <div>CheckOut</div>
             </div>
-            <div className="flex flex-col text-lg font-semibold">
-              <div>{user?.accommodationRequestsByUserId[0]?.user?.name}</div>
-              <div>{user?.accommodationRequestsByUserId[0]?.user?.email}</div>
-              <div>
-                {user?.accommodationRequestsByUserId[0]?.user?.phoneNumber}
-              </div>
-              <div>{user?.accommodationRequestsByUserId[0]?.gender}</div>
-              <div>{user?.accommodationRequestsByUserId[0]?.hotel?.name}</div>
-              <div>
-                {user?.accommodationRequestsByUserId[0]?.room ?? "Pending"}
-              </div>
-              <div>
-                {user?.accommodationRequestsByUserId[0]!.checkIn
-                  ? new Date(
-                      user?.accommodationRequestsByUserId[0].checkIn,
-                    ).toLocaleString("en-IN", {
-                      timeZone: "Asia/Kolkata",
-                    })
-                  : "Not Available"}
-              </div>
-              <div>
-                {user?.accommodationRequestsByUserId[0]!.checkOut
-                  ? new Date(
-                      user?.accommodationRequestsByUserId[0].checkOut,
-                    ).toLocaleString("en-IN", {
-                      timeZone: "Asia/Kolkata",
-                    })
-                  : "Not Available"}
-              </div>
-            </div>
-            <div className="text-center">
-              <Image
-                src={user?.accommodationRequestsByUserId[0]?.IdCard ?? ""}
-                alt="ID card"
-                width={200}
-                height={200}
-              ></Image>
-              ID
-            </div>
+            {user?.accommodationRequestsByUserId.__typename ===
+              "QueryAccommodationRequestsByUserIdSuccess" && (
+              <>
+                <div className="flex flex-col text-lg font-semibold">
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.user.name}
+                  </div>
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.user.email}
+                  </div>
+                  <div>
+                    {
+                      user.accommodationRequestsByUserId.data[0]?.user
+                        ?.phoneNumber
+                    }
+                  </div>
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.gender}
+                  </div>
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.hotel.name}
+                  </div>
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.room ??
+                      "Pending"}
+                  </div>
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.checkIn
+                      ? new Date(
+                          user.accommodationRequestsByUserId.data[0].checkIn,
+                        ).toLocaleString("en-IN", {
+                          timeZone: "Asia/Kolkata",
+                        })
+                      : "Not Available"}
+                  </div>
+                  <div>
+                    {user.accommodationRequestsByUserId.data[0]?.checkOut
+                      ? new Date(
+                          user?.accommodationRequestsByUserId.data[0].checkOut,
+                        ).toLocaleString("en-IN", {
+                          timeZone: "Asia/Kolkata",
+                        })
+                      : "Not Available"}
+                  </div>
+                </div>
+                <div className="text-center">
+                  <Image
+                    src={
+                      user.accommodationRequestsByUserId.data[0]?.IdCard ?? ""
+                    }
+                    alt="ID card"
+                    width={200}
+                    height={200}
+                  ></Image>
+                  ID
+                </div>
+              </>
+            )}
           </div>
         </div>
       </Modal>

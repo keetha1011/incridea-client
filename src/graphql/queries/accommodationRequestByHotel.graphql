@@ -1,33 +1,42 @@
 query AccommodationRequestByHotel($name: String!) {
   accommodationRequestByHotel(name: $name) {
-    checkIn
-    checkOut
-    createdAt
-    gender
-    id
-    room
-    ac
-    status
-    updatedAt
-    hotel {
-      createdAt
-      details
-      id
-      name
-      price
-      updatedAt
-    }
-    user {
-      college {
+    ... on QueryAccommodationRequestByHotelSuccess {
+      __typename
+      data {
+        checkIn
+        checkOut
+        createdAt
+        gender
         id
-        name
+        room
+        ac
+        status
+        updatedAt
+        hotel {
+          createdAt
+          details
+          id
+          name
+          price
+          updatedAt
+        }
+        user {
+          college {
+            id
+            name
+          }
+          createdAt
+          email
+          id
+          isVerified
+          name
+          phoneNumber
+        }
       }
-      createdAt
-      email
-      id
-      isVerified
-      name
-      phoneNumber
+    }
+    ... on Error {
+      __typename
+      message
     }
   }
 }

@@ -98,7 +98,10 @@ const EditTeamModal: FC<{
         </div>
         <div className="p-5">
           {!team.confirmed && team.leaderId?.toString() == userId && (
-            <DeleteTeamModal teamId={team.id} />
+            <DeleteTeamModal
+              teamId={team.id}
+              isLeader={team.leaderId.toString() == userId}
+            />
           )}
         </div>
       </Modal>

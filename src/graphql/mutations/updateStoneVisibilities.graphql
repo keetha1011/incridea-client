@@ -1,4 +1,4 @@
-mutation DeleteHotel($stoneId: String="") {
+mutation UpdateStoneVisibilities($stoneId: String = "") {
   updateStoneVisibilities(stoneVisibilities: $stoneId) {
     ... on Error {
       __typename

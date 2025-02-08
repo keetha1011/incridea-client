@@ -1,6 +1,15 @@
 query GetTotalRegistrations {
   getTotalRegistrations {
-    externalRegistrations
-    internalRegistrations
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetTotalRegistrationsSuccess {
+      __typename
+      data {
+        externalRegistrations
+        internalRegistrations
+      }
+    }
   }
 }

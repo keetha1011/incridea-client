@@ -72,7 +72,7 @@ const getPoint = (e: TouchEvent | DragEvent) => {
     e.type === "touchend"
   ) {
     const _e = e as TouchEvent;
-    const touch = _e.touches[0];
+    const touch = _e.touches[0]!;
     point.x = touch.clientX;
     point.y = touch.clientY;
   } else if (
@@ -89,7 +89,7 @@ const getPoint = (e: TouchEvent | DragEvent) => {
 };
 
 /*
-  Implement inertia for the useTrackDrag hook: 
+  Implement inertia for the useTrackDrag hook:
     - leverage requestAnimationFrame to calculate the inertia independently of the drag event.
     - it should accept a "onMotion" callback that executes a callback with the deltaX and deltaY.
     - it should accept a "weight" config param.

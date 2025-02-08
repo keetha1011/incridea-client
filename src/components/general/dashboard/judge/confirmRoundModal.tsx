@@ -151,7 +151,9 @@ const ConfirmRoundModal = ({
 
           {/* Non final round - Confirming participant selection for next round */}
           {!finalRound &&
-            selectedTeams.judgeGetTeamsByRound.filter(
+            selectedTeams.judgeGetTeamsByRound.__typename ===
+              "SubscriptionJudgeGetTeamsByRoundSuccess" &&
+            selectedTeams.judgeGetTeamsByRound.data.filter(
               (team) => team.roundNo > roundNo,
             ).length === 0 && (
               <p className="text-lg text-white/60">
@@ -159,64 +161,68 @@ const ConfirmRoundModal = ({
               </p>
             )}
 
-          {!finalRound && (
-            <div className="my-4 flex w-full flex-wrap gap-2">
-              {selectedTeams.judgeGetTeamsByRound
-                .filter((team) => team.roundNo > roundNo)
-                .map((team, index) => {
-                  return (
-                    <div
-                      className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-600 p-3 text-center"
-                      key={team.id}
-                    >
+          {!finalRound &&
+            selectedTeams.judgeGetTeamsByRound.__typename ===
+              "SubscriptionJudgeGetTeamsByRoundSuccess" && (
+              <div className="my-4 flex w-full flex-wrap gap-2">
+                {selectedTeams.judgeGetTeamsByRound.data
+                  .filter((team) => team.roundNo > roundNo)
+                  .map((team, index) => {
+                    return (
                       <div
-                        className={`${
-                          solo ? "basis-1/3" : "basis-1/4"
-                        } text-lg text-white/60`}
+                        className="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-600 p-3 text-center"
+                        key={team.id}
                       >
-                        <Badge className="text-xs">{index + 1}</Badge>
-                      </div>
-
-                      {!solo && (
-                        <h1
+                        <div
                           className={`${
                             solo ? "basis-1/3" : "basis-1/4"
                           } text-lg text-white/60`}
                         >
-                          {team.name}
-                        </h1>
-                      )}
+                          <Badge className="text-xs">{index + 1}</Badge>
+                        </div>
 
-                      <p
-                        className={`${
-                          solo ? "basis-1/3" : "basis-1/4"
-                        } text-lg text-white/60`}
-                      >
-                        {solo
-                          ? idToPid(team.leaderId?.toString() ?? "")
-                          : idToTeamId(team.id)}
-                      </p>
+                        {!solo && (
+                          <h1
+                            className={`${
+                              solo ? "basis-1/3" : "basis-1/4"
+                            } text-lg text-white/60`}
+                          >
+                            {team.name}
+                          </h1>
+                        )}
 
-                      <p
-                        className={`${
-                          solo ? "basis-1/3" : "basis-1/4"
-                        } text-lg text-white/60`}
-                      >
-                        {scoresLoading && <Spinner intent={"white"} />}
-                        {scores?.getTotalScores.__typename ===
-                          "QueryGetTotalScoresSuccess" &&
-                          scores?.getTotalScores.data.find(
-                            (score) => score.teamId === Number(team.id),
-                          )?.totalScore}
-                      </p>
-                    </div>
-                  );
-                })}
-            </div>
-          )}
+                        <p
+                          className={`${
+                            solo ? "basis-1/3" : "basis-1/4"
+                          } text-lg text-white/60`}
+                        >
+                          {solo
+                            ? idToPid(team.leaderId?.toString() ?? "")
+                            : idToTeamId(team.id)}
+                        </p>
+
+                        <p
+                          className={`${
+                            solo ? "basis-1/3" : "basis-1/4"
+                          } text-lg text-white/60`}
+                        >
+                          {scoresLoading && <Spinner intent={"white"} />}
+                          {scores?.getTotalScores.__typename ===
+                            "QueryGetTotalScoresSuccess" &&
+                            scores?.getTotalScores.data.find(
+                              (score) => score.teamId === Number(team.id),
+                            )?.totalScore}
+                        </p>
+                      </div>
+                    );
+                  })}
+              </div>
+            )}
 
           {!finalRound &&
-            selectedTeams.judgeGetTeamsByRound.filter(
+            selectedTeams.judgeGetTeamsByRound.__typename ===
+              "SubscriptionJudgeGetTeamsByRoundSuccess" &&
+            selectedTeams.judgeGetTeamsByRound.data.filter(
               (team) => team.roundNo > roundNo,
             ).length !== 0 && (
               <Button
