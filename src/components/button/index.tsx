@@ -21,7 +21,7 @@ const buttonStyles = cva(
         info: "bg-teal-500 text-white hover:bg-teal-600",
         dark: "bg-gray-900/60 text-white hover:bg-opacity-30",
         ghost:
-          "bg-transparent border-secondary-700 border text-secondary-700 -skew-x-12 backdrop-blur-md",
+          "bg-transparent border-secondary-700 border  text-[#D79128] -skew-x-12 backdrop-blur-md backdrop-filter",
       },
       size: {
         small: ["text-sm", "py-1", "px-2"],

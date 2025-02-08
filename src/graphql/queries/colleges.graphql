@@ -1,6 +1,15 @@
 query Colleges {
   colleges {
-    id
-    name
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryCollegesSuccess {
+      __typename
+      data {
+        id
+        name
+      }
+    }
   }
 }

@@ -62,9 +62,10 @@ export default function Sky() {
       frameIndex = (frameIndex + 1) % birdFrames.length; // Cycle through bird animation frames
     };
 
-    birdImages[0].onload = () => {
-      animate(); // Start the animation loop once the first bird image is loaded
-    };
+    if (birdImages[0])
+      birdImages[0].onload = () => {
+        animate(); // Start the animation loop once the first bird image is loaded
+      };
 
     return () => {
       cancelAnimationFrame(animation.current); // Stop the animation loop when the component unmounts

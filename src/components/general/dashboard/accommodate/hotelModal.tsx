@@ -44,24 +44,25 @@ const HotelModal: FC = () => {
         </div>
         <div className="mx-2 mt-3 max-h-64 overflow-y-auto md:h-72 md:max-h-72">
           {hotelLoading && <Spinner size={"small"} />}
-          {hotelData?.getAllHotels.map((hotel, index) => (
-            <div
-              key={index}
-              className="mb-2 mr-2 flex items-center justify-between rounded-lg border border-gray-500 p-1 px-2 md:p-2"
-            >
-              <div className="flex w-full flex-row items-center">
-                <h1 className="basis-1/4 pl-5 text-start text-lg md:pl-2 md:text-center md:text-xl">
-                  {hotel?.id}
-                </h1>
-                <h1 className="basis-2/4 pr-2 text-center text-lg md:pr-0 md:text-xl">
-                  {hotel?.name}
-                </h1>
-                <h1 className="basis-1/4 text-center text-lg md:pr-5 md:text-xl">
-                  <DeleteCollege hotelID={hotel?.id} />
-                </h1>
+          {hotelData?.getAllHotels.__typename === "QueryGetAllHotelsSuccess" &&
+            hotelData.getAllHotels.data.map((hotel, index) => (
+              <div
+                key={index}
+                className="mb-2 mr-2 flex items-center justify-between rounded-lg border border-gray-500 p-1 px-2 md:p-2"
+              >
+                <div className="flex w-full flex-row items-center">
+                  <h1 className="basis-1/4 pl-5 text-start text-lg md:pl-2 md:text-center md:text-xl">
+                    {hotel?.id}
+                  </h1>
+                  <h1 className="basis-2/4 pr-2 text-center text-lg md:pr-0 md:text-xl">
+                    {hotel?.name}
+                  </h1>
+                  <h1 className="basis-1/4 text-center text-lg md:pr-5 md:text-xl">
+                    <DeleteCollege hotelID={hotel?.id} />
+                  </h1>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
         <AddHotelModal />
       </Modal>
