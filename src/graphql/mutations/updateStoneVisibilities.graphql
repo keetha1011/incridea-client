@@ -1,0 +1,11 @@
+mutation DeleteHotel($stoneId: String="") {
+  updateStoneVisibilities(stoneVisibilities: $stoneId) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationUpdateStoneVisibilitiesSuccess {
+      __typename
+    }
+  }
+}

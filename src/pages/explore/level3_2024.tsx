@@ -16,7 +16,7 @@ const Scene2 = dynamic(() => import("~/components/scene2"), {
 
 const stack = ["4", "f", "r", "f", "h"];
 
-export default function Level3() {
+export default function Level3_2024() {
   const mainThemeAudioRef = useRef<HTMLAudioElement>(null);
   const [muted, setIsMuted] = useState(true);
   const [calledXp, setCalledXp] = useState(false);
