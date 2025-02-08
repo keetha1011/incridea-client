@@ -4,7 +4,13 @@ import { GLTFLoader, DRACOLoader } from "three-stdlib";
 import * as THREE from "three";
 import gsap from "gsap";
 
-const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
+const Inc23 = ({
+  imgArr,
+  clockPos,
+}: {
+  imgArr: string[];
+  clockPos: { x: number; y: number };
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [prevIndex, setPrevIndex] = useState(0);
 
@@ -18,11 +24,12 @@ const Inc23 = ({ imgArr }: { imgArr: string[] }) => {
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
             setPrevIndex={setPrevIndex}
+            clockPos={clockPos}
           />
         </Suspense>
       </Canvas>
       {/* Image Carousel Overlay */}
-      <div className="absolute top-[60%] left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-40">
+      <div className="absolute top-[70%] left-1/2 transform -translate-x-1/2 flex justify-center items-center gap-40">
         {imgArr.length > 0 &&
           (window.innerWidth < 768 ? [-1, 0, 1] : [-2, -1, 0, 1, 2]).map(
             (offset) => {
@@ -76,15 +83,42 @@ const Model = ({
   currentIndex,
   setCurrentIndex,
   setPrevIndex,
+  clockPos,
 }: {
   imgArr: string[];
   currentIndex: number;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
   setPrevIndex: React.Dispatch<React.SetStateAction<number>>;
+  clockPos: { x: number; y: number };
 }) => {
   const pendulumRef = useRef<THREE.Object3D | null>(null);
   const pivotRef = useRef<THREE.Group | null>(null);
   const animationRef = useRef<gsap.core.Tween | null>(null);
+
+  useEffect(() => {
+    if (!pivotRef.current) return;
+
+    // Find the camera in the scene
+    const camera = pivotRef.current.parent?.parent?.children.find(
+      (obj) => obj.type === "PerspectiveCamera",
+    ) as THREE.Camera | undefined;
+
+    if (!camera) return;
+
+    //normalized device coordinates
+    const ndcX = (clockPos.x / window.innerWidth) * 2 - 1;
+    const ndcY = -(clockPos.y / window.innerHeight) * 2 + 1;
+
+    //ndc to world position
+    const raycaster = new THREE.Raycaster();
+    raycaster.setFromCamera(new THREE.Vector2(ndcX, ndcY), camera);
+
+    const targetZ = 0; //z position
+    const worldPos = new THREE.Vector3();
+    raycaster.ray.at(targetZ, worldPos);
+
+    pivotRef.current.position.set(worldPos.x, worldPos.y, worldPos.z);
+  }, [clockPos]);
 
   const gltf = useLoader(GLTFLoader, "assets/3d/pendulum.glb", (loader) => {
     const dracoLoader = new DRACOLoader();
@@ -93,6 +127,8 @@ const Model = ({
     );
     loader.setDRACOLoader(dracoLoader);
   });
+  const { nodes, materials } = gltf;
+  const meshBottom = nodes.Mesh_1 as THREE.Mesh;
 
   useEffect(() => {
     if (pendulumRef.current && pivotRef.current) {
@@ -119,11 +155,13 @@ const Model = ({
   }, [imgArr.length, setCurrentIndex]);
 
   return (
-    <group ref={pivotRef} position={[0, 1.5, 0]}>
+    <group ref={pivotRef} position={[0, 1.6, 0]}>
+      <ambientLight intensity={0.6} />
+      <directionalLight position={[2, 1, 3]} intensity={2} />
       <primitive
         ref={pendulumRef}
         object={gltf.scene}
-        scale={[0.7, 0.6, 0.7]}
+        scale={[0.4, 0.2, 0.4]}
         position={[0, -1.5, 0]}
       />
     </group>

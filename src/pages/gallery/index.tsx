@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { type NextPage } from "next";
 import Clock from "~/components/galleryComponents/clock";
@@ -21,6 +21,26 @@ export const angleToScenes: { [key: number]: number[] } = {
 const Gallery: NextPage = () => {
   const [activeYear, setActiveYear] = useState<number>(0);
   const [changedYear, setChangedYear] = useState<number>(0);
+  const clockRef = useRef<HTMLDivElement | null>(null);
+  const [clockPos, setClockPos] = useState<{ x: number; y: number }>({
+    x: 0,
+    y: 0,
+  });
+
+  useEffect(() => {
+    const updateClockPosition = () => {
+      if (clockRef.current) {
+        const posi = clockRef.current.getBoundingClientRect();
+        setClockPos({
+          x: posi.left + posi.width / 2,
+          y: posi.top + posi.height / 2,
+        });
+      }
+    };
+    updateClockPosition();
+    window.addEventListener("resize", updateClockPosition);
+    return () => window.removeEventListener("resize", updateClockPosition);
+  }, []);
 
   // const backgroundImages: string[] = [
   //   "/assets/galleryBg/inc22-gallerybg.jpg",
@@ -67,7 +87,7 @@ const Gallery: NextPage = () => {
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
       <Inc22 imgArr={images22} key={0} />,
-      <Inc23 imgArr={images22} key={1} />,
+      <Inc23 imgArr={images22} clockPos={clockPos} key={1} />,
       <Inc24 imgArr={images22} key={2} />,
       <Inc25 key={3} />,
     ];
@@ -118,7 +138,9 @@ const Gallery: NextPage = () => {
                 className="sm:size-8 size-7"
               />
             </div>
-            <Clock onClockClick={handleClockClick} year={changedYear} />
+            <div ref={clockRef}>
+              <Clock onClockClick={handleClockClick} year={changedYear} />
+            </div>
             <div
               className={`absolute sm:translate-x-[230px] translate-x-[200px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 3 ? "hidden" : ""}`}
               onClick={() => handleYearChange(1)}
