@@ -5,11 +5,11 @@ Command: npx gltfjsx@6.2.3 public/models/character.glb -o src/components/Charact
 
 import React, { useRef, useEffect } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
-import * as THREE from "three";
+import type * as THREE from "three";
 
-interface CharacterProps {
+type CharacterProps = {
   animation: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export function Character({ animation, ...props }: CharacterProps) {
@@ -23,7 +23,7 @@ export function Character({ animation, ...props }: CharacterProps) {
     return () => {
       actions?.[animation]?.fadeOut(0.24);
     };
-  }, [animation]);
+  }, [actions, animation]);
   return (
     <group ref={group} {...props} dispose={null}>
       <group name="Scene">

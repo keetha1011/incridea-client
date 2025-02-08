@@ -1,14 +1,15 @@
 import React, { Suspense, useState, useEffect } from "react";
+import Button from "~/components/button";
+import { Canvas } from "@react-three/fiber";
+import { KeyboardControls } from "@react-three/drei";
 import { OrthographicCamera } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
-import { CharacterController } from "~/components/explore_2025/controllers/characterController";
 import { Map } from "~/components/explore_2025/Map";
 import { EffectComposer, Vignette, Bloom } from "@react-three/postprocessing";
-import { Button } from "@headlessui/react";
-import { KeyboardControls } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import Poi from "../poi/Stone";
-import { Portal } from "../Portal";
+
+import { CharacterController } from "~/components/explore_2025/characterController";
+import { Portal } from "./Portal";
+import Poi from "./Stone";
 
 const maps = {
   medieval_fantasy_book: {
@@ -79,12 +80,12 @@ export const Experience = () => {
                 />
               </directionalLight>
               <Map
-                scale={maps.medieval_fantasy_book.scale}
-                position={maps.medieval_fantasy_book.position}
-                model={`models/medieval_fantasy_book.glb`}
+                scale={maps.medieval_fantasy_book.scale as never}
+                position={maps.medieval_fantasy_book.position as never}
+                model={`models/medieval_fantasy_book.glb` as never}
               />
               <CharacterController />
-              <Portal />
+              <Portal props={undefined as never} />
             </Physics>
             <Poi />
           </Suspense>
@@ -141,7 +142,6 @@ export const Experience = () => {
         </div>
       </div>
 
-      {/* Shift Button (Run) */}
       <Button
         className="absolute top-10 right-10 sm:top-16 sm:right-16 p-3 sm:p-5 bg-blue-500/60 text-white rounded select-none"
         id="shift"

@@ -1,26 +1,25 @@
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useGLTF } from "@react-three/drei";
-import * as THREE from "three";
+import type * as THREE from "three";
 import { Vector3 } from "three";
 
-interface Stone {
+type Stone = {
   id: number;
   pos: [number, number, number];
 }
 
-import stonesData from "~/components/explore_2025/poi/poi.json";
-// import { DissolveMaterial } from "~/components/explore_2025/shaders/dissolver";
+import stonesData from "~/components/explore_2025/data/data.json";
 
 const stones: Stone[] = stonesData.stones.map((stone) => ({
   ...stone,
-  pos: [stone.pos[0] || 0, stone.pos[1] || 0, stone.pos[2] || 0] as [
+  pos: [stone.pos[0] ?? 0, stone.pos[1] ?? 0, stone.pos[2] ?? 0] as [
     number,
     number,
     number,
   ],
 }));
 
-const Poi = () => {
+const Stones = () => {
   const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
   const [visibility, setVisibility] = useState<boolean[]>(() =>
     stones.map(() => true)
@@ -30,7 +29,7 @@ const Poi = () => {
   useEffect(() => {
     const storedVisibility = localStorage.getItem("stoneVisibility");
     if (storedVisibility) {
-      setVisibility(JSON.parse(storedVisibility));
+      setVisibility(JSON.parse(storedVisibility) as never);
     } else {
       const initialVisibility = stones.map(() => true);
       setVisibility(initialVisibility);
@@ -46,7 +45,7 @@ const Poi = () => {
     const interval = setInterval(() => {
       const storedVisibility = localStorage.getItem("stoneVisibility");
       if (storedVisibility) {
-        const parsed = JSON.parse(storedVisibility);
+        const parsed : boolean[] = JSON.parse(storedVisibility) as never;
         // Compare with current state; update if different.
         if (JSON.stringify(parsed) !== JSON.stringify(visibility)) {
           setVisibility(parsed);
@@ -56,9 +55,6 @@ const Poi = () => {
 
     return () => clearInterval(interval);
   }, [visibility]);
-
-  // Memoize the base material to avoid recreating it on every render.
-  const baseMaterial = useMemo(() => new THREE.MeshBasicMaterial(), []);
 
   const toggleVisibility = (index: number) => {
     const newVisibility = [...visibility];
@@ -88,11 +84,11 @@ const Poi = () => {
   );
 };
 
-interface BlueStoneProps {
-  [key: string]: any;
+type BlueStoneProps = {
+  [key: string]: never;
 }
 
-interface GLTFResult {
+type GLTFResult = {
   nodes: {
     Crystal_low002: THREE.Mesh;
   };
@@ -111,7 +107,7 @@ const Blue_Stone: React.FC<BlueStoneProps> = (props) => {
       <mesh
         castShadow
         receiveShadow
-        geometry={(nodes.Crystal_low002 as THREE.Mesh).geometry}
+        geometry={nodes.Crystal_low002.geometry}
         material={materials.Crystal}
         rotation={[Math.PI / 2, 0, 0]}
         scale={0.012}
@@ -122,4 +118,4 @@ const Blue_Stone: React.FC<BlueStoneProps> = (props) => {
 
 useGLTF.preload("/2025/assets/explore/models/blue_stone.glb");
 
-export default Poi;
+export default Stones;

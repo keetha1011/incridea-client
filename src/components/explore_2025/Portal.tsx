@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 
-export function Portal(props) {
+export function Portal(props : { props : never }) {
   const { nodes, materials } = useGLTF("/2025/assets/explore/models/portal.glb");
   return (
     <RigidBody type="fixed" colliders="trimesh">
@@ -90,16 +90,16 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube004.geometry}
-          material={nodes.Cube004.material}
+          geometry={(nodes.Cube004 as THREE.Mesh).geometry}
+          material={(nodes.Cube004 as THREE.Mesh).material}
           position={[-1.312, 0.025, 0.522]}
           rotation={[0, 0.297, 0]}
         />
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube005.geometry}
-          material={nodes.Cube005.material}
+          geometry={(nodes.Cube005 as THREE.Mesh).geometry}
+          material={(nodes.Cube005 as THREE.Mesh).material}
           position={[0.711, 0.015, -0.198]}
           rotation={[0, -0.003, 0]}
           scale={1.095}
@@ -107,8 +107,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube002.geometry}
-          material={nodes.Cube002.material}
+          geometry={(nodes.Cube002 as THREE.Mesh).geometry}
+          material={(nodes.Cube002 as THREE.Mesh).material}
           position={[-1.845, -0.457, 1.104]}
           rotation={[3.04, -0.015, -3.136]}
           scale={1.072}
@@ -116,8 +116,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube006.geometry}
-          material={nodes.Cube006.material}
+          geometry={(nodes.Cube006 as THREE.Mesh).geometry}
+          material={(nodes.Cube006 as THREE.Mesh).material}
           position={[-1.026, -0.476, 1.131]}
           rotation={[0, 0.014, 0]}
           scale={1.072}
@@ -125,8 +125,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube007.geometry}
-          material={nodes.Cube007.material}
+          geometry={(nodes.Cube007 as THREE.Mesh).geometry}
+          material={(nodes.Cube007 as THREE.Mesh).material}
           position={[1.664, -0.475, 0.979]}
           rotation={[0.039, 0.466, 0.094]}
           scale={1.138}
@@ -134,8 +134,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube008.geometry}
-          material={nodes.Cube008.material}
+          geometry={(nodes.Cube008 as THREE.Mesh).geometry}
+          material={(nodes.Cube008 as THREE.Mesh).material}
           position={[-1.715, -0.442, 0.034]}
           rotation={[0.028, 0.018, 0.014]}
           scale={1.072}
@@ -143,8 +143,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube009.geometry}
-          material={nodes.Cube009.material}
+          geometry={(nodes.Cube009 as THREE.Mesh).geometry}
+          material={(nodes.Cube009 as THREE.Mesh).material}
           position={[-2.642, -0.705, -0.17]}
           rotation={[-0.122, -0.145, 0.448]}
           scale={1.335}
@@ -152,8 +152,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube010.geometry}
-          material={nodes.Cube010.material}
+          geometry={(nodes.Cube010 as THREE.Mesh).geometry}
+          material={(nodes.Cube010 as THREE.Mesh).material}
           position={[1.815, -0.451, -0.267]}
           rotation={[Math.PI, -0.025, Math.PI]}
           scale={1.138}
@@ -161,8 +161,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube011.geometry}
-          material={nodes.Cube011.material}
+          geometry={(nodes.Cube011 as THREE.Mesh).geometry}
+          material={(nodes.Cube011 as THREE.Mesh).material}
           position={[1.975, -0.404, 0.192]}
           rotation={[Math.PI, -0.025, Math.PI]}
           scale={1.138}
@@ -170,8 +170,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube012.geometry}
-          material={nodes.Cube012.material}
+          geometry={(nodes.Cube012 as THREE.Mesh).geometry}
+          material={(nodes.Cube012 as THREE.Mesh).material}
           position={[0.342, -0.476, -0.973]}
           rotation={[0, 0.025, 0]}
           scale={1.138}
@@ -179,8 +179,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube013.geometry}
-          material={nodes.Cube013.material}
+          geometry={(nodes.Cube013 as THREE.Mesh).geometry}
+          material={(nodes.Cube013 as THREE.Mesh).material}
           position={[-0.461, -0.476, -1.099]}
           rotation={[0, 0.025, 0]}
           scale={1.138}
@@ -188,8 +188,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube014.geometry}
-          material={nodes.Cube014.material}
+          geometry={(nodes.Cube014 as THREE.Mesh).geometry}
+          material={(nodes.Cube014 as THREE.Mesh).material}
           position={[-1.809, -0.21, -1.014]}
           rotation={[-0.107, -0.75, 0.655]}
           scale={1.138}
@@ -197,8 +197,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube015.geometry}
-          material={nodes.Cube015.material}
+          geometry={(nodes.Cube015 as THREE.Mesh).geometry}
+          material={(nodes.Cube015 as THREE.Mesh).material}
           position={[0.281, 0.018, 0.271]}
           rotation={[0, -0.003, 0]}
           scale={1.095}
@@ -206,8 +206,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube016.geometry}
-          material={nodes.Cube016.material}
+          geometry={(nodes.Cube016 as THREE.Mesh).geometry}
+          material={(nodes.Cube016 as THREE.Mesh).material}
           position={[1.828, -0.952, 1.79]}
           rotation={[-Math.PI, 0.84, -Math.PI]}
           scale={1.138}
@@ -215,8 +215,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube017.geometry}
-          material={nodes.Cube017.material}
+          geometry={(nodes.Cube017 as THREE.Mesh).geometry}
+          material={(nodes.Cube017 as THREE.Mesh).material}
           position={[2.414, -0.952, 1.53]}
           rotation={[Math.PI, -0.961, Math.PI]}
           scale={1.138}
@@ -224,8 +224,8 @@ export function Portal(props) {
         <mesh
           castShadow
           receiveShadow
-          geometry={nodes.Cube018.geometry}
-          material={nodes.Cube018.material}
+          geometry={(nodes.Cube018 as THREE.Mesh).geometry}
+          material={(nodes.Cube018 as THREE.Mesh).material}
           position={[-1.213, -0.95, 2.06]}
           rotation={[Math.PI, -0.627, Math.PI]}
           scale={1.138}

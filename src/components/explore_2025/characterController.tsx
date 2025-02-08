@@ -3,11 +3,12 @@ import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
 import { useEffect, useRef, useState, useMemo } from "react";
 import toast from "react-hot-toast";
-import * as THREE from "three";
+import type * as THREE from "three";
 import { MathUtils, Vector3, Raycaster } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { Character } from "~/components/explore_2025/Character";
-import stonesData from "~/components/explore_2025/poi/poi.json";
+import stonesData from "~/components/explore_2025/data/data.json";
+import { useRouter } from "next/router";
 
 // Utility functions for angle normalization and interpolation
 const normalizeAngle = (angle: number) => {
@@ -29,12 +30,12 @@ const lerpAngle = (start: number, end: number, t: number) => {
   return normalizeAngle(start + (end - start) * t);
 };
 
-interface Stone {
+type Stone = {
   id: number;
   pos: [number, number, number];
 }
 
-interface Location {
+type Location = {
   id: number;
   pos: [number, number];
   href: string;
@@ -43,16 +44,16 @@ interface Location {
 // Process stone and location data
 const stones: Stone[] = stonesData.stones.map((stone) => ({
   ...stone,
-  pos: [stone.pos[0] || 0, stone.pos[1] || 0, stone.pos[2] || 0] as [
+  pos: [stone.pos[0] ?? 0, stone.pos[1] ?? 0, stone.pos[2] ?? 0] as [
     number,
     number,
     number,
-  ],
+  ]
 }));
 
 const locations: Location[] = stonesData.locations.map((location) => ({
   ...location,
-  pos: [location.pos[0] || 0, location.pos[1] || 0] as [number, number],
+  pos: [location.pos[0] ?? 0, location.pos[1] ?? 0] as [number, number]
 }));
 
 export const playerPosition = new Vector3();
@@ -62,6 +63,8 @@ export const CharacterController = () => {
   const [isLandscape, setIsLandscape] = useState(
     window.innerWidth > window.innerHeight
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     const handleResize = () => {
@@ -76,10 +79,10 @@ export const CharacterController = () => {
   const WALK_SPEED = isLandscape ? 0.5 : 0.8;
   const ROTATION_SPEED = degToRad(isLandscape ? 3 : 5);
 
+  const [, get] = useKeyboardControls();
   const rb = useRef<typeof RigidBody | null>(null);
   const container = useRef<THREE.Group>(null);
   const character = useRef<THREE.Group | null>(null);
-  const [animation, setAnimation] = useState("idle");
   const characterRotationTarget = useRef(0);
   const rotationTarget = useRef(0);
   const cameraTarget = useRef<THREE.Group | null>(null);
@@ -87,29 +90,27 @@ export const CharacterController = () => {
   const cameraWorldPosition = useRef(new Vector3());
   const cameraLookAtWorldPosition = useRef(new Vector3());
   const cameraLookAt = useRef(new Vector3());
-  const [, get] = useKeyboardControls();
-  const isClicking = useRef(false);
   const raycaster = useRef(new Raycaster());
   const cameraDirection = useRef(new Vector3());
+  const [animation, setAnimation] = useState("idle");
   const [spacebarPressed, setSpacebarPressed] = useState(false);
   const [spacebarDisabled, setSpacebarDisabled] = useState(false);
+  const [throwOutOfThePage, setThrowOutOfThePage] = useState(false);
   const [visibility, setVisibility] = useState<boolean[]>([]);
 
   const handleJump = () => {
-    // Dispatch a keydown event for Space
     const keyDownEvent = new KeyboardEvent("keydown", {
       key: "Space",
       code: "Space",
-      bubbles: true,
+      bubbles: true
     });
     document.dispatchEvent(keyDownEvent);
 
-    // After a short delay, dispatch the keyup event
     setTimeout(() => {
       const keyUpEvent = new KeyboardEvent("keyup", {
         key: "Space",
         code: "Space",
-        bubbles: true,
+        bubbles: true
       });
       document.dispatchEvent(keyUpEvent);
     }, 100);
@@ -167,12 +168,12 @@ export const CharacterController = () => {
       document.removeEventListener("touchstart", onMouseDown);
       document.removeEventListener("touchend", onMouseUp);
     };
-  }, []);
+  }, [get]);
 
   useEffect(() => {
     const storedVisibility = localStorage.getItem("stoneVisibility");
     if (storedVisibility) {
-      setVisibility(JSON.parse(storedVisibility));
+      setVisibility(JSON.parse(storedVisibility) as never);
     } else {
       const initialVisibility = stones.map(() => true);
       setVisibility(initialVisibility);
@@ -184,15 +185,18 @@ export const CharacterController = () => {
     new Map<number, { timer: NodeJS.Timeout; count: number }>()
   );
 
-  useFrame(({ camera, scene, mouse }) => {
+  useFrame(({ camera, scene }) => {
     if (rb.current) {
-      const vel = rb.current.linvel();
-      const pos = rb.current.translation();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      const vel = rb.current.linvel() as { x: number; y: number; z: number };
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      const pos = rb.current.translation() as { x: number; y: number; z: number };
 
       // Update player position
       playerPosition.set(pos.x, pos.y, pos.z);
       if (pos.y < -9) {
         playerPosition.set(0, 0, 0);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         rb.current.setTranslation({ x: 0, y: 0, z: 0 }, true);
         toast.error("You fell off the map! Respawning...");
       }
@@ -201,7 +205,7 @@ export const CharacterController = () => {
 
       if (get().forward) movement.z = 1;
       if (get().backward) movement.z = -1;
-      let speed = get().run ? RUN_SPEED : WALK_SPEED;
+      const speed = get().run ? RUN_SPEED : WALK_SPEED;
 
       if (get().left) movement.x = 1;
       if (get().right) movement.x = -1;
@@ -256,14 +260,15 @@ export const CharacterController = () => {
         setAnimation("jump");
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       rb.current.setLinvel(vel, true);
 
       // Check if the player is within 0.5 units of any stone
       stones.forEach((stone, index) => {
         const distance = Math.sqrt(
           (pos.x - stone.pos[0]) ** 2 +
-            (pos.y - stone.pos[1]) ** 2 +
-            (pos.z - stone.pos[2]) ** 2
+          (pos.y - stone.pos[1]) ** 2 +
+          (pos.z - stone.pos[2]) ** 2
         );
         if (distance <= 0.5 && visibility[index]) {
           const newVisibility = [...visibility];
@@ -277,34 +282,36 @@ export const CharacterController = () => {
       locations.forEach((location) => {
         const distance = Math.sqrt(
           (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
-            (pos.z - (location.pos?.[1] ?? 0)) ** 2
+          (pos.z - (location.pos?.[1] ?? 0)) ** 2
         );
 
-        if (distance <= 0.5) {
-          if (!countdowns.current.has(location.id)) {
-            let count = 5;
-            const timer = setInterval(() => {
-              // Recalculate distance inside the callback
-              const currentDistance = Math.sqrt(
-                (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
+        if (!throwOutOfThePage) {
+          if (distance <= 0.5) {
+            if (!countdowns.current.has(location.id)) {
+              let count = 5;
+              const timer = setInterval(() => {
+                // Recalculate distance inside the callback
+                const currentDistance = Math.sqrt(
+                  (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
                   (pos.z - (location.pos?.[1] ?? 0)) ** 2
-              );
-              // If user is out of range, cancel the countdown.
-              if (currentDistance > 0.5) {
-                clearInterval(timer);
-                countdowns.current.delete(location.id);
-                return;
-              }
+                );
+                // If user is out of range, cancel the countdown.
+                if (currentDistance > 0.5) {
+                  clearInterval(timer);
+                  countdowns.current.delete(location.id);
+                  return;
+                }
 
-              count -= 1;
-              if (count <= 0) {
-                clearInterval(timer);
-                countdowns.current.delete(location.id);
-                window.location.href = location.href; // Redirect to unique page
-              } else {
-                toast(
-                  (t) => (
-                    <span>
+                count -= 1;
+                if (count <= 0) {
+                  clearInterval(timer);
+                  countdowns.current.delete(location.id);
+                  void router.push(location.href);
+                  // setThrowOutOfThePage(true);
+                } else {
+                  toast(
+                    (t) => (
+                      <span>
                       Redirecting in {count} seconds...
                       <button
                         onClick={() => {
@@ -317,22 +324,23 @@ export const CharacterController = () => {
                         Cancel
                       </button>
                     </span>
-                  ),
-                  {
-                    id: location.id.toString(),
-                  }
-                );
-              }
-            }, 1000);
-            countdowns.current.set(location.id, { timer, count });
-            toast(`Redirecting in ${count} seconds...`, {
-              id: location.id.toString(),
-            });
-          }
-        } else {
-          if (countdowns.current.has(location.id)) {
-            clearInterval(countdowns.current.get(location.id)!.timer);
-            countdowns.current.delete(location.id);
+                    ),
+                    {
+                      id: location.id.toString()
+                    }
+                  );
+                }
+              }, 1000);
+              countdowns.current.set(location.id, { timer, count });
+              toast(`Redirecting in ${count} seconds...`, {
+                id: location.id.toString()
+              });
+            }
+          } else {
+            if (countdowns.current.has(location.id)) {
+              clearInterval(countdowns.current.get(location.id)!.timer);
+              countdowns.current.delete(location.id);
+            }
           }
         }
       });
@@ -361,7 +369,7 @@ export const CharacterController = () => {
         intersects.length > 0 &&
         intersects[0] &&
         intersects[0].distance <
-          cameraWorldPosition.current.distanceTo(cameraLookAtWorldPosition.current)
+        cameraWorldPosition.current.distanceTo(cameraLookAtWorldPosition.current)
       ) {
         if (intersects[0]) {
           const newCameraPos = cameraLookAtWorldPosition.current
@@ -404,6 +412,8 @@ export const CharacterController = () => {
   }, [visibility]);
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     <RigidBody colliders={false} lockRotations ref={rb}>
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />
