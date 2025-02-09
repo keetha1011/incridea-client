@@ -33,10 +33,30 @@ import Image from "next/image";
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events";
 
 const videos = [
-  "https://res.cloudinary.com/dliarni5j/video/upload/v1739078519/samples/dance-2.mp4",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739119567/shaan_z13zrz.mov",
 
   "https://res.cloudinary.com/dliarni5j/video/upload/v1739079132/Coffee_pdoave.mp4",
 ];
+const songs = [
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739121952/Chaar_Kadam_vsre4a.mp3",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739121950/Musu_Musu_uqvaqg.mp3",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739121945/Deevangi_lfwynw.mp3",
+  "https://samplelib.com/lib/preview/mp3/sample-12s.mp3",
+];
+
+const songname = [
+  "Chaar Kadam - Shreya Ghoshal, Shaan",
+  "Musu Musu -  Shaan",
+  "Deewangi Deewangi -   Shaan, Sunidhi Chauhan, Shreya Ghoshal, Udit Narayan",
+  "Sample",
+];
+
+useGLTF.preload("/2025/pronites/singer.glb");
+useGLTF.preload("/2025/pronites/guitarist.glb");
+useGLTF.preload("/2025/Pronites/shaan.glb");
+useGLTF.preload("/2025/pronites/drums.glb");
+useGLTF.preload("/2025/Pronites/pianist.glb");
+
 export default function App() {
   const lightRef = useRef();
 
@@ -46,6 +66,9 @@ export default function App() {
   const [actLight, setActLight] = useState(false);
   const [isAudioOn, setIsAudioOn] = useState(false);
   var video = lightC == "#00FFFF" ? 0 : 1;
+  const [audio] = useState(new Audio());
+  const audioRef = useRef(audio);
+  const [currentSong, setCurrentSong] = useState<string>("");
 
   useEffect(() => {
     if (lightRef.current && targetRef.current) {
@@ -93,6 +116,34 @@ export default function App() {
 
   console.log(videos[video]);
 
+  const getRandomShaanSong = () => Math.floor(Math.random() * 3); // Returns 0, 1, or 2
+
+  // Update audio when artist changes or audio toggle changes
+  useEffect(() => {
+    const currentAudio = audioRef.current;
+
+    if (isAudioOn) {
+      // For Shaan (blue/cyan color), pick random song from first 3
+      // For Masala Coffee (red color), use the last song
+      const songIndex = lightC === "#00FFFF" ? getRandomShaanSong() : 3;
+      currentAudio.src = songs[songIndex];
+      currentAudio.loop = true;
+      setCurrentSong(songname[songIndex]);
+
+      currentAudio
+        .play()
+        .catch((err) => console.log("Audio playback failed:", err));
+    } else {
+      currentAudio.pause();
+      setCurrentSong("");
+    }
+
+    return () => {
+      currentAudio.pause();
+      currentAudio.src = "";
+    };
+  }, [video, isAudioOn, lightC]);
+
   return (
     <div>
       <div className="fixed top-20 w-full z-50 gap-2 flex justify-between p-4 ">
@@ -105,7 +156,7 @@ export default function App() {
               : "backdrop-blur-sm bg-transparent text-gray-100 border border-gray-100"
           }`}
         >
-          🎵
+          {isAudioOn ? "🔊" : "🔈"}
         </button>
         <button
           onClick={handleCloseToggle}
@@ -153,7 +204,7 @@ export default function App() {
           💡
         </button>
       </div>
-      <div className="fixed items-centerflex-col z-50 bottom-0 w-full p-4 lg:hidden">
+      <div className="fixed items-centerflex-col z-50 bottom-8 w-full p-4 lg:hidden">
         <div className="flex justify-end gap-2 items-end">
           <div
             onClick={handleBlueClick}
@@ -184,17 +235,24 @@ export default function App() {
         </div>
       </div>
       <div
-        className={`fixed pointer-events-none bottom-4 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
+        className={`fixed pointer-events-none bottom-12 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
       >
         SINGER SHAAN
       </div>
       <div
-        className={`fixed pointer-events-none bottom-4 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
+        className={`fixed pointer-events-none bottom-12 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
           activeGradient === "red" ? "text-xl" : "text-lg opacity-0"
         }`}
         style={{ right: "0px" }}
       >
         MASALA COFFEE
+      </div>
+      <div className="fixed bottom-2 left-0 w-full z-50 text-center">
+        <div className="px-4 py-2 bg-black/50 rounded-sm mx-4 text-white text-sm w-[calc(100%-32px)] truncate">
+          {isAudioOn && currentSong
+            ? `Now Playing: ${currentSong}`
+            : "Audio Muted"}
+        </div>
       </div>
       <div className="h-screen w-screen z-0 bg-gradient-to-t from-black to-[#080820]">
         <Canvas
@@ -210,12 +268,13 @@ export default function App() {
           style={{ background: "transparent" }}
         >
           <Stage src={videos[video]} />
-          <MasalaModel
-            scale={[4, 4, 4]}
-            position={[-8, 0, -5]}
-            rotation={[0, 0.5, 0]}
-          />
-          <Shaan scale={[1.5, 1.5, 1.5]} position={[0, 0, 0]} />
+
+          {lightC == "#00FFFF" ? (
+            <Shaan scale={[4, 4, 4]} position={[-2, 0, 0]} />
+          ) : (
+            <MasalaModel />
+          )}
+
           <ambientLight intensity={5} />
           <Rig _camPosisiton={camPos} />
 
