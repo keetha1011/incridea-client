@@ -17,6 +17,7 @@ import {
 import { useQuery } from "@apollo/client";
 import { EventByOrganizerDocument } from "~/generated/generated";
 import Image from "next/image";
+import styles from "~/components/general/dashboard/organizer/quiz/quiz.module.css";
 // import Prism from "prismjs";
 // import "prismjs/themes/prism-okaidia.css";
 // import "prismjs/components/prism-python";
@@ -211,7 +212,7 @@ const QuizPage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="relative flex flex-col justify-between items-center bg-gradient-to-tr from-emerald-800 via-green-800 to-emerald-800 text-white">
+    <div className="relative flex flex-col justify-between items-center text-white">
       {isOpen &&
         imageRef.current &&
         createPortal(
@@ -267,7 +268,7 @@ const QuizPage = () => {
       <div className="max-w-3xl mx-auto mt-6 px-4">
         <div className="w-60 md:w-96 h-3 bg-blue-950/50 rounded-full overflow-hidden">
           <div
-            className="relative h-full progress-bar-effect shimmer"
+            className={`relative h-full ${styles.progressBarEffect} ${styles.shimmer}`}
             style={{ width: `${progressPercentage}%` }}
           >
             <HourglassIcon className="absolute right-0 w-[0.75rem] h-3" />
@@ -417,7 +418,7 @@ const QuizPage = () => {
         <div className="flex justify-between m-4">
           <button
             onClick={handlePrevSlide}
-            className={`w-26 md:w-32 px-4 py-2 rounded-md shadow-md transition-all glass-button ${
+            className={`w-26 md:w-32 px-4 py-2 rounded-md shadow-md transition-all ${styles.glassButton} ${
               currentSlide > 0
                 ? "bg-transparent border border-amber-100 text-white"
                 : "opacity-0 cursor-auto"
@@ -429,7 +430,7 @@ const QuizPage = () => {
 
           <button
             onClick={handleNextSlide}
-            className={`w-20 md:w-32 px-4 py-2 rounded-md shadow-md transition-all glass-button ${
+            className={`w-20 md:w-32 px-4 py-2 rounded-md shadow-md transition-all ${styles.glassButton} ${
               currentSlide < questions.length - 1
                 ? "bg-transparent border border-amber-100 text-white"
                 : "opacity-0 cursor-auto"
@@ -468,7 +469,7 @@ const QuizPage = () => {
         </span>
       </div>
       <div
-        className={`quiz-nav flex md:hidden h-[24%] sm:h-[32%] p-2 bg-green-900/50 rounded-3xl border-t border-cyan-500/20 my-6 ${!quizTrackerVisible && "hidden"}`}
+        className={`${styles.quizNav} flex md:hidden h-[24%] sm:h-[32%] p-2 bg-green-900 rounded-3xl border-t border-cyan-500/20 my-6 ${!quizTrackerVisible && "hidden"}`}
       >
         <div className="flex items-center gap-2 justify-center">
           <button
