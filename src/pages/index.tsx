@@ -242,10 +242,10 @@ export const HomeUi = () => {
         ref={sceneRef}
         className="relative min-h-screen bg-cover z-0 select-none pointer-events-none font-life-craft "
       >
-        <div className="absolute h-screen w-screen" data-depth="0.08">
+        <div className="absolute h-screen w-screen" data-depth="0.05">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
-              src={"/assets/landing/background.webp"}
+              src={"/2025/landing/background.webp"}
               priority
               alt="Background"
               width={1920}
@@ -256,12 +256,12 @@ export const HomeUi = () => {
         </div>
 
         <div
-          data-depth="0.4"
+          data-depth="0.1"
           className=" h-screen w-screen flex justify-center items-center"
         >
           <div className="p-5 w-screen h-screen flex justify-center items-center mb-10 relative">
             <Image
-              src={`/assets/landing/clock.webp`}
+              src={`/2025/landing/clock.webp`}
               priority
               width={640}
               height={640}
@@ -270,7 +270,7 @@ export const HomeUi = () => {
               ref={largeClockRef}
             />
             <Image
-              src={`/assets/landing/clock.webp`}
+              src={`/2025/landing/clock.webp`}
               priority
               width={640}
               height={640}
@@ -282,7 +282,7 @@ export const HomeUi = () => {
         </div>
 
         <div
-          data-depth="0.3"
+          data-depth="0.08"
           className={`shootingStars  scale-125 w-full h-full z-[0.08] ${styles.shootingStars}`}
         >
           <span></span>
@@ -300,7 +300,7 @@ export const HomeUi = () => {
         <div className="absolute h-screen w-screen">
           <div className="w-full h-full relative">
             <Image
-              src={"/assets/landing/pillar.webp"}
+              src={"/2025/landing/pillar.webp"}
               priority
               alt="Pillar"
               width={1920}
@@ -314,7 +314,7 @@ export const HomeUi = () => {
 
         {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => (
           <div
-            data-depth="0.6"
+            data-depth="0.4"
             className="absolute h-screen w-screen"
             key={idx}
           >
@@ -325,7 +325,7 @@ export const HomeUi = () => {
               className="absolute lg:bottom-0 md:bottom-24 bottom-60 left-[50%] aspect-video w-screen md:scale-[90%] scale-[125%] -translate-x-1/2 -translate-y-16 transition-transform"
             >
               <Image
-                src={`/assets/landing/floatingObjects/${item}.webp`}
+                src={`/2025/landing/floatingObjects/${item}.webp`}
                 priority
                 alt="Floating objects"
                 width={1920}
@@ -338,7 +338,7 @@ export const HomeUi = () => {
 
         {/* EOE Text */}
         <div
-          data-depth="0.1"
+          data-depth="0.2"
           className="absolute flex h-screen w-screen items-center justify-center z-20"
         >
           <div className="mx-auto w-screen h-screen p-5 relative">
@@ -353,7 +353,7 @@ export const HomeUi = () => {
           </div>
         </div>
 
-        <div data-depth="0.1" className="absolute w-screen h-screen z-20">
+        <div data-depth="0.2" className="absolute w-screen h-screen z-20">
           <Image
             src={`/2025/eoelogo.png`}
             priority

@@ -59,7 +59,7 @@ export default function BlackHoleLoader() {
       tlogo.to(logo.current, {
         duration: 0.7,
         opacity: 0.5,
-        scale: 0.1,
+        scale: 0.2,
         display: "none",
         ease: "power2.out",
         onComplete: () => {

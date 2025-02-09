@@ -53,7 +53,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
         {
           opacity: 0,
           backgroundColor: "#00331f",
-          duration: 0.5,
+          duration: 0.3,
           display: "none",
         },
       );
