@@ -11,6 +11,7 @@ import Button from "~/components/button";
 import Spinner from "~/components/spinner";
 import { AuthStatus, useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
+import styles from "~/components/coming-soon/shootingStars.module.css";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "~/components/navbar";
 
@@ -238,7 +239,7 @@ export const HomeUi = () => {
     <>
       <section
         ref={sceneRef}
-        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none"
+        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none font-life-craft "
       >
         <div className="absolute h-screen w-screen" data-depth="0.08">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
@@ -277,6 +278,22 @@ export const HomeUi = () => {
               ref={smallClockRef}
             />
           </div>
+        </div>
+
+        <div
+          data-depth="0.3"
+          className={`shootingStars  scale-125 w-full h-full z-[0.08] ${styles.shootingStars}`}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
         <div className="absolute h-screen w-screen">
@@ -368,7 +385,7 @@ export const HomeUi = () => {
                     await router.push("/register");
                   }
                 }}
-                className="flex w-full border-2 text-md font-bold md:text-lg border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left"
+                className="flex w-full border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider"
               >
                 {session.status === AuthStatus.LOADING
                   ? "Loading..."
@@ -379,7 +396,7 @@ export const HomeUi = () => {
 
               <button
                 onClick={async () => await router.push("/explore")}
-                className="flex w-full border-2 text-md font-bold md:text-lg border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left"
+                className="flex w-full border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider"
               >
                 Explore
               </button>

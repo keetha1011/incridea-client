@@ -76,7 +76,7 @@ export default function CountDown() {
             <h3
               className={`z-10 text-lg tracking-widest text-white md:text-2xl`}
             >
-              <div className="titleFont flex flex-row items-center space-x-2">
+              <div className="flex flex-row items-center space-x-2">
                 <Image
                   src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/XP.png`}
                   width={100}

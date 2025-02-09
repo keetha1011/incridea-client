@@ -200,7 +200,7 @@ const Page = ({ event, error }: Props) => {
                   />
                 )}
                 <h1
-                  className={`px-4 pb-0 text-center font-VikingHell text-3xl font-bold capitalize tracking-wider sm:p-0 md:text-6xl`}
+                  className={`px-4 pb-0 text-center font-life-craft text-3xl tracking-wider sm:p-0 md:text-6xl text-[#D79128]`}
                 >
                   {event.name}
                 </h1>
@@ -224,7 +224,7 @@ const Page = ({ event, error }: Props) => {
                   >
                     Details
                   </h2>
-                  <div className={`bodyFont mt-2 flex w-full flex-wrap gap-2`}>
+                  <div className={`mt-2 flex w-full flex-wrap gap-2`}>
                     {getEventAttributes().map((attr) =>
                       attr.text ? (
                         <div
@@ -249,7 +249,7 @@ const Page = ({ event, error }: Props) => {
                       {event.rounds.map((round) => (
                         <div
                           key={round.roundNo}
-                          className={`bodyFont items-center space-y-2 rounded-xl  border border-[#D79128] bg-opacity-30 px-3 py-2 text-white bg-[#D79128]`}
+                          className={`items-center space-y-2 rounded-xl border border-[#D79128] bg-opacity-30 px-3 py-2 text-white bg-[#D79128]`}
                         >
                           <div className={`font-semibold`}>
                             Round {round.roundNo}
@@ -323,7 +323,7 @@ const Page = ({ event, error }: Props) => {
                   >
                     Organizers
                   </h2>
-                  <div className={`bodyFont w-full space-y-2`}>
+                  <div className={`w-full space-y-2`}>
                     {event.organizers.map((organizer, idx) => (
                       <div
                         key={idx}

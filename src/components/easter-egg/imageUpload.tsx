@@ -28,7 +28,7 @@ const ImageUpload = ({ existingImage, setImage, loading, cardId }: Props) => {
   return (
     <>
       <div
-        className={`bodyFont flex min-h-[150px] grow cursor-pointer items-center justify-center rounded-b-md md:rounded-md ${
+        className={`flex min-h-[150px] grow cursor-pointer items-center justify-center rounded-b-md md:rounded-md ${
           highlighted ? "bg-blue/20 ring-2 ring-blue-500" : "bg-black/20"
         }`}
         onClick={() => {

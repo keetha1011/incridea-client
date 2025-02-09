@@ -21,25 +21,6 @@
   }
 }
 
-.screen-overlay {
-  background: linear-gradient(
-    rgba(44, 109, 135, 0.246),
-    #41414152 2px,
-    transparent 2px,
-    transparent 5px
-  );
-  background-size: 100% 2px;
-  display: inherit;
-  height: 100%;
-  width: 100%;
-  animation: pan-overlay 22s infinite linear;
-  position: absolute;
-  z-index: 2;
-  left: 0px;
-  top: 0px;
-  overflow: hidden;
-}
-
 /* events page background */
 .area {
   width: 100%;
