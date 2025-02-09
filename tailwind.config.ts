@@ -1,6 +1,5 @@
 import { type Config } from "tailwindcss";
 import TWA from "tailwindcss-animate";
-import scrollbarHide from "tailwind-scrollbar-hide";
 
 const config: Config = {
   darkMode: ["class"],
@@ -339,7 +338,7 @@ const config: Config = {
       },
       scrollbar: ["rounded"],
     },
-    plugins: [TWA, scrollbarHide],
+    plugins: [TWA],
   },
 };
 
