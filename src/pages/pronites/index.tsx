@@ -39,10 +39,29 @@ import Image from "next/image";
 import { EventHandlers } from "@react-three/fiber/dist/declarations/src/core/events";
 
 const videos = [
-  "https://res.cloudinary.com/dliarni5j/video/upload/v1739078519/samples/dance-2.mp4",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739119567/shaan_z13zrz.mov",
 
   "https://res.cloudinary.com/dliarni5j/video/upload/v1739079132/Coffee_pdoave.mp4",
-] as const;
+];
+const songs = [
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739121952/Chaar_Kadam_vsre4a.mp3",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739121950/Musu_Musu_uqvaqg.mp3",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739121945/Deevangi_lfwynw.mp3",
+  "https://samplelib.com/lib/preview/mp3/sample-12s.mp3",
+];
+
+const songname = [
+  "Chaar Kadam - Shreya Ghoshal, Shaan",
+  "Musu Musu -  Shaan",
+  "Deewangi Deewangi -   Shaan, Sunidhi Chauhan, Shreya Ghoshal, Udit Narayan",
+  "Sample",
+];
+
+useGLTF.preload("/2025/pronites/singer.glb");
+useGLTF.preload("/2025/pronites/guitarist.glb");
+useGLTF.preload("/2025/Pronites/shaan.glb");
+useGLTF.preload("/2025/pronites/drums.glb");
+useGLTF.preload("/2025/Pronites/pianist.glb");
 
 export default function App() {
   const lightRef = useRef();
@@ -52,7 +71,10 @@ export default function App() {
   const [lightC, setLightC] = useState("#00FFFF");
   const [actLight, setActLight] = useState(false);
   const [isAudioOn, setIsAudioOn] = useState(false);
-  const video = lightC == "#00FFFF" ? 0 : 1;
+  var video = lightC == "#00FFFF" ? 0 : 1;
+  const [audio] = useState(new Audio());
+  const audioRef = useRef(audio);
+  const [currentSong, setCurrentSong] = useState<string>("");
 
   useEffect(() => {
     if (lightRef.current && targetRef.current) {
@@ -100,6 +122,34 @@ export default function App() {
 
   console.log(videos[video]);
 
+  const getRandomShaanSong = () => Math.floor(Math.random() * 3); // Returns 0, 1, or 2
+
+  // Update audio when artist changes or audio toggle changes
+  useEffect(() => {
+    const currentAudio = audioRef.current;
+
+    if (isAudioOn) {
+      // For Shaan (blue/cyan color), pick random song from first 3
+      // For Masala Coffee (red color), use the last song
+      const songIndex = lightC === "#00FFFF" ? getRandomShaanSong() : 3;
+      currentAudio.src = songs[songIndex];
+      currentAudio.loop = true;
+      setCurrentSong(songname[songIndex]);
+
+      currentAudio
+        .play()
+        .catch((err) => console.log("Audio playback failed:", err));
+    } else {
+      currentAudio.pause();
+      setCurrentSong("");
+    }
+
+    return () => {
+      currentAudio.pause();
+      currentAudio.src = "";
+    };
+  }, [video, isAudioOn, lightC]);
+
   return (
     <div>
       <div className="fixed top-20 w-full z-50 gap-2 flex justify-between p-4 ">
@@ -110,9 +160,8 @@ export default function App() {
             isAudioOn
               ? "bg-gradient-to-r from-pink-300 to-pink-200 text-white"
               : "backdrop-blur-sm bg-transparent text-gray-100 border border-gray-100"
-          }`}
-        >
-          🎵
+          }`}>
+          {isAudioOn ? "🔊" : "🔈"}
         </button>
         <button
           onClick={handleCloseToggle}
@@ -121,8 +170,7 @@ export default function App() {
             camPos[0] === 10 && camPos[1] === 5 && camPos[2] === 10
               ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
+          }`}>
           Close
         </button>
         <button
@@ -132,8 +180,7 @@ export default function App() {
             camPos[0] === 0 && camPos[1] === 12 && camPos[2] === 30
               ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
+          }`}>
           Center
         </button>
         <button
@@ -143,8 +190,7 @@ export default function App() {
             camPos[0] === -30 && camPos[1] === 12 && camPos[2] === 40
               ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
+          }`}>
           Far
         </button>
 
@@ -155,19 +201,17 @@ export default function App() {
             actLight
               ? "bg-gradient-to-r from-yellow-400 to-yellow-100 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
+          }`}>
           💡
         </button>
       </div>
-      <div className="fixed items-centerflex-col z-50 bottom-0 w-full p-4 lg:hidden">
+      <div className="fixed items-centerflex-col z-50 bottom-8 w-full p-4 lg:hidden">
         <div className="flex justify-end gap-2 items-end">
           <div
             onClick={handleBlueClick}
             className={`items-start bg-gradient-to-t from-cyan-400 from-0% via-teal-500/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
               activeGradient === "blue" ? "w-[75%] pr-28" : "w-[25%] pr-4"
-            }`}
-          >
+            }`}>
             <Image
               width={400}
               height={100}
@@ -179,8 +223,7 @@ export default function App() {
             onClick={handleRedClick}
             className={` bg-gradient-to-t  from-red-600 from-0% via-orange-700/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
               activeGradient === "red" ? "w-[75%] pl-16" : "w-[25%] pl-0"
-            }`}
-          >
+            }`}>
             <Image
               width={400}
               height={100}
@@ -191,17 +234,22 @@ export default function App() {
         </div>
       </div>
       <div
-        className={`fixed pointer-events-none bottom-4 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
-      >
+        className={`fixed pointer-events-none bottom-12 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}>
         SINGER SHAAN
       </div>
       <div
-        className={`fixed pointer-events-none bottom-4 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
+        className={`fixed pointer-events-none bottom-12 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
           activeGradient === "red" ? "text-xl" : "text-lg opacity-0"
         }`}
-        style={{ right: "0px" }}
-      >
+        style={{ right: "0px" }}>
         MASALA COFFEE
+      </div>
+      <div className="fixed bottom-2 left-0 w-full z-50 text-center">
+        <div className="px-4 py-2 bg-black/50 rounded-sm mx-4 text-white text-sm w-[calc(100%-32px)] truncate">
+          {isAudioOn && currentSong
+            ? `Now Playing: ${currentSong}`
+            : "Audio Muted"}
+        </div>
       </div>
       <div className="h-screen w-screen z-0 bg-gradient-to-t from-black to-[#080820]">
         <Canvas
@@ -214,15 +262,15 @@ export default function App() {
             preserveDrawingBuffer: true,
           }}
           camera={{ position: [0, 10, 15], near: 5, far: 150 }}
-          style={{ background: "transparent" }}
-        >
+          style={{ background: "transparent" }}>
           <Stage src={videos[video]} />
-          <MasalaModel
-            scale={[4, 4, 4]}
-            position={[-8, 0, -5]}
-            rotation={[0, 0.5, 0]}
-          />
-          <Shaan scale={[1.5, 1.5, 1.5]} position={[0, 0, 0]} />
+
+          {lightC == "#00FFFF" ? (
+            <Shaan scale={[4, 4, 4]} position={[-2, 0, 0]} />
+          ) : (
+            <MasalaModel />
+          )}
+
           <ambientLight intensity={5} />
           <Rig _camPosisiton={camPos} />
 
@@ -276,8 +324,7 @@ export default function App() {
             rotation={[0, Math.PI + Math.PI / 12, 0]}
             onClick={() => {
               handleBlueClick();
-            }}
-          >
+            }}>
             <planeGeometry args={[13.7, 5]} />
 
             <Screen src={videos[0]} />
@@ -287,8 +334,7 @@ export default function App() {
             rotation={[0, Math.PI - Math.PI / 12, 0]}
             onClick={() => {
               handleRedClick();
-            }}
-          >
+            }}>
             <planeGeometry args={[13.7, 5]} />
 
             <Screen src={videos[1]} />
@@ -399,7 +445,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
         animationState.current.elapsed += delta;
         const t = Math.min(
           animationState.current.elapsed / keyframe.duration,
-          1,
+          1
         );
         camera.position.lerpVectors(startPos, keyframe.pos, t);
         camera.lookAt(keyframe.lookAt);
@@ -425,7 +471,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
         const targetPos = new THREE.Vector3(
           _camPosisiton[0]! + offsetX,
           _camPosisiton[1]! + offsetY,
-          _camPosisiton[2],
+          _camPosisiton[2]
         );
         camera.position.lerp(targetPos, 0.05);
         camera.lookAt(look);
@@ -437,7 +483,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
       camera.rotation.set(
         -(mouse.y * factor) - Math.PI / 32,
         -(mouse.x * factor),
-        0,
+        0
       );
     }
   });
