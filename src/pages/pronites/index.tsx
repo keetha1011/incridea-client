@@ -164,7 +164,7 @@ export default function App() {
           <div
             onClick={handleBlueClick}
             className={`items-start bg-gradient-to-t from-cyan-400 from-0% via-teal-500/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
-              activeGradient === "blue" ? "w-[75%] pr-32" : "w-[25%] pr-4"
+              activeGradient === "blue" ? "w-[75%] pr-28" : "w-[25%] pr-4"
             }`}
           >
             <Image
@@ -177,7 +177,7 @@ export default function App() {
           <div
             onClick={handleRedClick}
             className={` bg-gradient-to-t  from-red-600 from-0% via-orange-700/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
-              activeGradient === "red" ? "w-[75%] pl-20" : "w-[25%] pl-0"
+              activeGradient === "red" ? "w-[75%] pl-16" : "w-[25%] pl-0"
             }`}
           >
             <Image
@@ -190,12 +190,12 @@ export default function App() {
         </div>
       </div>
       <div
-        className={`fixed pointer-events-none bottom-4 bg-black/50 backdrop-blur-sm rounded-r-lg rounded-b-none py-1 pr-3 z-50 flex pl-7 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
+        className={`fixed pointer-events-none bottom-4 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
       >
         SINGER SHAAN
       </div>
       <div
-        className={`fixed pointer-events-none bottom-4 bg-black/50 backdrop-blur-sm rounded-l-lg rounded-b-none py-1 pr-7 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
+        className={`fixed pointer-events-none bottom-4 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
           activeGradient === "red" ? "text-xl" : "text-lg opacity-0"
         }`}
         style={{ right: "0px" }}
@@ -215,7 +215,7 @@ export default function App() {
           camera={{ position: [0, 10, 15], near: 5, far: 150 }}
           style={{ background: "transparent" }}
         >
-          <Stage />
+          <Stage src={videos[video]} />
           <ambientLight intensity={1} />
           <Rig _camPosisiton={camPos} />
 
@@ -270,7 +270,7 @@ export default function App() {
           >
             <planeGeometry args={[13.7, 5]} />
 
-            <Screen src={videos[video]} />
+            <Screen src={videos[0]} />
           </mesh>
           <mesh
             position={[32.8, 8.9, -14.8]}
@@ -278,7 +278,7 @@ export default function App() {
           >
             <planeGeometry args={[13.7, 5]} />
 
-            <Screen src={videos[video]} />
+            <Screen src={videos[1]} />
           </mesh>
         </Canvas>
       </div>
@@ -448,6 +448,7 @@ function SpotLights({ lightC }: { lightC: string }) {
 }
 
 function Stage(
+  { src }: { src: string },
   props: React.JSX.IntrinsicAttributes &
     Omit<
       ExtendedColors<
@@ -984,7 +985,7 @@ function Stage(
         rotation={[Math.PI / 2, Math.PI, 0]}
         scale={0.113}
       >
-        <Screen src={videos[1]} />
+        <Screen src={src} />
       </mesh>
       <Box
         scale={[80, 40, 1]}
