@@ -109,7 +109,7 @@ const QuizImageUpload = React.memo(
           )}
         </div>
         <UploadButton
-          endpoint="quizQuestionImgUploader"
+          endpoint="quiz"
           className="mt-6"
           onBeforeUploadBegin={(files) => {
             //   setImage(files[0]!);

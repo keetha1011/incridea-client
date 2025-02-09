@@ -3,6 +3,7 @@ import { type FC } from "react";
 import { toast, Toaster } from "react-hot-toast";
 
 import Button from "~/components/button";
+import { CONSTANT } from "~/constants";
 import { OrganizerRegisterSoloDocument } from "~/generated/generated";
 import { pidToId } from "~/utils/id";
 
@@ -23,7 +24,9 @@ const AddParticipantToEvent: FC<{
           await register({
             variables: {
               eventId,
-              userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,
+              userId: userId.startsWith(CONSTANT.PID_FORMAT)
+                ? pidToId(userId)
+                : userId,
             },
           }).then((res) => {
             if (res.data?.organizerRegisterSolo.__typename === "Error") {

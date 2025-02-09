@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { type NextPage } from "next";
 import SponsorGearCarousel from "~/components/sponsorsCard";
-import sponsors from "~/constants/sponsors";
 import { ArrowDown, MousePointerClick, Volume2, VolumeX } from "lucide-react";
+
+import { CONSTANT } from "~/constants";
 
 const Sponsors: NextPage = () => {
   const [showAudioHelper, setShowAudioHelper] = useState(true);
@@ -64,7 +65,7 @@ const Sponsors: NextPage = () => {
           {/* Scrollable carousel container */}
           <div className="absolute inset-0 min-h-[450px]">
             <SponsorGearCarousel
-              sponsors={sponsors}
+              sponsors={CONSTANT.SPONSORS}
               isSoundEnabled={isSoundEnabled}
               setIsSoundEnabled={setIsSoundEnabled}
             />

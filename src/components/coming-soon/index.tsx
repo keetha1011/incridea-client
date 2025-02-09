@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import MorphingText from "~/components/text-morph-component";
 import ShootingStars from "./shooting-stars";
 import gsap from "gsap";
+import { CONSTANT } from "~/constants";
 
 const ComingSoonComponent = () => {
   useEffect(() => {
@@ -43,7 +44,7 @@ const ComingSoonComponent = () => {
 
   return (
     <a
-      href="https://www.instagram.com/reel/DE2IY6FvbTm/?igsh=MTdsbnc1bjMyaXZuYw=="
+      href={CONSTANT.URL.VIDEO.THEME_REVEAL}
       className="relative w-full h-screen select-none flex-col flex items-center justify-center overflow-hidden"
       style={{
         background: `radial-gradient(circle at 50% 50%, #033137 0%, #137C2D 70%)`,
@@ -58,7 +59,6 @@ const ComingSoonComponent = () => {
         alt="logo"
         className="w-52 lg:w-96 aspect-auto"
       />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <div className="md:w-[60%] w-[80%] h-52 lg:h-96 z-20 flex justify-center items-center">
         <MorphingText
           texts={["Coming Soon", "Echoes of Eternity"]}

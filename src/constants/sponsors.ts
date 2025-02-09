@@ -7,7 +7,7 @@ type Sponsor = {
   logo: string;
 };
 
-const sponsors: Sponsor[] = [
+const SPONSORS: Sponsor[] = [
   {
     name: "Lotus Properties, Mangalore",
     title: "Sponsor type",
@@ -54,5 +54,5 @@ const sponsors: Sponsor[] = [
   },
 ];
 
-export default sponsors;
+export { SPONSORS };
 export type { Sponsor };
