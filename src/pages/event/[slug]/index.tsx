@@ -259,11 +259,18 @@ const Page = ({ event, error }: Props) => {
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
-                              <BsFillCalendar2WeekFill />
-                              {round.date?.toLocaleDateString("en-IN", {
-                                day: "numeric",
-                                month: "short",
-                              })}
+                              <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
+                                <BsFillCalendar2WeekFill />
+                              </span>
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      day: "numeric",
+                                      month: "short",
+                                    },
+                                  )
+                                : ""}
                             </p>
                             <p
                               className={`flex items-center gap-2`}
@@ -272,11 +279,16 @@ const Page = ({ event, error }: Props) => {
                               <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
                                 <BiTimeFive />
                               </span>
-                              {round.date?.toLocaleDateString("en-IN", {
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              })}
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                      hour12: true,
+                                    },
+                                  )
+                                : ""}
                             </p>
                           </div>
                         </div>
@@ -285,11 +297,19 @@ const Page = ({ event, error }: Props) => {
                   </div>
                 </div>
                 <div className={`order-1 mt-3 flex w-full justify-center`}>
-                  <EventRegistration
-                    fees={event.fees}
-                    eventId={event.id}
-                    type={event.eventType}
-                  />
+                  {event.name.toLowerCase() !== "lazzerena" ? ( //todo -> check the event name and id in db
+                    <EventRegistration
+                      fees={event.fees}
+                      eventId={event.id}
+                      type={event.eventType}
+                    />
+                  ) : (
+                    <div
+                      className={`rounded-sm p-2.5 px-3 font-semibold italic text-[#D79128]`}
+                    >
+                      On-spot registrations only
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -321,7 +341,6 @@ const Page = ({ event, error }: Props) => {
                               <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
                                 <MdOutlineMailOutline className={`text-lg`} />{" "}
                               </span>
-
                               {organizer.user.email}
                             </a>
                           )}
