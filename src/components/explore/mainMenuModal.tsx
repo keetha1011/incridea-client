@@ -8,7 +8,6 @@ import { useLayoutEffect, useEffect, useRef } from "react";
 
 import Button from "~/components/button";
 import Spinner from "~/components/spinner";
-import { env } from "~/env";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 
@@ -18,9 +17,9 @@ type Props = {
 };
 
 const MainMenuModal: React.FunctionComponent<Props> = ({
-                                                         showModal,
-                                                         setShowModal
-                                                       }) => {
+  showModal,
+  setShowModal,
+}) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -34,8 +33,7 @@ const MainMenuModal: React.FunctionComponent<Props> = ({
       className="fixed inset-0 z-[9999] h-screen w-screen backdrop-blur-sm"
     >
       <div className="relative h-full w-full">
-        <div
-          className="absolute left-2/4 top-2/4 z-[9999] h-[85%] w-[85%] -translate-x-2/4 -translate-y-2/4 overflow-clip rounded-xl bg-blue-400">
+        <div className="absolute left-2/4 top-2/4 z-[9999] h-[85%] w-[85%] -translate-x-2/4 -translate-y-2/4 overflow-clip rounded-xl bg-blue-400">
           <HomeUi />
           <Menu
             router={router}
@@ -60,7 +58,7 @@ const HomeUi: React.FunctionComponent = () => {
   useLayoutEffect(() => {
     if (sceneRef.current)
       new Parallax(sceneRef.current, {
-        relativeInput: true
+        relativeInput: true,
       });
   });
 
@@ -74,13 +72,13 @@ const HomeUi: React.FunctionComponent = () => {
       duration: 0,
       scale: 3,
       opacity: 0.6,
-      zIndex: 9999
+      zIndex: 9999,
     });
 
     gsap.to(Logo.current, {
       duration: 2,
       scale: 1,
-      opacity: 1
+      opacity: 1,
     });
   });
 
@@ -91,8 +89,7 @@ const HomeUi: React.FunctionComponent = () => {
         className="relative min-h-screen bg-cover z-0 right-32 scale-[120%] select-none pointer-events-none"
       >
         <div className="absolute h-screen w-screen" data-depth="0.2">
-          <div
-            className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
+          <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
               src={"/assets/landing/background.webp"}
               priority
@@ -208,7 +205,7 @@ const Menu: React.FunctionComponent<{
     { href: "/pronites", target: "Pronite" },
     { href: "/gallery", target: "Gallery" },
     { href: "/about", target: "About" },
-    { href: "/sponsors", target: "Sponsors" }
+    { href: "/sponsors", target: "Sponsors" },
   ];
 
   const { user, loading } = useAuth();
@@ -238,7 +235,7 @@ const Menu: React.FunctionComponent<{
       <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
         <h3
           className={cn(
-            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block"
+            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
             // VikingHell.className,
           )}
         >

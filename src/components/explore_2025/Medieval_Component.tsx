@@ -1,5 +1,4 @@
 import React, { Suspense, useState, useEffect } from "react";
-import { Button } from "@headlessui/react";
 import * as UIButtons from "~/components/explore_2025/UI";
 import { Canvas } from "@react-three/fiber";
 import { KeyboardControls } from "@react-three/drei";
@@ -16,8 +15,8 @@ const maps = {
   medieval_fantasy_book: {
     scale: 0.4,
     position: [-4, -3, -6],
-    rotation: [10, 0]
-  }
+    rotation: [10, 0],
+  },
 };
 
 const keyboardMap = [
@@ -26,14 +25,14 @@ const keyboardMap = [
   { name: "left", keys: ["ArrowLeft", "KeyA"] },
   { name: "right", keys: ["ArrowRight", "KeyD"] },
   { name: "run", keys: ["Shift"] },
-  { name: "jump", keys: ["Space"] }
+  { name: "jump", keys: ["Space"] },
 ];
 
 export const Experience = () => {
   const [isLandscape, setIsLandscape] = useState(
     typeof window !== "undefined"
       ? window.innerWidth > window.innerHeight
-      : true
+      : true,
   );
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export const Experience = () => {
           camera={{
             position: [0, 0, 0],
             near: 0.01,
-            fov: isLandscape ? 60 : 100
+            fov: isLandscape ? 60 : 100,
           }}
           className="absolute inset-0"
           gl={{ antialias: false, pixelRatio: 0.1 }}

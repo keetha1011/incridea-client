@@ -10,7 +10,7 @@ import {
 import { cn } from "~/lib/utils";
 
 // Format: { THEME_NAME: CSS_SELECTOR }
-const THEMES = { light: "", dark: ".dark" } as const;
+const THEMES = { light: "", dark: ".dark" } as { [k: string]: string };
 
 export type ChartConfig = {
   [k in string]: {
@@ -86,7 +86,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
         __html: Object.entries(THEMES)
           .map(
             ([theme, prefix]) => `
-${prefix} [data-chart=${id}] {
+${prefix} [data-chart=${id}] {z
 ${colorConfig
   .map(([key, itemConfig]) => {
     const color = itemConfig.theme?.[theme] ?? itemConfig.color;

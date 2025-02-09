@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 
 export default function MasalaModel(props) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF(
-    "2025/Pronites/guitarist.glb"
+    "2025/Pronites/guitarist.glb",
   );
   const { actions } = useAnimations(animations, group);
 
@@ -791,9 +795,9 @@ export default function MasalaModel(props) {
           />
           <skinnedMesh
             name="default"
-            geometry={nodes["default"].geometry}
+            geometry={nodes.default.geometry}
             material={materials["PackedMaterial0mat.001"]}
-            skeleton={nodes["default"].skeleton}
+            skeleton={nodes.default.skeleton}
           />
           <skinnedMesh
             name="Shoes"

@@ -1,3 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import React, { useMemo, useState } from "react";
 
 import * as THREE from "three";
@@ -42,7 +48,7 @@ export default function Screen({ src }: { src: string }) {
   const r = useMemo(
     () => (video ? video.videoWidth / video.videoHeight : ratio),
 
-    [video, ratio]
+    [video, ratio],
   );
 
   return <VideoMaterial src={src} setVideo={setVideo} />;

@@ -14,7 +14,6 @@ const Inc23 = ({
   clockPos: { x: number; y: number };
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [prevIndex, setPrevIndex] = useState(0);
   const [activeModal, setActiveModal] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -32,7 +31,6 @@ const Inc23 = ({
             imgArr={imgArr}
             currentIndex={currentIndex}
             setCurrentIndex={setCurrentIndex}
-            setPrevIndex={setPrevIndex}
             clockPos={clockPos}
           />
         </Suspense>
@@ -73,6 +71,7 @@ const Inc23 = ({
                       "transform 1s ease-in-out, opacity 1s ease-in-out",
                   }}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={imgArr[index]}
                     onClick={() => handleImageClick(index)}
@@ -104,13 +103,11 @@ const Model = ({
   imgArr,
   currentIndex,
   setCurrentIndex,
-  setPrevIndex,
   clockPos,
 }: {
   imgArr: string[];
   currentIndex: number;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
-  setPrevIndex: React.Dispatch<React.SetStateAction<number>>;
   clockPos: { x: number; y: number };
 }) => {
   const pendulumRef = useRef<THREE.Object3D | null>(null);
@@ -153,8 +150,6 @@ const Model = ({
       loader.setDRACOLoader(dracoLoader);
     },
   );
-  const { nodes, materials } = gltf;
-  const meshBottom = nodes.Mesh_1 as THREE.Mesh;
 
   useEffect(() => {
     if (pendulumRef.current && pivotRef.current) {
@@ -170,7 +165,6 @@ const Model = ({
         yoyo: true,
         onRepeat: () => {
           setCurrentIndex((prevIndex) => (prevIndex + 1) % imgArr.length);
-          setPrevIndex((prevIndex) => (prevIndex - 1) % imgArr.length);
         },
       });
     }
