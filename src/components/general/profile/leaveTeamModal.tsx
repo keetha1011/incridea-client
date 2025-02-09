@@ -1,11 +1,18 @@
 import { useMutation } from "@apollo/client";
 import React, { type FC, useState } from "react";
 import { toast } from "react-hot-toast";
+import { FaSignOutAlt } from "react-icons/fa";
 
-import Button from "~/components/button";
-import Modal from "~/components/modal";
-import Spinner from "~/components/spinner";
+import { Button } from "~/components/button/button";
 import { LeaveTeamDocument } from "~/generated/generated";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "~/components/modal/modal";
 
 const LeaveTeamModal: FC<{
   refetch: string;
@@ -43,44 +50,38 @@ const LeaveTeamModal: FC<{
   return (
     <>
       <Button
-        size={"small"}
-        className="bodyFont mt-3 w-fit !skew-x-0 justify-center rounded-full !px-5 !tracking-normal"
+        variant={"destructive"}
         onClick={() => {
           setShowModal(true);
         }}
-        intent={"primary"}
-        fullWidth
       >
-        Leave Team
+        <FaSignOutAlt />
       </Button>
-      <Modal
-        title={`Are you sure you want to confirm the team?`}
-        showModal={showModal}
-        onClose={handleCloseModal}
-        size={"small"}
-      >
-        <div className="mt-2 px-5 text-center text-sm">
-          Are you sure you want to leave the team?
-        </div>
-        <div className="my-5 flex justify-center gap-3">
-          <Button
-            size={"small"}
-            onClick={async () => await handleLeave(teamId)}
-            disabled={loading}
-            className="bodyFont !skew-x-0 justify-center rounded-full !tracking-normal"
-          >
-            {loading ? <Spinner intent={"white"} size={"small"} /> : "Leave"}
-          </Button>
-          <Button
-            size={"small"}
-            intent={"ghost"}
-            onClick={() => handleCloseModal()}
-            className="bodyFont !skew-x-0 justify-center rounded-full !tracking-normal"
-          >
-            Cancel
-          </Button>
-        </div>
-      </Modal>
+
+      <Dialog open={showModal} onOpenChange={setShowModal}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              You will opt out from participating in the Event. This cannot be
+              undone
+            </DialogDescription>
+          </DialogHeader>
+          <div className="w-full flex flex-row flex-nowrap justify-center gap-4">
+            <DialogClose asChild>
+              <Button variant={"destructive"}>Cancel</Button>
+            </DialogClose>
+            <Button
+              variant={"default"}
+              onClick={async () => {
+                await handleLeave(teamId);
+              }}
+            >
+              Confirm
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

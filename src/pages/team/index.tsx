@@ -4,7 +4,7 @@ import TeamCard from "~/components/general/about/teamCard";
 
 const Team: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col gap-y-8 bg-[#7628d0] pb-10 pt-32">
+    <div className="flex min-h-screen flex-col gap-y-8 bg-transparent pb-10 pt-32">
       <div className="px-4">
         <h1
           className={`text-center font-PressStart text-2xl font-bold text-white lg:text-4xl`}

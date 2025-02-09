@@ -312,7 +312,7 @@ export type Mutation = {
   joinTeam: MutationJoinTeamResult;
   leaveTeam: MutationLeaveTeamResult;
   login: MutationLoginResult;
-  notifyParticipants: Scalars["String"]["output"];
+  notifyParticipants: MutationNotifyParticipantsResult;
   organizerAddTeamMember: MutationOrganizerAddTeamMemberResult;
   organizerCreateTeam: MutationOrganizerCreateTeamResult;
   organizerDeleteTeam: MutationOrganizerDeleteTeamResult;
@@ -334,7 +334,7 @@ export type Mutation = {
   resetPassword: MutationResetPasswordResult;
   sendEmailVerification: MutationSendEmailVerificationResult;
   sendPasswordResetEmail: MutationSendPasswordResetEmailResult;
-  sendWinnerWhatsAppNotification: Scalars["String"]["output"];
+  sendWinnerWhatsAppNotification: MutationSendWinnerWhatsAppNotificationResult;
   signUp: MutationSignUpResult;
   submitQuiz: MutationSubmitQuizResult;
   updateCard: MutationUpdateCardResult;
@@ -976,6 +976,15 @@ export type MutationLoginSuccess = {
   data: UserLoginPayload;
 };
 
+export type MutationNotifyParticipantsResult =
+  | Error
+  | MutationNotifyParticipantsSuccess;
+
+export type MutationNotifyParticipantsSuccess = {
+  __typename?: "MutationNotifyParticipantsSuccess";
+  data: Scalars["String"]["output"];
+};
+
 export type MutationOrganizerAddTeamMemberResult =
   | Error
   | MutationOrganizerAddTeamMemberSuccess;
@@ -1148,6 +1157,15 @@ export type MutationSendPasswordResetEmailSuccess = {
   data: Scalars["String"]["output"];
 };
 
+export type MutationSendWinnerWhatsAppNotificationResult =
+  | Error
+  | MutationSendWinnerWhatsAppNotificationSuccess;
+
+export type MutationSendWinnerWhatsAppNotificationSuccess = {
+  __typename?: "MutationSendWinnerWhatsAppNotificationSuccess";
+  data: Scalars["String"]["output"];
+};
+
 export type MutationSignUpResult = Error | MutationSignUpSuccess;
 
 export type MutationSignUpSuccess = {
@@ -1313,11 +1331,11 @@ export type ProniteRegistrationCounts = {
 
 export type Query = {
   __typename?: "Query";
-  accommodationRequestByDay: Array<UserInHotel>;
-  accommodationRequestByHotel: Array<UserInHotel>;
+  accommodationRequestByDay: QueryAccommodationRequestByDayResult;
+  accommodationRequestByHotel: QueryAccommodationRequestByHotelResult;
   accommodationRequests: QueryAccommodationRequestsResult;
-  accommodationRequestsByUser: Array<UserInHotel>;
-  accommodationRequestsByUserId: Array<UserInHotel>;
+  accommodationRequestsByUser: QueryAccommodationRequestsByUserResult;
+  accommodationRequestsByUserId: QueryAccommodationRequestsByUserIdResult;
   allWinners: QueryAllWinnersResult;
   attemptQuiz: QueryAttemptQuizResult;
   colleges: QueryCollegesResult;
@@ -1348,13 +1366,13 @@ export type Query = {
   getScoreSheetJuryView: QueryGetScoreSheetJuryViewResult;
   getStoneVisibilities: QueryGetStoneVisibilitiesResult;
   getSubmissionByUser: QueryGetSubmissionByUserResult;
-  getTotalRegistrations: EventRegistrationsCount;
+  getTotalRegistrations: QueryGetTotalRegistrationsResult;
   getTotalScores: QueryGetTotalScoresResult;
-  getUserAccommodation?: Maybe<UserInHotel>;
+  getUserAccommodation?: Maybe<QueryGetUserAccommodationResult>;
   getUserLevelScore: QueryGetUserLevelScoreResult;
   getUserXp: QueryGetUserXpResult;
   getXpLeaderboard: QueryGetXpLeaderboardResult;
-  judgeGetTeamsByRound: Array<Team>;
+  judgeGetTeamsByRound: QueryJudgeGetTeamsByRoundResult;
   me: QueryMeResult;
   myTeam: QueryMyTeamResult;
   publishedEvents: Array<Event>;
@@ -1536,6 +1554,42 @@ export type QueryVerifyQuizPasswordArgs = {
 
 export type QueryWinnersByEventArgs = {
   eventId: Scalars["ID"]["input"];
+};
+
+export type QueryAccommodationRequestByDayResult =
+  | Error
+  | QueryAccommodationRequestByDaySuccess;
+
+export type QueryAccommodationRequestByDaySuccess = {
+  __typename?: "QueryAccommodationRequestByDaySuccess";
+  data: Array<UserInHotel>;
+};
+
+export type QueryAccommodationRequestByHotelResult =
+  | Error
+  | QueryAccommodationRequestByHotelSuccess;
+
+export type QueryAccommodationRequestByHotelSuccess = {
+  __typename?: "QueryAccommodationRequestByHotelSuccess";
+  data: Array<UserInHotel>;
+};
+
+export type QueryAccommodationRequestsByUserIdResult =
+  | Error
+  | QueryAccommodationRequestsByUserIdSuccess;
+
+export type QueryAccommodationRequestsByUserIdSuccess = {
+  __typename?: "QueryAccommodationRequestsByUserIdSuccess";
+  data: Array<UserInHotel>;
+};
+
+export type QueryAccommodationRequestsByUserResult =
+  | Error
+  | QueryAccommodationRequestsByUserSuccess;
+
+export type QueryAccommodationRequestsByUserSuccess = {
+  __typename?: "QueryAccommodationRequestsByUserSuccess";
+  data: Array<UserInHotel>;
 };
 
 export type QueryAccommodationRequestsResult =
@@ -1750,11 +1804,29 @@ export type QueryGetSubmissionByUserSuccess = {
   data: Array<AllSubmissions>;
 };
 
+export type QueryGetTotalRegistrationsResult =
+  | Error
+  | QueryGetTotalRegistrationsSuccess;
+
+export type QueryGetTotalRegistrationsSuccess = {
+  __typename?: "QueryGetTotalRegistrationsSuccess";
+  data: EventRegistrationsCount;
+};
+
 export type QueryGetTotalScoresResult = Error | QueryGetTotalScoresSuccess;
 
 export type QueryGetTotalScoresSuccess = {
   __typename?: "QueryGetTotalScoresSuccess";
   data: Array<TotalScores>;
+};
+
+export type QueryGetUserAccommodationResult =
+  | Error
+  | QueryGetUserAccommodationSuccess;
+
+export type QueryGetUserAccommodationSuccess = {
+  __typename?: "QueryGetUserAccommodationSuccess";
+  data: UserInHotel;
 };
 
 export type QueryGetUserLevelScoreResult =
@@ -1778,6 +1850,15 @@ export type QueryGetXpLeaderboardResult = Error | QueryGetXpLeaderboardSuccess;
 export type QueryGetXpLeaderboardSuccess = {
   __typename?: "QueryGetXpLeaderboardSuccess";
   data: Array<Xp>;
+};
+
+export type QueryJudgeGetTeamsByRoundResult =
+  | Error
+  | QueryJudgeGetTeamsByRoundSuccess;
+
+export type QueryJudgeGetTeamsByRoundSuccess = {
+  __typename?: "QueryJudgeGetTeamsByRoundSuccess";
+  data: Array<Team>;
 };
 
 export type QueryMeResult = Error | QueryMeSuccess;
@@ -2016,7 +2097,7 @@ export type Submission = {
 export type Subscription = {
   __typename?: "Subscription";
   getRoundStatus: SubscriptionGetRoundStatusResult;
-  judgeGetTeamsByRound: Array<Team>;
+  judgeGetTeamsByRound: SubscriptionJudgeGetTeamsByRoundResult;
 };
 
 export type SubscriptionGetRoundStatusArgs = {
@@ -2036,6 +2117,15 @@ export type SubscriptionGetRoundStatusResult =
 export type SubscriptionGetRoundStatusSuccess = {
   __typename?: "SubscriptionGetRoundStatusSuccess";
   data: Round;
+};
+
+export type SubscriptionJudgeGetTeamsByRoundResult =
+  | Error
+  | SubscriptionJudgeGetTeamsByRoundSuccess;
+
+export type SubscriptionJudgeGetTeamsByRoundSuccess = {
+  __typename?: "SubscriptionJudgeGetTeamsByRoundSuccess";
+  data: Array<Team>;
 };
 
 export type Team = {
@@ -2076,6 +2166,7 @@ export type User = {
   phoneNumber?: Maybe<Scalars["String"]["output"]>;
   profileImage?: Maybe<Scalars["String"]["output"]>;
   role: Role;
+  stoneVisibilities: Scalars["String"]["output"];
   xp?: Maybe<Array<Xp>>;
 };
 
@@ -2695,7 +2786,9 @@ export type NotifyParticipantsMutationVariables = Exact<{
 
 export type NotifyParticipantsMutation = {
   __typename?: "Mutation";
-  notifyParticipants: string;
+  notifyParticipants:
+    | { __typename: "Error"; message: string }
+    | { __typename: "MutationNotifyParticipantsSuccess"; data: string };
 };
 
 export type OrganizerAddTeamMemberMutationVariables = Exact<{
@@ -3004,7 +3097,12 @@ export type SendWinnerWhatsAppNotificationMutationVariables = Exact<{
 
 export type SendWinnerWhatsAppNotificationMutation = {
   __typename?: "Mutation";
-  sendWinnerWhatsAppNotification: string;
+  sendWinnerWhatsAppNotification:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "MutationSendWinnerWhatsAppNotificationSuccess";
+        data: string;
+      };
 };
 
 export type SignInMutationVariables = Exact<{
@@ -3174,6 +3272,17 @@ export type UpdateQuizStatusMutation = {
     | { __typename: "MutationUpdateQuizStatusSuccess" };
 };
 
+export type UpdateStoneVisibilitiesMutationVariables = Exact<{
+  stoneId?: InputMaybe<Scalars["String"]["input"]>;
+}>;
+
+export type UpdateStoneVisibilitiesMutation = {
+  __typename?: "Mutation";
+  updateStoneVisibilities:
+    | { __typename: "Error"; message: string }
+    | { __typename: "MutationUpdateStoneVisibilitiesSuccess" };
+};
+
 export type VerifyEmailMutationVariables = Exact<{
   token: Scalars["String"]["input"];
 }>;
@@ -3191,37 +3300,46 @@ export type AccommodationRequestByDayQueryVariables = Exact<{
 
 export type AccommodationRequestByDayQuery = {
   __typename?: "Query";
-  accommodationRequestByDay: Array<{
-    __typename?: "UserInHotel";
-    checkIn?: Date | null;
-    checkOut?: Date | null;
-    createdAt?: Date | null;
-    gender: Gender;
-    id: string;
-    room?: string | null;
-    ac: boolean;
-    status: AccommodationBookingStatus;
-    updatedAt?: Date | null;
-    hotel: {
-      __typename?: "Hotel";
-      createdAt?: Date | null;
-      details?: string | null;
-      id: string;
-      name: string;
-      price: number;
-      updatedAt?: Date | null;
-    };
-    user: {
-      __typename?: "User";
-      createdAt: Date;
-      email: string;
-      id: string;
-      isVerified: boolean;
-      name: string;
-      phoneNumber?: string | null;
-      college?: { __typename?: "College"; id: string; name: string } | null;
-    };
-  }>;
+  accommodationRequestByDay:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryAccommodationRequestByDaySuccess";
+        data: Array<{
+          __typename?: "UserInHotel";
+          checkIn?: Date | null;
+          checkOut?: Date | null;
+          createdAt?: Date | null;
+          gender: Gender;
+          id: string;
+          room?: string | null;
+          ac: boolean;
+          status: AccommodationBookingStatus;
+          updatedAt?: Date | null;
+          hotel: {
+            __typename?: "Hotel";
+            createdAt?: Date | null;
+            details?: string | null;
+            id: string;
+            name: string;
+            price: number;
+            updatedAt?: Date | null;
+          };
+          user: {
+            __typename?: "User";
+            createdAt: Date;
+            email: string;
+            id: string;
+            isVerified: boolean;
+            name: string;
+            phoneNumber?: string | null;
+            college?: {
+              __typename?: "College";
+              id: string;
+              name: string;
+            } | null;
+          };
+        }>;
+      };
 };
 
 export type AccommodationRequestByHotelQueryVariables = Exact<{
@@ -3230,37 +3348,46 @@ export type AccommodationRequestByHotelQueryVariables = Exact<{
 
 export type AccommodationRequestByHotelQuery = {
   __typename?: "Query";
-  accommodationRequestByHotel: Array<{
-    __typename?: "UserInHotel";
-    checkIn?: Date | null;
-    checkOut?: Date | null;
-    createdAt?: Date | null;
-    gender: Gender;
-    id: string;
-    room?: string | null;
-    ac: boolean;
-    status: AccommodationBookingStatus;
-    updatedAt?: Date | null;
-    hotel: {
-      __typename?: "Hotel";
-      createdAt?: Date | null;
-      details?: string | null;
-      id: string;
-      name: string;
-      price: number;
-      updatedAt?: Date | null;
-    };
-    user: {
-      __typename?: "User";
-      createdAt: Date;
-      email: string;
-      id: string;
-      isVerified: boolean;
-      name: string;
-      phoneNumber?: string | null;
-      college?: { __typename?: "College"; id: string; name: string } | null;
-    };
-  }>;
+  accommodationRequestByHotel:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryAccommodationRequestByHotelSuccess";
+        data: Array<{
+          __typename?: "UserInHotel";
+          checkIn?: Date | null;
+          checkOut?: Date | null;
+          createdAt?: Date | null;
+          gender: Gender;
+          id: string;
+          room?: string | null;
+          ac: boolean;
+          status: AccommodationBookingStatus;
+          updatedAt?: Date | null;
+          hotel: {
+            __typename?: "Hotel";
+            createdAt?: Date | null;
+            details?: string | null;
+            id: string;
+            name: string;
+            price: number;
+            updatedAt?: Date | null;
+          };
+          user: {
+            __typename?: "User";
+            createdAt: Date;
+            email: string;
+            id: string;
+            isVerified: boolean;
+            name: string;
+            phoneNumber?: string | null;
+            college?: {
+              __typename?: "College";
+              id: string;
+              name: string;
+            } | null;
+          };
+        }>;
+      };
 };
 
 export type AccommodationRequestsQueryVariables = Exact<{
@@ -3315,14 +3442,19 @@ export type AccommodationRequestsByUserQueryVariables = Exact<{
 
 export type AccommodationRequestsByUserQuery = {
   __typename?: "Query";
-  accommodationRequestsByUser: Array<{
-    __typename?: "UserInHotel";
-    checkIn?: Date | null;
-    checkOut?: Date | null;
-    room?: string | null;
-    status: AccommodationBookingStatus;
-    hotel: { __typename?: "Hotel"; name: string; price: number };
-  }>;
+  accommodationRequestsByUser:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryAccommodationRequestsByUserSuccess";
+        data: Array<{
+          __typename?: "UserInHotel";
+          checkIn?: Date | null;
+          checkOut?: Date | null;
+          room?: string | null;
+          status: AccommodationBookingStatus;
+          hotel: { __typename?: "Hotel"; name: string; price: number };
+        }>;
+      };
 };
 
 export type AccommodationRequestsByUserIdQueryVariables = Exact<{
@@ -3331,33 +3463,38 @@ export type AccommodationRequestsByUserIdQueryVariables = Exact<{
 
 export type AccommodationRequestsByUserIdQuery = {
   __typename?: "Query";
-  accommodationRequestsByUserId: Array<{
-    __typename?: "UserInHotel";
-    ac: boolean;
-    checkIn?: Date | null;
-    checkOut?: Date | null;
-    createdAt?: Date | null;
-    gender: Gender;
-    IdCard?: string | null;
-    room?: string | null;
-    status: AccommodationBookingStatus;
-    hotel: {
-      __typename?: "Hotel";
-      details?: string | null;
-      createdAt?: Date | null;
-      id: string;
-      name: string;
-      price: number;
-    };
-    user: {
-      __typename?: "User";
-      email: string;
-      isVerified: boolean;
-      name: string;
-      phoneNumber?: string | null;
-      college?: { __typename?: "College"; name: string } | null;
-    };
-  }>;
+  accommodationRequestsByUserId:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryAccommodationRequestsByUserIdSuccess";
+        data: Array<{
+          __typename?: "UserInHotel";
+          ac: boolean;
+          checkIn?: Date | null;
+          checkOut?: Date | null;
+          createdAt?: Date | null;
+          gender: Gender;
+          IdCard?: string | null;
+          room?: string | null;
+          status: AccommodationBookingStatus;
+          hotel: {
+            __typename?: "Hotel";
+            details?: string | null;
+            createdAt?: Date | null;
+            id: string;
+            name: string;
+            price: number;
+          };
+          user: {
+            __typename?: "User";
+            email: string;
+            isVerified: boolean;
+            name: string;
+            phoneNumber?: string | null;
+            college?: { __typename?: "College"; name: string } | null;
+          };
+        }>;
+      };
 };
 
 export type AttemptQuizQueryVariables = Exact<{
@@ -4112,6 +4249,17 @@ export type GetScoreSheetJuryQuery = {
       };
 };
 
+export type GetStoneVisibilitiesQueryVariables = Exact<{
+  [key: string]: never;
+}>;
+
+export type GetStoneVisibilitiesQuery = {
+  __typename?: "Query";
+  getStoneVisibilities:
+    | { __typename: "Error"; message: string }
+    | { __typename: "QueryGetStoneVisibilitiesSuccess"; data: string };
+};
+
 export type GetTeamDetailsQueryVariables = Exact<{
   eventId: Scalars["ID"]["input"];
 }>;
@@ -4139,11 +4287,16 @@ export type GetTotalRegistrationsQueryVariables = Exact<{
 
 export type GetTotalRegistrationsQuery = {
   __typename?: "Query";
-  getTotalRegistrations: {
-    __typename?: "EventRegistrationsCount";
-    externalRegistrations: number;
-    internalRegistrations: number;
-  };
+  getTotalRegistrations:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "QueryGetTotalRegistrationsSuccess";
+        data: {
+          __typename?: "EventRegistrationsCount";
+          externalRegistrations: number;
+          internalRegistrations: number;
+        };
+      };
 };
 
 export type GetTotalScoresQueryVariables = Exact<{
@@ -4580,17 +4733,22 @@ export type JudgeGetTeamsByRoundSubscriptionVariables = Exact<{
 
 export type JudgeGetTeamsByRoundSubscription = {
   __typename?: "Subscription";
-  judgeGetTeamsByRound: Array<{
-    __typename?: "Team";
-    id: string;
-    name: string;
-    roundNo: number;
-    leaderId?: number | null;
-    members: Array<{
-      __typename?: "TeamMember";
-      user: { __typename?: "User"; id: string };
-    }>;
-  }>;
+  judgeGetTeamsByRound:
+    | { __typename: "Error"; message: string }
+    | {
+        __typename: "SubscriptionJudgeGetTeamsByRoundSuccess";
+        data: Array<{
+          __typename?: "Team";
+          id: string;
+          name: string;
+          roundNo: number;
+          leaderId?: number | null;
+          members: Array<{
+            __typename?: "TeamMember";
+            user: { __typename?: "User"; id: string };
+          }>;
+        }>;
+      };
 };
 
 export const AddAccommodationRequestDocument = {
@@ -8937,6 +9095,51 @@ export const NotifyParticipantsDocument = {
                 },
               },
             ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationNotifyParticipantsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "data" } },
+                    ],
+                  },
+                },
+              ],
+            },
           },
         ],
       },
@@ -11303,6 +11506,51 @@ export const SendWinnerWhatsAppNotificationDocument = {
                 },
               },
             ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationSendWinnerWhatsAppNotificationSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "data" } },
+                    ],
+                  },
+                },
+              ],
+            },
           },
         ],
       },
@@ -12709,6 +12957,93 @@ export const UpdateQuizStatusDocument = {
   UpdateQuizStatusMutation,
   UpdateQuizStatusMutationVariables
 >;
+export const UpdateStoneVisibilitiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateStoneVisibilities" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "stoneId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+          defaultValue: { kind: "StringValue", value: "", block: false },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateStoneVisibilities" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "stoneVisibilities" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "stoneId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "MutationUpdateStoneVisibilitiesSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateStoneVisibilitiesMutation,
+  UpdateStoneVisibilitiesMutationVariables
+>;
 export const VerifyEmailDocument = {
   kind: "Document",
   definitions: [
@@ -12834,76 +13169,172 @@ export const AccommodationRequestByDayDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "checkIn" } },
-                { kind: "Field", name: { kind: "Name", value: "checkOut" } },
-                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
-                { kind: "Field", name: { kind: "Name", value: "gender" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "hotel" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "createdAt" },
+                        name: { kind: "Name", value: "__typename" },
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "details" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      { kind: "Field", name: { kind: "Name", value: "price" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "updatedAt" },
+                        name: { kind: "Name", value: "message" },
                       },
                     ],
                   },
                 },
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "room" } },
-                { kind: "Field", name: { kind: "Name", value: "ac" } },
-                { kind: "Field", name: { kind: "Name", value: "status" } },
-                { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "user" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryAccommodationRequestByDaySuccess",
+                    },
+                  },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "college" },
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkIn" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkOut" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gender" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "hotel" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "details" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "price" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "updatedAt" },
+                                  },
+                                ],
+                              },
+                            },
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "id" },
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "name" },
+                              name: { kind: "Name", value: "room" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "ac" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "updatedAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "user" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "college" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "email" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "isVerified" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "phoneNumber",
+                                    },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "createdAt" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "email" } },
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "isVerified" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "phoneNumber" },
                       },
                     ],
                   },
@@ -12958,76 +13389,172 @@ export const AccommodationRequestByHotelDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "checkIn" } },
-                { kind: "Field", name: { kind: "Name", value: "checkOut" } },
-                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
-                { kind: "Field", name: { kind: "Name", value: "gender" } },
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "room" } },
-                { kind: "Field", name: { kind: "Name", value: "ac" } },
-                { kind: "Field", name: { kind: "Name", value: "status" } },
-                { kind: "Field", name: { kind: "Name", value: "updatedAt" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "hotel" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "createdAt" },
-                      },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "details" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      { kind: "Field", name: { kind: "Name", value: "price" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "updatedAt" },
-                      },
-                    ],
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryAccommodationRequestByHotelSuccess",
+                    },
                   },
-                },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "user" },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "college" },
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkIn" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkOut" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gender" },
+                            },
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "id" },
                             },
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "name" },
+                              name: { kind: "Name", value: "room" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "ac" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "updatedAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "hotel" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "details" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "price" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "updatedAt" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "user" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "college" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "email" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "isVerified" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "phoneNumber",
+                                    },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
                       },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "createdAt" },
+                        name: { kind: "Name", value: "__typename" },
                       },
-                      { kind: "Field", name: { kind: "Name", value: "email" } },
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "isVerified" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "phoneNumber" },
+                        name: { kind: "Name", value: "message" },
                       },
                     ],
                   },
@@ -13248,18 +13775,84 @@ export const AccommodationRequestsByUserDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "checkIn" } },
-                { kind: "Field", name: { kind: "Name", value: "checkOut" } },
-                { kind: "Field", name: { kind: "Name", value: "room" } },
-                { kind: "Field", name: { kind: "Name", value: "status" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "hotel" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      { kind: "Field", name: { kind: "Name", value: "price" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryAccommodationRequestsByUserSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkIn" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkOut" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "room" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "hotel" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "price" },
+                                  },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
                     ],
                   },
                 },
@@ -13313,62 +13906,152 @@ export const AccommodationRequestsByUserIdDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "ac" } },
-                { kind: "Field", name: { kind: "Name", value: "checkIn" } },
-                { kind: "Field", name: { kind: "Name", value: "checkOut" } },
-                { kind: "Field", name: { kind: "Name", value: "createdAt" } },
-                { kind: "Field", name: { kind: "Name", value: "gender" } },
-                { kind: "Field", name: { kind: "Name", value: "IdCard" } },
-                { kind: "Field", name: { kind: "Name", value: "room" } },
-                { kind: "Field", name: { kind: "Name", value: "status" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "hotel" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "details" },
+                        name: { kind: "Name", value: "__typename" },
                       },
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "createdAt" },
+                        name: { kind: "Name", value: "message" },
                       },
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      { kind: "Field", name: { kind: "Name", value: "price" } },
                     ],
                   },
                 },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "user" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryAccommodationRequestsByUserIdSuccess",
+                    },
+                  },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "college" },
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
                             {
                               kind: "Field",
-                              name: { kind: "Name", value: "name" },
+                              name: { kind: "Name", value: "ac" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkIn" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "checkOut" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "createdAt" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "gender" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "IdCard" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "room" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "status" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "hotel" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "details" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "createdAt" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "price" },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "user" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "college" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "name" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "email" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "isVerified" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "name" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: {
+                                      kind: "Name",
+                                      value: "phoneNumber",
+                                    },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "email" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "isVerified" },
-                      },
-                      { kind: "Field", name: { kind: "Name", value: "name" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "phoneNumber" },
                       },
                     ],
                   },
@@ -17066,6 +17749,73 @@ export const GetScoreSheetJuryDocument = {
   GetScoreSheetJuryQuery,
   GetScoreSheetJuryQueryVariables
 >;
+export const GetStoneVisibilitiesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "GetStoneVisibilities" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "getStoneVisibilities" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryGetStoneVisibilitiesSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "data" } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  GetStoneVisibilitiesQuery,
+  GetStoneVisibilitiesQueryVariables
+>;
 export const GetTeamDetailsDocument = {
   kind: "Document",
   definitions: [
@@ -17195,12 +17945,66 @@ export const GetTotalRegistrationsDocument = {
               kind: "SelectionSet",
               selections: [
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "externalRegistrations" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
                 },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "internalRegistrations" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "QueryGetTotalRegistrationsSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "externalRegistrations",
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: {
+                                kind: "Name",
+                                value: "internalRegistrations",
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
                 },
               ],
             },
@@ -19479,25 +20283,85 @@ export const JudgeGetTeamsByRoundDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
-                { kind: "Field", name: { kind: "Name", value: "id" } },
-                { kind: "Field", name: { kind: "Name", value: "name" } },
-                { kind: "Field", name: { kind: "Name", value: "roundNo" } },
-                { kind: "Field", name: { kind: "Name", value: "leaderId" } },
                 {
-                  kind: "Field",
-                  name: { kind: "Name", value: "members" },
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: { kind: "Name", value: "Error" },
+                  },
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
                       {
                         kind: "Field",
-                        name: { kind: "Name", value: "user" },
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "message" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "InlineFragment",
+                  typeCondition: {
+                    kind: "NamedType",
+                    name: {
+                      kind: "Name",
+                      value: "SubscriptionJudgeGetTeamsByRoundSuccess",
+                    },
+                  },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "__typename" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "data" },
                         selectionSet: {
                           kind: "SelectionSet",
                           selections: [
                             {
                               kind: "Field",
                               name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "name" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "roundNo" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "leaderId" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "members" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "user" },
+                                    selectionSet: {
+                                      kind: "SelectionSet",
+                                      selections: [
+                                        {
+                                          kind: "Field",
+                                          name: { kind: "Name", value: "id" },
+                                        },
+                                      ],
+                                    },
+                                  },
+                                ],
+                              },
                             },
                           ],
                         },

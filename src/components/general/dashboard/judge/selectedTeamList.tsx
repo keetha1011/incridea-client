@@ -69,7 +69,9 @@ const SelectedTeamList = ({
       </div>
 
       {!(
-        teams.judgeGetTeamsByRound.filter((team) => team.roundNo > roundNo)
+        teams.judgeGetTeamsByRound.__typename ===
+          "SubscriptionJudgeGetTeamsByRoundSuccess" &&
+        teams.judgeGetTeamsByRound.data.filter((team) => team.roundNo > roundNo)
           .length === 0
       ) &&
         !finalRound && (
@@ -124,15 +126,20 @@ const SelectedTeamList = ({
         </div>
 
         {!finalRound &&
-          teams.judgeGetTeamsByRound.filter((team) => team.roundNo > roundNo)
-            .length === 0 && (
+          teams.judgeGetTeamsByRound.__typename ===
+            "SubscriptionJudgeGetTeamsByRoundSuccess" &&
+          teams.judgeGetTeamsByRound.data.filter(
+            (team) => team.roundNo > roundNo,
+          ).length === 0 && (
             <p className="my-3 mt-5 text-center italic text-gray-400/70">
               No participants are selected to next round.
             </p>
           )}
 
         {!finalRound &&
-          teams.judgeGetTeamsByRound
+          teams.judgeGetTeamsByRound.__typename ===
+            "SubscriptionJudgeGetTeamsByRoundSuccess" &&
+          teams.judgeGetTeamsByRound.data
             .filter((team) => team.roundNo > roundNo)
             .map((team, index) => (
               <div

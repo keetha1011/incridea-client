@@ -288,7 +288,10 @@ const ProfileInfo: FC<{
                 >
                   <Spinner size={"small"} className="text-[#dd5c6e]" />
                 </Button>
-              ) : dataAccommodation?.accommodationRequestsByUser[0]?.status ? (
+              ) : dataAccommodation?.accommodationRequestsByUser.__typename ===
+                  "QueryAccommodationRequestsByUserSuccess" &&
+                dataAccommodation.accommodationRequestsByUser.data[0]
+                  ?.status ? (
                 <Button
                   intent={"info"}
                   size={"large"}
