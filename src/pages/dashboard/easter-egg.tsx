@@ -324,7 +324,7 @@ const EasterEggDashboard = () => {
                             "pointer-events-none opacity-80"
                           } flex min-w-[300px] basis-full flex-col rounded-md bg-white/20 shadow-sm md:basis-[45%]`}
                         >
-                          <div className="titleFont mb-2 flex items-center gap-2 px-4 pt-4 text-xl md:px-4 md:pt-4">
+                          <div className="mb-2 flex items-center gap-2 px-4 pt-4 text-xl md:px-4 md:pt-4">
                             <h2>Clue ID: {card.id}</h2>
                             <MdDelete
                               onClick={async () =>
@@ -343,9 +343,7 @@ const EasterEggDashboard = () => {
                               className="ml-auto cursor-pointer justify-self-end text-red-500 hover:text-red-700"
                             />
                           </div>
-                          <h2 className="bodyFont mb-4 px-4 md:px-4">
-                            {card.clue}
-                          </h2>
+                          <h2 className="mb-4 px-4 md:px-4">{card.clue}</h2>
                         </div>
                       ))
                     ) : (

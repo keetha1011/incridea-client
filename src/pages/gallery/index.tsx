@@ -153,9 +153,9 @@ const Gallery: NextPage = () => {
       </section>
       <div className="fixed flex h-screen w-full z-0 overflow-hidden">
         <div className="relative h-full w-full">
-          <div className="absolute transform h-auto translate-y-20 md:translate-y-10 z-20 top-20 md:top-28 left-[50%] -translate-x-1/2 flex">
-            <p className="absolute left-[50%] font-life-craft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-widest">
-              INCRIDEA &nbsp;{years[activeYear]}
+          <div className="absolute transform h-auto translate-y-20 md:translate-y-10 z-20 top-20 md:top-20 left-[50%] -translate-x-1/2 flex">
+            <p className="absolute left-[50%] font-life-craft -translate-x-1/2 -translate-y-full text-white sm:text-5xl text-3xl w-screen text-center tracking-wider">
+              Incridea &nbsp;{years[activeYear]}
             </p>
             <div
               className={`absolute -translate-x-[40px] self-center cursor-pointer bg-[#23854b] border-2 border-[#faae30] rounded-full p-1 ${activeYear === 0 ? "hidden" : ""}`}

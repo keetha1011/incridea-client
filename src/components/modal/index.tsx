@@ -62,7 +62,7 @@ const Modal: FC<ModalProps> = ({
                   }`}
                 >
                   <h3
-                    className={`bodyFont text-lg font-medium leading-6 text-amber-200 ${
+                    className={`text-lg font-medium leading-6 text-amber-200 ${
                       size === "small" && "text-center"
                     }`}
                   >

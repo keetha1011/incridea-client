@@ -71,7 +71,7 @@ const Profile: NextPage = () => {
             height={400}
           />
         </div>
-        <h1 className="bodyFont -translate-y-10 text-lg text-white lg:text-xl">
+        <h1 className="-translate-y-10 text-lg text-white lg:text-xl">
           Hey there! You need to login to view your profile page.
         </h1>
         <Link href="/login" className="-translate-y-5">
@@ -92,7 +92,7 @@ const Profile: NextPage = () => {
   return (
     <main
       ref={containerRef}
-      className="bodyFont md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
+      className="md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
     >
       <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8">
         <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">

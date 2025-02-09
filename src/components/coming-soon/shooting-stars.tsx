@@ -2,7 +2,7 @@ import styles from "./shootingStars.module.css";
 
 const ShootingStars = () => {
   return (
-    <section className={styles.shootingStars}>
+    <section className={`shootingStars w-full h-full ${styles.shootingStars}`}>
       <span></span>
       <span></span>
       <span></span>

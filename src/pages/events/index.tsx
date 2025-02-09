@@ -99,62 +99,11 @@ const Page = ({ data }: Props) => {
     }
   };
 
-  const backgroundImages = [
-    "crash.png",
-    "mario.png",
-    "pac-man.png",
-    "lara-croft.png",
-    "pikachu.png",
-    "sonic.png",
-    "kratos.png",
-    "crash.png",
-    "mario.png",
-    "pac-man.png",
-    "lara-croft.png",
-    "pikachu.png",
-    "sonic.png",
-    "crash.png",
-    "mario.png",
-    "pac-man.png",
-    "lara-croft.png",
-    "pikachu.png",
-    "sonic.png",
-    "kratos.png",
-    "crash.png",
-    "mario.png",
-    "pac-man.png",
-    "lara-croft.png",
-    "pikachu.png",
-    "sonic.png",
-    "kratos.png",
-    "kratos.png",
-    "crash.png",
-    "mario.png",
-    "pac-man.png",
-    "lara-croft.png",
-    "pikachu.png",
-  ];
-
   return (
     <div
       style={{ willChange: "transform" }}
       className="relative flex min-h-screen justify-center overflow-hidden"
     >
-      <div className={styles.area}>
-        <ul className={styles.circles}>
-          {backgroundImages.map((image, i) => (
-            <li key={i}>
-              <Image
-                src={`/assets/png/eventsPageBg/${image}`}
-                alt={`${image}`}
-                width={image === "sonic.png" ? 50 : 100}
-                height={100}
-                className="bodyFont text-white"
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
       <div className="mx-auto flex flex-col items-center justify-center px-5 sm:px-7 lg:px-10">
         <div className="no-scrollbar overflow-y-auto">
           <div
@@ -313,7 +262,8 @@ const Page = ({ data }: Props) => {
                               <Menu.Item key={idx}>
                                 <button
                                   className={`${
-                                    currentCategoryFilter === filter
+                                    currentCategoryFilter ===
+                                    (filter as EventCategory | AllCategory)
                                       ? "bg-white/20"
                                       : "bg-black/10"
                                   } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}

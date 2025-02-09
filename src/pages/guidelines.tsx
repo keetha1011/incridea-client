@@ -2,11 +2,9 @@ import { type NextPage } from "next";
 
 const Guidelines: NextPage = () => {
   return (
-    <div className="overflow-y-auto overflow-x-hidden p-5 font-gilroy text-gray-100 sm:p-10">
+    <div className="overflow-y-auto overflow-x-hidden text-gray-100 p-10 pt-20">
       <div className="mx-auto w-full max-w-7xl">
-        <h1
-          className={`mb-3 pt-24 text-center text-5xl font-extrabold tracking-tight`}
-        >
+        <h1 className={`text-center text-6xl font-life-craft tracking-wider`}>
           Guidelines and Regulations for Participating in Incridea 2025
         </h1>
         <div className="">
