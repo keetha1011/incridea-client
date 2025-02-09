@@ -66,9 +66,7 @@ const DeleteTeamMember: FC<{
         onClose={handleCloseModal}
         size={"small"}
       >
-        <div className="bodyFont text-center text-sm">
-          This action cannot be undone.
-        </div>
+        <div className="text-center text-sm">This action cannot be undone.</div>
         <div className="my-5 flex justify-center gap-3">
           <Button
             size={"small"}

@@ -51,7 +51,7 @@ const EditTeamModal: FC<{
       >
         <div className="w-full p-5">
           <div className="text-center">
-            <h1 className={`titleFont mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
+            <h1 className={`mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
           </div>
 
           <div className="hidden items-center justify-between rounded-t-lg bg-white bg-opacity-20 bg-clip-padding p-1 font-bold backdrop-blur-lg backdrop-filter md:flex">

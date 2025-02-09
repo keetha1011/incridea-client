@@ -28,16 +28,14 @@ const Accommodation: NextPage = () => {
             </Link>
           </div>
 
-          <h2
-            className={`titleFont text-center text-4xl text-white md:text-5xl`}
-          >
+          <h2 className={`text-center text-4xl text-white md:text-5xl`}>
             Choose your Accommodation
           </h2>
-          <h5 className="bodyFont mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
+          <h5 className="mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
             Before you roll your dice and choose your destiny
           </h5>
 
-          <div className="bodyFont mx-auto mt-6 flex max-w-7xl flex-col items-center justify-evenly gap-5 rounded-xl bg-white/20 px-5 py-4 md:mt-8 md:flex-row md:px-10 md:py-7">
+          <div className="mx-auto mt-6 flex max-w-7xl flex-col items-center justify-evenly gap-5 rounded-xl bg-white/20 px-5 py-4 md:mt-8 md:flex-row md:px-10 md:py-7">
             <Link href="/accommodation/internal">
               <Button>Internal Accommodation</Button>
             </Link>

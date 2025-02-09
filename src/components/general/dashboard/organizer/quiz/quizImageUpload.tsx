@@ -50,7 +50,7 @@ const QuizImageUpload = React.memo(
     return (
       <>
         <div
-          className={`bodyFont flex grow items-center justify-center rounded-b-md md:rounded-md ${
+          className={`flex grow items-center justify-center rounded-b-md md:rounded-md ${
             highlighted ? "bg-blue/20 ring-2 ring-amber-500" : "bg-black/20"
           }`}
           // onClick={() => {

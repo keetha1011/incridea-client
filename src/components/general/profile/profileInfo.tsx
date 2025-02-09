@@ -192,7 +192,7 @@ const ProfileInfo: FC<{
         </div>
         <div className="flex h-full flex-col items-center justify-center space-y-1 text-center">
           <span className="text-2xl font-bold lg:text-3xl">{user?.name}</span>
-          <span className="bodyFont">{user?.college?.name ?? "-"}</span>
+          <span>{user?.college?.name ?? "-"}</span>
         </div>
         <div className="relative mb-5 pt-1">
           <div className="mb-4 flex h-3 rounded-full bg-gray-100 text-xs">
@@ -284,7 +284,7 @@ const ProfileInfo: FC<{
                 <Button
                   size={"large"}
                   onClick={() => setShowModal(true)}
-                  className="bodyFont w-full justify-center !rounded-full !text-sm !tracking-normal"
+                  className="w-full justify-center !rounded-full !text-sm !tracking-normal"
                 >
                   <Spinner size={"small"} className="text-[#dd5c6e]" />
                 </Button>
@@ -296,7 +296,7 @@ const ProfileInfo: FC<{
                   intent={"info"}
                   size={"large"}
                   onClick={() => setShowModal(true)}
-                  className="bodyFont w-full justify-center !rounded-full !text-sm !tracking-normal"
+                  className="w-full justify-center !rounded-full !text-sm !tracking-normal"
                 >
                   <RiHotelBedLine className="mr-1 inline-block" />
                   View Request
@@ -307,7 +307,7 @@ const ProfileInfo: FC<{
             ) : null}
             <Button
               onClick={() => router.push("/leaderboard")}
-              className="bodyFont w-full justify-center !rounded-full !text-sm !tracking-normal"
+              className="w-full justify-center !rounded-full !text-sm !tracking-normal"
               intent={"info"}
               size={"large"}
             >
@@ -316,7 +316,7 @@ const ProfileInfo: FC<{
             </Button>
             <Button
               onClick={() => signOut()}
-              className="bodyFont w-full justify-center !rounded-full !text-sm !tracking-normal"
+              className="w-full justify-center !rounded-full !text-sm !tracking-normal"
               intent={"danger"}
               size={"large"}
             >

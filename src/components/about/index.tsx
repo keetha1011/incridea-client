@@ -36,7 +36,7 @@ const About: FC = () => {
             // className={VikingHell.className}
             textStyle="text-xl font-semibold lg:text-3xl"
           />
-          <div className="bodyFont mt-4 space-y-2 text-sm lg:text-lg">
+          <div className="mt-4 space-y-2 text-sm lg:text-lg">
             <p>
               Incridea, a four-day National-Level extravaganza will play host to
               over 60 events, spanning the technical, non-technical, and

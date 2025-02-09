@@ -28,10 +28,10 @@ const Cards = ({ day }: Props) => {
                   key={index}
                   className="flex min-w-[300px] basis-full flex-col rounded-md bg-black/20 shadow-sm md:basis-[45%]"
                 >
-                  <h2 className="titleFont mb-2 px-4 pt-4 text-xl md:px-6 md:pt-6">
+                  <h2 className="mb-2 px-4 pt-4 text-xl md:px-6 md:pt-6">
                     Clue {index + 1}
                   </h2>
-                  <h2 className="bodyFont mb-3 px-4 md:px-6">{card.clue}</h2>
+                  <h2 className="mb-3 px-4 md:px-6">{card.clue}</h2>
                   <div className="flex grow flex-col md:px-6 md:pb-4">
                     {/* <ImageUpload
                       loading={submissionsLoading}
