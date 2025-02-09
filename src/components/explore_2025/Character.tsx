@@ -10,12 +10,12 @@ import type * as THREE from "three";
 type CharacterProps = {
   animation: string;
   [key: string]: unknown;
-}
+};
 
 export function Character({ animation, ...props }: CharacterProps) {
   const group = useRef<THREE.Group>(null!);
   const { nodes, materials, animations } = useGLTF(
-    "/2025/assets/explore/models/ryoku.glb"
+    "/2025/assets/explore/models/ryoku.glb",
   );
   const { actions } = useAnimations(animations, group);
   useEffect(() => {

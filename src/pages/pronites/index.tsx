@@ -71,7 +71,7 @@ export default function App() {
   const [lightC, setLightC] = useState("#00FFFF");
   const [actLight, setActLight] = useState(false);
   const [isAudioOn, setIsAudioOn] = useState(false);
-  var video = lightC == "#00FFFF" ? 0 : 1;
+  const video = lightC == "#00FFFF" ? 0 : 1;
   const [audio] = useState(new Audio());
   const audioRef = useRef(audio);
   const [currentSong, setCurrentSong] = useState<string>("");
@@ -160,7 +160,8 @@ export default function App() {
             isAudioOn
               ? "bg-gradient-to-r from-pink-300 to-pink-200 text-white"
               : "backdrop-blur-sm bg-transparent text-gray-100 border border-gray-100"
-          }`}>
+          }`}
+        >
           {isAudioOn ? "🔊" : "🔈"}
         </button>
         <button
@@ -170,7 +171,8 @@ export default function App() {
             camPos[0] === 10 && camPos[1] === 5 && camPos[2] === 10
               ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}>
+          }`}
+        >
           Close
         </button>
         <button
@@ -180,7 +182,8 @@ export default function App() {
             camPos[0] === 0 && camPos[1] === 12 && camPos[2] === 30
               ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}>
+          }`}
+        >
           Center
         </button>
         <button
@@ -190,7 +193,8 @@ export default function App() {
             camPos[0] === -30 && camPos[1] === 12 && camPos[2] === 40
               ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}>
+          }`}
+        >
           Far
         </button>
 
@@ -201,7 +205,8 @@ export default function App() {
             actLight
               ? "bg-gradient-to-r from-yellow-400 to-yellow-100 text-white"
               : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}>
+          }`}
+        >
           💡
         </button>
       </div>
@@ -211,7 +216,8 @@ export default function App() {
             onClick={handleBlueClick}
             className={`items-start bg-gradient-to-t from-cyan-400 from-0% via-teal-500/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
               activeGradient === "blue" ? "w-[75%] pr-28" : "w-[25%] pr-4"
-            }`}>
+            }`}
+          >
             <Image
               width={400}
               height={100}
@@ -223,7 +229,8 @@ export default function App() {
             onClick={handleRedClick}
             className={` bg-gradient-to-t  from-red-600 from-0% via-orange-700/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
               activeGradient === "red" ? "w-[75%] pl-16" : "w-[25%] pl-0"
-            }`}>
+            }`}
+          >
             <Image
               width={400}
               height={100}
@@ -234,14 +241,16 @@ export default function App() {
         </div>
       </div>
       <div
-        className={`fixed pointer-events-none bottom-12 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}>
+        className={`fixed pointer-events-none bottom-12 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
+      >
         SINGER SHAAN
       </div>
       <div
         className={`fixed pointer-events-none bottom-12 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
           activeGradient === "red" ? "text-xl" : "text-lg opacity-0"
         }`}
-        style={{ right: "0px" }}>
+        style={{ right: "0px" }}
+      >
         MASALA COFFEE
       </div>
       <div className="fixed bottom-2 left-0 w-full z-50 text-center">
@@ -262,7 +271,8 @@ export default function App() {
             preserveDrawingBuffer: true,
           }}
           camera={{ position: [0, 10, 15], near: 5, far: 150 }}
-          style={{ background: "transparent" }}>
+          style={{ background: "transparent" }}
+        >
           <Stage src={videos[video]} />
 
           {lightC == "#00FFFF" ? (
@@ -324,7 +334,8 @@ export default function App() {
             rotation={[0, Math.PI + Math.PI / 12, 0]}
             onClick={() => {
               handleBlueClick();
-            }}>
+            }}
+          >
             <planeGeometry args={[13.7, 5]} />
 
             <Screen src={videos[0]} />
@@ -334,7 +345,8 @@ export default function App() {
             rotation={[0, Math.PI - Math.PI / 12, 0]}
             onClick={() => {
               handleRedClick();
-            }}>
+            }}
+          >
             <planeGeometry args={[13.7, 5]} />
 
             <Screen src={videos[1]} />
@@ -445,7 +457,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
         animationState.current.elapsed += delta;
         const t = Math.min(
           animationState.current.elapsed / keyframe.duration,
-          1
+          1,
         );
         camera.position.lerpVectors(startPos, keyframe.pos, t);
         camera.lookAt(keyframe.lookAt);
@@ -471,7 +483,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
         const targetPos = new THREE.Vector3(
           _camPosisiton[0]! + offsetX,
           _camPosisiton[1]! + offsetY,
-          _camPosisiton[2]
+          _camPosisiton[2],
         );
         camera.position.lerp(targetPos, 0.05);
         camera.lookAt(look);
@@ -483,7 +495,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
       camera.rotation.set(
         -(mouse.y * factor) - Math.PI / 32,
         -(mouse.x * factor),
-        0
+        0,
       );
     }
   });

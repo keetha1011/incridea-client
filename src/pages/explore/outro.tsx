@@ -92,10 +92,7 @@ const Outro = () => {
         ref={skipRef}
         className="absolute -right-1 bottom-[10vh] z-50 translate-x-[110%] transition-all duration-500 ease-in hover:scale-110"
       >
-        <Button
-          onClick={async () => await router.push("/")}
-          size={"large"}
-        >
+        <Button onClick={async () => await router.push("/")} size={"large"}>
           Skip <IoIosSkipForward />
         </Button>
       </div>

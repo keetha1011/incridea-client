@@ -1,3 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 
@@ -6,7 +10,7 @@ useGLTF.preload("/2025/pronites/guitarist.glb");
 export default function Guitarist(props) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF(
-    "/2025/Pronites/guitarist.glb"
+    "/2025/Pronites/guitarist.glb",
   );
   const { actions } = useAnimations(animations, group);
 

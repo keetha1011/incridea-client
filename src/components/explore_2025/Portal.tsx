@@ -3,8 +3,10 @@ import * as THREE from "three";
 import { useGLTF } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 
-export function Portal(props : { props : never }) {
-  const { nodes, materials } = useGLTF("/2025/assets/explore/models/portal.glb");
+export function Portal(props: { props: never }) {
+  const { nodes, materials } = useGLTF(
+    "/2025/assets/explore/models/portal.glb",
+  );
   return (
     <RigidBody type="fixed" colliders="trimesh">
       <group
