@@ -16,6 +16,7 @@ import Link from "next/link";
 import { cn } from "~/lib/utils";
 import { signOut } from "next-auth/react";
 import LeaderBoard from "./LeaderBoard";
+import { Button } from "~/components/button/button";
 
 const Profile: NextPage = () => {
   const { error, user: user, loading } = useAuth();
@@ -75,7 +76,9 @@ const Profile: NextPage = () => {
           Hey there! You need to login to view your profile page.
         </h1>
         <Link href="/login" className="-translate-y-5">
-          <Button>Login / Register</Button>
+          <Button className="md:text-lg text-base py-3 rounded-full">
+            Login / Register
+          </Button>
         </Link>
       </div>
     );
@@ -94,12 +97,12 @@ const Profile: NextPage = () => {
       ref={containerRef}
       className="md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
     >
-      <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8">
-        <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">
+      <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8 h-full pb-8">
+        <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col gap-0">
           <div className="w-full h-full">
             <ProfileCard user={user} showQR={showQr} />
 
-            <div className="absolute w-full flex justify-between gap-2 p-4 bottom-0">
+            {/* <div className="absolute w-full flex justify-between gap-2 p-4 bottom-0">
               <Button onClick={() => setShowQr((s) => !s)}>
                 {showQr ? "Show Details" : "Show QR"}
               </Button>
@@ -111,9 +114,13 @@ const Profile: NextPage = () => {
               >
                 Logout
               </Button>
-            </div>
+            </div> */}
           </div>
-          <LeaderBoard />
+          <LeaderBoard
+            setQr={() => {
+              setShowQr(!showQr);
+            }}
+          />
         </div>
         <div className="w-full md:h-full h-[85vh] col-span-3">
           <UserEvents userId={user?.id} />
@@ -125,20 +132,20 @@ const Profile: NextPage = () => {
 
 export default Profile;
 
-function Button({
-  children,
-  className,
-  ...rest
-}: HTMLAttributes<HTMLButtonElement>) {
-  return (
-    <button
-      {...rest}
-      className={cn(
-        className,
-        "-skew-x-12 mx-1 px-4 py-2 bg-[#D79128] text-white font-bold rounded-md shadow-md hover:bg-yellow-500",
-      )}
-    >
-      {children}
-    </button>
-  );
-}
+// function Button({
+//   children,
+//   className,
+//   ...rest
+// }: HTMLAttributes<HTMLButtonElement>) {
+//   return (
+//     <button
+//       {...rest}
+//       className={cn(
+//         className,
+//         "-skew-x-12 mx-1 px-4 py-2 bg-[#D79128] text-white font-bold rounded-md shadow-md hover:bg-yellow-500",
+//       )}
+//     >
+//       {children}
+//     </button>
+//   );
+// }

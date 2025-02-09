@@ -1,9 +1,11 @@
 import { useQuery } from "@apollo/client";
+import { Bed, LogOut, QrCode } from "lucide-react";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaAward } from "react-icons/fa";
-import Button from "~/components/button";
+import { Button } from "~/components/button/button";
 import { env } from "~/env";
 import {
   GetUserXpDocument,
@@ -11,7 +13,7 @@ import {
 } from "~/generated/generated";
 
 const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
-function LeaderBoard() {
+function LeaderBoard({ setQr }: { setQr: () => void }) {
   const router = useRouter();
 
   const [level, setLevel] = useState(0);
@@ -140,29 +142,60 @@ function LeaderBoard() {
   }, [Leaderboard, userId]);
 
   return (
-    <div className="w-full flex flex-col  items-center justify-evenly row-span-1 border-secondary-500/50 border-2 rounded-xl p-2">
-      <div className="w-full h-fit relative overflow-hidden rounded-xl border-secondary-500/50 border-2">
+    <div className="w-full flex flex-col gap-2  items-center justify-evenly row-span-1 border-secondary-500/50 border-t-2 p-2">
+      <div className="w-full h-fit relative overflow-hidden rounded-xl border-secondary-500/50 border-2 mt-2">
         <div className={`h-2 bg-red-600 w-[${progress}%]`}></div>
       </div>
 
-      <div className="text-white grid grid-cols-2 place-items-stretch">
+      <div className="text-white grid grid-cols-2 place-items-stretch px-2">
         <div>
-          <h3>Leaderboard</h3>
+          <h3 className="font-semibold">Leaderboard</h3>
           <strong>Rank {rank}</strong>
         </div>
         <div>
           <p>{xp}xp</p>
-          <p>you need {needMore} more xp</p>
+          {/* <p>you need {needMore} more xp</p> */}
+          {needMore > 0 ? (
+            <p>you need {needMore} more Timestones</p>
+          ) : (
+            <p>You have max Timestones</p>
+          )}
         </div>
       </div>
+      <div className="w-full flex flex-col gap-2 items-center">
+        <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
+          <Button
+            className="w-full hover:scale-[105%] hover:bg-primary-800/60 text-white hover:text-white sm:max-w-full max-w-sm"
+            variant={"outline"}
+            onClick={() => setQr()}
+          >
+            <QrCode className="stroke-secondary-200" />
+            Show QR
+          </Button>
+          <Button
+            variant={"destructive"}
+            className="w-full hover:scale-[105%]"
+            onClick={async () => {
+              await signOut();
+            }}
+          >
+            Log out <LogOut />
+          </Button>
+        </div>
+        <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
+          <Button
+            onClick={() => router.push("/leaderboard")}
+            className="w-full px-1 hover:scale-[105%]"
+          >
+            <FaAward className="mr-1 inline-block" />
+            Leaderboard
+          </Button>
 
-      <div className="w-full flex justify-between flex-wrap">
-        <Button onClick={() => router.push("/leaderboard")} className="h-fit">
-          <FaAward className="mr-1 inline-block" />
-          Leaderboard
-        </Button>
-
-        <Button className="h-fit">accomdation</Button>
+          <Button className="py-2 w-full px-1 hover:scale-[105%]">
+            <Bed />
+            Accomodation
+          </Button>
+        </div>
       </div>
     </div>
   );

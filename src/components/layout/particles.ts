@@ -217,7 +217,7 @@ export const particlesConfig = {
       close: true,
       fill: true,
       options: {},
-      type: "star",
+      type: "circle",
     },
     size: {
       value: 2,
