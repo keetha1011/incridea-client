@@ -21,6 +21,7 @@ query RegisterdEvents {
           leaderId
           confirmed
           name
+          attended
           members {
             user {
               id
@@ -35,6 +36,10 @@ query RegisterdEvents {
             fees
             eventType
           }
+        }
+        winner {
+          id
+          type
         }
       }
     }

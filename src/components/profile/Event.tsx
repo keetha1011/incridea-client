@@ -32,7 +32,8 @@ const EventCard: FC<{
     { __typename: "QueryRegisteredEventsSuccess" }
   >["data"][number];
   userId: string;
-}> = ({ teams, event, userId }) => {
+  isCompleted: boolean;
+}> = ({ teams, event, userId, isCompleted }) => {
   const eventType = event.teams.map((team) => team.event.eventType)[0];
   const solo =
     eventType === EventType.Individual ||
@@ -41,7 +42,7 @@ const EventCard: FC<{
   const router = useRouter();
 
   return (
-    <div className="flex flex-col h-fit items-center justify-center text-black bg-gradient-to-r from-primary-950/50 to-primary-950/50 via-primary-800 w-fit p-4 rounded-xl shadow-2xl shadow-black/80 border border-secondary-300">
+    <div className="flex flex-col h-fit items-center mx-auto justify-center text-black bg-gradient-to-r from-primary-950/50 to-primary-950/50 via-primary-800 w-fit p-4 rounded-xl shadow-lg shadow-black/80 border border-secondary-300">
       <div className="flex flex-col items-center justify-center text-black">
         <div className="relative">
           <Image
@@ -93,17 +94,21 @@ const EventCard: FC<{
                   <p className="cursor-pointer text-sm font-bold text-primary-300 lg:text-lg">
                     {solo ? idToPid(userId) : idToTeamId(team.id)}
                   </p>
-                  <p className="text-secondary-300 text-sm border-2 border-secondary-500 rounded-full px-2">
-                    {team.confirmed ? "confirmed" : "Pending"}
+                  <p className="text-secondary-300 font-semibold text-sm border-2 border-secondary-500 rounded-full px-2">
+                    {isCompleted
+                      ? "Completed"
+                      : team.confirmed
+                        ? "Confirmed"
+                        : "Pending"}
                   </p>
                 </div>
               </div>
 
-              {team.confirmed && (
+              {!team.confirmed && (
                 <div className="flex flex-col gap-1 mt-2">
                   <div className="flex flex-row flex-nowrap gap-2">
                     <EditTeamModal userId={userId} team={team} />
-                    {team.leaderId?.toString() === userId && false ? (
+                    {team.leaderId?.toString() === userId ? (
                       <DeleteTeamModal
                         teamId={team.id}
                         solo={solo}
