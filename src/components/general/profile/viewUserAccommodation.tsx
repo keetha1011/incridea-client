@@ -47,20 +47,32 @@ const ViewUserAccommodation: React.FunctionComponent<Props> = ({
  */
   useEffect(() => {
     /*  dataRef.current = { */
-    setData({
-      name:
-        userdetails?.accommodationRequestsByUser[0]?.hotel?.name ??
-        "Unavailable",
-      price:
-        userdetails?.accommodationRequestsByUser[0]?.hotel?.price ??
-        "Unavailable",
-      room: userdetails?.accommodationRequestsByUser[0]?.room ?? "Unavailable",
-      checkIn: userdetails?.accommodationRequestsByUser[0]?.checkIn,
-      checkOut: userdetails?.accommodationRequestsByUser[0]?.checkOut,
-      status:
-        userdetails?.accommodationRequestsByUser[0]?.status ?? "Unavailable",
-    });
-
+    setData(
+      userdetails?.accommodationRequestsByUser.__typename ===
+        "QueryAccommodationRequestsByUserSuccess"
+        ? {
+            name:
+              userdetails.accommodationRequestsByUser.data[0]?.hotel.name ??
+              "Unavailable",
+            price:
+              userdetails.accommodationRequestsByUser.data[0]?.hotel.price ??
+              "Unavailable",
+            room:
+              userdetails.accommodationRequestsByUser.data[0]?.room ??
+              "Unavailable",
+            checkIn: userdetails.accommodationRequestsByUser.data[0]?.checkIn,
+            checkOut: userdetails.accommodationRequestsByUser.data[0]?.checkOut,
+            status:
+              userdetails.accommodationRequestsByUser.data[0]?.status ??
+              "Unavailable",
+          }
+        : {
+            name: "Unavailable",
+            price: "Unavailable",
+            room: "Unavailable",
+            status: "Unavailable",
+          },
+    );
     /*  }; */
   }, [userdetails]);
 

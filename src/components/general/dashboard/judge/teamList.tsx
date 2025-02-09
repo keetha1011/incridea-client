@@ -123,7 +123,12 @@ const TeamList = ({
   const sorter = sortField === "Total Score" ? "totalScore" : "judgeScore";
 
   const getTotalScore = (
-    team: JudgeGetTeamsByRoundSubscription["judgeGetTeamsByRound"][0],
+    team: Extract<
+      JudgeGetTeamsByRoundSubscription["judgeGetTeamsByRound"],
+      {
+        __typename: "SubscriptionJudgeGetTeamsByRoundSuccess";
+      }
+    >["data"][0],
   ) => {
     const score =
       scores?.getTotalScores.__typename === "QueryGetTotalScoresSuccess"
@@ -134,23 +139,26 @@ const TeamList = ({
     return score;
   };
 
-  const filteredTeams = [...(data?.judgeGetTeamsByRound ?? [])].filter(
-    (team) => {
-      if (
-        finalRound &&
-        winners?.winnersByEvent.__typename === "QueryWinnersByEventSuccess"
-      ) {
-        const isWinner =
-          winners?.winnersByEvent.__typename === "QueryWinnersByEventSuccess" &&
-          winners?.winnersByEvent.data.find(
-            (winner) => winner.team.id === team.id,
-          );
-        return !isWinner;
-      } else {
-        return true;
-      }
-    },
-  );
+  const filteredTeams = [
+    ...(data?.judgeGetTeamsByRound.__typename ===
+    "SubscriptionJudgeGetTeamsByRoundSuccess"
+      ? data.judgeGetTeamsByRound.data
+      : []),
+  ].filter((team) => {
+    if (
+      finalRound &&
+      winners?.winnersByEvent.__typename === "QueryWinnersByEventSuccess"
+    ) {
+      const isWinner =
+        winners?.winnersByEvent.__typename === "QueryWinnersByEventSuccess" &&
+        winners?.winnersByEvent.data.find(
+          (winner) => winner.team.id === team.id,
+        );
+      return !isWinner;
+    } else {
+      return true;
+    }
+  });
 
   const sortedTeams = [...(filteredTeams ?? [])].sort((team1, team2) => {
     const score1 = getTotalScore(team1) ?? 0;

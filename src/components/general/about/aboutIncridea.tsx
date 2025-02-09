@@ -21,9 +21,7 @@ const AboutIncridea: FC = () => {
           <span className="absolute inset-0 z-10 h-full w-full bg-gradient-to-b from-transparent to-black"></span>
         </motion.div>
         <div className="absolute inset-0 flex h-full w-full items-center justify-center">
-          <h1
-            className={`titleFont p-5 text-center text-4xl text-white lg:text-7xl`}
-          >
+          <h1 className={`p-5 text-center text-4xl text-white lg:text-7xl`}>
             About Incridea
           </h1>
         </div>
@@ -38,7 +36,7 @@ const AboutIncridea: FC = () => {
           className="h-auto w-auto"
         />
 
-        <div className="bodyFont basis-1/2 space-y-[1em] text-justify text-lg text-white lg:text-xl">
+        <div className="basis-1/2 space-y-[1em] text-justify text-lg text-white lg:text-xl">
           <p>
             Incridea, the annual college festival of NMAM Institute of
             Technology, Nitte, has rapidly grown into one of the most awaited

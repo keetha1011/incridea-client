@@ -1,8 +1,7 @@
 import React, { type FC, useState } from "react";
-import { BiEditAlt } from "react-icons/bi";
 
 import Badge from "~/components/badge";
-import Button from "~/components/button";
+import { Button } from "~/components/button/button";
 import Modal from "~/components/modal";
 import { idToTeamId } from "~/utils/id";
 
@@ -14,6 +13,7 @@ import {
   type RegisterdEventsQueryVariables,
 } from "~/generated/generated";
 import { type QueryResult } from "@apollo/client";
+import { FiEdit } from "react-icons/fi";
 
 const EditTeamModal: FC<{
   team: Extract<
@@ -38,11 +38,10 @@ const EditTeamModal: FC<{
           e.stopPropagation();
           setShowModal(true);
         }}
-        size={"small"}
-        className="bodyFont !skew-x-0 !justify-center rounded-full !tracking-normal"
-        fullWidth
+        variant={"outline"}
+        className="w-full bg-secondary-400/30 hover:text-white"
       >
-        Edit <BiEditAlt />
+        <FiEdit className="stroke-secondary-300" />
       </Button>
       <Modal
         title={`${team.name}`}
@@ -52,7 +51,7 @@ const EditTeamModal: FC<{
       >
         <div className="w-full p-5">
           <div className="text-center">
-            <h1 className={`titleFont mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
+            <h1 className={`mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
           </div>
 
           <div className="hidden items-center justify-between rounded-t-lg bg-white bg-opacity-20 bg-clip-padding p-1 font-bold backdrop-blur-lg backdrop-filter md:flex">
@@ -99,7 +98,10 @@ const EditTeamModal: FC<{
         </div>
         <div className="p-5">
           {!team.confirmed && team.leaderId?.toString() == userId && (
-            <DeleteTeamModal teamId={team.id} />
+            <DeleteTeamModal
+              teamId={team.id}
+              isLeader={team.leaderId.toString() == userId}
+            />
           )}
         </div>
       </Modal>

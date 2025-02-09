@@ -12,13 +12,17 @@ export default function RegistrationCard() {
     return <p>Error: {error.message}</p>;
   }
 
-  const totalRegistrations =
-    (data?.getTotalRegistrations?.internalRegistrations ?? 0) +
-    (data?.getTotalRegistrations?.externalRegistrations ?? 0);
-  const internalRegistrations =
-    data?.getTotalRegistrations?.internalRegistrations ?? 0;
-  const externalRegistrations =
-    data?.getTotalRegistrations?.externalRegistrations ?? 0;
+  const registrations =
+    data?.getTotalRegistrations.__typename ===
+    "QueryGetTotalRegistrationsSuccess"
+      ? {
+          total:
+            data.getTotalRegistrations.data.internalRegistrations +
+            data.getTotalRegistrations.data.externalRegistrations,
+          internal: data.getTotalRegistrations.data.internalRegistrations,
+          external: data.getTotalRegistrations.data.externalRegistrations,
+        }
+      : {};
 
   return (
     <div className="flex-1 rounded-xl bg-white/10 backdrop-blur-lg shadow-lg overflow-hidden">
@@ -30,21 +34,21 @@ export default function RegistrationCard() {
         <div className="flex items-center justify-between">
           <div className="text-center px-4">
             <p className="text-4xl font-bold mt-1 text-white">
-              {totalRegistrations}
+              {registrations.total}
             </p>
             <p className="text-base text-gray-300">Total</p>
           </div>
           <div className="h-16 w-px bg-white/20"></div>
           <div className="text-center px-4">
             <p className="text-4xl font-bold mt-1 text-white">
-              {internalRegistrations}
+              {registrations.internal}
             </p>
             <p className="text-base text-gray-300">Internal</p>
           </div>
           <div className="h-16 w-px bg-white/20"></div>
           <div className="text-center px-4">
             <p className="text-4xl font-bold mt-1 text-white">
-              {externalRegistrations}
+              {registrations.external}
             </p>
             <p className="text-base text-gray-300">External</p>
           </div>

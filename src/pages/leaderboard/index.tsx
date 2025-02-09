@@ -4,9 +4,7 @@ import { useQuery } from "@apollo/client";
 import { type NextPage } from "next";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-
 import styles from "~/components/event/styles.module.css";
-import EasterBomb from "~/components/login/easterBomb";
 import FallingItem from "~/components/login/fallingItem";
 import Spinner from "~/components/spinner";
 import { env } from "~/env";
@@ -138,24 +136,15 @@ const LeaderBoard: NextPage = () => {
     }
   }, [Leaderboard]);
 
-  const getColor = (i: number) => {
-    if (i === 1) {
-      return "bg-gradient-to-b from-amber-400 to-yellow-700"; // Gold
-    } else if (i === 2) {
-      return "bg-gradient-to-b from-slate-400 to-slate-600"; // Silver
-    } else if (i === 3) {
-      return "bg-gradient-to-b from-amber-700 to-amber-900"; // Bronze
-    } else {
-      return "bg-gradient-to-b from-green-900 to-green-700"; // Green for all other positions
-    }
-  };
-
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <div
       className={`bg-transparent`}
-      style={{ willChange: "transform", overflowX: "hidden" }}
+      style={{
+        isolation: "isolate",
+        overflowX: "hidden",
+      }}
     >
       <div className="absolute -top-[10vh] left-2/4 -z-40 h-0 w-[65vw] -translate-x-2/4 md:w-[1000px]">
         <FallingItem delay={0} />
@@ -165,9 +154,6 @@ const LeaderBoard: NextPage = () => {
         <FallingItem delay={8000} />
       </div>
 
-      <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
-        <EasterBomb />
-      </div>
       {sortedLeaderboard.length > 0 && (
         <div className={`${styles.container} overflow-hidden`}>
           {Array.from({ length: 30 }).map((_, i) => (
@@ -177,16 +163,12 @@ const LeaderBoard: NextPage = () => {
       )}
       <div className="relative min-h-screen bg-gradient-to-b">
         <div className="relative min-h-screen py-32">
-          <div className="flex flex-col justify-center items-center relative">
-            <div className="h-[300px] w-[500px] relative">
-              <Image
-                src={"/2025/leaderboard/tablet.png"}
-                alt="XP LeaderBoard"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-3xl absolute top-60">
+          <div className="flex flex-col justify-center items-center py-6">
+            <h1 className="font-VikingHell text-white py-6 text-4xl font-bold">
+              XP Leaderboard
+            </h1>
+
+            <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-xl ">
               Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
               Experience!
             </h3>
@@ -209,7 +191,7 @@ const LeaderBoard: NextPage = () => {
               <Spinner className="text-gray-300" />
             </div>
           )}
-          <div className="bodyFont mx-5 flex flex-col gap-2 text-center text-white md:mx-36">
+          <div className="mx-5 flex flex-col gap-2 text-center text-white md:mx-36">
             {sortedLeaderboard.map((user, i) => (
               <div
                 key={user.userId}

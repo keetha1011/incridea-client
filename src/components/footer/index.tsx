@@ -32,7 +32,7 @@ export function FooterBody() {
     <div
       id="footer"
       style={{ willChange: "transform" }}
-      className={`bodyFont relative snap-start`}
+      className={`relative snap-start`}
     >
       <div className="-mt-1 flex flex-col items-center justify-between gap-5 bg-primary-700 p-5 text-gray-100 md:flex-row">
         <div className="md:basis-1/5">
@@ -45,7 +45,7 @@ export function FooterBody() {
           />
         </div>
         <div className="md:basis-3/5">
-          <ul className="flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-sm sm:text-sm md:gap-5">
+          <ul className="flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap text-sm md:gap-5">
             <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <Link href="/privacy">Privacy Policy</Link>
             </li>
@@ -108,10 +108,14 @@ export function FooterBody() {
 
 export default function Footer() {
   const router = useRouter();
-  if (router.pathname === "/") return null;
-  if (router.pathname === "/gallery") return null;
-  if (router.pathname === "/pronites") return null;
-  if (router.pathname.startsWith("/event/")) return null;
-  if (router.pathname === "/explore/spear/play") return null;
+  if (
+    router.pathname === "/" ||
+    router.pathname === "/gallery" ||
+    router.pathname.startsWith("/explore/") ||
+    router.pathname === "/pronites" ||
+    router.pathname.startsWith("/event/")
+  ) {
+    return null;
+  }
   return <FooterBody />;
 }

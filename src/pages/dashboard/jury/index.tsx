@@ -345,7 +345,8 @@ const Jury = () => {
                 <span
                   key={filter}
                   className={`${
-                    filter === currentCategoryFilter
+                    (filter as EventCategory | AllCategory) ===
+                    currentCategoryFilter
                       ? "border-b-4 bg-black/10"
                       : "hover:bg-black/10"
                   } grow cursor-pointer rounded-sm border-black/30 px-3 py-1 text-center text-white`}
@@ -412,7 +413,8 @@ const Jury = () => {
                         {() => (
                           <button
                             className={`${
-                              currentCategoryFilter === filter
+                              currentCategoryFilter ===
+                              (filter as EventCategory | AllCategory)
                                 ? "bg-black/50"
                                 : "bg-black/20"
                             } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
@@ -465,7 +467,7 @@ const Jury = () => {
       {/* -------------------- */}
 
       {filteredEvents?.length === 0 ? (
-        <div className="bodyFont flex min-h-[20rem] w-full items-center justify-center text-center text-xl italic text-gray-200/70">
+        <div className="flex min-h-[20rem] w-full items-center justify-center text-center text-xl italic text-gray-200/70">
           <span>No events found</span>
         </div>
       ) : (

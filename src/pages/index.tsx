@@ -9,19 +9,24 @@ import { BsFillSuitHeartFill } from "react-icons/bs";
 
 import Button from "~/components/button";
 import Spinner from "~/components/spinner";
-import { useAuth } from "~/hooks/useAuth";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
-import MetallicButton from "~/components/copperButton";
+import styles from "~/components/coming-soon/shootingStars.module.css";
+import { SessionProvider } from "next-auth/react";
+import Navbar from "~/components/navbar";
 
 export default function Landing() {
   return (
-    <main className="relative h-screen overflow-hidden">
-      <div className="absolute top-0">
-        <HomeUi />
-        {/* <Menu router={router} /> */}
-        <HomeFooter />
-      </div>
-    </main>
+    <SessionProvider>
+      <main className="relative h-screen overflow-hidden">
+        <div className="absolute top-0">
+          <HomeUi />
+          <Navbar />
+          {/* <Menu router={router} /> */}
+          <HomeFooter />
+        </div>
+      </main>
+    </SessionProvider>
   );
 }
 
@@ -184,6 +189,7 @@ export const HomeUi = () => {
   const smallClockRef = useRef(null);
   const floatingObjectsRef = useRef<(HTMLDivElement | null)[]>([]);
   const router = useRouter();
+  const session = useAuth();
 
   useEffect(() => {
     // Only run on client-side
@@ -233,9 +239,9 @@ export const HomeUi = () => {
     <>
       <section
         ref={sceneRef}
-        className="relative min-h-screen bg-cover z-0 scale-[120%] select-none pointer-events-none"
+        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none font-life-craft "
       >
-        <div className="absolute h-screen w-screen" data-depth="0.2">
+        <div className="absolute h-screen w-screen" data-depth="0.08">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
               src={"/assets/landing/background.webp"}
@@ -243,7 +249,7 @@ export const HomeUi = () => {
               alt="Background"
               width={1920}
               height={1080}
-              className="h-full w-full object-cover md:scale-100 scale-[110%] mt-12"
+              className="h-full w-full object-cover md:scale-100 scale-[100%] mt-12"
             />
           </div>
         </div>
@@ -272,6 +278,22 @@ export const HomeUi = () => {
               ref={smallClockRef}
             />
           </div>
+        </div>
+
+        <div
+          data-depth="0.3"
+          className={`shootingStars  scale-125 w-full h-full z-[0.08] ${styles.shootingStars}`}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
         <div className="absolute h-screen w-screen">
@@ -353,18 +375,32 @@ export const HomeUi = () => {
 
         <div className="w-screen h-screen z-50 relative select-all pointer-events-auto">
           <div className="bottom-[18%] left-1/2 -translate-x-1/2 absolute flex gap-4">
-            <button
-              className="bg-black text-white  px-4 py-2 bg-black text-white  px-4 py-2 rounded"
-              onClick={() => router.push("/register")}
-            >
-              Register
-            </button>
-            <button
-              onClick={() => router.push("/explore")}
-              className="bg-black text-white  px-4 py-2 rounded-3xl"
-            >
-              Explore
-            </button>
+            <div className="flex flex-nowarp flex-row justify-between gap-4 text-white/90">
+              <button
+                onClick={async () => {
+                  if (session.status === AuthStatus.LOADING) return;
+                  if (session.status === AuthStatus.AUTHENTICATED) {
+                    await router.push("/profile");
+                  } else {
+                    await router.push("/register");
+                  }
+                }}
+                className="flex w-full border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider"
+              >
+                {session.status === AuthStatus.LOADING
+                  ? "Loading..."
+                  : session.status === AuthStatus.AUTHENTICATED
+                    ? "Profile"
+                    : "Login"}
+              </button>
+
+              <button
+                onClick={async () => await router.push("/explore")}
+                className="flex w-full border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider"
+              >
+                Explore
+              </button>
+            </div>
           </div>
         </div>
       </section>

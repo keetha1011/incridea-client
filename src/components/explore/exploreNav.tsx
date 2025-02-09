@@ -41,7 +41,7 @@ export default function ExploreNav() {
     <>
       <div className="fixed z-[1000] flex w-full items-center justify-between p-4">
         {user ? (
-          <div className="titleFont flex flex-row items-center space-x-1 text-white">
+          <div className="flex flex-row items-center space-x-1 text-white">
             <Image
               src={"/assets/png/XP.png"}
               width={100}

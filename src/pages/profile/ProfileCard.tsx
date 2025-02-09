@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { type User } from "~/generated/generated";
+import { MeQuery, MeQueryVariables, type User } from "~/generated/generated";
 import * as THREE from "three";
 import {
   Canvas,
@@ -34,6 +34,8 @@ import { useEffect, useRef, useState } from "react";
 import { type GLTF } from "three-stdlib";
 import qrcodeDataURI from "~/utils/qr";
 import { idToPid } from "~/utils/id";
+import { QueryResult } from "@apollo/client";
+import { useAuth } from "~/hooks/useAuth";
 
 type BadgeGLTF = GLTF &
   ObjectMap & {
@@ -44,7 +46,13 @@ type BadgeGLTF = GLTF &
     };
   };
 
-function ProfileCard({ user, showQR }: { user: User; showQR: boolean }) {
+function ProfileCard({
+  user,
+  showQR,
+}: {
+  user: NonNullable<ReturnType<typeof useAuth>["user"]>;
+  showQR: boolean;
+}) {
   const handlePointerDown = () => {
     document.body.style.overflow = "hidden"; // Prevent scrolling
   };
@@ -69,7 +77,13 @@ function ProfileCard({ user, showQR }: { user: User; showQR: boolean }) {
   );
 }
 
-function Intermediate({ user, showQR }: { user: User; showQR: boolean }) {
+function Intermediate({
+  user,
+  showQR,
+}: {
+  user: NonNullable<ReturnType<typeof useAuth>["user"]>;
+  showQR: boolean;
+}) {
   return (
     <>
       <ambientLight intensity={Math.PI * 2} />
@@ -116,7 +130,7 @@ function Band({
   minSpeed = 10,
   showQR = false,
 }: {
-  user: User;
+  user: NonNullable<ReturnType<typeof useAuth>["user"]>;
   maxSpeed?: number;
   minSpeed?: number;
   showQR?: boolean;

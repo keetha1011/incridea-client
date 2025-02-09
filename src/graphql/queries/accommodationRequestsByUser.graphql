@@ -1,12 +1,21 @@
 query AccommodationRequestsByUser {
   accommodationRequestsByUser {
-    checkIn
-    checkOut
-    room
-    status
-    hotel {
-      name
-      price
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryAccommodationRequestsByUserSuccess {
+      __typename
+      data {
+        checkIn
+        checkOut
+        room
+        status
+        hotel {
+          name
+          price
+        }
+      }
     }
   }
 }

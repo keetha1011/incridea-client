@@ -16,9 +16,7 @@ const UserEvents: FC<{
 
   return (
     <section className="h-full rounded-xl border border-primary-200/80 bg-primary-500">
-      <div className="titleFont py-5 text-center text-5xl text-white">
-        My Quests
-      </div>
+      <div className="py-5 text-center text-5xl text-white">My Quests</div>
 
       <div className="mt-2 flex items-center justify-center">
         {loading ? (

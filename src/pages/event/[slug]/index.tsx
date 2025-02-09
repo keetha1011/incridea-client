@@ -200,7 +200,7 @@ const Page = ({ event, error }: Props) => {
                   />
                 )}
                 <h1
-                  className={`px-4 pb-0 text-center font-VikingHell text-3xl font-bold capitalize tracking-wider sm:p-0 md:text-6xl`}
+                  className={`px-4 pb-0 text-center font-life-craft text-3xl tracking-wider sm:p-0 md:text-6xl text-[#D79128]`}
                 >
                   {event.name}
                 </h1>
@@ -224,7 +224,7 @@ const Page = ({ event, error }: Props) => {
                   >
                     Details
                   </h2>
-                  <div className={`bodyFont mt-2 flex w-full flex-wrap gap-2`}>
+                  <div className={`mt-2 flex w-full flex-wrap gap-2`}>
                     {getEventAttributes().map((attr) =>
                       attr.text ? (
                         <div
@@ -249,7 +249,7 @@ const Page = ({ event, error }: Props) => {
                       {event.rounds.map((round) => (
                         <div
                           key={round.roundNo}
-                          className={`bodyFont items-center space-y-2 rounded-xl  border border-[#D79128] bg-opacity-30 px-3 py-2 text-white bg-[#D79128]`}
+                          className={`items-center space-y-2 rounded-xl border border-[#D79128] bg-opacity-30 px-3 py-2 text-white bg-[#D79128]`}
                         >
                           <div className={`font-semibold`}>
                             Round {round.roundNo}
@@ -259,11 +259,18 @@ const Page = ({ event, error }: Props) => {
                               className={`flex items-center gap-2`}
                               suppressHydrationWarning
                             >
-                              <BsFillCalendar2WeekFill />
-                              {round.date?.toLocaleDateString("en-IN", {
-                                day: "numeric",
-                                month: "short",
-                              })}
+                              <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
+                                <BsFillCalendar2WeekFill />
+                              </span>
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      day: "numeric",
+                                      month: "short",
+                                    },
+                                  )
+                                : ""}
                             </p>
                             <p
                               className={`flex items-center gap-2`}
@@ -272,11 +279,16 @@ const Page = ({ event, error }: Props) => {
                               <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
                                 <BiTimeFive />
                               </span>
-                              {round.date?.toLocaleDateString("en-IN", {
-                                hour: "numeric",
-                                minute: "numeric",
-                                hour12: true,
-                              })}
+                              {round.date
+                                ? new Date(round.date).toLocaleDateString(
+                                    "en-IN",
+                                    {
+                                      hour: "numeric",
+                                      minute: "numeric",
+                                      hour12: true,
+                                    },
+                                  )
+                                : ""}
                             </p>
                           </div>
                         </div>
@@ -285,11 +297,19 @@ const Page = ({ event, error }: Props) => {
                   </div>
                 </div>
                 <div className={`order-1 mt-3 flex w-full justify-center`}>
-                  <EventRegistration
-                    fees={event.fees}
-                    eventId={event.id}
-                    type={event.eventType}
-                  />
+                  {event.name.toLowerCase() !== "lazzerena" ? ( //todo -> check the event name and id in db
+                    <EventRegistration
+                      fees={event.fees}
+                      eventId={event.id}
+                      type={event.eventType}
+                    />
+                  ) : (
+                    <div
+                      className={`rounded-sm p-2.5 px-3 font-semibold italic text-[#D79128]`}
+                    >
+                      On-spot registrations only
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -303,7 +323,7 @@ const Page = ({ event, error }: Props) => {
                   >
                     Organizers
                   </h2>
-                  <div className={`bodyFont w-full space-y-2`}>
+                  <div className={`w-full space-y-2`}>
                     {event.organizers.map((organizer, idx) => (
                       <div
                         key={idx}
@@ -321,7 +341,6 @@ const Page = ({ event, error }: Props) => {
                               <span className="bg-[#D79128] h-full text-xl p-2 text-[#002C1B] rounded-full">
                                 <MdOutlineMailOutline className={`text-lg`} />{" "}
                               </span>
-
                               {organizer.user.email}
                             </a>
                           )}

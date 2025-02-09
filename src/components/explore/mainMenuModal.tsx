@@ -8,7 +8,6 @@ import { useLayoutEffect, useEffect, useRef } from "react";
 
 import Button from "~/components/button";
 import Spinner from "~/components/spinner";
-import { env } from "~/env";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 
@@ -52,6 +51,9 @@ export default MainMenuModal;
 
 const HomeUi: React.FunctionComponent = () => {
   const sceneRef = useRef<HTMLElement>(null);
+  const largeClockRef = useRef(null);
+  const smallClockRef = useRef(null);
+  const floatingObjectsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useLayoutEffect(() => {
     if (sceneRef.current)
@@ -84,80 +86,109 @@ const HomeUi: React.FunctionComponent = () => {
     <>
       <section
         ref={sceneRef}
-        className="relative min-h-full bg-gradient-to-b from-[#00002a] via-[#1c23bb] to-pink-800/50"
+        className="relative min-h-screen bg-cover z-0 right-32 scale-[120%] select-none pointer-events-none"
       >
-        <div className="absolute h-full w-full">
-          <div id="foglayer_01" className="fog">
-            <div className="image01"></div>
-            <div className="image02"></div>
-          </div>
-          <div id="foglayer_02" className="fog">
-            <div className="image01"></div>
-            <div className="image02"></div>
-          </div>
-          <div id="foglayer_03" className="fog">
-            <div className="image01"></div>
-            <div className="image02"></div>
-          </div>
-        </div>
-
-        <div data-depth="0.5" className="absolute h-full w-full">
-          <div className="absolute bottom-0 left-[50%] aspect-video h-[75vh] -translate-x-1/2 translate-y-16 opacity-50 md:left-0 md:h-full md:w-full md:translate-x-0">
+        <div className="absolute h-screen w-screen" data-depth="0.2">
+          <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/moon.png`}
-              alt="Gradient"
+              src={"/assets/landing/background.webp"}
+              priority
+              alt="Background"
               width={1920}
               height={1080}
-              className="h-full w-full object-contain object-bottom"
+              className="h-full w-full object-cover md:scale-100 scale-[110%] mt-12"
             />
           </div>
-        </div>
-        <div data-depth="0.4" className="absolute h-full w-full">
-          <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/stars.png`}
-            alt="Gradient"
-            width={1920}
-            height={1080}
-            className="absolute h-full w-full object-cover object-center"
-          />
         </div>
 
-        <div data-depth="0.3" className="absolute h-full w-full">
-          <div className="absolute bottom-0 right-0 aspect-video h-full translate-x-[18%] translate-y-[4.1%] sm:translate-x-[12%] md:translate-x-[10%] lg:translate-x-[4.1%]">
-            <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/portal.png`}
-              alt="Portal"
-              width={2050}
-              height={1080}
-              className="h-full w-full object-cover object-right-bottom"
-            />
-          </div>
-        </div>
         <div
-          data-depth="0.2"
-          className="absolute flex h-full w-full items-center justify-center"
+          data-depth="0.4"
+          className=" h-screen w-screen flex justify-center items-center"
         >
-          <div className="mx-auto mt-[3%] w-fit p-5" ref={Logo}>
+          <div className="p-5 w-screen h-screen flex justify-center items-center mb-10 relative">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/DoD.png`}
+              src={`/assets/landing/clock.webp`}
+              priority
               width={640}
               height={640}
-              alt="Dice of Destiny"
-              className="h-fit w-full max-w-xl object-contain object-center"
+              alt="Clock 1"
+              className="left-1/2 -translate-x-1/2 absolute md:top-[10%] md:w-[20%] w-[40%] top-[20%] object-contain object-center"
+              ref={largeClockRef}
+            />
+            <Image
+              src={`/assets/landing/clock.webp`}
+              priority
+              width={640}
+              height={640}
+              alt="Clock 2"
+              className="absolute md:w-[12%] md:top-[17%] w-[20%] top-[25%] object-contain object-center"
+              ref={smallClockRef}
             />
           </div>
         </div>
-        <div data-depth="0.1" className="absolute h-full w-full">
-          <div className="absolute bottom-0 left-0 aspect-video h-full -translate-x-[20%] translate-y-[3%] sm:-translate-x-[18%] md:-translate-x-[12%] lg:-translate-x-[10%]">
+
+        <div className="absolute h-screen w-screen">
+          <div className="w-full h-full relative">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/ryoko.png`}
-              id="Ryoko"
-              alt="Ryoko looking at portal"
+              src={"/assets/landing/pillar.webp"}
+              priority
+              alt="Pillar"
               width={1920}
               height={1080}
-              className="h-full w-full object-cover object-left-bottom"
+              className="md:h-[80%] h-[60%] absolute bottom-0 left-1/2 -translate-x-1/2 mt-auto w-full md:object-fill object-cover object-center"
             />
           </div>
+        </div>
+
+        {/* Floating Objects */}
+
+        {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => (
+          <div
+            data-depth="0.6"
+            className="absolute h-screen w-screen"
+            key={idx}
+          >
+            <div
+              ref={(el) => {
+                floatingObjectsRef.current[idx] = el;
+              }}
+              className="absolute lg:bottom-0 md:bottom-24 bottom-60 left-[50%] aspect-video w-screen md:scale-[90%] scale-[125%] -translate-x-1/2 -translate-y-16 transition-transform"
+            >
+              <Image
+                src={`/assets/landing/floatingObjects/${item}.webp`}
+                priority
+                alt="Floating objects"
+                width={1920}
+                height={1080}
+                className="h-full w-full object-contain object-bottom"
+              />
+            </div>
+          </div>
+        ))}
+        <div
+          data-depth="0.1"
+          className="absolute flex h-screen w-screen items-center justify-center z-20"
+        >
+          <div className="mx-auto w-screen h-screen p-5 relative">
+            <Image
+              src={`/2025/logo.png`}
+              priority
+              width={640}
+              height={640}
+              alt="Incridea Logo"
+              className="absolute md:w-[15%] left-1/2 -translate-x-1/2 top-[20%] w-[45%] object-contain object-center"
+            />
+          </div>
+        </div>
+        <div data-depth="0.1" className="absolute w-screen h-screen z-20">
+          <Image
+            src={`/2025/eoelogo.png`}
+            priority
+            width={640}
+            height={640}
+            alt="EOE Logo"
+            className="md:w-[30%] w-[85%] left-1/2 absolute -translate-x-1/2 md:top-[30%] top-[30%] object-contain object-center"
+          />
         </div>
       </section>
     </>

@@ -102,7 +102,13 @@ const EventCard: FC<{
                       {!solo && team.leaderId?.toString() == userId && (
                         <EditTeamModal userId={userId} team={team} />
                       )}
-                      {solo && <DeleteTeamModal teamId={team.id} solo={solo} />}
+                      {solo && (
+                        <DeleteTeamModal
+                          teamId={team.id}
+                          solo={solo}
+                          isLeader={team.leaderId?.toString() == userId}
+                        />
+                      )}
                     </div>
                   )}
                 </div>

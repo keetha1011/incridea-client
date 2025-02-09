@@ -1,3 +1,12 @@
 mutation NotifyParticipants($eventId: ID!, $roundNo: Int!) {
-  notifyParticipants(eventId: $eventId, roundNo: $roundNo)
+  notifyParticipants(eventId: $eventId, roundNo: $roundNo) {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationNotifyParticipantsSuccess {
+      __typename
+      data
+    }
+  }
 }

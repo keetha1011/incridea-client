@@ -6,7 +6,7 @@ import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
 import Loader from "~/components/loader";
 import { useAuth } from "~/hooks/useAuth";
 import ProfileCard from "./ProfileCard";
-import UserEvents from "./UserEvents";
+import UserEvents from "~/components/profile/UserEvents";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { type NextPage } from "next";
@@ -71,7 +71,7 @@ const Profile: NextPage = () => {
             height={400}
           />
         </div>
-        <h1 className="bodyFont -translate-y-10 text-lg text-white lg:text-xl">
+        <h1 className="-translate-y-10 text-lg text-white lg:text-xl">
           Hey there! You need to login to view your profile page.
         </h1>
         <Link href="/login" className="-translate-y-5">
@@ -92,11 +92,11 @@ const Profile: NextPage = () => {
   return (
     <main
       ref={containerRef}
-      className="bodyFont md:h-[calc(100vh-3rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
+      className="md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
     >
-      <div className="flex md:flex-row flex-col w-full p-2 gap-8">
-        <div className="md:w-[30rem] w-full md:h-full h-[88vh]  rounded-lg overflow-hidden col-span-1 gap-4 grid grid-rows-4">
-          <div className="w-full h-full row-span-3 relative rounded-xl overflow-hidden border-secondary-500/50 border-2">
+      <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8">
+        <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col">
+          <div className="w-full h-full">
             <ProfileCard user={user} showQR={showQr} />
 
             <div className="absolute w-full flex justify-between gap-2 p-4 bottom-0">

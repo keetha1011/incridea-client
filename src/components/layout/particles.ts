@@ -5,12 +5,12 @@ export const particlesConfig = {
     },
   },
   detectRetina: true,
-  fpsLimit: 120,
+  fpsLimit: 60,
   interactivity: {
     detectsOn: "window" as const,
     events: {
       onClick: {
-        enable: true,
+        enable: false,
         mode: "push",
       },
       onHover: {
@@ -137,7 +137,7 @@ export const particlesConfig = {
         value: 10,
       },
       attract: {
-        distance: 200,
+        distance: 100,
         enable: false,
         rotate: {
           x: 3000,
@@ -378,7 +378,7 @@ export const particlesConfig = {
   zLayers: 100,
   emitters: {
     autoPlay: true,
-    fill: true,
+    fill: false,
     life: {
       wait: false,
     },

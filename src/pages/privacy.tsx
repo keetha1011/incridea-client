@@ -3,15 +3,13 @@ import { type NextPage } from "next";
 const Privacy: NextPage = () => {
   return (
     <div
-      className={`relative min-h-screen overflow-y-auto overflow-x-hidden p-5 text-gray-100 sm:p-10`}
+      className={`relative min-h-screen overflow-y-auto overflow-x-hidden text-gray-100 p-10 pt-20`}
     >
       <div className="mx-auto w-full max-w-7xl">
-        <h1
-          className={`mb-3 pt-24 text-center font-gilroy text-5xl font-bold tracking-tight`}
-        >
+        <h1 className={`text-center text-6xl font-life-craft tracking-wider`}>
           Incridea 2025 Privacy Policy
         </h1>
-        <div className="bodyFont mt-10">
+        <div className="mt-10">
           <p>
             At Incridea, we take your privacy seriously and are committed to
             protecting your personal information. This privacy policy explains
