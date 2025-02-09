@@ -14,6 +14,7 @@ import { cn } from "~/lib/utils";
 import styles from "~/components/coming-soon/shootingStars.module.css";
 import { SessionProvider } from "next-auth/react";
 import Navbar from "~/components/navbar";
+import HomeButton from "~/components/button/home";
 
 export default function Landing() {
   return (
@@ -249,7 +250,7 @@ export const HomeUi = () => {
               alt="Background"
               width={1920}
               height={1080}
-              className="h-full w-full object-cover md:scale-100 scale-[100%] mt-12"
+              className="h-full w-full object-cover md:scale-100 scale-[120%] mt-12"
             />
           </div>
         </div>
@@ -376,30 +377,26 @@ export const HomeUi = () => {
         <div className="w-screen h-screen z-50 relative select-all pointer-events-auto">
           <div className="bottom-[18%] left-1/2 -translate-x-1/2 absolute flex gap-4">
             <div className="flex flex-nowarp flex-row justify-between gap-4 text-white/90">
-              <button
+              <HomeButton
                 onClick={async () => {
                   if (session.status === AuthStatus.LOADING) return;
                   if (session.status === AuthStatus.AUTHENTICATED) {
                     await router.push("/profile");
                   } else {
-                    await router.push("/register");
+                    await router.push("/login");
                   }
                 }}
-                className="flex w-full border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider"
               >
                 {session.status === AuthStatus.LOADING
                   ? "Loading..."
                   : session.status === AuthStatus.AUTHENTICATED
                     ? "Profile"
                     : "Login"}
-              </button>
+              </HomeButton>
 
-              <button
-                onClick={async () => await router.push("/explore")}
-                className="flex w-full border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider"
-              >
+              <HomeButton onClick={async () => await router.push("/explore")}>
                 Explore
-              </button>
+              </HomeButton>
             </div>
           </div>
         </div>

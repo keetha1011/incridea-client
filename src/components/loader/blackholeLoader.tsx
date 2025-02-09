@@ -2,7 +2,7 @@
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { LoaderContext } from "./loaderContext";
 
 const circleImage = "/2025/loader/portal/circle.png";
@@ -18,9 +18,9 @@ export default function BlackHoleLoader() {
 
   useGSAP(() => {
     if (circle.current && background.current && logo.current) {
-      const tlbackground = gsap.timeline({ repeat: -1 });
-      const tlcircle = gsap.timeline({ repeat: -1 });
-      const tlogo = gsap.timeline({ repeat: -1 });
+      const tlbackground = gsap.timeline({ repeat: 0 });
+      const tlcircle = gsap.timeline({ repeat: 0 });
+      const tlogo = gsap.timeline({ repeat: 0 });
 
       tlbackground.to(background.current, {
         scale: 1.1,
@@ -30,8 +30,9 @@ export default function BlackHoleLoader() {
       });
       tlbackground.to(background.current, {
         scale: 20,
-        duration: 1,
+        duration: 0.7,
         rotate: 360,
+        opacity: 0.5,
         display: "none",
         ease: "power2.inOut",
       });
@@ -43,8 +44,9 @@ export default function BlackHoleLoader() {
       });
       tlcircle.to(circle.current, {
         scale: 20,
-        duration: 1,
+        duration: 0.7,
         rotate: -90,
+        opacity: 0.5,
         display: "none",
         ease: "power2.inOut",
       });
@@ -54,15 +56,15 @@ export default function BlackHoleLoader() {
         scale: 1.2,
         ease: "power2.out",
       });
-      loaderContext?.setAnimate(true);
       tlogo.to(logo.current, {
-        duration: 1,
-        opacity: 0.6,
+        duration: 0.7,
+        opacity: 0.5,
         scale: 0.1,
         display: "none",
         ease: "power2.out",
         onComplete: () => {
           loaderContext?.setShow("hide");
+          loaderContext?.setAnimate(true);
           sessionStorage.setItem("black-hole-loader", "true");
         },
       });
