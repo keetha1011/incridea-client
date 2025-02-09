@@ -38,7 +38,7 @@ const EasterEgg: NextPage = () => {
 
   if (authLoading)
     return (
-      <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6] pt-28">
+      <div className="relative min-h-screen pt-28">
         <div className="mt-10 text-center text-xl text-white/90">
           <Spinner intent={"white"} size={"large"} />
         </div>
@@ -46,7 +46,7 @@ const EasterEgg: NextPage = () => {
     );
   if (status !== AuthStatus.AUTHENTICATED)
     return (
-      <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6] pt-28">
+      <div className="relative min-h-screen pt-28">
         <div className="mt-10 flex flex-col items-center justify-center gap-3 text-center text-xl text-white/90">
           <span className="text-3xl font-semibold">Uh-oh! </span>
           <span>
@@ -61,7 +61,7 @@ const EasterEgg: NextPage = () => {
     );
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-[#41acc9] via-[#075985] to-[#2d6aa6]">
+    <div className="relative min-h-screen">
       <Toaster />
       <div className="flex flex-col items-center justify-center px-6 pb-12 pt-28 md:px-12">
         <h2 className="titleFont mb-8 text-center text-4xl text-white">

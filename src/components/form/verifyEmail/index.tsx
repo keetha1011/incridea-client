@@ -31,7 +31,7 @@ const VerifyEmailComponent: FunctionComponent = () => {
   }, [token, isMutationExecuted]);
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-bl from-[#003d1c] to-[#004e2c]">
+    <div className="flex min-h-screen w-full items-center justify-center">
       {loading && <Spinner intent={"white"} className="text-[#dd5c6e]" />}
       {!token && (
         <div className="flex min-w-[300px] flex-col items-center justify-center rounded-md bg-primary-800/80  p-12 text-red-500">

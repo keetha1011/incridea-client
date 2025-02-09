@@ -19,7 +19,7 @@ const Register: NextPage = () => {
   if (user && user?.role !== Role.User) void router.push("/profile");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pb-10 pt-32 text-white md:px-6">
+    <div className="min-h-screen pb-10 pt-32 text-white md:px-6">
       <ViewUserAccommodation
         showModal={showModal}
         setShowModal={setShowModal}

@@ -192,10 +192,10 @@ const SignIn: NextPage = () => {
 
   return (
     <>
-      <div className="h-16 bg-[#6a5fd7]"></div>
+      <div className="h-16"></div>
       <Image
         fill={true}
-        className="mt-16 object-cover blur-[3px]"
+        className="object-cover blur-[3px]"
         src={`/assets/jpeg/bg-login.jpeg`}
         alt={"loginBG"}
         quality={100}

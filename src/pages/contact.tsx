@@ -3,7 +3,7 @@ import { MdCall, MdLocationOn, MdMail } from "react-icons/md";
 
 const Contact: NextPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pt-32 text-white md:px-6">
+    <div className="min-h-screen px-4 pt-32 text-white md:px-6">
       <div className="mx-auto max-w-4xl">
         <h2 className={`titleFont text-center text-4xl text-white md:text-5xl`}>
           Contact Us

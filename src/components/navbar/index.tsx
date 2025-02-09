@@ -5,11 +5,14 @@ import Link from "next/link";
 import MobileNav from "./mobileNav";
 import { useAuth } from "~/hooks/useAuth";
 import { Role } from "~/generated/generated";
+import { useRouter } from "next/router";
 
 const Navbar = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const { user } = useAuth();
+  const router = useRouter();
+  const currentRoute = router.pathname;
 
   const tabs: {
     id: number;
@@ -90,7 +93,7 @@ const Navbar = () => {
           clipPath:
             "polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%)",
         }}
-        className="fixed w-full top-0 bg-white/10 backdrop-blur-2xl h-16 md:flex hidden items-center justify-center rounded-full"
+        className="fixed w-full top-0 bg-white/10 backdrop-blur-2xl h-14 md:flex hidden items-center justify-center rounded-full z-10"
       >
         <div className="flex items-center 2xl:mr-[20rem] lg:mr-[15rem] mr-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8">
           {tabs.slice(0, 3).map((tab) => (
@@ -108,7 +111,7 @@ const Navbar = () => {
           style={{
             clipPath: "polygon(0 0, 100% 0, 75% 100%, 25% 100%)",
           }}
-          className="absolute top-0 bg-white px-12 py-2 text-black shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%] "
+          className={`absolute top-0 ${currentRoute === "/" ? "bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950" : "bg-white"} px-12 py-2 text-white shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%]`}
         >
           <div className="relative w-16 h-6 flex justify-center items-center">
             <Image
