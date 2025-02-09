@@ -83,7 +83,7 @@ const Reset: NextPage = () => {
 
   return (
     <>
-      <div className="h-16 bg-[#6a5fd7]"></div>
+      <div className="h-16"></div>
 
       <Image
         fill={true}

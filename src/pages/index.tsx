@@ -12,6 +12,7 @@ import Spinner from "~/components/spinner";
 import { AuthStatus, useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 import { SessionProvider } from "next-auth/react";
+import Navbar from "~/components/navbar";
 
 export default function Landing() {
   return (
@@ -19,6 +20,7 @@ export default function Landing() {
       <main className="relative h-screen overflow-hidden">
         <div className="absolute top-0">
           <HomeUi />
+          <Navbar />
           {/* <Menu router={router} /> */}
           <HomeFooter />
         </div>
