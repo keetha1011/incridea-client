@@ -10,7 +10,7 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { env } from "~/env";
 import { LogLink } from "~/lib/apollo/links/log";
 
-const URI = `${env.NEXT_PUBLIC_SERVER_URL}/graphql`;
+const URI = `${env.NEXT_PUBLIC_HTTP_SERVER_URL}/graphql`;
 
 const wsLink = new GraphQLWsLink(
   createClient({
