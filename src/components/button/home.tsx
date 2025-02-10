@@ -54,7 +54,7 @@ export default function HomeButton({
       ref={buttonRef}
       {...props}
       className={cn(
-        "flex w-full hover:scale-110 transition-all duration-300 border-2 text-lg md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left tracking-wider relative overflow-hidden",
+        "flex w-full hover:scale-110 transition-all duration-300 border-2 text-xl md:text-2xl border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 tracking-wider relative overflow-hidden",
         className,
       )}
     >

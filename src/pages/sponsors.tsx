@@ -52,10 +52,10 @@ const Sponsors: NextPage = () => {
         <div className="w-[98%] mx-auto py-8">
           <div className="mt-14 mx-auto flex w-fit flex-col items-center gap-2 px-10">
             <h1 className="relative font-life-craft text-center text-3xl md:text-4xl lg:text-5xl tracking-wider text-amber-500">
-              OUR SPONSORS
+              Our Sponsors
               <div className="absolute -inset-4 -z-10 animate-pulse rounded-lg bg-emerald-900/50 blur-lg" />
             </h1>
-            <p className="font-black-chancery text-center text-[1rem] md:text-lg text-emerald-300">
+            <p className="text-center text-[1rem] md:text-lg text-emerald-300">
               Fueling Eternity with Iconic names
             </p>
           </div>
