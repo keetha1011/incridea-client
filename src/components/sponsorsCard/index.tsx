@@ -167,30 +167,28 @@ const SponsorGearCarousel = ({
 
           <div
             ref={cardRef}
-            className="h-[512px] sm:h-auto absolute mt-6 lg:mt-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-auto mx-auto max-w-xl"
+            className="h-[512px] sm:h-auto absolute mt-10 lg:mt-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-auto mx-auto max-w-xl"
           >
             <div className="bg-[#054432]/90 backdrop-blur-sm rounded-xl border-2 border-amber-500/50 shadow-lg p-4 md:p-6 hover:border-amber-500 transition-colors">
               <div className="flex flex-col items-center gap-4">
                 {sponsors[currentIndex]?.title && (
-                  <h3 className="text-center text-2xl text-amber-500">
+                  <h3 className="text-center text-2xl text-amber-500 font-life-craft">
                     {sponsors[currentIndex].title}
                   </h3>
                 )}
                 <div className="relative w-32 h-32 md:w-40 md:h-40">
                   {sponsors[currentIndex]?.notCloudinary ? (
-                    <Image
+                    <img
                       src={`/2025/sponsors/${sponsors[currentIndex]?.logo}`}
-                      fill
                       alt={sponsors[currentIndex]?.name ?? "Logo"}
                       className="object-contain"
                     />
                   ) : (
-                    <Image
+                    <img
                       src={
                         `${process.env.NEXT_PUBLIC_UPLOADTHING_URL}/sponsors/${sponsors[currentIndex]?.logo}` ||
                         `/2025/sponsors/${sponsors[currentIndex]?.logo}`
                       }
-                      fill
                       alt={sponsors[currentIndex]?.name ?? "Sponsor Logo"}
                       className="object-contain"
                     />
@@ -200,12 +198,10 @@ const SponsorGearCarousel = ({
                 <div className="text-center">
                   {sponsors[currentIndex] && (
                     <>
-                      <h3 className="text-2xl text-amber-500 mb-2">
+                      <h3 className="text-2xl text-amber-500 mb-2 font-life-craft">
                         {sponsors[currentIndex].name}
                       </h3>
-                      <p
-                        className={`text-emerald-100/90 text-sm p-1 ${sponsors[currentIndex].websiteURL ? "text-left" : "text-pretty"}`}
-                      >
+                      <p className="text-emerald-100/90 text-xs md:text-sm p-1 text-left md:text-center ">
                         {sponsors[currentIndex].desc}
                       </p>
                     </>
@@ -217,7 +213,7 @@ const SponsorGearCarousel = ({
                     href={sponsors[currentIndex].websiteURL}
                     target="_blank"
                     rel="noreferrer"
-                    className="absolute bottom-0 translate-y-1/2 group flex items-center gap-2 px-4 py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
+                    className="absolute text-sm md:text-[1rem] bottom-0 translate-y-1/2 group flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
                   >
                     Visit Website
                     <ExternalLink className="transition-transform group-hover:translate-x-1" />

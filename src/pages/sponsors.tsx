@@ -39,7 +39,7 @@ const Sponsors: NextPage = () => {
             <VolumeX className="sm:w-6 sm:h-6 text-amber-500" />
           )}
         </button>
-        <div className="scroll-helper mx-1 sm:mx-3 absolute top-[40%] left-auto lg:right-0  -translate-y-1/2 flex flex-col items-center gap-3 text-amber-500 z-10">
+        <div className="scroll-helper mx-1 sm:mx-3 absolute left-auto top-[45%] md:top-[50%] lg:right-0  -translate-y-1/2 flex flex-col items-center gap-3 text-amber-500 z-10">
           <p
             className="text-[0.7rem] sm:text-[0.9rem] lg:text-[1rem] font-medium writing-mode-vertical transform rotate-0"
             style={{ writingMode: "vertical-lr" }}
