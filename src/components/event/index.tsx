@@ -89,19 +89,9 @@ const Event = ({
         </defs>
         <defs>
           <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop
-              offset="0%"
-              style={{ stopColor: "rgba(255, 255, 255, 0.2)" }}
-            />
-            <stop
-              offset="50%"
-              style={{ stopColor: "rgba(255, 255, 255, 0.3)" }}
-            />
-          </linearGradient>
-
-          <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: "#8B6F43" }} />
-            <stop offset="100%" style={{ stopColor: "#D4AF37" }} />
+            <stop offset="0%" style={{ stopColor: "rgba(0,130,63, 1)" }} />
+            <stop offset="50%" style={{ stopColor: "rgba(0,51,31, 0.5)" }} />
+            <stop offset="100%" style={{ stopColor: "rgba(0,130,63, 1)" }} />
           </linearGradient>
         </defs>
 
@@ -112,6 +102,9 @@ const Event = ({
         <path
           className="b"
           d="M145.68,228.35h-.01s.01,1.31.01,1.31v3.19l-9.8,9.76H13.1l-.04-.04-.28-.28.29.32h-3.3l-9.77-9.76v-3.14h.05l-.05-.05v-74.55l13.07-13.07v-53L0,77.65V16.23l6.11-6.27L15.8,0h39.14l10.01,9.96h66.46l6.22,6.27,4.07,4.07c.11.11.22.22.3.34l.16.17,3.52,3.53v204.01Z"
+          fill="black"
+          stroke="rgba(153,255,216,0.8)"
+          stroke-width="0.5"
         />
         <polygon
           className="b"
@@ -120,7 +113,7 @@ const Event = ({
 
         <foreignObject x="0" y="86" width="17" height="60">
           <div className="flex items-center justify-center w-full h-full">
-            <span className="text-[#E6C98D] italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-2 shadow-2xl rounded-xl">
+            <span className="text-white italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-2 shadow-2xl rounded-xl">
               {data.category?.toLowerCase() === "non_technical"
                 ? "Non Tech"
                 : data.category?.toLocaleLowerCase()}
@@ -148,21 +141,21 @@ const Event = ({
           )}
         </foreignObject>
 
-        <foreignObject x="-2" y="140" width="150" height="102">
+        <foreignObject x="-2" y="140" width="150" height="108">
           <div className="text-white flex flex-col w-full items-center justify-center">
-            <h2 className="text-base ml-2 font-life-craft my-1 text-center italic text-primary-950">
+            <h2 className="text-base ml-2 font-life-craft my-1 text-center italic text-white">
               {data.name}
             </h2>
             <div className="grid grid-cols-1 gap-x-1 gap-y-1 w-full px-2 items-start -mt-1.5">
               {getEventAttributes().map((attr, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-start h-3.5 text-[6px] gap-1 rounded-md px-2 py-[7px] bg-gradient-to-tr from-[#8B6F43] via-[#D4AF37] to-[#8B6F43] border border-[#D4AF37]/60 text-[#FFF4C2] font-medium shadow-md"
+                  className="flex items-center justify-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px] bg-gradient-to-tr bg-opacity-50 from-primary-700 via-primary-900/5 to-primary-700 border border-primary-200/80 text-white font-medium shadow-md"
                 >
                   <attr.Icon
                     width="7"
                     height="7"
-                    className="flex items-center justify-start"
+                    className="flex items-center"
                   />
                   <span
                     className="flex items-center leading-[0.7rem] h-full w-full"
@@ -173,28 +166,28 @@ const Event = ({
                 </div>
               ))}
             </div>
-            <a href={generateEventUrl(data.name, data.id)} className="-mt-0.5">
-              <svg width="145" height="30" viewBox="32 232 165 40">
-                <g transform="translate(-15, -1)">
-                  <polyline
-                    className="e"
-                    points="34.71 251 50.11 261 208.6 261 224.04 251"
-                  />
-                  <polyline
-                    className="e"
-                    points="50.16 243 34.71 251 224.04 251 208.64 243"
-                  />
+            <a
+              href={generateEventUrl(data.name, data.id)}
+              className="mt-[3.5px]"
+            >
+              <g>
+                <div
+                  className="h-5 w-[146px] bg-white/90 flex justify-center items-center relative"
+                  style={{
+                    clipPath:
+                      "polygon(0% 54%, 6% 0%, 94% 0%, 100% 54%, 94% 100%, 6% 100%)",
+                    // boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.8)", // Simulates a border
+                  }}
+                >
                   <text
-                    x="128"
-                    y="256"
-                    className="text-[#E6C98D] italic font-semibold text-[12px] uppercase cursor-pointer"
+                    className="text-black font-life-craft tracking-widest italic font-semibold text-sm uppercase cursor-pointer mt-1"
                     textAnchor="middle"
                     fill="#E6C98D"
                   >
                     Register
                   </text>
-                </g>
-              </svg>
+                </div>
+              </g>
             </a>
           </div>
         </foreignObject>
