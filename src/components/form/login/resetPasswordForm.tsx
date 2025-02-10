@@ -94,7 +94,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
 
             {loading && (
               <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg opacity-60">
-                <Spinner className="text-[#dd5c6e]" intent={"white"} />
+                <Spinner className="text-[#dd5c6e]" intent={"primary"} />
               </div>
             )}
 
@@ -110,6 +110,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
           intent={"ghost"}
           className="mt-5"
           onClick={() => setWhichForm("signIn")}
+          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
         >
           <FaAngleLeft /> Go Back
         </Button>
