@@ -40,6 +40,7 @@ function EventRegistration({
 
   return (
     <>
+      {/* TODO(Omkar): check these urgent */}
       {eventId === "29" ||
       eventId === "50" ||
       eventId === "78" ||
@@ -157,12 +158,10 @@ function EventRegistrationButton({
   if (!registered) {
     return (
       <div className="flex h-20 w-full flex-col items-center justify-center space-y-2">
-        <p className="bodyFont text-white">
-          You need to register to join events!
-        </p>
+        <p className="text-white">You need to register to join events!</p>
         <Link href={"/register"}>
           <Button
-            className="!bodyFont !skew-x-0 !rounded-full"
+            className="!skew-x-0 !rounded-full"
             intent={"primary"}
             noScaleOnHover
           >

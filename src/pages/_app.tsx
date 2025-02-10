@@ -69,14 +69,6 @@ export const lifeCraft = LocalFont({
   style: "normal",
 });
 
-export const blackChancery = LocalFont({
-  src: "../font/BlackChancery.ttf",
-  weight: "400",
-  variable: "--font-black-chancery",
-  display: "swap",
-  style: "normal",
-});
-
 export default function App({
   Component,
   pageProps: { session: _session, ...pageProps },
@@ -123,7 +115,6 @@ export default function App({
     };
   }, [router, handleLoadingStart, handleLoadingComplete]);
   const shouldRenderNavbar =
-    router.pathname !== "/" &&
     !router.pathname.startsWith("/explore") &&
     !router.pathname.startsWith("/theme");
 
@@ -143,10 +134,9 @@ export default function App({
             <Toaster />
             <div
               className={cn(
-                trap.className,
-                lifeCraft.className,
-                blackChancery.className,
-                "min-h-screen",
+                trap.variable,
+                lifeCraft.variable,
+                "min-h-screen font-trap tracking-wider text-lg",
               )}
             >
               {shouldRenderNavbar && <Navbar />}

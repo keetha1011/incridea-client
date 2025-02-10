@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { Draggable } from "gsap/dist/Draggable";
 import { MotionPathPlugin } from "gsap/dist/MotionPathPlugin";
@@ -24,56 +24,63 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
   const animationTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const isDraggingRef = useRef(false);
 
-  const createMotionPathAnimation = (target: HTMLDivElement, index: number) => {
-    const animation = gsap
-      .timeline()
-      .fromTo(
-        target,
-        { x: 0, y: 100, opacity: 0 },
-        { x: 0, y: 200, opacity: 1, duration: 1, ease: "power2.out" },
-      )
-      .to(target, {
-        motionPath: {
-          path: [
-            {
-              x: (motionCoordinates[0]?.x ?? 0) * (index % 2 === 0 ? -1 : 1),
-              y: motionCoordinates[0]?.y ?? -200,
-            },
-            {
-              x: (motionCoordinates[1]?.x ?? 100) * (index % 2 === 0 ? -1 : 1),
-              y: motionCoordinates[1]?.y ?? -400,
-            },
-            {
-              x: (motionCoordinates[2]?.x ?? 300) * (index % 2 === 0 ? -1 : 1),
-              y: motionCoordinates[2]?.y ?? -600,
-            },
-            {
-              x: (motionCoordinates[3]?.x ?? 500) * (index % 2 === 0 ? -1 : 1),
-              y: motionCoordinates[3]?.y ?? -800,
-            },
-            {
-              x: (motionCoordinates[4]?.x ?? 800) * (index % 2 === 0 ? -1 : 1),
-              y: motionCoordinates[4]?.y ?? -1000,
-            },
-          ],
-          curviness: 2,
-        },
-        opacity: 1,
-        duration: 28,
-        ease: "power2.out",
-        onComplete: () => {
-          setQueue((prevQueue) =>
-            prevQueue.filter((img) => img !== target.dataset.img),
-          );
-        },
-      })
-      .to(target, {
-        opacity: 0,
-        duration: 3,
-      });
+  const createMotionPathAnimation = useMemo(
+    () => (target: HTMLDivElement, index: number) => {
+      const animation = gsap
+        .timeline()
+        .fromTo(
+          target,
+          { x: 0, y: 100, opacity: 0 },
+          { x: 0, y: 200, opacity: 1, duration: 1, ease: "power2.out" },
+        )
+        .to(target, {
+          motionPath: {
+            path: [
+              {
+                x: (motionCoordinates[0]?.x ?? 0) * (index % 2 === 0 ? -1 : 1),
+                y: motionCoordinates[0]?.y ?? -200,
+              },
+              {
+                x:
+                  (motionCoordinates[1]?.x ?? 100) * (index % 2 === 0 ? -1 : 1),
+                y: motionCoordinates[1]?.y ?? -400,
+              },
+              {
+                x:
+                  (motionCoordinates[2]?.x ?? 300) * (index % 2 === 0 ? -1 : 1),
+                y: motionCoordinates[2]?.y ?? -600,
+              },
+              {
+                x:
+                  (motionCoordinates[3]?.x ?? 500) * (index % 2 === 0 ? -1 : 1),
+                y: motionCoordinates[3]?.y ?? -800,
+              },
+              {
+                x:
+                  (motionCoordinates[4]?.x ?? 800) * (index % 2 === 0 ? -1 : 1),
+                y: motionCoordinates[4]?.y ?? -1000,
+              },
+            ],
+            curviness: 2,
+          },
+          opacity: 1,
+          duration: 28,
+          ease: "power2.out",
+          onComplete: () => {
+            setQueue((prevQueue) =>
+              prevQueue.filter((img) => img !== target.dataset.img),
+            );
+          },
+        })
+        .to(target, {
+          opacity: 0,
+          duration: 3,
+        });
 
-    return animation;
-  };
+      return animation;
+    },
+    [motionCoordinates],
+  );
 
   useEffect(() => {
     const handleResize = () => {
@@ -113,10 +120,6 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
-
-  useEffect(() => {
-    console.log("Path coordinates", motionCoordinates);
   }, []);
 
   useEffect(() => {
@@ -189,7 +192,7 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
 
       animationTimelineRef.current?.kill();
     };
-  }, [imgArr, motionCoordinates]);
+  }, [imgArr, motionCoordinates, createMotionPathAnimation]);
 
   const setImageRef = (img: string) => (el: HTMLDivElement | null) => {
     if (el) {
@@ -204,11 +207,13 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
 
   return (
     <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/2025/gallery/portal3.gif"
         alt=""
         className="absolute -bottom-20 scale-y-[2] scale-x-150 lg:scale-x-100 -translate-y-1/2 h-40 w-full "
       />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/2025/gallery/portal3-bottom.gif"
         alt=""
@@ -228,6 +233,7 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
           //     alt={`Inc 2022 ${index}`}
           //   />
           // </div>
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             key={index}
             ref={setImageRef(img)}

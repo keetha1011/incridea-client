@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 import GlitchAnimation from "~/components/animation/glitchAnimation";
+import { CONSTANT } from "~/constants";
 import { env } from "~/env";
 import { GetUserXpDocument, Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
@@ -44,7 +45,7 @@ export default function CountDown() {
   });
 
   function getRemaingTime() {
-    const eventDate = new Date("2024-02-22T09:00:00").getTime();
+    const eventDate = CONSTANT.DATE.INCRIDEA.DAY1.getTime();
     const currentDate = new Date().getTime();
     const remainingTime = eventDate - currentDate;
 
@@ -76,9 +77,9 @@ export default function CountDown() {
             <h3
               className={`z-10 text-lg tracking-widest text-white md:text-2xl`}
             >
-              <div className="titleFont flex flex-row items-center space-x-2">
+              <div className="flex flex-row items-center space-x-2">
                 <Image
-                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/XP.png`}
+                  src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/XP.png`}
                   width={100}
                   height={100}
                   alt="map"

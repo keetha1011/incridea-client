@@ -141,11 +141,10 @@ const LeaderBoard: NextPage = () => {
   return (
     <div
       className={`bg-transparent`}
-      style={{ 
-        isolation: 'isolate',
-        overflowX: 'hidden'
+      style={{
+        isolation: "isolate",
+        overflowX: "hidden",
       }}
-    
     >
       <div className="absolute -top-[10vh] left-2/4 -z-40 h-0 w-[65vw] -translate-x-2/4 md:w-[1000px]">
         <FallingItem delay={0} />
@@ -165,13 +164,14 @@ const LeaderBoard: NextPage = () => {
       <div className="relative min-h-screen bg-gradient-to-b">
         <div className="relative min-h-screen py-32">
           <div className="flex flex-col justify-center items-center py-6">
-            
-             <h1 className="font-VikingHell text-white py-6 text-4xl font-bold">XP Leaderboard</h1>
-           
+            <h1 className="font-VikingHell text-white py-6 text-4xl font-bold">
+              XP Leaderboard
+            </h1>
+
             <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-xl ">
-            Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
-            Experience!
-          </h3>
+              Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
+              Experience!
+            </h3>
           </div>
 
           {/* <h1
@@ -191,7 +191,7 @@ const LeaderBoard: NextPage = () => {
               <Spinner className="text-gray-300" />
             </div>
           )}
-          <div className="bodyFont mx-5 flex flex-col gap-2 text-center text-white md:mx-36">
+          <div className="mx-5 flex flex-col gap-2 text-center text-white md:mx-36">
             {sortedLeaderboard.map((user, i) => (
               <div
                 key={user.userId}
@@ -207,12 +207,12 @@ const LeaderBoard: NextPage = () => {
                   <Image
                     src={
                       i === 0
-                        ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level3.png`
+                        ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level3.png`
                         : i === 1
-                          ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level2.png`
+                          ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level2.png`
                           : i === 2
-                            ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level1.png`
-                            : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level4.png`
+                            ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level1.png`
+                            : `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level4.png`
                     }
                     width={isMobile ? 20 : 50}
                     height={isMobile ? 20 : 50}

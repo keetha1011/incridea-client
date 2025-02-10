@@ -14,6 +14,7 @@ import {
 import { idToPid, pidToId } from "~/utils/id";
 
 import { QRCodeScanner } from "./qRCodeScanner";
+import { CONSTANT } from "~/constants";
 
 export default function AddParticipantToTeam({
   isOpen,
@@ -71,7 +72,9 @@ export default function AddParticipantToTeam({
     const promise = organizerAddParticipantToTeam({
       variables: {
         teamId,
-        userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,
+        userId: userId.startsWith(CONSTANT.PID_FORMAT)
+          ? pidToId(userId)
+          : userId,
       },
     }).then((res) => {
       if (

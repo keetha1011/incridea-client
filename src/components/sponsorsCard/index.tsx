@@ -187,7 +187,7 @@ const SponsorGearCarousel = ({
                   ) : (
                     <Image
                       src={
-                        `${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/sponsors/${sponsors[currentIndex]?.logo}` ||
+                        `${process.env.NEXT_PUBLIC_UPLOADTHING_URL}/sponsors/${sponsors[currentIndex]?.logo}` ||
                         `/2025/sponsors/${sponsors[currentIndex]?.logo}`
                       }
                       fill

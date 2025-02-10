@@ -1,6 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useLoader } from "@react-three/fiber";
-import * as THREE from "three";
+import type * as THREE from "three";
 import { useDrag } from "@use-gesture/react";
 import gsap from "gsap";
 import { DRACOLoader, GLTFLoader, type GLTF } from "three-stdlib";
@@ -112,20 +112,22 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
     return angle;
   };
 
-  const calculateShortestPath = (current: number, target: number) => {
-    const normalizedCurrent = normalizeAngle(current);
-    const delta = normalizeAngle(target - normalizedCurrent);
-    return normalizedCurrent + delta;
-  };
+  const calculateShortestPath = useMemo(
+    () => (current: number, target: number) => {
+      const normalizedCurrent = normalizeAngle(current);
+      const delta = normalizeAngle(target - normalizedCurrent);
+      return normalizedCurrent + delta;
+    },
+    [],
+  );
 
   useEffect(() => {
-    console.log("Year changed to", year);
     if (!handRef.current) return;
 
     const scene = Object.entries(angleToScenes).find(
       ([key]) => Number(key) === year,
     );
-    console.log("Scene", scene);
+
     const targetAngle = scene?.[1][0] ?? 0;
 
     const currentAngle = normalizeAngle(handRef.current.rotation.y);
@@ -141,7 +143,7 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
         overwrite: true,
       },
     );
-  }, [year]);
+  }, [year, calculateShortestPath]);
 
   const getAngleFromCenter = (x: number, y: number) => {
     if (!containerRef.current) return 0;
@@ -168,15 +170,6 @@ const Clock = ({ onClockClick, year }: ClockProps) => {
         previousAngleRef.current = currentAngle;
         return;
       }
-
-      const previousAngle = previousAngleRef.current ?? 0;
-      let delta = currentAngle - previousAngle;
-      delta =
-        delta > Math.PI
-          ? delta - 2 * Math.PI
-          : delta < -Math.PI
-            ? delta + 2 * Math.PI
-            : delta;
 
       previousAngleRef.current = currentAngle;
 

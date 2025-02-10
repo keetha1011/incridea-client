@@ -26,7 +26,7 @@ const EditTeamModal: FC<{
       <Button
         onClick={() => setShowModal(true)}
         intent={"primary"}
-        className="bodyFont !skew-x-0 !justify-center rounded-full !tracking-normal"
+        className="!skew-x-0 !justify-center rounded-full !tracking-normal"
         size={"small"}
       >
         <BiEditAlt />
@@ -39,10 +39,10 @@ const EditTeamModal: FC<{
       >
         <div className="w-full p-5">
           <div className="text-center">
-            <h1 className={`titleFont mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
+            <h1 className={`mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
           </div>
 
-          <div className="bodyFont hidden items-center justify-between rounded-t-lg bg-white/20 bg-clip-padding p-1 font-bold backdrop-blur-lg backdrop-filter md:flex">
+          <div className="hidden items-center justify-between rounded-t-lg bg-white/20 bg-clip-padding p-1 font-bold backdrop-blur-lg backdrop-filter md:flex">
             <h1 className="w-full py-1 text-center">Member</h1>
             <h1 className="w-full py-1 text-center">Role</h1>
             <h1 className="w-full py-1 text-center">Remove</h1>
@@ -50,7 +50,7 @@ const EditTeamModal: FC<{
 
           {team?.members?.map((member, index) => (
             <div
-              className={`bodyFont mt-0.5 flex items-center justify-between gap-2 rounded-sm bg-white/20 p-2 backdrop-blur-lg backdrop-filter ${
+              className={`mt-0.5 flex items-center justify-between gap-2 rounded-sm bg-white/20 p-2 backdrop-blur-lg backdrop-filter ${
                 index === team.members.length - 1 ? "rounded-b-lg" : ""
               }`}
               key={member.user.id}

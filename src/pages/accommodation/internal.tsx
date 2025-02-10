@@ -29,18 +29,16 @@ const Accommodation: NextPage = () => {
             </Link>
           </div>
 
-          <h2
-            className={`titleFont text-center text-4xl text-white md:text-5xl`}
-          >
+          <h2 className={`text-center text-4xl text-white md:text-5xl`}>
             Internal Accommodation
           </h2>
-          <h5 className="bodyFont mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
+          <h5 className="mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
             Before you make the next move, read through the list of T&C, and
             register yourself for the internal accommodation by filling the form
             below.
           </h5>
 
-          <div className="bodyFont mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
+          <div className="mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
             <h2 className="mb-1 text-base font-semibold md:text-2xl">
               Terms and Conditions
             </h2>

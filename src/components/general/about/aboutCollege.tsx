@@ -12,7 +12,7 @@ const AboutCollege: FC = () => {
       <div className="relative h-96 w-full overflow-hidden">
         <motion.div style={{ y }} className="relative h-full w-full">
           <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/collegeAbout.png`}
+            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/collegeAbout.png`}
             alt="college Banner"
             width={500}
             height={500}
@@ -21,9 +21,7 @@ const AboutCollege: FC = () => {
           <span className="absolute inset-0 z-10 h-full w-full bg-gradient-to-b from-transparent to-black"></span>
         </motion.div>
         <div className="absolute inset-0 flex h-full w-full items-center justify-center">
-          <h1
-            className={`titleFont p-5 text-center text-4xl text-white lg:text-7xl`}
-          >
+          <h1 className={`p-5 text-center text-4xl text-white lg:text-7xl`}>
             About NMAMIT
           </h1>
         </div>
@@ -31,13 +29,13 @@ const AboutCollege: FC = () => {
 
       <div className="my-5 flex basis-1/2 flex-col items-center justify-center gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
         <Image
-          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/nitteLogoWhite.png`}
+          src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/nitteLogoWhite.png`}
           alt="Incridea Logo"
           width={600}
           height={600}
           className="h-auto w-auto"
         />
-        <div className="bodyFont my-5 basis-1/2 text-justify text-lg text-white lg:text-xl">
+        <div className="my-5 basis-1/2 text-justify text-lg text-white lg:text-xl">
           Nitte Mahalinga Adyantaya Memorial Institute of Technology(NMAMIT),
           Nitte, established in 1986 and recognized by the All India Council for
           Technical Education, New Delhi, has been a constituent college of

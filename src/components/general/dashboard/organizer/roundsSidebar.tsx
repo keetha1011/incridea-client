@@ -36,6 +36,7 @@ import {
 } from "~/components/ui/dialog";
 import { EyeIcon } from "lucide-react";
 import EndQuizModal from "./endQuizModal";
+import { env } from "~/env";
 
 const RoundsSidebar: FC<{
   rounds: EventByOrganizerQuery["eventByOrganizer"][0]["rounds"];
@@ -376,7 +377,7 @@ const RoundsSidebar: FC<{
                                   </DialogHeader>
                                   <div className="flex flex-col justify-center items-center space-y-4">
                                     <QRCodeSVG
-                                      value={`http://localhost:3000/event/${round.quiz.name}-${selectedRound}/quiz/${round.quiz.id}`}
+                                      value={`${env.NEXTAUTH_URL}/event/${round.quiz.name}-${selectedRound}/quiz/${round.quiz.id}`}
                                       size={200}
                                     />
                                     <div className="flex">
@@ -385,7 +386,7 @@ const RoundsSidebar: FC<{
                                         className="rounded-md bg-black"
                                         onClick={() =>
                                           handleCopyURL(
-                                            `http://localhost:3000/event/${round.quiz?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
+                                            `${env.NEXTAUTH_URL}/event/${round.quiz?.name}-${selectedRound}/quiz/${round.quiz?.id}`,
                                           )
                                         }
                                       >
@@ -480,6 +481,7 @@ const RoundsSidebar: FC<{
                               className="w-auto rounded-md mt-2"
                             >
                               <Link
+                                // TODO(Omkar): Wont this link break
                                 href={`./organizer/quiz/${eventId}-${selectedRound}/leaderboard`}
                               >
                                 Leaderboard

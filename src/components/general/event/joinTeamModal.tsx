@@ -45,7 +45,7 @@ const JoinTeamModal = () => {
   return (
     <>
       <Button
-        className="bodyFont w-full !skew-x-0 items-center !justify-center rounded-full !tracking-normal"
+        className="w-full !skew-x-0 items-center !justify-center rounded-full !tracking-normal"
         disabled={loading}
         onClick={() => setOpen(true)}
         intent={"ghost"}
@@ -80,7 +80,7 @@ const JoinTeamModal = () => {
             />
           </div>
           <Button
-            className="bodyFont w-full !skew-x-0 items-center !justify-center rounded-full !tracking-normal"
+            className="w-full !skew-x-0 items-center !justify-center rounded-full !tracking-normal"
             disabled={loading}
             type="submit"
             intent="success"

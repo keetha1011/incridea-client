@@ -19,6 +19,7 @@ import { generateEventUrl } from "~/utils/url";
 import CreateTeamModal from "./createTeamModal";
 import EditTeamModal from "./editEvent";
 import JoinTeamModal from "./joinTeamModal";
+import { CONSTANT } from "~/constants";
 
 const TeamCard = ({
   team,
@@ -35,7 +36,7 @@ const TeamCard = ({
 
   const url = `Join my team for ${
     team.event.name
-  } event at Incridea 2024! Here's the link: https://incridea.in${generateEventUrl(
+  } event at Incridea ${CONSTANT.YEAR}! Here's the link: ${CONSTANT.BASE_URL}${generateEventUrl(
     team.event.name,
     team.event.id,
   )}?jointeam=${idToTeamId(team.id)}`;
@@ -50,7 +51,7 @@ const TeamCard = ({
   return (
     <div className="flex flex-col">
       <div className="relative mb-4 mt-5 flex w-full flex-col items-start justify-center rounded-md border border-secondary-400/40 bg-primary-200/20 p-5">
-        <div className="bodyFont w-full text-center">
+        <div className="w-full text-center">
           {team.confirmed ? (
             team.event.eventType === EventType.Individual ||
             team.event.eventType === EventType.IndividualMultipleEntry ? (
@@ -92,7 +93,7 @@ const TeamCard = ({
                   fgColor="#ffffff"
                   bgColor="transparent"
                 />
-                <div className="bodyFont mt-2 font-semibold text-white">
+                <div className="mt-2 font-semibold text-white">
                   {idToTeamId(team.id)}
                 </div>
               </div>
@@ -111,7 +112,7 @@ const TeamCard = ({
                 </div>
               ) : (
                 <div
-                  className={`bodyFont -mt-5 w-full justify-center space-x-2 text-center text-lg font-bold`}
+                  className={`-mt-5 w-full justify-center space-x-2 text-center text-lg font-bold`}
                 >
                   {idToPid(userId)}
                 </div>
@@ -124,14 +125,14 @@ const TeamCard = ({
               ) : (
                 <Badge
                   color={"success"}
-                  className="bodyFont absolute right-1/2 top-0 inline-flex -translate-y-1/2 translate-x-1/2 items-center gap-1 !border-secondary-400/40 bg-primary-300 text-sm !text-white"
+                  className="absolute right-1/2 top-0 inline-flex -translate-y-1/2 translate-x-1/2 items-center gap-1 !border-secondary-400/40 bg-primary-300 text-sm !text-white"
                 >
                   <BiCheckDouble /> Registered
                 </Badge>
               )}
             </div>
             {!team.confirmed && (
-              <span className="bodyFont text-xs">
+              <span className="text-xs">
                 Almost there!{" "}
                 {team.event.fees
                   ? `Pay ${team.event.fees} to confirm `
@@ -187,8 +188,8 @@ const TeamCard = ({
         ) && (
           <>
             {/* <hr className="w-full border-white/40 mt-3 mb-2" /> */}
-            <p className="bodyFont mb-1 mt-5 font-semibold">Team Members:</p>
-            <div className="bodyFont w-full">
+            <p className="mb-1 mt-5 font-semibold">Team Members:</p>
+            <div className="w-full">
               {team?.members?.map((member) => (
                 <div className="text-sm" key={member.user.id}>
                   <h1>{member.user.name}</h1>
@@ -206,15 +207,15 @@ const TeamCard = ({
           (team.leaderId === Number(userId) ? (
             <>
               <hr className="my-3 w-full border-white/20" />
-              <div className="bodyFont flex w-full flex-col justify-center">
-                <p className="bodyFont text-xs">
+              <div className="flex w-full flex-col justify-center">
+                <p className="text-xs">
                   Share this link with your friends to add them to your team!
                 </p>
                 <div className="mt-2 flex items-center justify-evenly gap-2">
                   <input
                     readOnly
                     type="url"
-                    className="bodyFont w-full overflow-hidden rounded-lg bg-white bg-opacity-20 p-2 px-3 text-sm"
+                    className="w-full overflow-hidden rounded-lg bg-white bg-opacity-20 p-2 px-3 text-sm"
                     value={url}
                   />
                   <AiOutlineCopy
@@ -224,7 +225,7 @@ const TeamCard = ({
                   />
                 </div>
 
-                <div className="bodyFont flex items-center py-2">
+                <div className="flex items-center py-2">
                   <div className="white/40 h-px flex-grow"></div>
                   <span className="flex-shrink px-4 text-sm font-light">
                     or
@@ -234,7 +235,7 @@ const TeamCard = ({
 
                 <Link
                   href={`https://wa.me/?text=${encodeURIComponent(url)}`}
-                  className="text-bold bodyFont flex cursor-pointer items-center justify-center gap-2 rounded-md bg-primary-200/30 p-2 text-sm text-green-500 transition-colors hover:bg-primary-200/50"
+                  className="text-bold flex cursor-pointer items-center justify-center gap-2 rounded-md bg-primary-200/30 p-2 text-sm text-green-500 transition-colors hover:bg-primary-200/50"
                 >
                   <BsWhatsapp /> Share on WhatsApp
                 </Link>

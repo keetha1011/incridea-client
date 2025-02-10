@@ -131,7 +131,7 @@ const VieweventModal: FC<{
             </div>
             <hr className="-mx-3 mb-3 opacity-30" />
             {event?.description ? (
-              //TODO: fix styling of rendered HTML
+              //TODO(Omkar): fix styling of rendered HTML, urgent, doc team
               <div
                 className={`${styles.markup} event-description w-full`}
                 dangerouslySetInnerHTML={{
@@ -139,7 +139,7 @@ const VieweventModal: FC<{
                 }}
               ></div>
             ) : (
-              <p className="italic text-gray-400">no description added</p>
+              <p className="italic text-gray-400">No description added</p>
             )}
           </div>
         </div>

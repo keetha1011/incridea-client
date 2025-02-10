@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-
 import Button from "~/components/button";
 import Spinner from "~/components/spinner";
 import {
@@ -8,7 +7,6 @@ import {
   UserByIdDocument,
 } from "~/generated/generated";
 import { pidToId } from "~/utils/id";
-
 function Pronite({
   pId,
   stopCamera,
@@ -29,13 +27,11 @@ function Pronite({
       },
     },
   );
-
   const { data: userData, loading: userLoading } = useQuery(UserByIdDocument, {
     variables: {
       id: pidToId(pId),
     },
   });
-
   useEffect(() => {
     if (
       data?.registerPronite.__typename === "MutationRegisterProniteSuccess" ||
@@ -45,7 +41,6 @@ function Pronite({
       setCameraOn(false);
     }
   }, [data, stopCamera]);
-
   return (
     <>
       <div className="mb-3 mt-1 max-w-sm">
@@ -77,7 +72,7 @@ function Pronite({
         </>
       ) : data?.registerPronite.__typename ===
         "MutationRegisterProniteSuccess" ? (
-        <div className="bodyFont rounded-md bg-white/10 p-3">
+        <div className="rounded-md bg-white/10 p-3">
           <div className="mb-1 text-lg leading-snug text-green-500">
             <span className="font-bold">{pId}</span> registered for Pronite
           </div>
@@ -94,14 +89,14 @@ function Pronite({
           </div>
         </div>
       ) : (
-        <div className="bodyFont rounded-md bg-white/10 font-semibold text-red-500">
+        <div className="rounded-md bg-white/10 font-semibold text-red-500">
           {userLoading && <Spinner intent={"white"} size={"small"} />}
           {data?.registerPronite.message && (
             <div>
               <p className="p-3 py-2">{data.registerPronite.message}</p>
               {userData?.userById.__typename === "QueryUserByIdSuccess" &&
                 !data.registerPronite.message.includes("authorized") && (
-                  <div className="bodyFont rounded-md bg-white/10 p-3">
+                  <div className="rounded-md bg-white/10 p-3">
                     <div className="mb-1 text-lg leading-snug">
                       <span className="font-bold text-green-500">{pId}</span>
                     </div>
@@ -125,5 +120,4 @@ function Pronite({
     </>
   );
 }
-
 export default Pronite;

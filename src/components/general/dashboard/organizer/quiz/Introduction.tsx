@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { useQuery, useLazyQuery } from "@apollo/client";
 import {
   AttemptQuizDocument,
@@ -17,14 +22,14 @@ const IntroductionPage = ({
   setEndTime,
   setMyTeamId,
 }: {
-  setIsVerified: React.Dispatch<React.SetStateAction<boolean>>;
-  setQuestions: React.Dispatch<React.SetStateAction<Question[]>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  setDescription: React.Dispatch<React.SetStateAction<string>>;
-  setStartTime: React.Dispatch<React.SetStateAction<Date>>;
-  setEndTime: React.Dispatch<React.SetStateAction<Date>>;
+  setIsVerified: Dispatch<SetStateAction<boolean>>;
+  setQuestions: Dispatch<SetStateAction<Question[]>>;
+  setName: Dispatch<SetStateAction<string>>;
+  setDescription: Dispatch<SetStateAction<string>>;
+  setStartTime: Dispatch<SetStateAction<Date>>;
+  setEndTime: Dispatch<SetStateAction<Date>>;
   quizId: string;
-  setMyTeamId: React.Dispatch<React.SetStateAction<number>>;
+  setMyTeamId: Dispatch<SetStateAction<number>>;
 }) => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -163,8 +168,8 @@ const IntroductionPage = ({
                   disabled={hasQuizEnded || !hasQuizStarted || !attended}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-3/4 mx-auto px-4 py-2 bg-white/20 backdrop-blur-sm text-white 
-                  border border-white/30 rounded-md 
+                  className="w-3/4 mx-auto px-4 py-2 bg-white/20 backdrop-blur-sm text-white
+                  border border-white/30 rounded-md
                   focus:outline-none focus:ring-2 focus:ring-amber-500
                   placeholder-white/50"
                   placeholder="Enter your password"

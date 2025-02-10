@@ -16,10 +16,10 @@ const TeamCard: FC<{
   avatar: string;
 }> = ({ name, role, linkedin, github, quote, instagram, image }) => {
   return (
-    <div className="flex w-[20rem] gap-4 rounded-xl border border-primary-200/80 bg-primary-500 bg-opacity-20 bg-clip-padding px-5 pt-5 duration-200 hover:scale-[1.02]"  >
+    <div className="flex w-[20rem] gap-4 rounded-xl border border-primary-200/80 bg-primary-500 bg-opacity-20 bg-clip-padding px-5 pt-5 duration-200 hover:scale-[1.02]">
       <div className="flex h-full w-full flex-col gap-4">
         <Image
-          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/` + image}
+          src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/` + image}
           alt={name}
           height={300}
           width={300}
@@ -74,9 +74,7 @@ const TeamCard: FC<{
               fill="currentColor"
             />
           </svg>
-          <div className="bodyFont text-center font-bold italic text-white">
-            {quote}
-          </div>
+          <div className="text-center font-bold italic text-white">{quote}</div>
 
           <div className="flex justify-end">
             <svg

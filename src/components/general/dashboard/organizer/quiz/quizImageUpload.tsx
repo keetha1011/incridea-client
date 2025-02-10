@@ -35,7 +35,7 @@ const QuizImageUpload = React.memo(
 
     const deleteImage = async (url: string) => {
       const res = await fetch(
-        `${env.NEXT_PUBLIC_SERVER_URL}/uploadrthing/delete`,
+        `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadrthing/delete`,
         {
           method: "POST",
           headers: {
@@ -50,7 +50,7 @@ const QuizImageUpload = React.memo(
     return (
       <>
         <div
-          className={`bodyFont flex grow items-center justify-center rounded-b-md md:rounded-md ${
+          className={`flex grow items-center justify-center rounded-b-md md:rounded-md ${
             highlighted ? "bg-blue/20 ring-2 ring-amber-500" : "bg-black/20"
           }`}
           // onClick={() => {
@@ -109,7 +109,7 @@ const QuizImageUpload = React.memo(
           )}
         </div>
         <UploadButton
-          endpoint="quizQuestionImgUploader"
+          endpoint="quiz"
           className="mt-6"
           onBeforeUploadBegin={(files) => {
             //   setImage(files[0]!);

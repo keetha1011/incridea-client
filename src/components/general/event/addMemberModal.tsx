@@ -6,6 +6,7 @@ import { BsWhatsapp } from "react-icons/bs";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
+import { CONSTANT } from "~/constants";
 import { type QueryMyTeamSuccess } from "~/generated/generated";
 import { idToTeamId } from "~/utils/id";
 import { generateEventUrl } from "~/utils/url";
@@ -20,7 +21,7 @@ const AddMemberModal: FC<{
 
   const url = `Join my team for ${
     team.event.name
-  } event at Incridea 2024! Here's the link: https://incridea.in${generateEventUrl(
+  } event at Incridea ${CONSTANT.YEAR}! Here's the link: ${CONSTANT.BASE_URL}${generateEventUrl(
     team.event.name,
     team.event.id,
   )}?jointeam=${idToTeamId(team.id)}`;
@@ -37,7 +38,7 @@ const AddMemberModal: FC<{
         onClick={() => {
           setShowModal(true);
         }}
-        className="bodyFont mt-5 !skew-x-0 justify-center rounded-full !tracking-normal"
+        className="mt-5 !skew-x-0 justify-center rounded-full !tracking-normal"
       >
         <AiOutlineUserAdd size={20} /> Add More
       </Button>
@@ -50,13 +51,13 @@ const AddMemberModal: FC<{
         size={"small"}
       >
         <div className="flex flex-col justify-center p-5 text-center">
-          <p className="bodyFont text-xs">
+          <p className="text-xs">
             Share this link with your friends to add them to your team!
           </p>
           <div className="mt-2 flex items-center justify-evenly">
             <input
               type="url"
-              className="bodyFont rounded-lg bg-white bg-opacity-20 p-2 text-sm"
+              className="rounded-lg bg-white bg-opacity-20 p-2 text-sm"
               value={url}
             />
             <AiOutlineCopy
@@ -66,7 +67,7 @@ const AddMemberModal: FC<{
             />
           </div>
 
-          <div className="bodyFont flex items-center py-2">
+          <div className="flex items-center py-2">
             <div className="h-px flex-grow bg-gray-600"></div>
             <span className="flex-shrink px-4 text-sm font-light italic">
               or
@@ -76,7 +77,7 @@ const AddMemberModal: FC<{
 
           <Link
             href={`https://wa.me/?text=${encodeURIComponent(url)}`}
-            className="bodyFont flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-gray-500 p-2 text-sm text-white hover:bg-gray-600"
+            className="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-gray-500 p-2 text-sm text-white hover:bg-gray-600"
           >
             <BsWhatsapp /> Share on WhatsApp
           </Link>

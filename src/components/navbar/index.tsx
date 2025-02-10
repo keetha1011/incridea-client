@@ -5,11 +5,15 @@ import Link from "next/link";
 import MobileNav from "./mobileNav";
 import { useAuth } from "~/hooks/useAuth";
 import { Role } from "~/generated/generated";
+import { useRouter } from "next/router";
+import { cn } from "~/lib/utils";
 
 const Navbar = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const { user } = useAuth();
+  const router = useRouter();
+  const pathname = router.pathname;
 
   const tabs: {
     id: number;
@@ -90,14 +94,14 @@ const Navbar = () => {
           clipPath:
             "polygon(3% 0%, 97% 0%, 100% 50%, 97% 100%, 3% 100%, 0% 50%)",
         }}
-        className="fixed w-full top-0 bg-white/10 backdrop-blur-2xl h-16 md:flex hidden items-center justify-center rounded-full"
+        className="fixed font-life-craft tracking-wider w-full top-0 bg-white/10 backdrop-blur-2xl h-16 md:flex hidden items-center justify-center rounded-full z-50"
       >
-        <div className="flex items-center 2xl:mr-[20rem] lg:mr-[15rem] mr-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8">
+        <div className="flex items-center 2xl:mr-[20rem] lg:mr-[15rem] mr-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8 text-2xl">
           {tabs.slice(0, 3).map((tab) => (
             <Link
               href={tab.href}
               key={tab.id}
-              className="py-2 text-gray-300 hover:text-white transition-colors font-semibold"
+              className="py-2 text-gray-300 hover:text-white transition-colors"
             >
               {tab.label}
             </Link>
@@ -108,7 +112,7 @@ const Navbar = () => {
           style={{
             clipPath: "polygon(0 0, 100% 0, 75% 100%, 25% 100%)",
           }}
-          className="absolute top-0 bg-white px-12 py-2 text-black shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%] "
+          className={`absolute top-0 ${pathname === "/" ? "bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950" : "bg-white"} px-12 py-2 text-white text-3xl shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%]`}
         >
           <div className="relative w-16 h-6 flex justify-center items-center">
             <Image
@@ -119,30 +123,51 @@ const Navbar = () => {
               width={40}
               height={40}
             />
-            {user?.role === Role.User ? (
-              <>
-                <Link href="/profile" ref={textRef}>
-                  PROFILE
-                </Link>
-              </>
+            <Link
+              ref={textRef}
+              href={
+                !user
+                  ? "/login"
+                  : user.role === Role.User
+                    ? "/register"
+                    : pathname === "/profile"
+                      ? "/dashboard"
+                      : "/profile"
+              }
+              className={cn(
+                pathname === "/" ? "text-white" : "text-black",
+                "absolute scale-[60%] translate-y-1",
+              )}
+            >
+              {!user
+                ? "REGISTER"
+                : user.role === Role.User
+                  ? "REGISTER"
+                  : pathname === "/profile"
+                    ? "DASHBOARD"
+                    : "PROFILE"}
+            </Link>
+            {/* {user?.role === Role.User ? (
+              <Link href="/profile" ref={textRef}>
+                PROFILE
+              </Link>
             ) : (
               <Link
                 href={"/register"}
                 ref={textRef}
-                className="absolute scale-[60%] translate-y-1 font-semibold"
-              >
+                className="absolute scale-[60%] translate-y-1">
                 REGISTER
               </Link>
-            )}
+            )} */}
           </div>
         </button>
 
-        <div className="flex items-center 2xl:ml-[20rem] lg:ml-[15rem] ml-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8">
+        <div className="flex items-center 2xl:ml-[20rem] lg:ml-[15rem] ml-[11rem] xl:gap-x-20 lg:gap-x-12 gap-x-8 text-2xl">
           {tabs.slice(3).map((tab) => (
             <Link
               href={tab.href}
               key={tab.id}
-              className=" py-2 text-gray-300 hover:text-white transition-colors font-semibold"
+              className=" py-2 text-gray-300 hover:text-white transition-colors"
             >
               {tab.label}
             </Link>

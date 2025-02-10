@@ -19,21 +19,23 @@ const Register: NextPage = () => {
   if (user && user?.role !== Role.User) void router.push("/profile");
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-300 to-primary-500 px-4 pb-10 pt-32 text-white md:px-6">
+    <div className="min-h-screen px-4 pb-10 pt-32 text-white md:px-6">
       <ViewUserAccommodation
         showModal={showModal}
         setShowModal={setShowModal}
       />
       <div className="mx-auto max-w-4xl">
-        <h2 className={`titleFont text-center text-4xl text-white md:text-5xl`}>
+        <h2
+          className={`text-center text-4xl text-white md:text-6xl font-life-craft tracking-wider`}
+        >
           Register
         </h2>
 
-        <h5 className="bodyFont mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
+        <h5 className="mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
           Before you roll the dice, read through the list of T&C, and register
           yourself for the fest by clicking the button below.
         </h5>
-        <div className="bodyFont mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
+        <div className="mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
           <h2 className="text-base font-semibold md:text-2xl">
             Terms and Conditions
           </h2>

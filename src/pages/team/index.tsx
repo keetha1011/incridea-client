@@ -11,7 +11,7 @@ const Team: NextPage = () => {
         >
           Incridea&apos;s Technical Team
         </h1>
-        <p className="bodyFont mt-5 text-center text-lg font-bold text-white lg:text-2xl">
+        <p className="mt-5 text-center text-lg font-bold text-white lg:text-2xl">
           Meet the developers
         </p>
       </div>

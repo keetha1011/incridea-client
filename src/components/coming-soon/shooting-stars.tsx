@@ -2,17 +2,10 @@ import styles from "./shootingStars.module.css";
 
 const ShootingStars = () => {
   return (
-    <section className={styles.shootingStars}>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
+    <section className={`shootingStars w-full h-full ${styles.shootingStars}`}>
+      {Array.from({ length: 10 }).map((_, i) => (
+        <span key={i} />
+      ))}
     </section>
   );
 };

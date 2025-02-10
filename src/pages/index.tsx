@@ -11,7 +11,10 @@ import Button from "~/components/button";
 import Spinner from "~/components/spinner";
 import { AuthStatus, useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
+import styles from "~/components/coming-soon/shootingStars.module.css";
 import { SessionProvider } from "next-auth/react";
+import Navbar from "~/components/navbar";
+import HomeButton from "~/components/button/home";
 
 export default function Landing() {
   return (
@@ -19,6 +22,7 @@ export default function Landing() {
       <main className="relative h-screen overflow-hidden">
         <div className="absolute top-0">
           <HomeUi />
+          <Navbar />
           {/* <Menu router={router} /> */}
           <HomeFooter />
         </div>
@@ -236,28 +240,28 @@ export const HomeUi = () => {
     <>
       <section
         ref={sceneRef}
-        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none"
+        className="relative min-h-screen bg-cover z-0 select-none pointer-events-none font-life-craft "
       >
-        <div className="absolute h-screen w-screen" data-depth="0.08">
+        <div className="absolute h-screen w-screen" data-depth="0.05">
           <div className="absolute top-0 left-1/2 md:-translate-x-[47%] -translate-x-[40%] w-full h-full scale-110 flex justify-center items-center">
             <Image
-              src={"/assets/landing/background.webp"}
+              src={"/2025/landing/background.webp"}
               priority
               alt="Background"
               width={1920}
               height={1080}
-              className="h-full w-full object-cover md:scale-100 scale-[100%] mt-12"
+              className="h-full w-full object-cover md:scale-100 scale-[120%] mt-12"
             />
           </div>
         </div>
 
         <div
-          data-depth="0.4"
+          data-depth="0.1"
           className=" h-screen w-screen flex justify-center items-center"
         >
           <div className="p-5 w-screen h-screen flex justify-center items-center mb-10 relative">
             <Image
-              src={`/assets/landing/clock.webp`}
+              src={`/2025/landing/clock.webp`}
               priority
               width={640}
               height={640}
@@ -266,7 +270,7 @@ export const HomeUi = () => {
               ref={largeClockRef}
             />
             <Image
-              src={`/assets/landing/clock.webp`}
+              src={`/2025/landing/clock.webp`}
               priority
               width={640}
               height={640}
@@ -277,10 +281,26 @@ export const HomeUi = () => {
           </div>
         </div>
 
+        <div
+          data-depth="0.08"
+          className={`shootingStars  scale-125 w-full h-full z-[0.08] ${styles.shootingStars}`}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
         <div className="absolute h-screen w-screen">
           <div className="w-full h-full relative">
             <Image
-              src={"/assets/landing/pillar.webp"}
+              src={"/2025/landing/pillar.webp"}
               priority
               alt="Pillar"
               width={1920}
@@ -294,7 +314,7 @@ export const HomeUi = () => {
 
         {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => (
           <div
-            data-depth="0.6"
+            data-depth="0.4"
             className="absolute h-screen w-screen"
             key={idx}
           >
@@ -305,7 +325,7 @@ export const HomeUi = () => {
               className="absolute lg:bottom-0 md:bottom-24 bottom-60 left-[50%] aspect-video w-screen md:scale-[90%] scale-[125%] -translate-x-1/2 -translate-y-16 transition-transform"
             >
               <Image
-                src={`/assets/landing/floatingObjects/${item}.webp`}
+                src={`/2025/landing/floatingObjects/${item}.webp`}
                 priority
                 alt="Floating objects"
                 width={1920}
@@ -318,7 +338,7 @@ export const HomeUi = () => {
 
         {/* EOE Text */}
         <div
-          data-depth="0.1"
+          data-depth="0.2"
           className="absolute flex h-screen w-screen items-center justify-center z-20"
         >
           <div className="mx-auto w-screen h-screen p-5 relative">
@@ -333,7 +353,7 @@ export const HomeUi = () => {
           </div>
         </div>
 
-        <div data-depth="0.1" className="absolute w-screen h-screen z-20">
+        <div data-depth="0.2" className="absolute w-screen h-screen z-20">
           <Image
             src={`/2025/eoelogo.png`}
             priority
@@ -357,30 +377,26 @@ export const HomeUi = () => {
         <div className="w-screen h-screen z-50 relative select-all pointer-events-auto">
           <div className="bottom-[18%] left-1/2 -translate-x-1/2 absolute flex gap-4">
             <div className="flex flex-nowarp flex-row justify-between gap-4 text-white/90">
-              <button
+              <HomeButton
                 onClick={async () => {
                   if (session.status === AuthStatus.LOADING) return;
                   if (session.status === AuthStatus.AUTHENTICATED) {
                     await router.push("/profile");
                   } else {
-                    await router.push("/register");
+                    await router.push("/login");
                   }
                 }}
-                className="flex w-full border-2 text-md font-bold md:text-lg border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left"
               >
                 {session.status === AuthStatus.LOADING
                   ? "Loading..."
                   : session.status === AuthStatus.AUTHENTICATED
                     ? "Profile"
                     : "Login"}
-              </button>
+              </HomeButton>
 
-              <button
-                onClick={async () => await router.push("/explore")}
-                className="flex w-full border-2 text-md font-bold md:text-lg border-secondary-600 items-center h-14 px-10 justify-center gap-2 rounded-full bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950 py-1 text-left"
-              >
+              <HomeButton onClick={async () => await router.push("/explore")}>
                 Explore
-              </button>
+              </HomeButton>
             </div>
           </div>
         </div>

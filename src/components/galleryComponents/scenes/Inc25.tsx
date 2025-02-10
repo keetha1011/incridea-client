@@ -11,7 +11,6 @@ const Inc25 = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Memoize afterMovies array to prevent unnecessary re-renders
   const afterMovies = useMemo(
     () => [
       [

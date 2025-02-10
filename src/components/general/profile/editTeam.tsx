@@ -51,13 +51,15 @@ const EditTeamModal: FC<{
       >
         <div className="w-full p-5">
           <div className="text-center">
-            <h1 className={`titleFont mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
+            <h1 className={`mb-5 text-2xl`}>{idToTeamId(team.id)}</h1>
           </div>
 
           <div className="hidden items-center justify-between rounded-t-lg bg-white bg-opacity-20 bg-clip-padding p-1 font-bold backdrop-blur-lg backdrop-filter md:flex">
             <h1 className="w-full py-1 text-center">Name</h1>
             <h1 className="w-full py-1 text-center">Role</h1>
-            <h1 className="w-full py-1 text-center">Remove</h1>
+            {!team.confirmed && team.leaderId?.toString() == userId && (
+              <h1 className="w-full py-1 text-center">Remove</h1>
+            )}
           </div>
 
           {team?.members?.map((member) => (
@@ -68,11 +70,14 @@ const EditTeamModal: FC<{
               <h1 className="w-full text-center">{member.user.name}</h1>{" "}
               <div className="w-full text-center">
                 <Badge
-                  color={
-                    member.user.id == team.leaderId?.toString()
-                      ? "success"
-                      : "info"
-                  }
+                  // className="text-white bg-primary-800 border-secondary-600"
+                  className={`${member.user.id == team.leaderId?.toString() ? "bg-primary-800" : "bg-primary-700"} text-white border-secondary-700`}
+                  // className={`${member.user.id == team.leaderId?.toString() ? " bg-secondary-500" : "bg-info"} border text-black border-secondary-200/80`}
+                  // color={
+                  //   member.user.id == team.leaderId?.toString()
+                  //     ? "success"
+                  //     : "info"
+                  // }
                 >
                   {member.user.id == team.leaderId?.toString()
                     ? "Leader"

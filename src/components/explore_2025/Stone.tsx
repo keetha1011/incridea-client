@@ -6,7 +6,7 @@ import { Vector3 } from "three";
 type Stone = {
   id: number;
   pos: [number, number, number];
-}
+};
 
 import stonesData from "~/components/explore_2025/data/data.json";
 
@@ -22,7 +22,7 @@ const stones: Stone[] = stonesData.stones.map((stone) => ({
 const Stones = () => {
   const meshRefs = useRef<(THREE.Mesh | null)[]>([]);
   const [visibility, setVisibility] = useState<boolean[]>(() =>
-    stones.map(() => true)
+    stones.map(() => true),
   );
 
   // Initialize visibility from localStorage if available.
@@ -35,7 +35,7 @@ const Stones = () => {
       setVisibility(initialVisibility);
       localStorage.setItem(
         "stoneVisibility",
-        JSON.stringify(initialVisibility)
+        JSON.stringify(initialVisibility),
       );
     }
   }, []);
@@ -45,7 +45,7 @@ const Stones = () => {
     const interval = setInterval(() => {
       const storedVisibility = localStorage.getItem("stoneVisibility");
       if (storedVisibility) {
-        const parsed : boolean[] = JSON.parse(storedVisibility) as never;
+        const parsed: boolean[] = JSON.parse(storedVisibility) as never;
         // Compare with current state; update if different.
         if (JSON.stringify(parsed) !== JSON.stringify(visibility)) {
           setVisibility(parsed);
@@ -86,7 +86,7 @@ const Stones = () => {
 
 type BlueStoneProps = {
   [key: string]: never;
-}
+};
 
 type GLTFResult = {
   nodes: {
@@ -95,11 +95,11 @@ type GLTFResult = {
   materials: {
     Crystal: THREE.Material;
   };
-}
+};
 
 const Blue_Stone: React.FC<BlueStoneProps> = (props) => {
   const { nodes, materials } = useGLTF(
-    "/2025/assets/explore/models/blue_stone.glb"
+    "/2025/assets/explore/models/blue_stone.glb",
   ) as unknown as GLTFResult;
 
   return (
