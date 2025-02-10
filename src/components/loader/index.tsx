@@ -53,7 +53,7 @@ const LoadingScreen = () => {
         </div>
         <div
           ref={logoRef}
-          className="absolute bottom-[24%] md:bottom-[20%] xl:bottom-[22%]"
+          className="absolute bottom-[22%] md:bottom-[20%] xl:-translate-1/2"
         >
           <Image
             src="/2025/loading/Echoes_of_Eternity_Logo.png"
