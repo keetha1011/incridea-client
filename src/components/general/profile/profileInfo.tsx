@@ -203,7 +203,7 @@ const ProfileInfo: FC<{
           <div className="flex items-center justify-between text-lg">
             <div className="flex flex-row items-center space-x-2">
               <Image
-                src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/XP.png`}
+                src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/XP.png`}
                 width={20}
                 height={20}
                 alt="map"
@@ -214,7 +214,7 @@ const ProfileInfo: FC<{
             <div className="flex flex-row items-center space-x-1">
               <p>Level {level}</p>
               <Image
-                src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level.png`}
+                src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level.png`}
                 width={25}
                 height={25}
                 alt="map"
@@ -227,7 +227,7 @@ const ProfileInfo: FC<{
       <div className="flex w-full flex-row items-center justify-between space-x-2 rounded-full border border-primary-200/30 px-5 py-1 text-xs md:text-lg">
         <div className="flex items-center gap-2">
           <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/trophy.png`}
+            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/trophy.png`}
             width={100}
             height={100}
             alt="map"
