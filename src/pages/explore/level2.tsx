@@ -5,8 +5,9 @@ import { useRef, useState, useEffect } from "react";
 
 function Medieval() {
   const [isMuted, setIsMuted] = useState(() => {
-    const savedState = typeof window !== "undefined" ? localStorage.getItem("isMuted") : null;
-    return savedState !== null ? JSON.parse(savedState) as never : true;
+    const savedState =
+      typeof window !== "undefined" ? localStorage.getItem("isMuted") : null;
+    return savedState !== null ? (JSON.parse(savedState) as never) : true;
   });
   const mainThemeAudioRef = useRef<HTMLAudioElement | null>(null);
 

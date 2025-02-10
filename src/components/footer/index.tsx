@@ -1,30 +1,25 @@
-// @refresh reset
-import { Alignment, Fit, Layout, useRive } from "@rive-app/react-canvas";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { BsFillSuitHeartFill, BsInstagram } from "react-icons/bs";
 import { FaYoutube } from "react-icons/fa";
+import { CONSTANT } from "~/constants";
 
 import { env } from "~/env";
 
-export function HomePageFooter() {
-  const { RiveComponent } = useRive({
-    src: `assets/rive/footer.riv/`,
-    stateMachines: ["State Machine 1"],
-    autoplay: true,
-    layout: new Layout({
-      fit: Fit.FitWidth,
-      alignment: Alignment.BottomCenter,
-    }),
-  });
-  return (
-    <div>
-      <RiveComponent className="h-[50vh] w-screen lg:h-screen" />
-      <FooterBody />
-    </div>
-  );
+export default function Footer() {
+  const router = useRouter();
+  if (
+    router.pathname === "/" ||
+    router.pathname === "/gallery" ||
+    router.pathname.startsWith("/explore/") ||
+    router.pathname === "/pronites" ||
+    router.pathname.startsWith("/event/")
+  ) {
+    return null;
+  }
+  return <FooterBody />;
 }
 
 export function FooterBody() {
@@ -99,23 +94,11 @@ export function FooterBody() {
           >
             Made with <BsFillSuitHeartFill className="mx-2" /> by Technical Team
           </Link>
-          <span className="mt-1 block font-semibold">© Incridea 2024</span>
+          <span className="mt-1 block font-semibold">
+            © Incridea {CONSTANT.YEAR}
+          </span>
         </p>
       </div>
     </div>
   );
-}
-
-export default function Footer() {
-  const router = useRouter();
-  if (
-    router.pathname === "/" ||
-    router.pathname === "/gallery" ||
-    router.pathname.startsWith("/explore/") ||
-    router.pathname === "/pronites" ||
-    router.pathname.startsWith("/event/")
-  ) {
-    return null;
-  }
-  return <FooterBody />;
 }

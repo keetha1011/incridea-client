@@ -21,6 +21,7 @@ import {
 } from "~/generated/generated";
 import { UploadButton } from "~/components/uploadthing/button";
 import toast from "react-hot-toast";
+import { CONSTANT } from "~/constants";
 
 const AccommodationForm: FunctionComponent = () => {
   const [addAccommodation, { loading: emailVerificationLoading }] = useMutation(
@@ -52,8 +53,8 @@ const AccommodationForm: FunctionComponent = () => {
   const [accommodationInfo, setAccommodationInfo] = useState({
     hotelId: 1,
     gender: "",
-    checkInTime: new Date(2024, 2, 22, 9, 30),
-    checkOutTime: new Date(2024, 2, 24, 22, 30),
+    checkInTime: CONSTANT.DATE.ACCOMODATION.CHECK_IN_TIME,
+    checkOutTime: CONSTANT.DATE.ACCOMODATION.CHECK_OUT_TIME,
     id: "",
   });
 

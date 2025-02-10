@@ -152,6 +152,7 @@ const About = () => {
             `}</style>
 
             <div className="gallery" onClick={() => setIsActive(!isActive)}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-rim-white.png`}
                 alt="Incridea Logo"
@@ -161,6 +162,7 @@ const About = () => {
                 width={400}
               />
               {images.map(({ id, alt }) => (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={id}
                   src={`https://picsum.photos/id/${id}/300/300`}

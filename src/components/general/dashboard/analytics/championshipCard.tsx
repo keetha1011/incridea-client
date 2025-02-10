@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useQuery } from "@apollo/client";
 import {
-  Counts,
+  type Counts,
   GetChampionshipLeaderboardDocument,
 } from "~/generated/generated";
 import { Loader2 } from "lucide-react";
@@ -38,21 +38,21 @@ export default function Leaderboard() {
 
   const points = championshipData.map((college) => {
     const totalGold =
-      (college.goldCount?.winner || 0) +
-      (college.goldCount?.runner_up || 0) +
-      (college.goldCount?.second_runner_up || 0);
+      (college.goldCount?.winner ?? 0) +
+      (college.goldCount?.runner_up ?? 0) +
+      (college.goldCount?.second_runner_up ?? 0);
     const totalDiamond =
-      (college.diamondCount?.winner || 0) +
-      (college.diamondCount?.runner_up || 0) +
-      (college.diamondCount?.second_runner_up || 0);
+      (college.diamondCount?.winner ?? 0) +
+      (college.diamondCount?.runner_up ?? 0) +
+      (college.diamondCount?.second_runner_up ?? 0);
     const totalSilver =
-      (college.silverCount?.winner || 0) +
-      (college.silverCount?.runner_up || 0) +
-      (college.silverCount?.second_runner_up || 0);
+      (college.silverCount?.winner ?? 0) +
+      (college.silverCount?.runner_up ?? 0) +
+      (college.silverCount?.second_runner_up ?? 0);
     const totalBronze =
-      (college.bronzeCount?.winner || 0) +
-      (college.bronzeCount?.runner_up || 0) +
-      (college.bronzeCount?.second_runner_up || 0);
+      (college.bronzeCount?.winner ?? 0) +
+      (college.bronzeCount?.runner_up ?? 0) +
+      (college.bronzeCount?.second_runner_up ?? 0);
 
     return {
       id: college.id,
@@ -82,9 +82,9 @@ export default function Leaderboard() {
   function handleOpenPopup(title: string, data: Counts, category: string) {
     setPopupTitle(title);
     setPopupData({
-      WINNER: data.winner || 0,
-      RUNNER_UP: data.runner_up || 0,
-      SECOND_RUNNER_UP: data.second_runner_up || 0,
+      WINNER: data.winner ?? 0,
+      RUNNER_UP: data.runner_up ?? 0,
+      SECOND_RUNNER_UP: data.second_runner_up ?? 0,
       CATEGORY: category,
     });
   }

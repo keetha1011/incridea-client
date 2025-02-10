@@ -8,6 +8,7 @@ import { useLayoutEffect, useEffect, useRef } from "react";
 
 import Button from "~/components/button";
 import Spinner from "~/components/spinner";
+import { CONSTANT } from "~/constants";
 import { useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 
@@ -236,7 +237,6 @@ const Menu: React.FunctionComponent<{
         <h3
           className={cn(
             "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
-            // VikingHell.className,
           )}
         >
           Menu
@@ -319,7 +319,7 @@ const Menu: React.FunctionComponent<{
 const HomeFooter = () => {
   return (
     <footer className="absolute bottom-0 w-full text-gray-200">
-      <p className="p-5 text-center text-sm">© Incridea 2024</p>
+      <p className="p-5 text-center text-sm">© Incridea {CONSTANT.YEAR}</p>
     </footer>
   );
 };

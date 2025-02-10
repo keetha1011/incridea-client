@@ -68,7 +68,7 @@ function ProfileCard({
         // backgroundImage: "url('/assets/png/id_bg.jpg')",
         touchAction: "none",
       }}
-      className="bg-cover bg-top bg-gradient-to-br  from-primary-900/80 via-primary-700/80 to-primary-900/80 backdrop-blur-sm border-secondary-500/50 border-1 rounded-xl"
+      className="bg-cover bg-top bg-gradient-to-br  from-primary-900/80 via-primary-700/80 to-primary-900/80 backdrop-blur-sm border-secondary-500/50 border-1"
       onTouchStartCapture={handlePointerDown}
       onTouchEndCapture={handlePointerUp}
     >

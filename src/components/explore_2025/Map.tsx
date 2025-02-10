@@ -1,7 +1,4 @@
-import {
-  useAnimations,
-  useGLTF
-} from "@react-three/drei";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { RigidBody } from "@react-three/rapier";
 import { useEffect, useRef } from "react";
@@ -12,21 +9,21 @@ import linksData from "~/components/explore_2025/data/data.json";
 type Link = {
   id: number;
   link: string;
-}
+};
 
 type MapProps = {
   model: never;
   [key: string]: never;
-}
+};
 
 const links: Link[] = linksData.links.map((link) => ({
   ...link,
-  link: link.link
+  link: link.link,
 }));
 
 export const Map = ({ model, ...props }: MapProps) => {
   const { nodes, materials, animations } = useGLTF(
-    "/2025/assets/explore/models/medieval_bounded_final.glb"
+    "/2025/assets/explore/models/medieval_bounded_final.glb",
   ) as never;
   const group = useRef<THREE.Group>(null);
   const { actions } = useAnimations(animations as THREE.AnimationClip[], group);
@@ -63,7 +60,9 @@ export const Map = ({ model, ...props }: MapProps) => {
                         name="deers_Texture-base_0"
                         castShadow
                         receiveShadow
-                        geometry={(nodes["deers_Texture-base_0"] as THREE.Mesh).geometry}
+                        geometry={
+                          (nodes["deers_Texture-base_0"] as THREE.Mesh).geometry
+                        }
                         material={materials["Texture-base"]}
                       />
                     </group>
@@ -80,8 +79,12 @@ export const Map = ({ model, ...props }: MapProps) => {
                         receiveShadow
                         geometry={(nodes["0"] as THREE.Mesh).geometry}
                         material={materials["Texture-base"]}
-                        morphTargetDictionary={(nodes["0"] as THREE.Mesh).morphTargetDictionary}
-                        morphTargetInfluences={(nodes["0"] as THREE.Mesh).morphTargetInfluences}
+                        morphTargetDictionary={
+                          (nodes["0"] as THREE.Mesh).morphTargetDictionary
+                        }
+                        morphTargetInfluences={
+                          (nodes["0"] as THREE.Mesh).morphTargetInfluences
+                        }
                       />
                     </group>
                   </group>
@@ -97,8 +100,12 @@ export const Map = ({ model, ...props }: MapProps) => {
                         receiveShadow
                         geometry={(nodes["1"] as THREE.Mesh).geometry}
                         material={materials["Texture-base"]}
-                        morphTargetDictionary={(nodes["1"] as THREE.Mesh).morphTargetDictionary}
-                        morphTargetInfluences={(nodes["1"] as THREE.Mesh).morphTargetInfluences}
+                        morphTargetDictionary={
+                          (nodes["1"] as THREE.Mesh).morphTargetDictionary
+                        }
+                        morphTargetInfluences={
+                          (nodes["1"] as THREE.Mesh).morphTargetInfluences
+                        }
                       />
                     </group>
                   </group>
@@ -121,7 +128,11 @@ export const Map = ({ model, ...props }: MapProps) => {
                           castShadow
                           receiveShadow
                           geometry={
-                            (nodes["Mill-water-wheel_Texture-base_0"] as THREE.Mesh).geometry
+                            (
+                              nodes[
+                                "Mill-water-wheel_Texture-base_0"
+                              ] as THREE.Mesh
+                            ).geometry
                           }
                           material={materials["Texture-base"]}
                         />
@@ -142,7 +153,11 @@ export const Map = ({ model, ...props }: MapProps) => {
                           castShadow
                           receiveShadow
                           geometry={
-                            (nodes["Mill-wind-wheel_Texture-base_0"] as THREE.Mesh).geometry
+                            (
+                              nodes[
+                                "Mill-wind-wheel_Texture-base_0"
+                              ] as THREE.Mesh
+                            ).geometry
                           }
                           material={materials["Texture-base"]}
                         />
@@ -153,7 +168,9 @@ export const Map = ({ model, ...props }: MapProps) => {
                         name="Scene_Book-tittle_0"
                         castShadow
                         receiveShadow
-                        geometry={(nodes["Scene_Book-tittle_0"] as THREE.Mesh).geometry}
+                        geometry={
+                          (nodes["Scene_Book-tittle_0"] as THREE.Mesh).geometry
+                        }
                         material={materials["Book-tittle"]}
                       />
                       <mesh
@@ -161,7 +178,11 @@ export const Map = ({ model, ...props }: MapProps) => {
                         castShadow
                         receiveShadow
                         geometry={
-                          (nodes["Scene_Texture-base-gloss-jpg_0"] as THREE.Mesh).geometry
+                          (
+                            nodes[
+                              "Scene_Texture-base-gloss-jpg_0"
+                            ] as THREE.Mesh
+                          ).geometry
                         }
                         material={materials["Texture-base-gloss-jpg"]}
                       />
@@ -169,14 +190,19 @@ export const Map = ({ model, ...props }: MapProps) => {
                         name="Scene_Texture-base_0"
                         castShadow
                         receiveShadow
-                        geometry={(nodes["Scene_Texture-base_0"] as THREE.Mesh).geometry}
+                        geometry={
+                          (nodes["Scene_Texture-base_0"] as THREE.Mesh).geometry
+                        }
                         material={materials["Texture-base"]}
                       />
                       <mesh
                         name="Scene_Texture-base_0001"
                         castShadow
                         receiveShadow
-                        geometry={(nodes["Scene_Texture-base_0001"] as THREE.Mesh).geometry}
+                        geometry={
+                          (nodes["Scene_Texture-base_0001"] as THREE.Mesh)
+                            .geometry
+                        }
                         material={materials["Texture-base"]}
                       />
                     </group>
@@ -192,7 +218,11 @@ export const Map = ({ model, ...props }: MapProps) => {
                         castShadow
                         receiveShadow
                         geometry={
-                          (nodes["Waterfall_Texture-base-gloss-jpg_0"] as THREE.Mesh).geometry
+                          (
+                            nodes[
+                              "Waterfall_Texture-base-gloss-jpg_0"
+                            ] as THREE.Mesh
+                          ).geometry
                         }
                         material={materials["Texture-base-gloss-jpg"]}
                         position={[0, 0, -0.623]}
@@ -214,7 +244,9 @@ export const Map = ({ model, ...props }: MapProps) => {
           name="Waterfall_Texture-base-gloss-jpg_0"
           castShadow
           receiveShadow
-          geometry={(nodes["Waterfall_Texture-base-gloss-jpg_0"] as THREE.Mesh).geometry}
+          geometry={
+            (nodes["Waterfall_Texture-base-gloss-jpg_0"] as THREE.Mesh).geometry
+          }
           material={
             new THREE.MeshPhysicalMaterial({
               roughness: 0.3,
@@ -225,7 +257,7 @@ export const Map = ({ model, ...props }: MapProps) => {
               ior: 1.4,
               thickness: 0.1,
               color: 0x00bbcc,
-              side: THREE.DoubleSide
+              side: THREE.DoubleSide,
             })
           }
           position={[0, 0, -0.623]}
@@ -241,7 +273,7 @@ export const Map = ({ model, ...props }: MapProps) => {
           geometry={(nodes.animeverse as THREE.Mesh).geometry}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
-          material={(materials.animeverse as THREE.Material)}
+          material={materials.animeverse as THREE.Material}
           position={[-6.043, 1.152, -17.504]}
           rotation={[Math.PI / 2, 0, 0]}
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -263,7 +295,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="bits_with_benifits"
@@ -278,7 +309,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="final1080plss"
@@ -295,7 +325,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Jam_1080x1080"
@@ -310,7 +339,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="mad_ad_insta"
@@ -325,7 +353,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="meme_wars"
@@ -340,7 +367,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Roadies_Posters@2x"
@@ -354,7 +380,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Non_technical"
@@ -384,7 +409,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Thinking_Cap_squar"
@@ -399,7 +423,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Special"
@@ -416,7 +439,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="post"
@@ -433,7 +455,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="paint_nd_pixel_insta"
@@ -448,7 +469,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="bomb_squad_10"
@@ -463,7 +483,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="cc-insta_Final"
@@ -477,7 +496,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="civil_instagram_final"
@@ -492,7 +510,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Code-Relay@Square"
@@ -506,7 +523,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Escape_RoomSquar-1"
@@ -520,7 +536,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="IMG_2654"
@@ -537,7 +552,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="insta"
@@ -554,7 +568,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Lakshman_rekha_1_1"
@@ -569,7 +582,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="post001"
@@ -586,7 +598,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Robosoccer_1080x1080"
@@ -601,7 +612,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="Sherlocked@square"
@@ -615,7 +625,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="square_"
@@ -632,7 +641,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="wired_square"
@@ -647,7 +655,6 @@ export const Map = ({ model, ...props }: MapProps) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-expect-error
           onClick={() => router.push(links[0].link)}
-
         />
         <mesh
           name="technical"

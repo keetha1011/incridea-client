@@ -59,7 +59,7 @@ const AdminTab: FC<{
                 <Spinner className="text-gray-300" />
               </div>
             )}
-            <div className="max-h-80 w-full overflow-y-auto text-center md:h-[300px] md:max-h-80">
+            <div className="max-h-80 md:max-h-screen w-full overflow-y-auto text-center md:h-[500px]">
               {events?.events?.edges?.map((event, i) => (
                 <div
                   key={i}
@@ -118,7 +118,7 @@ const AdminTab: FC<{
                 <Spinner className="text-gray-300" />
               </div>
             )}
-            <div className="max-h-60 overflow-y-auto md:h-64 md:max-h-64">
+            <div className="max-h-60 overflow-y-auto md:h-96 md:max-h-screen">
               {branches?.getBranches.__typename === "QueryGetBranchesSuccess" &&
                 branches.getBranches.data?.map((branch, i) => (
                   <div

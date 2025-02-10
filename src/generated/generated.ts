@@ -4465,6 +4465,7 @@ export type RegisterdEventsQuery = {
             leaderId?: number | null;
             confirmed: boolean;
             name: string;
+            attended: boolean;
             members: Array<{
               __typename?: "TeamMember";
               user: { __typename?: "User"; id: string; name: string };
@@ -4479,6 +4480,11 @@ export type RegisterdEventsQuery = {
               eventType: EventType;
             };
           }>;
+          winner?: Array<{
+            __typename?: "Winners";
+            id: string;
+            type: WinnerType;
+          }> | null;
         }>;
       };
 };
@@ -18817,6 +18823,10 @@ export const RegisterdEventsDocument = {
                                   },
                                   {
                                     kind: "Field",
+                                    name: { kind: "Name", value: "attended" },
+                                  },
+                                  {
+                                    kind: "Field",
                                     name: { kind: "Name", value: "members" },
                                     selectionSet: {
                                       kind: "SelectionSet",
@@ -18888,6 +18898,23 @@ export const RegisterdEventsDocument = {
                                         },
                                       ],
                                     },
+                                  },
+                                ],
+                              },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "winner" },
+                              selectionSet: {
+                                kind: "SelectionSet",
+                                selections: [
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "id" },
+                                  },
+                                  {
+                                    kind: "Field",
+                                    name: { kind: "Name", value: "type" },
                                   },
                                 ],
                               },

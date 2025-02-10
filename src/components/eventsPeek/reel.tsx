@@ -5,6 +5,8 @@ import Button from "~/components/button";
 
 import EventsPeek from ".";
 
+// TODO(Omkar): To be deleted component
+
 const EventsReel = () => {
   return (
     <section>

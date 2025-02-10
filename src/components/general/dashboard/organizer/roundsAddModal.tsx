@@ -7,6 +7,7 @@ import { IoClose } from "react-icons/io5";
 
 import Button from "~/components/button";
 import createToast from "~/components/toast";
+import { CONSTANT } from "~/constants";
 import { CreateRoundDocument } from "~/generated/generated";
 
 const RoundAddModal: FC<{
@@ -16,7 +17,7 @@ const RoundAddModal: FC<{
 }> = ({ eventID, roundNo, published }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [dateTime, setDateTime] = useState(
-    new Date(new Date(2024, 1, 22, 9, 30)),
+    new Date(CONSTANT.DATE.ROUND.DEAFULT_START),
   );
   const [createRound, { loading }] = useMutation(CreateRoundDocument, {
     refetchQueries: ["EventByOrganizer"],
@@ -29,7 +30,7 @@ const RoundAddModal: FC<{
 
   const closeModal = () => {
     setIsOpen(false);
-    setDateTime(new Date(2024, 1, 22, 14, 30));
+    setDateTime(new Date(CONSTANT.DATE.ROUND.DEAFULT_START));
   };
 
   const openModal = () => {
