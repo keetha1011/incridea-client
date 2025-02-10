@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck
+
 import React, { useEffect, useRef } from "react";
 import { useGLTF, useAnimations } from "@react-three/drei";
 
 export default function Pianist(props) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF(
-    "/2025/Pronites/pianist.glb"
+    "/2025/Pronites/pianist.glb",
   );
   const { actions } = useAnimations(animations, group);
 

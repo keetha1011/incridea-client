@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import { CONSTANT } from "~/constants";
 
 const Guidelines: NextPage = () => {
   return (
@@ -20,7 +21,7 @@ const Guidelines: NextPage = () => {
           <ul className="mt-2 list-disc pl-4">
             <li>
               Registration for the fest can only be done through the official
-              website of Incridea (https://incridea.in).
+              website of Incridea ({CONSTANT.BASE_URL}).
             </li>
             <li>
               There are two different categories of participants, who will have

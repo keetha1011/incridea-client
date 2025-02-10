@@ -40,6 +40,7 @@ function EventRegistration({
 
   return (
     <>
+      {/* TODO(Omkar): check these urgent */}
       {eventId === "29" ||
       eventId === "50" ||
       eventId === "78" ||

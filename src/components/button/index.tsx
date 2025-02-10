@@ -3,12 +3,9 @@ import React from "react";
 
 import { cn } from "~/lib/utils";
 
-// import { VikingHell } from "~/pages/_app";
-
 const buttonStyles = cva(
   cn(
     "flex gap-2 items-center transition-all tracking-widest duration-300 ease-in-out",
-    // VikingHell.className,
   ),
   {
     variants: {

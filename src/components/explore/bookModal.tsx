@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { IoMdClose } from "react-icons/io";
 import HTMLFlipBook from "react-pageflip";
 
-import sponsors from "~/constants/sponsors";
+import { CONSTANT } from "~/constants";
 import useStore from "~/components/store/store";
 import { env } from "~/env";
 
@@ -78,7 +78,7 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
               className="absolute top-[25%]"
             />
           </div>
-          {sponsors.map((page, index) => {
+          {CONSTANT.SPONSORS.map((page, index) => {
             return (
               <div
                 className="bg-[url('/assets/png/pageTexture.jpg')] bg-cover bg-center"

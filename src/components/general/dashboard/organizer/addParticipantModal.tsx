@@ -8,6 +8,7 @@ import { OrganizerRegisterSoloDocument } from "~/generated/generated";
 import { pidToId } from "~/utils/id";
 
 import ScanParticipantModal from "./scanParticipantModal";
+import { CONSTANT } from "~/constants";
 
 export default function AddParticipantModal({ eventId }: { eventId: string }) {
   const [organizerRegisterSolo] = useMutation(OrganizerRegisterSoloDocument, {
@@ -20,7 +21,9 @@ export default function AddParticipantModal({ eventId }: { eventId: string }) {
     const promise = organizerRegisterSolo({
       variables: {
         eventId,
-        userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,
+        userId: userId.startsWith(CONSTANT.PID_FORMAT)
+          ? pidToId(userId)
+          : userId,
       },
     }).then((res) => {
       if (

@@ -1,12 +1,17 @@
 import { motion, useInView } from "framer-motion";
-import React, { type FC, useRef } from "react";
+import React, { useRef } from "react";
 
-const TextAnimation: FC<{
+const TextAnimation = ({
+  text,
+  className,
+  textStyle,
+  marginRight,
+}: {
   text: string;
   className?: string;
   textStyle?: string;
   marginRight?: string;
-}> = ({ text, className, textStyle, marginRight }) => {
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
   const words = text.split(" ");

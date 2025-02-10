@@ -19,6 +19,7 @@ import { generateEventUrl } from "~/utils/url";
 import CreateTeamModal from "./createTeamModal";
 import EditTeamModal from "./editEvent";
 import JoinTeamModal from "./joinTeamModal";
+import { CONSTANT } from "~/constants";
 
 const TeamCard = ({
   team,
@@ -35,7 +36,7 @@ const TeamCard = ({
 
   const url = `Join my team for ${
     team.event.name
-  } event at Incridea 2024! Here's the link: https://incridea.in${generateEventUrl(
+  } event at Incridea ${CONSTANT.YEAR}! Here's the link: ${CONSTANT.BASE_URL}${generateEventUrl(
     team.event.name,
     team.event.id,
   )}?jointeam=${idToTeamId(team.id)}`;
