@@ -66,7 +66,7 @@ const Profile: NextPage = () => {
         {/* Todo: Any graphic to fill space */}
         <div className="z-10 mt-8 flex h-96 items-center justify-center">
           <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/gamer.png`}
+            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/gamer.png`}
             alt="404"
             width={400}
             height={400}

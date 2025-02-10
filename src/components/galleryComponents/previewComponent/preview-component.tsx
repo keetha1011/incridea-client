@@ -91,12 +91,12 @@ const PreviewComponent = ({
                 <BlurImage
                   fill
                   alt="Blurred Image"
-                  src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
+                  src={env.NEXT_PUBLIC_UPLOADTHING_URL + img}
                   className="object-cover blur-xl"
                 />
                 <Image
                   fill
-                  src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
+                  src={env.NEXT_PUBLIC_UPLOADTHING_URL + img}
                   alt="incridea"
                   className={`z-10 object-cover ${portraitImages[index] ? "object-scale-down" : ""}`}
                   priority
@@ -157,7 +157,7 @@ const PreviewComponent = ({
               <div className="flex h-full items-center justify-center">
                 <Image
                   fill
-                  src={env.NEXT_PUBLIC_BASE_IMAGE_URL + img}
+                  src={env.NEXT_PUBLIC_UPLOADTHING_URL + img}
                   alt="incridea"
                   className="z-10 object-cover"
                   priority
@@ -174,7 +174,7 @@ const PreviewComponent = ({
               {/* <BlurImage
                     fill
                     alt="Blurred Image"
-                    src={env.NEXT_PUBLIC_BASE_IMAGE_URL+img}
+                    src={env.NEXT_PUBLIC_UPLOADTHING_URL+img}
                     className="object-cover blur-xl"
                   /> */}
               <Image

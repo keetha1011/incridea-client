@@ -35,7 +35,7 @@ const QuizImageUpload = React.memo(
 
     const deleteImage = async (url: string) => {
       const res = await fetch(
-        `${env.NEXT_PUBLIC_SERVER_URL}/uploadrthing/delete`,
+        `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadrthing/delete`,
         {
           method: "POST",
           headers: {

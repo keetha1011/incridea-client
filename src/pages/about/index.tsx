@@ -30,7 +30,7 @@ const About = () => {
         <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
           <div className="flex flex-col items-center justify-between gap-8 lg:flex-row">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/nitteLogoWhite.png`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/nitteLogoWhite.png`}
               alt="image"
               loading="lazy"
               className="top-0 h-full w-3/4 object-contain object-center md:w-1/3"
@@ -154,7 +154,7 @@ const About = () => {
             <div className="gallery" onClick={() => setIsActive(!isActive)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-rim-white.png`}
+                src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/logo-rim-white.png`}
                 alt="Incridea Logo"
                 loading="lazy"
                 className={`object-contain logo ${isActive ? "active" : ""} object-contain origin-bottom animate-shakelogo`}

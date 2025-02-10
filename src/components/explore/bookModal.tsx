@@ -18,7 +18,7 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
 
   useEffect(() => {
     const audio = new Audio(
-      `${env.NEXT_PUBLIC_BASE_AUDIO_URL}/audio/level2/pirates.mp3`,
+      `${env.NEXT_PUBLIC_UPLOADTHING_URL}/audio/level2/pirates.mp3`,
     );
     audio.volume = 0.3;
     const mainRef = mainThemeAudioRef;
@@ -64,14 +64,14 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
         >
           <div className="relative">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/bookCoverTexture.jpg`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/bookCoverTexture.jpg`}
               alt="cover"
               width={100}
               height={100}
               className="h-full w-full"
             />
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/DOD.png`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/home/DOD.png`}
               alt="Dice of Destiny"
               width={300}
               height={300}
@@ -86,7 +86,7 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
               >
                 <div className="flex h-full w-full flex-col items-center justify-center gap-2">
                   <Image
-                    src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/sponsors/${page.logo}`}
+                    src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/sponsors/${page.logo}`}
                     alt={page.name}
                     width={300}
                     height={300}
@@ -106,14 +106,14 @@ const BookModal: React.FC<BookModalType> = ({ isMuted, mainThemeAudioRef }) => {
           })}
           <div className="relative">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/bookCoverTexture.jpg`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/bookCoverTexture.jpg`}
               alt="cover"
               width={100}
               height={100}
               className="h-full w-full"
             />
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/home/DOD.png`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/home/DOD.png`}
               alt="Dice of Destiny"
               width={300}
               height={300}
