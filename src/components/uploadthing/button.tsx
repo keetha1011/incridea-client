@@ -8,7 +8,7 @@ const UploadButton = (
   props: ComponentProps<ReturnType<typeof generateUploadButton>>,
 ) => {
   const Comp = generateUploadButton({
-    url: `${env.NEXT_PUBLIC_HTTP_SERVER_URL}/uploadthing`,
+    url: `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadthing`,
   });
 
   return (

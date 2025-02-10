@@ -8,7 +8,7 @@ const UploadDropzone = (
   props: ComponentProps<ReturnType<typeof generateUploadDropzone>>,
 ) => {
   const Comp = generateUploadDropzone({
-    url: `${env.NEXT_PUBLIC_HTTP_SERVER_URL}/uploadthing`,
+    url: `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadthing`,
   });
 
   return (

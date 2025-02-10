@@ -5,7 +5,7 @@ import { env } from "./src/env";
 const config: CodegenConfig = {
   schema: [
     {
-      [`${env.NEXT_PUBLIC_HTTP_SERVER_URL}/graphql`]: {
+      [`${env.NEXT_PUBLIC_SERVER_HTTP_URL}/graphql`]: {
         headers: {
           Authorization: `Bearer ${env.SCHEMA_TOKEN}`,
         },
