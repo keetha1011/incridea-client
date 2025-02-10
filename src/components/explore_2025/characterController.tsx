@@ -1,16 +1,17 @@
+import { useMutation } from "@apollo/client";
 import { useKeyboardControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { CapsuleCollider, RigidBody } from "@react-three/rapier";
-import { useEffect, useRef, useState, useMemo, type ComponentRef } from "react";
+import { type ComponentRef, useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import type * as THREE from "three";
-import { MathUtils, Vector3, Raycaster } from "three";
+import { MathUtils, Raycaster, Vector3 } from "three";
 import { degToRad } from "three/src/math/MathUtils.js";
 import { Character } from "~/components/explore_2025/Character";
 import stonesData from "~/components/explore_2025/data/data.json";
 import { useRouter } from "next/router";
+import { UpdateStoneVisibilitiesDocument } from "~/generated/generated";
 
-// Utility functions for angle normalization and interpolation
 const normalizeAngle = (angle: number) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
   while (angle < -Math.PI) angle += 2 * Math.PI;
@@ -95,8 +96,11 @@ export const CharacterController = () => {
   const [animation, setAnimation] = useState("idle");
   const [spacebarPressed, setSpacebarPressed] = useState(false);
   const [spacebarDisabled, setSpacebarDisabled] = useState(false);
-  const [throwOutOfThePage, setThrowOutOfThePage] = useState(false);
   const [visibility, setVisibility] = useState<boolean[]>([]);
+  const [totalVisibility, setTotalVisibility] = useState(
+    localStorage.getItem("stoneVisibility") ??
+      "[true,true,true,true,true,true]",
+  );
 
   const handleJump = () => {
     const keyDownEvent = new KeyboardEvent("keydown", {
@@ -116,10 +120,30 @@ export const CharacterController = () => {
     }, 100);
   };
 
+  const [updateStoneVisibilities] = useMutation(
+    UpdateStoneVisibilitiesDocument,
+    {
+      variables: {
+        stoneId: totalVisibility,
+      },
+      refetchQueries: ["GetStoneVisibilities"],
+      awaitRefetchQueries: true,
+    },
+  );
+
+  const handleUpdateStoneVisibilities = async () => {
+    await updateStoneVisibilities().then(() => {
+      return;
+    });
+  };
+
   useEffect(() => {
     const onMouseDown = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as HTMLElement;
-      if (target.id === "jump") return;
+      const target = (event.target as HTMLElement).closest("[id]");
+      if (!target) return;
+
+      if (target.id === "jump" || target.id === "shift") return;
+
       if (target.id === "w") {
         get().forward = true;
       }
@@ -132,16 +156,18 @@ export const CharacterController = () => {
       if (target.id === "d") {
         get().right = true;
       }
-      if (target.id === "shift") {
-        get().run = true;
-      }
     };
+
     const onMouseUp = (event: MouseEvent | TouchEvent) => {
-      const target = event.target as HTMLElement;
+      const target = (event.target as HTMLElement).closest("[id]");
+      if (!target) return;
+
       if (target.id === "jump") {
         handleJump();
         return;
       }
+      if (target.id === "shift") return;
+
       if (target.id === "w") {
         get().forward = false;
       }
@@ -154,19 +180,28 @@ export const CharacterController = () => {
       if (target.id === "d") {
         get().right = false;
       }
+    };
+
+    const onRunClick = (event: MouseEvent | TouchEvent) => {
+      const target = (event.target as HTMLElement).closest("[id]");
+      if (!target) return;
       if (target.id === "shift") {
-        get().run = false;
+        get().run = !get().run;
       }
     };
+
     document.addEventListener("mousedown", onMouseDown);
     document.addEventListener("mouseup", onMouseUp);
     document.addEventListener("touchstart", onMouseDown);
     document.addEventListener("touchend", onMouseUp);
+    document.addEventListener("click", onRunClick);
+
     return () => {
       document.removeEventListener("mousedown", onMouseDown);
       document.removeEventListener("mouseup", onMouseUp);
       document.removeEventListener("touchstart", onMouseDown);
       document.removeEventListener("touchend", onMouseUp);
+      document.removeEventListener("click", onRunClick);
     };
   }, [get]);
 
@@ -182,11 +217,15 @@ export const CharacterController = () => {
         JSON.stringify(initialVisibility),
       );
     }
+
+    console.log(totalVisibility);
   }, []);
 
   const countdowns = useRef(
     new Map<number, { timer: NodeJS.Timeout; count: number }>(),
   );
+
+  const redirectedLocations = useRef(new Set<number>());
 
   useFrame(({ camera, scene }) => {
     if (rb.current) {
@@ -201,7 +240,6 @@ export const CharacterController = () => {
       playerPosition.set(pos.x, pos.y, pos.z);
       if (pos.y < -9) {
         playerPosition.set(0, 0, 0);
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         rb.current.setTranslation({ x: 0, y: 0, z: 0 }, true);
         toast.error("You fell off the map! Respawning...");
       }
@@ -265,10 +303,8 @@ export const CharacterController = () => {
         setAnimation("jump");
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       rb.current.setLinvel(vel, true);
 
-      // Check if the player is within 0.5 units of any stone
       stones.forEach((stone, index) => {
         const distance = Math.sqrt(
           (pos.x - stone.pos[0]) ** 2 +
@@ -287,69 +323,80 @@ export const CharacterController = () => {
         }
       });
 
-      // Check if the player is within 1 unit of any location
       locations.forEach((location) => {
         const distance = Math.sqrt(
           (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
             (pos.z - (location.pos?.[1] ?? 0)) ** 2,
         );
 
-        if (!throwOutOfThePage) {
-          if (distance <= 0.5) {
-            if (!countdowns.current.has(location.id)) {
-              let count = 5;
-              const timer = setInterval(() => {
-                // Recalculate distance inside the callback
-                const currentDistance = Math.sqrt(
-                  (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
-                    (pos.z - (location.pos?.[1] ?? 0)) ** 2,
-                );
-                // If user is out of range, cancel the countdown.
-                if (currentDistance > 0.5) {
-                  clearInterval(timer);
-                  countdowns.current.delete(location.id);
-                  return;
-                }
+        if (redirectedLocations.current.has(location.id)) {
+          if (distance > 0.5) {
+            redirectedLocations.current.delete(location.id);
+          }
+          return;
+        }
 
-                count -= 1;
-                if (count <= 0) {
-                  setThrowOutOfThePage(true);
-                  clearInterval(timer);
-                  countdowns.current.delete(location.id);
-                  void router.push(location.href);
+        if (distance <= 0.5) {
+          if (!countdowns.current.has(location.id)) {
+            let count = 5;
+            const timer = setInterval(() => {
+              const currentDistance = Math.sqrt(
+                (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
+                  (pos.z - (location.pos?.[1] ?? 0)) ** 2,
+              );
+
+              // If the user has moved out of range, cancel the countdown.
+              if (currentDistance > 0.5) {
+                clearInterval(timer);
+                countdowns.current.delete(location.id);
+                return;
+              }
+
+              count -= 1;
+              if (count <= 0) {
+                redirectedLocations.current.add(location.id);
+                clearInterval(timer);
+                countdowns.current.delete(location.id);
+                if (location.id != 4) {
+                  window.open(location.href, "_blank");
                 } else {
-                  toast(
-                    (t) => (
-                      <span>
-                        Redirecting in {count} seconds...
-                        <button
-                          onClick={() => {
-                            clearInterval(timer);
-                            countdowns.current.delete(location.id);
-                            toast.dismiss(t.id);
-                          }}
-                          style={{ marginLeft: "10px", color: "blue" }}
-                        >
-                          Cancel
-                        </button>
-                      </span>
-                    ),
-                    {
-                      id: location.id.toString(),
-                    },
-                  );
+                  void router.push(location.href);
                 }
-              }, 1000);
-              countdowns.current.set(location.id, { timer, count });
-              toast(`Redirecting in ${count} seconds...`, {
-                id: location.id.toString(),
-              });
-            }
-          } else {
-            if (countdowns.current.has(location.id)) {
-              clearInterval(countdowns.current.get(location.id)!.timer);
-              countdowns.current.delete(location.id);
-            }
+              } else {
+                toast(
+                  (t) => (
+                    <span>
+                      {location.id == 1
+                        ? `Opening RuleBook in ${count}`
+                        : location.id == 4
+                          ? `Exiting level in ${count}`
+                          : ""}
+                      <button
+                        onClick={() => {
+                          redirectedLocations.current.add(location.id);
+                          clearInterval(timer);
+                          countdowns.current.delete(location.id);
+                          toast.dismiss(t.id);
+                        }}
+                        style={{ marginLeft: "10px", color: "blue" }}
+                      >
+                        Cancel
+                      </button>
+                    </span>
+                  ),
+                  { id: location.id.toString() },
+                );
+              }
+            }, 1000);
+            countdowns.current.set(location.id, { timer, count });
+            toast("", {
+              id: location.id.toString(),
+            });
+          }
+        } else {
+          if (countdowns.current.has(location.id)) {
+            clearInterval(countdowns.current.get(location.id)!.timer);
+            countdowns.current.delete(location.id);
           }
         }
       });
@@ -417,16 +464,17 @@ export const CharacterController = () => {
   const stoneModels = useMemo(() => {
     return stones.map((stone, index) => {
       if (!visibility[index]) return null;
-      return (
-        <mesh key={stone.id} position={stone.pos}>
-          {/* Add your geometry and material here */}
-        </mesh>
-      );
+      return <mesh key={stone.id} position={stone.pos}></mesh>;
     });
   }, [visibility]);
 
   return (
-    <RigidBody colliders={false} lockRotations ref={rb}>
+    <RigidBody
+      colliders={false}
+      lockRotations
+      ref={rb}
+      position={[0.4, -2.5, -3]}
+    >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />
         <group ref={cameraPosition} position-y={0.5} position-z={-1.5} />
