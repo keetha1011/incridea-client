@@ -6,13 +6,14 @@ import MobileNav from "./mobileNav";
 import { useAuth } from "~/hooks/useAuth";
 import { Role } from "~/generated/generated";
 import { useRouter } from "next/router";
+import { cn } from "~/lib/utils";
 
 const Navbar = () => {
   const logoRef = useRef(null);
   const textRef = useRef(null);
   const { user } = useAuth();
   const router = useRouter();
-  const currentRoute = router.pathname;
+  const pathname = router.pathname;
 
   const tabs: {
     id: number;
@@ -111,7 +112,7 @@ const Navbar = () => {
           style={{
             clipPath: "polygon(0 0, 100% 0, 75% 100%, 25% 100%)",
           }}
-          className={`absolute top-0 ${currentRoute === "/" ? "bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950" : "bg-white"} px-12 py-2 text-white text-3xl shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%]`}
+          className={`absolute top-0 ${pathname === "/" ? "bg-gradient-to-br from-[#186C16] to-[#186C16] via-primary-950" : "bg-white"} px-12 py-2 text-white text-3xl shadow-md flex rounded-b-xl justify-center items-center hover:bg-gray-100 transition-all scale-[250%] hover:scale-[260%]`}
         >
           <div className="relative w-16 h-6 flex justify-center items-center">
             <Image
@@ -122,21 +123,42 @@ const Navbar = () => {
               width={40}
               height={40}
             />
-            {user?.role === Role.User ? (
-              <>
-                <Link href="/profile" ref={textRef}>
-                  PROFILE
-                </Link>
-              </>
+            <Link
+              ref={textRef}
+              href={
+                !user
+                  ? "/login"
+                  : user.role === Role.User
+                    ? "/register"
+                    : pathname === "/profile"
+                      ? "/dashboard"
+                      : "/profile"
+              }
+              className={cn(
+                pathname === "/" ? "text-white" : "text-black",
+                "absolute scale-[60%] translate-y-1",
+              )}
+            >
+              {!user
+                ? "REGISTER"
+                : user.role === Role.User
+                  ? "REGISTER"
+                  : pathname === "/profile"
+                    ? "DASHBOARD"
+                    : "PROFILE"}
+            </Link>
+            {/* {user?.role === Role.User ? (
+              <Link href="/profile" ref={textRef}>
+                PROFILE
+              </Link>
             ) : (
               <Link
                 href={"/register"}
                 ref={textRef}
-                className="absolute scale-[60%] translate-y-1"
-              >
+                className="absolute scale-[60%] translate-y-1">
                 REGISTER
               </Link>
-            )}
+            )} */}
           </div>
         </button>
 

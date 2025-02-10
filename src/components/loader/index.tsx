@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import Image from "next/image";
-import Particles from "react-tsparticles";
 import gsap from "gsap";
 import styles from "./loader.module.css";
 
@@ -37,84 +36,11 @@ const LoadingScreen = () => {
       gsap.killTweensOf([container, logo, hourglass]);
     };
   }, []);
-
-  const particlesOptions = {
-    background: {
-      color: {
-        value: "#00000",
-      },
-    },
-    fpsLimit: 60,
-    interactivity: {
-      detectsOn: "canvas" as const,
-      events: {
-        onClick: {
-          enable: true,
-          mode: "push",
-        },
-        onHover: {
-          enable: true,
-          mode: "repulse",
-        },
-        resize: true,
-      },
-      modes: {
-        push: {
-          quantity: 4,
-        },
-        repulse: {
-          distance: 200,
-          duration: 2,
-        },
-      },
-    },
-    particles: {
-      number: {
-        value: 100,
-        density: {
-          enable: true,
-          value_area: 800,
-        },
-      },
-      color: {
-        value: "#ffffff",
-      },
-      shape: {
-        type: "circle",
-      },
-      opacity: {
-        value: 0.5,
-        random: false,
-        anim: {
-          enable: false,
-        },
-      },
-      size: {
-        value: 5,
-        random: true,
-        anim: {
-          enable: false,
-        },
-      },
-      move: {
-        enable: true,
-        speed: 3,
-        direction: "none" as const,
-        random: false,
-        straight: false,
-        out_mode: "out" as const,
-        bounce: false,
-      },
-    },
-    detectRetina: true,
-  };
-
   return (
     <div ref={containerRef} className={styles.loadingScreen}>
       <div className="relative h-screen w-screen flex flex-col items-center justify-center">
         <div className={styles.background}>
           <div className={styles.particlesContainer}></div>
-          {/* <Particles options={particlesOptions} /> */}
         </div>
         <div ref={hourglassRef} className={styles.hourglass}>
           <Image

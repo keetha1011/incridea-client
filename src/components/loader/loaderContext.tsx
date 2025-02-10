@@ -14,7 +14,7 @@ export const LoaderContext = createContext<LoaderContextType | null>(null);
 
 export function LoaderProvider({ children }: { children: React.ReactNode }) {
   const [showLoader, setShowLoader] = useState<"loading" | "show" | "hide">(
-    "show",
+    "loading",
   );
   const [animate, setAnimate] = useState(false);
   const router = useRouter();
@@ -22,10 +22,10 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (typeof window !== undefined) {
       if (window.sessionStorage.getItem("black-hole-loader") === "true") {
+        setShowLoader("hide");
         gsap.set("#black-hole-overlay", {
           display: "none",
         });
-        setShowLoader("hide");
       } else {
         if (router.pathname !== "/") {
           setShowLoader("hide");
@@ -53,7 +53,7 @@ export function LoaderProvider({ children }: { children: React.ReactNode }) {
         {
           opacity: 0,
           backgroundColor: "#00331f",
-          duration: 2,
+          duration: 0.3,
           display: "none",
         },
       );

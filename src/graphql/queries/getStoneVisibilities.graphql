@@ -1,12 +1,12 @@
 query GetStoneVisibilities {
-    getStoneVisibilities {
-        ... on Error {
-            __typename
-            message
-        }
-        ... on QueryGetStoneVisibilitiesSuccess {
-            __typename
-            data
-        }
+  getStoneVisibilities {
+    ... on Error {
+      __typename
+      message
     }
+    ... on QueryGetStoneVisibilitiesSuccess {
+      __typename
+      data
+    }
+  }
 }

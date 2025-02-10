@@ -3,6 +3,7 @@ import React, { type FC } from "react";
 
 import { env } from "~/env";
 
+// TODO(Omkar): To be deleted component
 const EventsPeek: FC<{
   speed: number;
 }> = ({ speed }) => {

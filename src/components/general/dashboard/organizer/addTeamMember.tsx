@@ -16,6 +16,7 @@ import {
 import { idToPid, pidToId } from "~/utils/id";
 
 import { QRCodeScanner } from "./qRCodeScanner";
+import { CONSTANT } from "~/constants";
 
 const AddTeamMember: FC<{
   teamId: string;
@@ -73,7 +74,9 @@ const AddTeamMember: FC<{
     const promise = organizerAddParticipantToTeam({
       variables: {
         teamId,
-        userId: userId.startsWith("INC24-") ? pidToId(userId) : userId,
+        userId: userId.startsWith(CONSTANT.PID_FORMAT)
+          ? pidToId(userId)
+          : userId,
       },
     })
       .then(async (res) => {

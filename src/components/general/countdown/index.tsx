@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 
 import GlitchAnimation from "~/components/animation/glitchAnimation";
+import { CONSTANT } from "~/constants";
 import { env } from "~/env";
 import { GetUserXpDocument, Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
@@ -44,7 +45,7 @@ export default function CountDown() {
   });
 
   function getRemaingTime() {
-    const eventDate = new Date("2024-02-22T09:00:00").getTime();
+    const eventDate = CONSTANT.DATE.INCRIDEA.DAY1.getTime();
     const currentDate = new Date().getTime();
     const remainingTime = eventDate - currentDate;
 

@@ -19,6 +19,8 @@ import { GetQuizByEventRoundDocument } from "~/generated/generated";
 // HOPEFULLY, THIS ERROR WON'T BE THERE IN THE FINAL IMPLEMENTATION
 // IF IT IS, WE CAN REMOVE LOCAL STORAGE FUNCTIONALITY
 
+// JUST TO ADD ONE MORE THING, ITS NOT LOCALSTORAGE AND SERVER DATA MISMATCH, ITS TRYING TO LOAD LOACLSTORAGE WHEN WINDOW IS `undefined`
+
 type Question = {
   id: string;
   questionText: string;
@@ -467,73 +469,6 @@ const Quiz: React.FC<{
         ]);
     }
   };
-
-  // const handleNewOption = (id: string) => {
-  //   setSave(false);
-
-  //   setQuestions((prev) =>
-  //     prev.map((q) =>
-  //       q.id === id
-  //         ? q.mode === "view"
-  //           ? { ...q, options: [...q.options, ""], mode: "edit" as const }
-  //           : { ...q, options: [...q.options, ""] }
-  //         : q,
-  //     ),
-  //   );
-  //   const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-  //   if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
-  //     saveToLocalStore<Question[]>(
-  //       questionsKey,
-  //       localQuestions?.map((q) =>
-  //         q.id === id ? { ...q, options: [...q.options, ""] } : q,
-  //       ) ?? [],
-  //     );
-  //   } else {
-  //     const dbQuestion = dbQuestions.find((q) => q.id === id);
-  //     if (dbQuestion)
-  //       saveToLocalStore<Question[]>(questionsKey, [
-  //         ...(localQuestions ?? []),
-  //         { ...dbQuestion, options: [...dbQuestion.options, ""], mode: "edit" },
-  //       ]);
-  //   }
-  // };
-
-  // const handleDeleteOption = (id: string) => {
-  //   setSave(false);
-
-  //   setQuestions((prev) =>
-  //     prev.map((q) =>
-  //       q.id === id && q.options.length > 2
-  //         ? q.mode === "view"
-  //           ? { ...q, options: q.options.slice(0, -1), mode: "edit" as const }
-  //           : { ...q, options: q.options.slice(0, -1) }
-  //         : q,
-  //     ),
-  //   );
-
-  //   const localQuestions = loadfromLocalStore<Question[]>(questionsKey);
-  //   if (localQuestions?.findIndex((q) => q.id === id) !== -1) {
-  //     saveToLocalStore<Question[]>(
-  //       questionsKey,
-  //       localQuestions?.map((q) =>
-  //         q.id === id && q.options.length > 2
-  //           ? { ...q, options: q.options.slice(0, -1) }
-  //           : q,
-  //       ) ?? [],
-  //     );
-  //   } else {
-  //     const dbQuestion = dbQuestions.find((q) => q.id === id);
-  //     if (dbQuestion && dbQuestion.options.length > 2)
-  //       saveToLocalStore<Question[]>(questionsKey, [
-  //         ...(localQuestions ?? []),
-  //         {
-  //           ...dbQuestion,
-  //           options: dbQuestion.options.slice(0, -1),
-  //           mode: "edit",
-  //         },
-  //       ]);
-  //   }
-  // };
 
   const handleIsCode = (id: string) => {
     setSave(false);

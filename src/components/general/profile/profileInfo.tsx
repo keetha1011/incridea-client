@@ -23,8 +23,7 @@ import { idToPid } from "~/utils/id";
 
 import AvatarModal from "./avatarModal";
 import ViewUserAccommodation from "./viewUserAccommodation";
-
-const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
+import { CONSTANT } from "~/constants";
 
 const ProfileInfo: FC<{
   user: User | null | undefined;
@@ -55,7 +54,7 @@ const ProfileInfo: FC<{
     ) {
       const totalXp = userXp.data.getUserXp?.data?.reduce((acc, curr) => {
         if (
-          techTeamPid.includes(parseInt(curr.user.id)) &&
+          CONSTANT.PID.TECH_TEAM.includes(parseInt(curr.user.id)) &&
           parseInt(curr.level.id) <= 6
         )
           return acc;
@@ -126,7 +125,7 @@ const ProfileInfo: FC<{
           }
         } else {
           if (
-            techTeamPid.includes(parseInt(userId)) &&
+            CONSTANT.PID.TECH_TEAM.includes(parseInt(userId)) &&
             parseInt(item.level.id) <= 6
           )
             return;

@@ -12,16 +12,27 @@ export const useAuth = () => {
   const { data, loading, error } = useQuery(MeDocument, {
     fetchPolicy: "cache-and-network",
   });
-  if (loading) {
-    return { status: AuthStatus.LOADING, loading, error };
-  }
-  if (data?.me.__typename === "QueryMeSuccess") {
+
+  if (loading)
     return {
-      user: data?.me.data,
-      loading,
-      error,
-      status: AuthStatus.AUTHENTICATED,
-    };
-  }
-  return { user: null, loading, error, status: AuthStatus.NOT_AUTHENTICATED };
+      status: AuthStatus.LOADING,
+      user: undefined,
+      loading: loading,
+      error: error,
+    } as const;
+
+  if (!data || data.me.__typename === "Error")
+    return {
+      status: AuthStatus.NOT_AUTHENTICATED,
+      user: undefined,
+      loading: loading,
+      error: error,
+    } as const;
+
+  return {
+    status: AuthStatus.AUTHENTICATED,
+    user: data.me.data,
+    loading: loading,
+    error: error,
+  } as const;
 };
