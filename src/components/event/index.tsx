@@ -81,6 +81,7 @@ const Event = ({
           <style>{`
                 .b {
                   fill: url(#gradient1);
+                  backdrop-filter: blur(var(--blur-3xl));
                 }
                 .e {
                   fill:url(#gradient2);
@@ -89,8 +90,15 @@ const Event = ({
         </defs>
         <defs>
           <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: "rgba(5,68,50,0.5)" }} />
-            <stop offset="100%" style={{ stopColor: "rgba(5,68,50,0.7)" }} />
+            {/* <stop offset="0%" style={{ stopColor: "#006d44" }} />
+            <stop offset="100%" style={{ stopColor: "#006d44" }} /> */}
+            <stop offset="0%" style={{ stopColor: "#006d38" }} />
+            <stop offset="50%" style={{ stopColor: "#006d44" }} />
+            <stop offset="100%" style={{ stopColor: "#006d38" }} />
+            {/* <stop offset="25%" style={{ stopColor: "rgba(5,68,50,0.5)" }} />
+            <stop offset="50%" style={{ stopColor: "rgba(5,68,50,0.1)" }} />
+            <stop offset="75%" style={{ stopColor: "rgba(5,68,50,0.5)" }} />
+            <stop offset="100%" style={{ stopColor: "#000000" }} /> */}
           </linearGradient>
         </defs>
 
@@ -103,7 +111,7 @@ const Event = ({
           d="M145.68 236.24H145.67L145.68 237.55V240.74L135.88 253.5H13.1L12.78 253.18L13.07 253.5H9.77L0 240.74V237.6H0.05L0 237.55V155.11L13.07 142.04V89.04L0 77.65V16.23L15.8 0H54.94L64.95 9.96H131.41L137.63 16.23L141.7 20.3C141.81 20.41 141.92 20.52 142 20.64L142.16 20.81L145.68 24.34V236.24Z"
           fill="black"
           stroke="rgba(153,255,216,0.8)"
-          stroke-width="0.5"
+          stroke-width="0.6"
         />
         <polygon
           className="b"
@@ -112,7 +120,7 @@ const Event = ({
 
         <foreignObject x="0" y="86" width="17" height="60">
           <div className="flex items-center justify-center w-full h-full">
-            <span className="text-white italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-2 shadow-2xl rounded-xl">
+            <span className="text-white italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-8 shadow-2xl rounded-xl">
               {data.category?.toLowerCase() === "non_technical"
                 ? "Non Tech"
                 : data.category?.toLocaleLowerCase()}
@@ -135,7 +143,7 @@ const Event = ({
               src={data.image}
               alt={data.name}
               layout="fill"
-              className="object-cover rounded-tr-2xl [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
+              className="object-cover [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
             />
           )}
         </foreignObject>
@@ -150,8 +158,8 @@ const Event = ({
                 <div
                   key={i}
                   className="flex items-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px] 
-                           bg-gradient-to-tr bg-opacity-50 from-primary-700 via-primary-900/5 to-primary-700 
-                           border border-primary-200/80 text-white font-medium shadow-md"
+                           bg-gradient-to-tr bg-opacity-50 from-primary-900 via-primary-800/80 to-primary-900 
+                           border border-primary-300/50 text-white font-medium shadow-md"
                 >
                   <attr.Icon width="7" height="7" className="flex-shrink-0" />
                   <span
