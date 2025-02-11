@@ -39,8 +39,17 @@ function Medieval() {
     };
   }, []);
 
+  useEffect(() => {
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, []);
+
   return (
-    <div className="h-screen w-screen relative">
+    <div className="h-screen w-screen overflow-hidden">
       <AudioPlayer
         mainThemeAudioRef={mainThemeAudioRef}
         mainTheme={`/2025/assets/explore/audio/level2.mp3`}
