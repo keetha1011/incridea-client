@@ -32,8 +32,8 @@ const Register: NextPage = () => {
         </h2>
 
         <h5 className="mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
-          Before you roll the dice, read through the list of T&C, and register
-          yourself for the fest by clicking the button below.
+          Before you enter the portal, read through the list of T&C, and
+          register yourself for the fest by clicking the button below.
         </h5>
         <div className="mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
           <h2 className="text-base font-semibold md:text-2xl">
@@ -66,12 +66,10 @@ const Register: NextPage = () => {
             </Link>{" "}
             about the guidelines and regulations
           </div>
-          <Button disabled className="disabled mb-4 mt-8 flex gap-2">
-            Register Now
-          </Button>
-          <h2 className="mt-2 text-xs text-gray-100 md:text-sm">
+          <Button className="mb-4 mt-8 flex gap-2">Register Now</Button>
+          {/* <h2 className="mt-2 text-xs text-gray-100 md:text-sm">
             Registration are closed.
-          </h2>
+          </h2> */}
           <h1 className="mt-2 text-xs text-gray-100 md:text-sm">
             By clicking the above button, you agree to the mentioned terms and
             conditions

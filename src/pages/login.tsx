@@ -2,12 +2,15 @@ import { type NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import Loader from "~/components/loader";
 
 import LoginCard from "~/components/login/card";
 import EasterBomb from "~/components/login/easterBomb";
 import FallingItem from "~/components/login/fallingItem";
 import LoginPortal from "~/components/login/portal";
 import { env } from "~/env";
+import { Role } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 type CardStyle = {
   opacity: string;
@@ -37,6 +40,10 @@ const CARD_BOTTOM_STYLE = {
 };
 
 const SignIn: NextPage = () => {
+  const router = useRouter();
+
+  const { user, loading: userLoading } = useAuth();
+
   const {
     query,
   }: {
@@ -49,6 +56,9 @@ const SignIn: NextPage = () => {
   const [whichForm, setWhichForm] = useState<
     "signIn" | "resetPassword" | "signUp" | "resendEmail"
   >(query.whichForm ?? "signUp");
+
+  if (user && user.role !== Role.User) void router.push("/profile");
+  else if (user) void router.push("/register");
 
   const [radius1, setRadius1] = useState<number>(0); // Small gear radius
   const [radius2, setRadius2] = useState<string>("0"); // Large gear radius
@@ -192,86 +202,92 @@ const SignIn: NextPage = () => {
 
   return (
     <>
-      <div className="h-16"></div>
-      <Image
-        fill={true}
-        className="object-cover blur-[3px]"
-        src={`/assets/jpeg/bg-login.jpeg`}
-        alt={"loginBG"}
-        quality={100}
-        priority
-      />
+      {userLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="h-16"></div>
+          <Image
+            fill={true}
+            className="object-cover blur-[3px]"
+            src={`/assets/jpeg/bg-login.jpeg`}
+            alt={"loginBG"}
+            quality={100}
+            priority
+          />
 
-      <div
-        className={`relative flex min-h-[73vh] h-screen flex-col justify-between [perspective:500px] [transform-style:preserve-3d] overflow-hidden`}
-      >
-        {/* <LoginPortal isTop={true} /> */}
+          <div
+            className={`relative flex min-h-[73vh] h-screen flex-col justify-between [perspective:500px] [transform-style:preserve-3d] overflow-hidden`}
+          >
+            {/* <LoginPortal isTop={true} /> */}
 
-        {/* TODO: Change the time delay here according to time delay set for free-fall animation in tailwind.config.js */}
-        {/* 
+            {/* TODO: Change the time delay here according to time delay set for free-fall animation in tailwind.config.js */}
+            {/* 
         <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
           <EasterBomb />
         </div> */}
 
-        <div className="relative w-[500vw] h-[160vh] flex items-center justify-center self-center">
-          {/* <div className="absolute w-[130vw] h-[130vh] bg-[url('http://localhost:3000/assets/svg/geardone2.svg')] bg-cover bg-center top-full -translate-y-1/2"></div> */}
-          <div
-            style={{
-              width: radius1,
-              height: radius1,
-              left: "42%",
-              bottom: bottom1,
-              rotate: "18deg",
-              transform: `rotate(${rotationAngle1}deg)`,
-              transition: "transform 2s ease-in-out",
-              scale: scale1,
-            }}
-            className="absolute scale-150 translate-y-1/2"
-          >
-            <div className="relative size-full">
-              <Image src="/assets/png/gear.webp" alt="" fill priority />
-            </div>
-          </div>
-          <div
-            style={{
-              top: "18%",
-              width: radius2,
-              height: radius2,
-              transform: `rotate(${rotationAngle2}deg)`,
-              transition: "transform 2s ease-in-out",
-            }}
-            className="fixed translate-y-1/2 h-full scale-[1.85]"
-          >
-            <div className="absolute size-full">
-              <Image src="/assets/png/gear.webp" alt="" priority fill />
-            </div>
-            <div className="size-full relative">
-              <LoginCard
-                whichForm="signIn"
-                cardStyle={cardStyle.signIn}
-                setWhichForm={changeCard}
-                redirectUrl={query.redirectUrl}
-              />
+            <div className="relative w-[500vw] h-[160vh] flex items-center justify-center self-center">
+              {/* <div className="absolute w-[130vw] h-[130vh] bg-[url('http://localhost:3000/assets/svg/geardone2.svg')] bg-cover bg-center top-full -translate-y-1/2"></div> */}
+              <div
+                style={{
+                  width: radius1,
+                  height: radius1,
+                  left: "42%",
+                  bottom: bottom1,
+                  rotate: "18deg",
+                  transform: `rotate(${rotationAngle1}deg)`,
+                  transition: "transform 2s ease-in-out",
+                  scale: scale1,
+                }}
+                className="absolute scale-150 translate-y-1/2"
+              >
+                <div className="relative size-full">
+                  <Image src="/2025/login/gear.webp" alt="" fill priority />
+                </div>
+              </div>
+              <div
+                style={{
+                  top: "18%",
+                  width: radius2,
+                  height: radius2,
+                  transform: `rotate(${rotationAngle2}deg)`,
+                  transition: "transform 2s ease-in-out",
+                }}
+                className="fixed translate-y-1/2 h-full scale-[1.85]"
+              >
+                <div className="absolute size-full">
+                  <Image src="/2025/login/gear.webp" alt="" priority fill />
+                </div>
+                <div className="size-full relative">
+                  <LoginCard
+                    whichForm="signIn"
+                    cardStyle={cardStyle.signIn}
+                    setWhichForm={changeCard}
+                    redirectUrl={query.redirectUrl}
+                  />
 
-              <LoginCard
-                whichForm="resetPassword"
-                cardStyle={cardStyle.resetPassword}
-                setWhichForm={changeCard}
-              />
-              <LoginCard
-                whichForm="signUp"
-                cardStyle={cardStyle.signUp}
-                setWhichForm={changeCard}
-              />
-              <LoginCard
-                whichForm="resendEmail"
-                cardStyle={cardStyle.resendEmail}
-                setWhichForm={changeCard}
-              />
+                  <LoginCard
+                    whichForm="resetPassword"
+                    cardStyle={cardStyle.resetPassword}
+                    setWhichForm={changeCard}
+                  />
+                  <LoginCard
+                    whichForm="signUp"
+                    cardStyle={cardStyle.signUp}
+                    setWhichForm={changeCard}
+                  />
+                  <LoginCard
+                    whichForm="resendEmail"
+                    cardStyle={cardStyle.resendEmail}
+                    setWhichForm={changeCard}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </>
   );
 };

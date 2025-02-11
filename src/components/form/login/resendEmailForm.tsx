@@ -62,9 +62,9 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
         </h2>
         {data?.sendEmailVerification.__typename ===
         "MutationSendEmailVerificationSuccess" ? (
-          <div className="flex flex-col items-center gap-2 rounded-md bg-secondary-300 p-4 pb-2 text-center font-semibold text-[#d7037f]">
+          <div className="flex flex-col items-center gap-2 rounded-md bg-primary-900/70 p-4 pb-2 text-center font-semibold text-secondary-600">
             <BiCheckCircle size={"2rem"} />
-            <div className="mb-5 flex flex-col items-center gap-3 rounded-md bg-secondary-300 text-center font-semibold">
+            <div className="mb-5 flex flex-col items-center gap-3 rounded-md text-center font-semibold">
               Verification email sent to {email}
               <br />
               Please check your inbox.
@@ -78,7 +78,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
                     e.preventDefault();
                     await handleSubmit();
                   }}
-                  className="text-sm font-normal text-secondary-800 underline transition-colors hover:font-medium"
+                  className="text-sm font-normal text-secondary-400 underline transition-colors hover:font-medium"
                 >
                   Click here to resend it
                 </button>
@@ -115,13 +115,17 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
 
             {loading && (
               <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg opacity-60">
-                <Spinner className="text-[#dd5c6e]" intent={"white"} />
+                <Spinner className="text-[#dd5c6e]" intent={"primary"} />
               </div>
             )}
           </>
         )}
 
-        <Button intent={"ghost"} onClick={() => setWhichForm("signIn")}>
+        <Button
+          intent={"ghost"}
+          onClick={() => setWhichForm("signIn")}
+          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
+        >
           <FaAngleLeft /> Go Back
         </Button>
       </form>
