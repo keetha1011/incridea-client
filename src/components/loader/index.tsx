@@ -43,24 +43,22 @@ const LoadingScreen = () => {
           <div className={styles.particlesContainer}></div>
         </div>
         <div ref={hourglassRef} className={styles.hourglass}>
-          <Image
+          <img
             src="/2025/loading/hourglass.png"
             width={150}
             height={150}
-            alt="Echoes of Eternity Logo"
-            priority
+            alt=""
           />
         </div>
         <div
           ref={logoRef}
-          className="absolute bottom-[24%] md:bottom-[20%] xl:bottom-[22%]"
+          className="absolute bottom-[22%] md:bottom-[20%] xl:-translate-1/2"
         >
-          <Image
+          <img
             src="/2025/loading/Echoes_of_Eternity_Logo.png"
             width={300}
             height={300}
             alt="Echoes of Eternity Logo"
-            priority
           />
         </div>
       </div>

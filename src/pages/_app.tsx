@@ -79,20 +79,22 @@ export default function App({
   const [isLoading, setIsLoading] = useState(false);
   const loadingTimeout = useRef<NodeJS.Timeout>();
 
-  const handleLoadingStart = useCallback(() => {
+  const handleLoadingStart = useCallback((url: string) => {
+    if (url === "/") return;
+
     // Clear any existing timeout
     if (loadingTimeout.current) {
       clearTimeout(loadingTimeout.current);
     }
 
-    // Only show loading screen if loading takes more than 300ms
+    // Show loading screen only if page takes more than 500ms to load
     loadingTimeout.current = setTimeout(() => {
       setIsLoading(true);
-    }, 300);
+    }, 500);
   }, []);
 
   const handleLoadingComplete = useCallback(() => {
-    // Clear the timeout to prevent showing loader after completion
+    // Clear timeout if page loads before timeout
     if (loadingTimeout.current) {
       clearTimeout(loadingTimeout.current);
     }
@@ -100,20 +102,18 @@ export default function App({
   }, []);
 
   useEffect(() => {
-    router.events.on("routeChangeStart", handleLoadingStart);
+    const onRouteChangeStart = (url: string) => handleLoadingStart(url);
+
+    router.events.on("routeChangeStart", onRouteChangeStart);
     router.events.on("routeChangeComplete", handleLoadingComplete);
     router.events.on("routeChangeError", handleLoadingComplete);
 
     return () => {
-      if (loadingTimeout.current) {
-        clearTimeout(loadingTimeout.current);
-      }
-      router.events.off("routeChangeStart", handleLoadingStart);
+      router.events.off("routeChangeStart", onRouteChangeStart);
       router.events.off("routeChangeComplete", handleLoadingComplete);
       router.events.off("routeChangeError", handleLoadingComplete);
     };
   }, [router, handleLoadingStart, handleLoadingComplete]);
-
   const shouldRenderNavbar =
     !router.pathname.startsWith("/explore") &&
     !router.pathname.startsWith("/theme");
