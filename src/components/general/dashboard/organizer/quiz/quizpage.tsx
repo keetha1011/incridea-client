@@ -260,7 +260,7 @@ const QuizPage = ({
   };
 
   return (
-    <div className="relative flex flex-col justify-between items-center text-white">
+    <div className="relative flex flex-col justify-between items-center text-white select-none">
       {isOpen &&
         imageRef.current &&
         createPortal(
