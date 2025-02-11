@@ -73,7 +73,7 @@ export default function App() {
   const [lightC, setLightC] = useState("#00FFFF");
   const [actLight, setActLight] = useState(false);
   const [isAudioOn, setIsAudioOn] = useState(false);
-  var video = lightC == "#00FFFF" ? 0 : 1;
+  const video = lightC == "#00FFFF" ? 0 : 1;
   const [audio] = useState(new Audio());
   const audioRef = useRef(audio);
   const [currentSong, setCurrentSong] = useState<string>("");
@@ -504,7 +504,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
         animationState.current.elapsed += delta;
         const t = Math.min(
           animationState.current.elapsed / keyframe.duration,
-          1
+          1,
         );
         camera.position.lerpVectors(startPos, keyframe.pos, t);
         camera.lookAt(keyframe.lookAt);
@@ -530,7 +530,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
         const targetPos = new THREE.Vector3(
           _camPosisiton[0]! + offsetX,
           _camPosisiton[1]! + offsetY,
-          _camPosisiton[2]
+          _camPosisiton[2],
         );
         camera.position.lerp(targetPos, 0.05);
         camera.lookAt(look);
@@ -542,7 +542,7 @@ function Rig({ _camPosisiton }: { _camPosisiton: number[] }) {
       camera.rotation.set(
         -(mouse.y * factor) - Math.PI / 32,
         -(mouse.x * factor),
-        0
+        0,
       );
     }
   });

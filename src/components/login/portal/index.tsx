@@ -19,8 +19,8 @@ const LoginPortal: FunctionComponent<LoginPortalProps> = ({ isTop }) => {
           fill={true}
           src={
             isTop
-              ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/loginPortalT.png`
-              : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/loginPortalB.png`
+              ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/loginPortalT.png`
+              : `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/loginPortalB.png`
           }
           alt={"portal"}
           className="pointer-events-none"

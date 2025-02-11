@@ -55,7 +55,7 @@ const About: FC = () => {
         <div className="mx-auto">
           <div className="relative w-fit text-center">
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/emblem.png`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/emblem.png`}
               width={300}
               height={300}
               className={
@@ -64,7 +64,7 @@ const About: FC = () => {
               alt="Incridea Emblem"
             />
             <Image
-              src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/ryoko.png`}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/ryoko.png`}
               width={300}
               height={300}
               className="absolute bottom-0 w-auto transform transition-all duration-500 group-hover:-translate-y-2 group-hover:scale-105"
@@ -80,8 +80,8 @@ const About: FC = () => {
             <a
               onClick={() =>
                 handleDownload(
-                  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/pdf/rulebook.pdf`,
-                  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/Rulebook.pdf`,
+                  `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/pdf/rulebook.pdf`,
+                  `${env.NEXT_PUBLIC_UPLOADTHING_URL}/Rulebook.pdf`,
                 )
               }
               className="text-md flex cursor-pointer items-center gap-2 rounded-bl-xl rounded-tr-xl bg-white/30 px-3 py-2 text-center font-semibold text-white transition duration-300 hover:bg-white/40 md:text-lg lg:text-xl"
@@ -92,7 +92,7 @@ const About: FC = () => {
               onClick={() =>
                 handleDownload(
                   "https://drive.google.com/file/d/1mglh-NsLE_AOjY969olQNppZcQyr5p4F/view?usp=sharing",
-                  `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/schedule.pdf`,
+                  `${env.NEXT_PUBLIC_UPLOADTHING_URL}/schedule.pdf`,
                 )
               }
               className="text-md flex cursor-pointer items-center gap-2 rounded-bl-xl rounded-tr-xl bg-white/30 px-3 py-2 text-center font-semibold text-white transition duration-300 hover:bg-white/40 md:text-lg lg:text-xl"

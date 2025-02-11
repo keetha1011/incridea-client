@@ -12,7 +12,7 @@ const AboutIncridea: FC = () => {
       <div className="relative h-96 w-full overflow-hidden">
         <motion.div style={{ y }} className="relative h-full w-full">
           <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/incrediaAbout.png`}
+            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/incrediaAbout.png`}
             alt="Incridea Banner"
             width={500}
             height={500}
@@ -29,7 +29,7 @@ const AboutIncridea: FC = () => {
 
       <div className="flex basis-1/2 flex-col items-center justify-center gap-10 p-5 lg:flex-row-reverse lg:gap-20 lg:p-10">
         <Image
-          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo-black.png`}
+          src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/logo-black.png`}
           alt="Incridea Logo"
           width={500}
           height={500}

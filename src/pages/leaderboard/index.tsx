@@ -207,12 +207,12 @@ const LeaderBoard: NextPage = () => {
                   <Image
                     src={
                       i === 0
-                        ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level3.png`
+                        ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level3.png`
                         : i === 1
-                          ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level2.png`
+                          ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level2.png`
                           : i === 2
-                            ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level1.png`
-                            : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level4.png`
+                            ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level1.png`
+                            : `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level4.png`
                     }
                     width={isMobile ? 20 : 50}
                     height={isMobile ? 20 : 50}
