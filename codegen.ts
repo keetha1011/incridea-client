@@ -23,9 +23,6 @@ const config: CodegenConfig = {
       DateTime: "Date",
     },
   },
-  hooks: {
-    afterAllFileWrite: ["prettier --write"],
-  },
 };
 
 export default config;

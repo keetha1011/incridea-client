@@ -7,13 +7,13 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { MdVolumeOff, MdVolumeUp } from "react-icons/md";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 
 import styles from "./audioPlayer.module.css";
 import { cn } from "~/lib/utils";
+import { Volume, Volume3 } from "~/components/explore_2025/UI";
 
 type AudioPlayerProps = {
   mainTheme: string;
@@ -100,10 +100,10 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({
         className={styles["audio-player-button"]}
       >
         {isMuted && (
-          <MdVolumeOff className="h-10 w-10 transition-colors duration-150" />
+          <Volume3 className="h-10 w-10 mx-4 transition-colors duration-150 scale-[150%]" />
         )}
         {!isMuted && (
-          <MdVolumeUp className="h-10 w-10 transition-colors duration-150" />
+          <Volume className="h-10 w-10 mx-4 transition-colors duration-150 scale-[150%]" />
         )}
       </button>
       <div className={cn(styles["audio-player-volume"], "hidden")}>

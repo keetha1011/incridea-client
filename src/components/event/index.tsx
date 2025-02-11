@@ -73,7 +73,7 @@ const Event = ({
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 145.68 242.61"
+        viewBox="0 0 145.68 254"
         className="w-full h-full object-cover rounded-2xl"
         style={{ transform: "scale(1)" }}
       >
@@ -81,6 +81,7 @@ const Event = ({
           <style>{`
                 .b {
                   fill: url(#gradient1);
+                  backdrop-filter: blur(var(--blur-3xl));
                 }
                 .e {
                   fill:url(#gradient2);
@@ -89,9 +90,15 @@ const Event = ({
         </defs>
         <defs>
           <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: "rgba(0,130,63, 1)" }} />
-            <stop offset="50%" style={{ stopColor: "rgba(0,51,31, 0.5)" }} />
-            <stop offset="100%" style={{ stopColor: "rgba(0,130,63, 1)" }} />
+            {/* <stop offset="0%" style={{ stopColor: "#006d44" }} />
+            <stop offset="100%" style={{ stopColor: "#006d44" }} /> */}
+            <stop offset="0%" style={{ stopColor: "#006d38" }} />
+            <stop offset="50%" style={{ stopColor: "#006d44" }} />
+            <stop offset="100%" style={{ stopColor: "#006d38" }} />
+            {/* <stop offset="25%" style={{ stopColor: "rgba(5,68,50,0.5)" }} />
+            <stop offset="50%" style={{ stopColor: "rgba(5,68,50,0.1)" }} />
+            <stop offset="75%" style={{ stopColor: "rgba(5,68,50,0.5)" }} />
+            <stop offset="100%" style={{ stopColor: "#000000" }} /> */}
           </linearGradient>
         </defs>
 
@@ -101,10 +108,10 @@ const Event = ({
         />
         <path
           className="b"
-          d="M145.68,228.35h-.01s.01,1.31.01,1.31v3.19l-9.8,9.76H13.1l-.04-.04-.28-.28.29.32h-3.3l-9.77-9.76v-3.14h.05l-.05-.05v-74.55l13.07-13.07v-53L0,77.65V16.23l6.11-6.27L15.8,0h39.14l10.01,9.96h66.46l6.22,6.27,4.07,4.07c.11.11.22.22.3.34l.16.17,3.52,3.53v204.01Z"
+          d="M145.68 236.24H145.67L145.68 237.55V240.74L135.88 253.5H13.1L12.78 253.18L13.07 253.5H9.77L0 240.74V237.6H0.05L0 237.55V155.11L13.07 142.04V89.04L0 77.65V16.23L15.8 0H54.94L64.95 9.96H131.41L137.63 16.23L141.7 20.3C141.81 20.41 141.92 20.52 142 20.64L142.16 20.81L145.68 24.34V236.24Z"
           fill="black"
           stroke="rgba(153,255,216,0.8)"
-          stroke-width="0.5"
+          stroke-width="0.6"
         />
         <polygon
           className="b"
@@ -113,7 +120,7 @@ const Event = ({
 
         <foreignObject x="0" y="86" width="17" height="60">
           <div className="flex items-center justify-center w-full h-full">
-            <span className="text-white italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-2 shadow-2xl rounded-xl">
+            <span className="text-white italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-8 shadow-2xl rounded-xl">
               {data.category?.toLowerCase() === "non_technical"
                 ? "Non Tech"
                 : data.category?.toLocaleLowerCase()}
@@ -136,12 +143,12 @@ const Event = ({
               src={data.image}
               alt={data.name}
               layout="fill"
-              className="object-cover rounded-tr-2xl [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
+              className="object-cover [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
             />
           )}
         </foreignObject>
 
-        <foreignObject x="-2" y="140" width="150" height="108">
+        <foreignObject x="-2" y="140" width="150" height="120">
           <div className="text-white flex flex-col w-full items-center justify-center">
             <h2 className="text-base ml-2 font-life-craft my-1 text-center italic text-white">
               {data.name}
@@ -150,15 +157,13 @@ const Event = ({
               {getEventAttributes().map((attr, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px] bg-gradient-to-tr bg-opacity-50 from-primary-700 via-primary-900/5 to-primary-700 border border-primary-200/80 text-white font-medium shadow-md"
+                  className="flex items-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px] 
+                           bg-gradient-to-tr bg-opacity-50 from-primary-900 via-primary-800/80 to-primary-900 
+                           border border-primary-300/50 text-white font-medium shadow-md"
                 >
-                  <attr.Icon
-                    width="7"
-                    height="7"
-                    className="flex items-center"
-                  />
+                  <attr.Icon width="7" height="7" className="flex-shrink-0" />
                   <span
-                    className="flex items-center leading-[0.7rem] h-full w-full"
+                    className="leading-none flex items-center mt-0.5"
                     suppressHydrationWarning
                   >
                     {attr.text}
@@ -168,14 +173,14 @@ const Event = ({
             </div>
             <a
               href={generateEventUrl(data.name, data.id)}
-              className="mt-[3.5px]"
+              className="mt-[10px]"
             >
               <g>
                 <div
-                  className="h-5 w-[146px] bg-white/90 flex justify-center items-center relative"
+                  className="h-5 w-[136px] bg-white/90 flex justify-center items-center relative"
                   style={{
                     clipPath:
-                      "polygon(0% 54%, 6% 0%, 94% 0%, 100% 54%, 94% 100%, 6% 100%)",
+                      "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
                     // boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.8)", // Simulates a border
                   }}
                 >

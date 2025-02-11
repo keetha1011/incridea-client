@@ -1,9 +1,15 @@
 import { SPONSORS } from "~/constants/sponsors";
 
 const CONSTANT = {
+  REGISTRATIONS_OPEN: true,
   BASE_URL: "https://incridea.in" as const,
-  PID_FORMAT: "INC24-" as const,
+  PID_FORMAT: "INC25-" as const,
   YEAR: 2025 as const,
+  REG_AMOUNT_IN_INR: {
+    INTERNAL: 350,
+    EXTERNAL: 450,
+    OTHER: 1000000000,
+  },
   URL: {
     VIDEO: {
       THEME_REVEAL:
@@ -13,16 +19,16 @@ const CONSTANT = {
   // TODO(Omkar): Needs updates
   DATE: {
     ROUND: {
-      DEAFULT_START: new Date(2024, 1, 22, 9, 30),
+      DEAFULT_START: new Date(2025, 2, 27, 9, 30),
     },
     ACCOMODATION: {
-      CHECK_IN_TIME: new Date(2024, 2, 22, 9, 30),
-      CHECK_OUT_TIME: new Date(2024, 2, 24, 22, 30),
+      CHECK_IN_TIME: new Date(2025, 2, 27, 9, 30),
+      CHECK_OUT_TIME: new Date(2025, 3, 1, 22, 30),
     },
     INCRIDEA: {
-      DAY1: new Date("2024-02-22T09:00:00"),
-      DAY2: new Date("2024-02-23T09:00:00"),
-      DAY3: new Date("2024-02-24T09:00:00"),
+      DAY1: new Date("2025-02-27T09:00:00"),
+      DAY2: new Date("2025-02-28T09:00:00"),
+      DAY3: new Date("2025-03-01T09:00:00"),
     },
   },
   PID: {

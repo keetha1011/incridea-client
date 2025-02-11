@@ -142,7 +142,7 @@ const ResetPassword: FunctionComponent = () => {
 
               {loading && (
                 <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg opacity-60">
-                  <Spinner className="text-[#dd5c6e]" intent={"white"} />
+                  <Spinner className="text-[#dd5c6e]" intent={"primary"} />
                 </div>
               )}
 
