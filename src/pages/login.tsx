@@ -210,7 +210,7 @@ const SignIn: NextPage = () => {
           <Image
             fill={true}
             className="object-cover blur-[3px]"
-            src={`/assets/jpeg/bg-login.jpeg`}
+            src={`/2025/login/bg-login.jpeg`}
             alt={"loginBG"}
             quality={100}
             priority
@@ -222,7 +222,7 @@ const SignIn: NextPage = () => {
             {/* <LoginPortal isTop={true} /> */}
 
             {/* TODO: Change the time delay here according to time delay set for free-fall animation in tailwind.config.js */}
-            {/* 
+            {/*
         <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
           <EasterBomb />
         </div> */}

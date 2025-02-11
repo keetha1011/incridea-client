@@ -462,7 +462,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               <button
                 type="button"
                 onClick={resendEmail}
-                className="text-sm font-normal text-secondary-800 underline transition-colors hover:font-medium"
+                className="text-sm font-normal text-secondary-400 underline transition-colors hover:font-medium"
               >
                 Click here to resend it
               </button>
