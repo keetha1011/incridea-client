@@ -45,7 +45,7 @@ const EventsPeek: FC<{
             <div className="flex items-start justify-center gap-5" key={idx}>
               <Image
                 src={
-                  env.NEXT_PUBLIC_BASE_IMAGE_URL +
+                  env.NEXT_PUBLIC_UPLOADTHING_URL +
                   "/assets/Core_Event_Posters/" +
                   i
                 }
@@ -77,7 +77,7 @@ const EventsPeek: FC<{
                 <li className="w-[250px] px-1 py-2" key={idx}>
                   <Image
                     src={
-                      env.NEXT_PUBLIC_BASE_IMAGE_URL +
+                      env.NEXT_PUBLIC_UPLOADTHING_URL +
                       "/assets/Core_Event_Posters/" +
                       i
                     }
@@ -108,7 +108,7 @@ const EventsPeek: FC<{
                 <li className="w-[250px] px-1 py-2" key={idx}>
                   <Image
                     src={
-                      env.NEXT_PUBLIC_BASE_IMAGE_URL +
+                      env.NEXT_PUBLIC_UPLOADTHING_URL +
                       "/assets/Core_Event_Posters/" +
                       i
                     }

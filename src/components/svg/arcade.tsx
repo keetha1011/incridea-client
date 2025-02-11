@@ -20,7 +20,7 @@ function Arcade() {
           height={482}
           width={256}
           className="h-full w-full rounded-lg"
-          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/gif/nosignal.gif`}
+          src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/gif/nosignal.gif`}
           alt="no signal"
           priority
         />

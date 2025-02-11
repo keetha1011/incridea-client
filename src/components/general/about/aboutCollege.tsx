@@ -12,7 +12,7 @@ const AboutCollege: FC = () => {
       <div className="relative h-96 w-full overflow-hidden">
         <motion.div style={{ y }} className="relative h-full w-full">
           <Image
-            src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/collegeAbout.png`}
+            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/collegeAbout.png`}
             alt="college Banner"
             width={500}
             height={500}
@@ -29,7 +29,7 @@ const AboutCollege: FC = () => {
 
       <div className="my-5 flex basis-1/2 flex-col items-center justify-center gap-10 p-5 lg:flex-row lg:gap-20 lg:p-10">
         <Image
-          src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/nitteLogoWhite.png`}
+          src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/nitteLogoWhite.png`}
           alt="Incridea Logo"
           width={600}
           height={600}
