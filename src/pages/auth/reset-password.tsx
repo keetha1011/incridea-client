@@ -86,8 +86,8 @@ const Reset: NextPage = () => {
 
       <Image
         fill={true}
-        className="mt-16 object-cover"
-        src={`/2025/bg-login.jpeg`}
+        className="mt-16 object-cover blur-[3px]"
+        src={`/2025/login/bg-login.jpeg`}
         alt={"loginBG"}
         quality={100}
         priority
@@ -110,7 +110,7 @@ const Reset: NextPage = () => {
             }}
             className="absolute scale-150 translate-y-1/2"
           >
-            <img src="/2025/gear.webp" alt="" className="size-full" />
+            <img src="/2025/login/gear.webp" alt="" className="size-full" />
           </div>
           <div
             style={{
@@ -122,7 +122,11 @@ const Reset: NextPage = () => {
             }}
             className="fixed translate-y-1/2 h-full scale-[1.85]"
           >
-            <img src="/2025/gear.webp" alt="" className="absolute size-full" />
+            <img
+              src="/2025/login/gear.webp"
+              alt=""
+              className="absolute size-full"
+            />
 
             <div className="size-full relative">
               <ResetPassword />

@@ -1,6 +1,11 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import { type FormEventHandler, type FunctionComponent, useState } from "react";
+import {
+  type FormEventHandler,
+  type FunctionComponent,
+  use,
+  useState,
+} from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiErrorCircle } from "react-icons/bi";
 
@@ -60,7 +65,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           setGotDialogBox(false);
           setUserInfo({ email: "", password: "" });
           await router.push(
-            redirectUrl ? decodeURIComponent(redirectUrl) : "/profile",
+            redirectUrl ? decodeURIComponent(redirectUrl) : "/register", // changed from profile
           );
         }
       })
@@ -128,7 +133,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
 
         {loading && (
           <div className="absolute inset-0 z-10 h-full w-full cursor-not-allowed rounded-lg">
-            <Spinner className="text-[#dd5c6e]" intent={"white"} />
+            <Spinner className="text-[#dd5c6e]" intent={"primary"} />
           </div>
         )}
 
@@ -152,7 +157,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
 
         <div className="relative mt-3 flex flex-col text-center md:mt-2">
           <hr className="my-3 border-accent-50" />
-          <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-[#1f2e97] px-3 py-[1px] text-sm text-accent-50">
+          <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-secondary-800 px-3 py-[1px] text-sm text-accent-50">
             New here?
           </h4>
           <Button
@@ -162,6 +167,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
             type="button"
             intent={"ghost"}
             className="mx-1 mt-5"
+            style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
           >
             Sign up instead
           </Button>

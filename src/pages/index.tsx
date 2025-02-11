@@ -83,9 +83,8 @@ export const HomeFooter = () => {
             className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-green-900"
             href="/team"
           >
-            Made with{" "}
-            <BsFillSuitHeartFill className="mx-2 fill-red-700 shadow-2xl shadow-[rgba(255, 215, 0, 1)]" />{" "}
-            by Technical Team
+            Made with &nbsp;<span className="text-red-600">❤</span>&nbsp; by
+            Technical Team
           </Link>
           © Incridea 2025
         </p>

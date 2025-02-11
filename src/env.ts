@@ -28,7 +28,6 @@ export const env = createEnv({
     // This is a shared secret between the server and the client.
     // It's used to introspect graphql schema.
     SCHEMA_TOKEN: z.string(),
-    RAZORPAY_KEY: z.string(),
   },
 
   /**
@@ -48,6 +47,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SERVER_HTTP_URL: z.string().url(),
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL: z.string().url(),
     NEXT_PUBLIC_UPLOADTHING_URL: z.string().url(),
+    NEXT_PUBLIC_RAZORPAY_KEY: z.string(),
   },
 
   /**
@@ -59,7 +59,7 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     SCHEMA_TOKEN: process.env.SCHEMA_TOKEN,
-    RAZORPAY_KEY: process.env.RAZORPAY_KEY,
+    NEXT_PUBLIC_RAZORPAY_KEY: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_LOGGING_DISABLED: process.env.NEXT_PUBLIC_LOGGING_DISABLED,
     NEXT_PUBLIC_SERVER_HTTP_URL: process.env.NEXT_PUBLIC_SERVER_HTTP_URL,
