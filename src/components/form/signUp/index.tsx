@@ -225,7 +225,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         loading && "pointer-events-none cursor-not-allowed"
       }`}
     >
-      <p className="mb-2 text-center text-2xl font-semibold">Welcome Player</p>
+      <p className="mb-2 text-center text-2xl font-semibold">
+        Welcome Time Traveler
+      </p>
 
       {!emailSuccess && (
         <>
@@ -280,7 +282,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                       <Spinner
                         className="text-[#dd5c6e]"
                         size={"small"}
-                        intent={"white"}
+                        intent={"primary"}
                       />
                     </div>
                   ) : filteredColleges?.length === 0 && query !== "" ? (
@@ -446,7 +448,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       )}
 
       {emailSuccess && (
-        <div className="flex flex-col items-center gap-3 rounded-md bg-secondary-300 p-4 text-center font-semibold text-[#d7037f]">
+        <div className="flex flex-col items-center gap-3 rounded-md bg-primary-900/70 p-4 text-center font-semibold text-secondary-600">
           <div>
             Verification email sent to {userInfo.email}
             {selectedCollege?.name === "N.M.A.M. Institute of Technology" &&
@@ -460,7 +462,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               <button
                 type="button"
                 onClick={resendEmail}
-                className="text-sm font-normal text-secondary-800 underline transition-colors hover:font-medium"
+                className="text-sm font-normal text-secondary-400 underline transition-colors hover:font-medium"
               >
                 Click here to resend it
               </button>
@@ -471,7 +473,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
       <div className="relative mt-2 flex flex-col text-center">
         <hr className="my-3 border-accent-50" />
-        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-[#1f2e97] px-3 text-sm text-accent-50 md:px-2">
+        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-secondary-800 px-3 text-sm text-accent-50 md:px-2">
           Already have an account?
         </h4>
         <Button
@@ -481,6 +483,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           }}
           type="button"
           className="mt-4"
+          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
         >
           Sign in instead
         </Button>
@@ -488,7 +491,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
       {(loading || emailVerificationLoading) && (
         <div className="absolute inset-0 z-10 flex h-full w-full cursor-not-allowed flex-col items-center justify-center gap-4 rounded-lg opacity-60">
-          <Spinner className="my-0 h-fit text-[#dd5c6e]" intent={"white"} />
+          <Spinner className="my-0 h-fit text-[#dd5c6e]" intent={"primary"} />
           {emailVerificationLoading && (
             <p className="font-semibold">Sending Verification Email</p>
           )}

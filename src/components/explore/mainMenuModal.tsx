@@ -31,7 +31,7 @@ const MainMenuModal: React.FunctionComponent<Props> = ({
   return (
     <div
       style={{ display: showModal ? "initial" : "none" }}
-      className="fixed inset-0 z-[9999] h-screen w-screen backdrop-blur-sm"
+      className="fixed inset-0 z-[9999] h-screen w-screen backdrop-grayscale backdrop-brightness-50"
     >
       <div className="relative h-full w-full">
         <div className="absolute left-2/4 top-2/4 z-[9999] h-[85%] w-[85%] -translate-x-2/4 -translate-y-2/4 overflow-clip rounded-xl bg-blue-400">
@@ -141,8 +141,6 @@ const HomeUi: React.FunctionComponent = () => {
           </div>
         </div>
 
-        {/* Floating Objects */}
-
         {[1, 2, 3, 4, 5, 6, 7].map((item, idx) => (
           <div
             data-depth="0.6"
@@ -168,7 +166,7 @@ const HomeUi: React.FunctionComponent = () => {
         ))}
         <div
           data-depth="0.1"
-          className="absolute flex h-screen w-screen items-center justify-center z-20"
+          className="absolute flex h-screen w-screen items-center justify-center z-20 backdrop-blur-sm backdrop-saturate-150 backdrop-brightness-50"
         >
           <div className="mx-auto w-screen h-screen p-5 relative">
             <Image
@@ -212,7 +210,7 @@ const Menu: React.FunctionComponent<{
   const { user, loading } = useAuth();
 
   return (
-    <div className="absolute bottom-0 left-0 flex h-full w-full flex-col items-center justify-center overflow-x-hidden">
+    <div className="absolute bottom-0 left-0 flex h-full w-full flex-col items-center justify-center overflow-x-hidden select-none">
       <div className="absolute bottom-10 my-24 hidden w-fit flex-col items-center gap-3 sm:flex-row md:gap-10 lg:flex">
         <Button
           className="h-fit w-40 px-4 sm:px-12"

@@ -47,14 +47,16 @@ const songs = [
   "https://res.cloudinary.com/dliarni5j/video/upload/v1739121952/Chaar_Kadam_vsre4a.mp3",
   "https://res.cloudinary.com/dliarni5j/video/upload/v1739121950/Musu_Musu_uqvaqg.mp3",
   "https://res.cloudinary.com/dliarni5j/video/upload/v1739121945/Deevangi_lfwynw.mp3",
-  "https://samplelib.com/lib/preview/mp3/sample-12s.mp3",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739127684/kantaa_wofgg1.mp3",
+  "https://res.cloudinary.com/dliarni5j/video/upload/v1739127684/Adiyelo_hr9sno.mp3",
 ];
 
 const songname = [
   "Chaar Kadam - Shreya Ghoshal, Shaan",
-  "Musu Musu -  Shaan",
-  "Deewangi Deewangi -   Shaan, Sunidhi Chauhan, Shreya Ghoshal, Udit Narayan",
-  "Sample",
+  "Musu Musu - Shaan",
+  "Deewangi Deewangi - Shaan, Sunidhi Chauhan, Shreya Ghoshal, Udit Narayan",
+  "Kaantha - Sooraj Santhosh, Masala Coffee, Varun Sunil",
+  "Aadiyilalo - Masala Coffee",
 ];
 
 useGLTF.preload("/2025/pronites/singer.glb");
@@ -75,6 +77,9 @@ export default function App() {
   const [audio] = useState(new Audio());
   const audioRef = useRef(audio);
   const [currentSong, setCurrentSong] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [showWarning, setShowWarning] = useState(true);
+  const [showInfo, setShowInfo] = useState(false);
 
   useEffect(() => {
     if (lightRef.current && targetRef.current) {
@@ -82,6 +87,22 @@ export default function App() {
 
       lightRef.current.target.updateMatrixWorld();
     }
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 seconds minimum loading time
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowWarning(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
 
   const [activeGradient, setActiveGradient] = useState<"blue" | "red">("blue");
@@ -108,21 +129,27 @@ export default function App() {
 
   const [camPos, setCamPos] = useState([0, 12, 30]);
 
-  const handleCloseToggle = () => {
-    setCamPos([10, 5, 10]);
+  const cycleCameraPosition = () => {
+    if (camPos[0] === 0 && camPos[1] === 12 && camPos[2] === 30) {
+      // From Center to Close
+      setCamPos([10, 5, 10]);
+    } else if (camPos[0] === 10 && camPos[1] === 5 && camPos[2] === 10) {
+      // From Close to Far
+      setCamPos([-30, 12, 40]);
+    } else {
+      // From Far to Center
+      setCamPos([0, 12, 30]);
+    }
   };
 
-  const handleCenterToggle = () => {
-    setCamPos([0, 12, 30]);
-  };
-
-  const handleFarToggle = () => {
-    setCamPos([-30, 12, 40]);
+  const handleInfoToggle = () => {
+    setShowInfo(!showInfo);
   };
 
   console.log(videos[video]);
 
-  const getRandomShaanSong = () => Math.floor(Math.random() * 3); // Returns 0, 1, or 2
+  const getRandomShaanSong = () => Math.floor(Math.random() * 3);
+  const getRandomMasalaSong = () => Math.floor(3 + Math.random() * 2);
 
   // Update audio when artist changes or audio toggle changes
   useEffect(() => {
@@ -131,7 +158,8 @@ export default function App() {
     if (isAudioOn) {
       // For Shaan (blue/cyan color), pick random song from first 3
       // For Masala Coffee (red color), use the last song
-      const songIndex = lightC === "#00FFFF" ? getRandomShaanSong() : 3;
+      const songIndex =
+        lightC === "#00FFFF" ? getRandomShaanSong() : getRandomMasalaSong();
       currentAudio.src = songs[songIndex];
       currentAudio.loop = true;
       setCurrentSong(songname[songIndex]);
@@ -150,209 +178,284 @@ export default function App() {
     };
   }, [video, isAudioOn, lightC]);
 
+  const handleSongChange = () => {
+    if (!isAudioOn) return; // Don't change songs if audio is muted
+
+    const songIndex =
+      lightC === "#00FFFF" ? getRandomShaanSong() : getRandomMasalaSong();
+
+    const currentAudio = audioRef.current;
+    currentAudio.src = songs[songIndex];
+    currentAudio
+      .play()
+      .catch((err) => console.log("Audio playback failed:", err));
+    setCurrentSong(songname[songIndex]);
+  };
+
   return (
     <div>
-      <div className="fixed top-20 w-full z-50 gap-2 flex justify-between p-4 ">
-        <button
-          onClick={handleAudioToggle}
-          className={`px-2 py-2 rounded-sm font-medium text-sm shadow-lg transition-all duration-300 hover:scale-105 lg:text-2xl lg:px-5
-          ${
-            isAudioOn
-              ? "bg-gradient-to-r from-pink-300 to-pink-200 text-white"
-              : "backdrop-blur-sm bg-transparent text-gray-100 border border-gray-100"
-          }`}
-        >
-          {isAudioOn ? "🔊" : "🔈"}
-        </button>
-        <button
-          onClick={handleCloseToggle}
-          className={`px-2 grow py-2 lg:hidden rounded-sm font-medium text-sm shadow-lg transition-all duration-300 hover:scale-105
-          ${
-            camPos[0] === 10 && camPos[1] === 5 && camPos[2] === 10
-              ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
-              : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
-          Close
-        </button>
-        <button
-          onClick={handleCenterToggle}
-          className={`px-2 py-2 grow lg:hidden rounded-sm font-medium text-sm shadow-lg transition-all duration-300 hover:scale-105
-          ${
-            camPos[0] === 0 && camPos[1] === 12 && camPos[2] === 30
-              ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
-              : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
-          Center
-        </button>
-        <button
-          onClick={handleFarToggle}
-          className={`px-2 py-2 grow lg:hidden rounded-sm font-medium text-sm shadow-lg transition-all duration-300 hover:scale-105
-          ${
-            camPos[0] === -30 && camPos[1] === 12 && camPos[2] === 40
-              ? "bg-gradient-to-r from-emerald-900 to-emerald-500 text-white"
-              : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
-          Far
-        </button>
+      {showWarning && (
+        <div className="fixed top-12 left-1/2 -translate-x-1/2 z-[60] bg-black px-4 py-2 rounded-lg border border-yellow-500/50 text-yellow-500 text-sm md:text-base">
+          Extra Light effects (💡) may affect performance on some devices
+        </div>
+      )}
 
-        <button
-          onClick={handleLightsToggle}
-          className={`px-2 py-2 rounded-sm font-medium text-sm shadow-lg transition-all duration-300 hover:scale-105 lg:text-2xl lg:px-5
-          ${
-            actLight
-              ? "bg-gradient-to-r from-yellow-400 to-yellow-100 text-white"
-              : "bg-transparent backdrop-blur-sm text-gray-100 border border-gray-100"
-          }`}
-        >
-          💡
-        </button>
-      </div>
-      <div className="fixed items-centerflex-col z-50 bottom-8 w-full p-4 lg:hidden">
-        <div className="flex justify-end gap-2 items-end">
-          <div
-            onClick={handleBlueClick}
-            className={`items-start bg-gradient-to-t from-cyan-400 from-0% via-teal-500/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
-              activeGradient === "blue" ? "w-[75%] pr-28" : "w-[25%] pr-4"
-            }`}
-          >
-            <Image
-              width={400}
-              height={100}
-              src="/2025/Pronites/shaan.webp"
-              alt="Description"
-            />
-          </div>
-          <div
-            onClick={handleRedClick}
-            className={` bg-gradient-to-t  from-red-600 from-0% via-orange-700/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
-              activeGradient === "red" ? "w-[75%] pl-16" : "w-[25%] pl-0"
-            }`}
-          >
-            <Image
-              width={400}
-              height={100}
-              src="/2025/Pronites/masalacoffee.webp"
-              alt="Description"
-            />
+      {isLoading ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
+          <div className="text-center">
+            <div className="relative w-16 h-16 mx-auto mb-8">
+              <div className="absolute inset-0 border-8 border-t-cyan-400 border-r-cyan-400 border-b-red-500 border-l-red-500 rounded-full animate-spin"></div>
+            </div>
+            <div className="text-white text-lg font-medium">
+              Constructing Pronite Stage
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        className={`fixed pointer-events-none bottom-12 ml-4 w-[calc(75%-30px)] bg-gradient-to-t  from-teal-700 from-0% to-teal-400/0  to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex pl-2 text-white font-bold transition-all duration-300 lg:hidden ${activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"}`}
-      >
-        SINGER SHAAN
-      </div>
-      <div
-        className={`fixed pointer-events-none bottom-12 mr-4 w-[calc(75%-29px)] bg-gradient-to-t  from-red-700 from-0% to-red-400/0  to-100% rounded-l-sm rounded-b-none pb-1 pt-4  pr-2 pl-3 z-50 flex justify-end text-white font-bold transition-all duration-300 lg:hidden ${
-          activeGradient === "red" ? "text-xl" : "text-lg opacity-0"
-        }`}
-        style={{ right: "0px" }}
-      >
-        MASALA COFFEE
-      </div>
-      <div className="fixed bottom-2 left-0 w-full z-50 text-center">
-        <div className="px-4 py-2 bg-black/50 rounded-sm mx-4 text-white text-sm w-[calc(100%-32px)] truncate">
-          {isAudioOn && currentSong
-            ? `Now Playing: ${currentSong}`
-            : "Audio Muted"}
-        </div>
-      </div>
-      <div className="h-screen w-screen z-0 bg-gradient-to-t from-black to-[#080820]">
-        <Canvas
-          gl={{
-            antialias: false,
-            stencil: false,
-            pixelRatio: 1,
-            alpha: true,
-            premultipliedAlpha: false,
-            preserveDrawingBuffer: true,
-          }}
-          camera={{ position: [0, 10, 15], near: 5, far: 150 }}
-          style={{ background: "transparent" }}
-        >
-          <Stage src={videos[video]} />
+      ) : (
+        <>
+          <div className="fixed top-20 w-full z-50 gap-2 flex justify-between p-4 ">
+            <div>
+              <button
+                onClick={handleAudioToggle}
+                className={`px-2 py-2 rounded-full font-medium text-md shadow-lg transition-all duration-300 hover:scale-105 lg:text-2xl lg:px-5
+              ${
+                isAudioOn
+                  ? "bg-gradient-to-r from-pink-300 to-pink-200 text-white"
+                  : "bg-white/20 backdrop-blur-sm text-gray-100 "
+              }`}
+              >
+                {isAudioOn ? "🔊" : "🔈"}
+              </button>
 
-          {lightC == "#00FFFF" ? (
-            <Shaan scale={[4, 4, 4]} position={[-2, 0, 0]} />
-          ) : (
-            <MasalaModel />
-          )}
-
-          <ambientLight intensity={5} />
-          <Rig _camPosisiton={camPos} />
-
-          {actLight ? <SpotLights lightC={lightC} /> : null}
-
-          <pointLight position={[0, 5, -5]} intensity={500} color={lightC} />
-
-          <pointLight
-            position={[40, 20, 20]}
-            intensity={3000}
-            color={lightC.replace("F", "1").replace("0", "F")}
-          />
-          <pointLight
-            position={[-40, 20, 20]}
-            intensity={3000}
-            color={"#00FF00"}
-          />
-          {/* <pointLight position={[2, 5, 10]} intensity={500} color={"#FF0000"} />
-        <pointLight position={[-2, 5, 10]} intensity={500} color={"#00FFFF"} /> */}
-          <pointLight
-            position={[0, 20, 10]}
-            intensity={600}
-            color={"#FFFFFF"}
-          />
-          <pointLight
-            position={[0, 30, 20]}
-            intensity={2000}
-            color={"#0000FF"}
-          />
-          <object3D ref={targetRef} position={[0, 5, 0]} />
-
-          <mesh position={[0, 0, 100]} rotation={[Math.PI / 2, Math.PI, 0]}>
-            <planeGeometry args={[500, 240]} />
-
-            <MeshReflectorMaterial
-              blur={[200, 200]}
-              resolution={720}
-              mixBlur={0.9}
-              mixStrength={80}
-              roughness={0.9}
-              depthScale={1}
-              minDepthThreshold={0.4}
-              maxDepthThreshold={10}
-              color="#101010"
-              metalness={0.9}
-            />
-          </mesh>
-          <ImagePlane />
-          <mesh
-            position={[-33.9, 8.9, -14.8]}
-            rotation={[0, Math.PI + Math.PI / 12, 0]}
-            onClick={() => {
-              handleBlueClick();
-            }}
+              <button
+                onClick={handleLightsToggle}
+                className={`px-2 py-2 ml-4 rounded-full font-medium text-md shadow-lg transition-all duration-300 hover:scale-105 lg:text-2xl lg:px-5
+              ${
+                actLight
+                  ? "bg-gradient-to-r from-yellow-400 to-yellow-100 text-white"
+                  : "bg-white/20 backdrop-blur-sm text-gray-100 "
+              }`}
+              >
+                💡
+              </button>
+            </div>
+            <button
+              onClick={handleInfoToggle}
+              className="px-2 py-2 rounded-full font-medium text-md shadow-lg transition-all duration-300 hover:scale-105 lg:text-2xl lg:px-5 backdrop-blur-sm bg-white/20 text-gray-100"
+            >
+              ℹ️
+            </button>
+          </div>
+          <div className="fixed items-centerflex-col z-50 bottom-8 w-full p-4 lg:hidden">
+            <div className="flex justify-end gap-2 items-end">
+              <div
+                onClick={handleBlueClick}
+                className={`items-start bg-gradient-to-t from-cyan-400 from-0% via-teal-500/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
+                  activeGradient === "blue" ? "w-[75%] pr-28" : "w-[25%] pr-4"
+                }`}
+              >
+                <Image
+                  width={400}
+                  height={100}
+                  src="/2025/Pronites/shaan.webp"
+                  alt="Description"
+                />
+              </div>
+              <div
+                onClick={handleRedClick}
+                className={` bg-gradient-to-t  from-red-600 from-0% via-orange-700/40 via-30% to-transparent to-80% h-full rounded-md cursor-pointer transition-all duration-300 ${
+                  activeGradient === "red" ? "w-[75%] pl-16" : "w-[25%] pl-0"
+                }`}
+              >
+                <Image
+                  width={400}
+                  height={100}
+                  src="/2025/Pronites/masalacoffee.webp"
+                  alt="Description"
+                />
+              </div>
+            </div>
+          </div>
+          <div
+            className={`fixed pointer-events-none bottom-12 ml-4 pl-2 leading-none w-[calc(75%-30px)] bg-gradient-to-t from-teal-700 from-0% to-teal-400/0 to-100% rounded-r-sm rounded-b-none pb-1 pt-4 pr-3 z-50 flex flex-col text-white font-bold transition-all duration-300 lg:hidden ${
+              activeGradient === "blue" ? "text-xl" : "text-lg opacity-0"
+            }`}
           >
-            <planeGeometry args={[13.7, 5]} />
-
-            <Screen src={videos[0]} />
-          </mesh>
-          <mesh
-            position={[32.8, 8.9, -14.8]}
-            rotation={[0, Math.PI - Math.PI / 12, 0]}
-            onClick={() => {
-              handleRedClick();
-            }}
+            <div>SINGER SHAAN</div>
+            <div className="text-sm">MAR 1 @ 8PM</div>
+          </div>
+          <div
+            className={`fixed pointer-events-none bottom-12 mr-4 leading-none w-[calc(75%-29px)] bg-gradient-to-t from-red-700 from-0% to-red-400/0 to-100% rounded-l-sm rounded-b-none pb-1 pt-4 pr-2 pl-3 z-50 flex flex-col items-end text-white font-bold transition-all duration-300 lg:hidden ${
+              activeGradient === "red" ? "text-xl" : "text-lg opacity-0"
+            }`}
+            style={{ right: "0px" }}
           >
-            <planeGeometry args={[13.7, 5]} />
+            <div>MASALA COFFEE</div>
+            <div className="text-sm">FEB 28 @ 8PM</div>
+          </div>
+          <div className="fixed bottom-2 left-0 w-full z-50 text-center">
+            <div
+              onClick={handleSongChange}
+              className={`px-4 py-2 bg-black/50 rounded-sm mx-4 text-white text-sm w-[calc(100%-32px)] truncate cursor-pointer hover:bg-black/70 transition-colors duration-300 ${isAudioOn ? "hover:scale-[1.02]" : ""}`}
+            >
+              {isAudioOn && currentSong
+                ? `🎵 ${currentSong}`
+                : "🔇 Audio Muted"}
+            </div>
+          </div>
 
-            <Screen src={videos[1]} />
-          </mesh>
-        </Canvas>
-      </div>
+          <div
+            className="h-screen w-screen z-0 bg-gradient-to-t from-black to-[#080820]"
+            onClick={cycleCameraPosition}
+          >
+            {showInfo && (
+              <div className="fixed inset-0 z-[70] bg-black/70 backdrop-blur-md flex items-center justify-center p-6">
+                <div className="max-w-2xl w-full rounded-lg text-white">
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-2xl font-bold bg-gradient-to-b from-gray-100 to-gray-400 bg-clip-text text-transparent">
+                      Pronite Concert Rules
+                    </h2>
+                    <button
+                      onClick={handleInfoToggle}
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <div className="space-y-4 text-sm text-gray-300 max-h-[70vh] overflow-y-auto pr-4">
+                    <p>⚠️ Entry Rules:</p>
+                    <ul className="list-disc list-inside space-y-2 ml-4">
+                      <li>
+                        Valid PID scan required at pronite booth for admission
+                      </li>
+                      <li>
+                        Wristband must be worn for entry to BC Alva Hockey
+                        ground
+                      </li>
+                      <li>No food or water bottles allowed inside</li>
+                      <li>All bags will be inspected at entrance</li>
+                      <li>
+                        Prohibited items (will be confiscated):
+                        <ul className="list-disc list-inside ml-6 mt-1 text-gray-400">
+                          <li>Perfumes and makeup materials</li>
+                          <li>Intoxicating substances</li>
+                          <li>Flammable materials</li>
+                          <li>Sharp objects or weapons</li>
+                          <li>Food items of any kind</li>
+                        </ul>
+                      </li>
+                      <li className="text-red-400">
+                        Entry while intoxicated is strictly prohibited - may
+                        result in expulsion and registration cancellation
+                      </li>
+                      <li>
+                        Disruptive behavior will result in immediate removal
+                      </li>
+                      <li>Security and Team Incridea present for assistance</li>
+                      <li>All instructions from officials must be followed</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            )}
+            <Canvas
+              gl={{
+                antialias: false,
+                stencil: false,
+                pixelRatio: 1,
+                alpha: true,
+                premultipliedAlpha: false,
+                preserveDrawingBuffer: true,
+              }}
+              camera={{ position: [0, 10, 15], near: 5, far: 150 }}
+              style={{ background: "transparent" }}
+            >
+              <Stage src={videos[video]} />
+
+              {lightC == "#00FFFF" ? (
+                <Shaan scale={[4, 4, 4]} position={[-2, 0, 0]} />
+              ) : (
+                <MasalaModel />
+              )}
+
+              <ambientLight intensity={5} />
+              <Rig _camPosisiton={camPos} />
+
+              {actLight ? <SpotLights lightC={lightC} /> : null}
+
+              <pointLight
+                position={[0, 5, -5]}
+                intensity={500}
+                color={lightC}
+              />
+
+              <pointLight
+                position={[40, 20, 20]}
+                intensity={3000}
+                color={lightC.replace("F", "1").replace("0", "F")}
+              />
+              <pointLight
+                position={[-40, 20, 20]}
+                intensity={3000}
+                color={"#00FF00"}
+              />
+              {/* <pointLight position={[2, 5, 10]} intensity={500} color={"#FF0000"} />
+            <pointLight position={[-2, 5, 10]} intensity={500} color={"#00FFFF"} /> */}
+              <pointLight
+                position={[0, 20, 10]}
+                intensity={600}
+                color={"#FFFFFF"}
+              />
+              <pointLight
+                position={[0, 30, 20]}
+                intensity={2000}
+                color={"#0000FF"}
+              />
+              <object3D ref={targetRef} position={[0, 5, 0]} />
+
+              <mesh position={[0, 0, 100]} rotation={[Math.PI / 2, Math.PI, 0]}>
+                <planeGeometry args={[500, 240]} />
+
+                <MeshReflectorMaterial
+                  blur={[200, 200]}
+                  resolution={720}
+                  mixBlur={0.9}
+                  mixStrength={80}
+                  roughness={0.9}
+                  depthScale={1}
+                  minDepthThreshold={0.4}
+                  maxDepthThreshold={10}
+                  color="#101010"
+                  metalness={0.9}
+                />
+              </mesh>
+              <ImagePlane />
+              <mesh
+                position={[-33.9, 8.9, -14.8]}
+                rotation={[0, Math.PI + Math.PI / 12, 0]}
+                onClick={() => {
+                  handleBlueClick();
+                }}
+              >
+                <planeGeometry args={[13.7, 5]} />
+
+                <Screen src={videos[0]} />
+              </mesh>
+              <mesh
+                position={[32.8, 8.9, -14.8]}
+                rotation={[0, Math.PI - Math.PI / 12, 0]}
+                onClick={() => {
+                  handleRedClick();
+                }}
+              >
+                <planeGeometry args={[13.7, 5]} />
+
+                <Screen src={videos[1]} />
+              </mesh>
+            </Canvas>
+          </div>
+        </>
+      )}
     </div>
   );
 }

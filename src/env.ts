@@ -28,14 +28,13 @@ export const env = createEnv({
     // This is a shared secret between the server and the client.
     // It's used to introspect graphql schema.
     SCHEMA_TOKEN: z.string(),
-    RAZORPAY_KEY: z.string(),
   },
 
   /**
    * Specify your client-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars. To expose them to the client, prefix them with
    * `NEXT_PUBLIC_`.
-   */
+  */
   client: {
     NEXT_PUBLIC_NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -45,11 +44,10 @@ export const env = createEnv({
       .default(process.env.NODE_ENV === "production" ? "true" : "false")
       .refine((val) => val === "true" || val === "false")
       .transform((val) => val === "true"),
-    // TODO(Omkar): Rename
-    NEXT_PUBLIC_SERVER_URL: z.string().url(),
+    NEXT_PUBLIC_SERVER_HTTP_URL: z.string().url(),
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL: z.string().url(),
-    NEXT_PUBLIC_BASE_IMAGE_URL: z.string().url(),
-    NEXT_PUBLIC_BASE_AUDIO_URL: z.string().url(),
+    NEXT_PUBLIC_UPLOADTHING_URL: z.string().url(),
+    NEXT_PUBLIC_RAZORPAY_KEY: z.string(),
   },
 
   /**
@@ -61,14 +59,13 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     SCHEMA_TOKEN: process.env.SCHEMA_TOKEN,
-    RAZORPAY_KEY: process.env.RAZORPAY_KEY,
+    NEXT_PUBLIC_RAZORPAY_KEY: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
     NEXT_PUBLIC_NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_LOGGING_DISABLED: process.env.NEXT_PUBLIC_LOGGING_DISABLED,
-    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
+    NEXT_PUBLIC_SERVER_HTTP_URL: process.env.NEXT_PUBLIC_SERVER_HTTP_URL,
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL:
       process.env.NEXT_PUBLIC_SERVER_WEBSOCKET_URL,
-    NEXT_PUBLIC_BASE_IMAGE_URL: process.env.NEXT_PUBLIC_BASE_IMAGE_URL,
-    NEXT_PUBLIC_BASE_AUDIO_URL: process.env.NEXT_PUBLIC_BASE_AUDIO_URL,
+    NEXT_PUBLIC_UPLOADTHING_URL: process.env.NEXT_PUBLIC_UPLOADTHING_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -138,9 +138,7 @@ const SponsorGearCarousel = ({
       className="relative w-full h-[calc(100vh-12rem)] overflow-y-scroll scrollbar-hide overflow-x-clip"
     >
       <div ref={containerRef} className="relative w-full">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px]" />
-
-        <div className="sticky top-[40%] lg:top-1/2 -translate-y-1/2 w-full">
+        <div className="sticky top-[calc(12rem+40px)] lg:top-[calc(14rem+50px)] -translate-y-1/2 w-full">
           <div
             ref={smallGearRef}
             className="absolute  sm:left-[6%] sm:top-[50%] md:left-[13%] md:top-[60%] lg:left-[16%] lg:top-[55%] xl:left-[24%] xl:top-[60%] -translate-y-1/2"
@@ -158,7 +156,7 @@ const SponsorGearCarousel = ({
             ref={largeGearRef}
             className="absolute left-[25%] top-[50%] md:left-[30%] md:top-[59%] lg:left-[28%] lg:top-[60%] xl:left-[33%] xl:top-[63%] -translate-y-1/2"
           >
-            <div className="sm:w-[541px] sm:h-[541px] md:w-[581px] md:h-[581px] lg:w-[721px] lg:h-[721px]">
+            <div className="sm:w-[541px] sm:h-[541px] md:w-[581px] md:h-[581px] lg:w-[696px] lg:h-[696px]">
               <img
                 src="/2025/sponsors/GearClock.png"
                 alt="LargerGear"
@@ -169,30 +167,28 @@ const SponsorGearCarousel = ({
 
           <div
             ref={cardRef}
-            className="h-[25rem] sm:h-auto absolute sm:mt-0 mx-3 left-[5%] top-[75%] sm:left-[10%] sm:top-[50%] md:left-[20%] md:top-[59%] lg:left-[26%] lg:top-[40%] xl:left-[32%] -translate-y-1/2 max-w-xl"
+            className="h-[512px] sm:h-auto absolute mt-10 lg:mt-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-auto mx-auto max-w-xl"
           >
             <div className="bg-[#054432]/90 backdrop-blur-sm rounded-xl border-2 border-amber-500/50 shadow-lg p-4 md:p-6 hover:border-amber-500 transition-colors">
               <div className="flex flex-col items-center gap-4">
                 {sponsors[currentIndex]?.title && (
-                  <h3 className="text-center text-2xl text-amber-500">
+                  <h3 className="text-center text-2xl text-amber-500 font-life-craft">
                     {sponsors[currentIndex].title}
                   </h3>
                 )}
                 <div className="relative w-32 h-32 md:w-40 md:h-40">
                   {sponsors[currentIndex]?.notCloudinary ? (
-                    <Image
+                    <img
                       src={`/2025/sponsors/${sponsors[currentIndex]?.logo}`}
-                      fill
                       alt={sponsors[currentIndex]?.name ?? "Logo"}
                       className="object-contain"
                     />
                   ) : (
-                    <Image
+                    <img
                       src={
-                        `${process.env.NEXT_PUBLIC_BASE_IMAGE_URL}/sponsors/${sponsors[currentIndex]?.logo}` ||
+                        `${process.env.NEXT_PUBLIC_UPLOADTHING_URL}/sponsors/${sponsors[currentIndex]?.logo}` ||
                         `/2025/sponsors/${sponsors[currentIndex]?.logo}`
                       }
-                      fill
                       alt={sponsors[currentIndex]?.name ?? "Sponsor Logo"}
                       className="object-contain"
                     />
@@ -202,12 +198,10 @@ const SponsorGearCarousel = ({
                 <div className="text-center">
                   {sponsors[currentIndex] && (
                     <>
-                      <h3 className="text-2xl text-amber-500 mb-2">
+                      <h3 className="text-2xl text-amber-500 mb-2 font-life-craft">
                         {sponsors[currentIndex].name}
                       </h3>
-                      <p
-                        className={`text-emerald-100/90 text-sm ${sponsors[currentIndex].websiteURL ? "text-left" : "text-pretty"}`}
-                      >
+                      <p className="text-emerald-100/90 text-xs md:text-sm p-1 text-left md:text-center ">
                         {sponsors[currentIndex].desc}
                       </p>
                     </>
@@ -219,7 +213,7 @@ const SponsorGearCarousel = ({
                     href={sponsors[currentIndex].websiteURL}
                     target="_blank"
                     rel="noreferrer"
-                    className="absolute bottom-0 right-0 group flex items-center gap-2 px-4 py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
+                    className="absolute text-sm md:text-[1rem] bottom-0 translate-y-1/2 group flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
                   >
                     Visit Website
                     <ExternalLink className="transition-transform group-hover:translate-x-1" />

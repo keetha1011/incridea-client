@@ -21,12 +21,12 @@ const rankColors = {
     border: "#D1A300",
   },
   2: {
-    background: "linear-gradient(180deg, #FFFFFD 0%, #666666 100%);",
+    background: "linear-gradient(180deg, #FFFFFD 0%, #666666 100%)",
     text: "#000000",
-    border: "#353535",
+    border: "#666666",
   },
   3: {
-    background: "linear-gradient(180deg, #E5B77C, #5F3316);",
+    background: "linear-gradient(180deg, #E5B77C, #5F3316)",
     text: "#000000",
     border: " #5F3316",
   },
@@ -200,19 +200,19 @@ const LeaderBoard: NextPage = () => {
                   color: getRankStyle(i + 1).text,
                   borderColor: getRankStyle(i + 1).border,
                 }}
-                className="border-2 p-4 flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl"
+                className="border-2 p-4 flex h-16 flex-row items-center justify-center rounded-lg shadow-2xl relative"
               >
                 <h1 className="flex basis-1/4 items-center justify-center text-center text-base md:gap-1 md:text-xl">
                   {i + 1}.
                   <Image
                     src={
                       i === 0
-                        ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level3.png`
+                        ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level3.png`
                         : i === 1
-                          ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level2.png`
+                          ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level2.png`
                           : i === 2
-                            ? `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level1.png`
-                            : `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/level4.png`
+                            ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level1.png`
+                            : `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/level4.png`
                     }
                     width={isMobile ? 20 : 50}
                     height={isMobile ? 20 : 50}
@@ -229,11 +229,11 @@ const LeaderBoard: NextPage = () => {
                 <h1 className="flex basis-1/4 flex-row items-center justify-center text-center text-sm font-semibold md:text-xl">
                   {user.levelPoints}
                   <Image
-                    src={"/2025/leaderboard/timestone.png"}
+                    src={"/2025/leaderboard/timestoneXP.png"}
                     width={isMobile ? 40 : 100}
                     height={isMobile ? 40 : 100}
                     alt="Time Stone"
-                    className="ml-1 w-8 md:w-12 lg:w-16 bg-transparent transition-all"
+                    className=" w-12 md:w-20 lg:w-28 bg-transparent transition-all absolute lg:right-[6%] right-[2%] md:right-[2%]"
                   />
                 </h1>
               </div>

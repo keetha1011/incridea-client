@@ -30,13 +30,17 @@ const config: NextConfig = {
         protocol: "https",
         hostname: "utfs.io",
       },
+      {
+        protocol: "https",
+        hostname: "x79smvkrpn.ufs.sh",
+      },
     ],
   },
 
-  webpack: (config) => {
-    config.resolve.fallback = { fs: false };
-    return config;
-  },
+  // webpack: (config) => {
+  //   config.resolve.fallback = { fs: false };
+  //   return config;
+  // },
 };
 
 export default config;

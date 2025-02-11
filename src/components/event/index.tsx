@@ -129,7 +129,7 @@ const Event = ({
         </foreignObject>
 
         <image
-          href={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/logo.png`}
+          href={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/logo.png`}
           x="21"
           y="-8"
           width="30"

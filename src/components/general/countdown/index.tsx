@@ -79,7 +79,7 @@ export default function CountDown() {
             >
               <div className="flex flex-row items-center space-x-2">
                 <Image
-                  src={`${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/XP.png`}
+                  src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/XP.png`}
                   width={100}
                   height={100}
                   alt="map"

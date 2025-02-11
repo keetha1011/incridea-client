@@ -8,8 +8,8 @@ import React, {
 
 import { env } from "~/env";
 
-const bombSrc = `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/png/bomb.png`;
-const explodeGIFSrc = `${env.NEXT_PUBLIC_BASE_IMAGE_URL}/assets/gif/explodeGIF.gif`;
+const bombSrc = `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/bomb.png`;
+const explodeGIFSrc = `${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/gif/explodeGIF.gif`;
 
 const getPosition: () => number = () => {
   return Math.floor(Math.random() * 80) + 10;
