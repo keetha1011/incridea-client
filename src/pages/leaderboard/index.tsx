@@ -169,8 +169,8 @@ const LeaderBoard: NextPage = () => {
             </h1>
 
             <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-xl ">
-            Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
-            Experience!
+              Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
+              Experience!
             </h3>
           </div>
 
