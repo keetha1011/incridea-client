@@ -1,12 +1,10 @@
 import { useQuery } from "@apollo/client";
 import { Bed, LogOut, QrCode } from "lucide-react";
 import { signOut } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { FaAward } from "react-icons/fa";
 import { Button } from "~/components/button/button";
-import { env } from "~/env";
 import {
   GetUserXpDocument,
   GetXpLeaderboardDocument,

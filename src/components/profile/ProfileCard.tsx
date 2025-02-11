@@ -46,6 +46,15 @@ type BadgeGLTF = GLTF &
     };
   };
 
+
+function truncateText(text:string,maxChar=20) {
+  text = text.trim()
+  if(text.length>maxChar){
+    return text.slice(0,maxChar) + `${text.length}`;
+  }
+  return text;
+}
+
 function ProfileCard({
   user,
   showQR,
@@ -164,7 +173,7 @@ function Band({
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]) // prettier-ignore
-  useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.45, 0]]) // prettier-ignore
+  useSphericalJoint(j3, card, [[0, 0, 0], [0, 2.4, 0]]) // prettier-ignore
 
   useEffect(() => {
     if (hovered) {
@@ -181,7 +190,6 @@ function Band({
     }
 
     if (dragged) {
-      console.log(state.pointer.x, state.pointer.y);
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
@@ -258,6 +266,7 @@ function Band({
     <>
       <group position={[0, 4, 0]}>
         <RigidBody
+        position={[0, .5, 0]}
           ref={fixed}
           {...segmentProps}
           type="fixed"
@@ -299,8 +308,8 @@ function Band({
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
-            scale={2.5}
-            position={[0, -1.5, -0.05]}
+            scale={3.5}
+            position={[0, -1.75, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
             onPointerUp={(e) => {
@@ -388,8 +397,12 @@ function Band({
                           fontWeight="bold"
                           transformScaleY={1.4}
                           color="white"
+                          textAlign={"center"}
+                          overflow={"hidden"}
+                          marginLeft={5}
+                          marginRight={5}
                         >
-                          {user.name}
+                          {truncateText(user.name,20)}
                         </Text>
                         <Text
                           overflow={"hidden"}
@@ -397,8 +410,10 @@ function Band({
                           color="white"
                           transformScaleY={1.4}
                           textAlign={"center"}
+                          marginLeft={5}
+                          marginRight={5}
                         >
-                          {user.college?.name ?? ""}
+                          {truncateText(user.college?.name ?? "",40)}
                         </Text>
 
                         <Text
@@ -407,6 +422,8 @@ function Band({
                           color="white"
                           transformScaleY={1.4}
                           textAlign={"center"}
+                          marginLeft={5}
+                          marginRight={5}
                         >
                           {user.phoneNumber ?? ""}
                         </Text>
@@ -454,15 +471,15 @@ function Band({
         </RigidBody>
       </group>
       <mesh ref={band}>
-        <meshLineGeometry />
+        <meshLineGeometry/>
         <meshLineMaterial
           color="white"
           depthTest={false}
           resolution={new THREE.Vector2(width, height)}
           useMap={1}
           map={texture}
-          repeat={new THREE.Vector2(-3, 1)}
-          lineWidth={1}
+          repeat={new THREE.Vector2(-2, 1)}
+          lineWidth={1.3}
         />
       </mesh>
     </>
