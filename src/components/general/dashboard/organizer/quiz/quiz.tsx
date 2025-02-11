@@ -774,9 +774,9 @@ const Quiz: React.FC<{
             />
           ))}
         </div>
-        <div className="flex mt-4 items-center">
+        <div className="flex mt-4 relative justify-between flex-row">
           <Button
-            className="rounded-md h-14 w-auto fixed bottom-12 left-12 z-50 bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="rounded-md h-14 w-auto bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
             intent={saved ? "info" : "danger"}
             size={"large"}
             disabled={updateQuizLoading}
@@ -793,14 +793,14 @@ const Quiz: React.FC<{
               </>
             )}
           </Button>
+          <Button
+            intent={"success"}
+            onClick={handleAddQuestions}
+            className=" font-bold rounded-lg h-14 w-auto bg-amber-600 hover:bg-amber-500 text-white transition-all duration-300 transform hover:scale-105 shadow-lg z-50"
+          >
+            Add Question +
+          </Button>
         </div>
-        <Button
-          intent={"success"}
-          onClick={handleAddQuestions}
-          className="fixed bottom-12 font-bold rounded-lg right-12 h-14 w-auto bg-amber-600 hover:bg-amber-500 text-white transition-all duration-300 transform hover:scale-105 shadow-lg z-50"
-        >
-          Add Question +
-        </Button>
       </div>
     </>
   );

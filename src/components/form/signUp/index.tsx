@@ -448,7 +448,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       )}
 
       {emailSuccess && (
-        <div className="flex flex-col items-center gap-3 rounded-md bg-secondary-300 p-4 text-center font-semibold text-[#d7037f]">
+        <div className="flex flex-col items-center gap-3 rounded-md bg-primary-900/70 p-4 text-center font-semibold text-secondary-600">
           <div>
             Verification email sent to {userInfo.email}
             {selectedCollege?.name === "N.M.A.M. Institute of Technology" &&
