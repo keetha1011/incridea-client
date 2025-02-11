@@ -473,7 +473,7 @@ export const CharacterController = () => {
       colliders={false}
       lockRotations
       ref={rb}
-      position={[0.4, -2.5, -3]}
+      position={[0.4, -1.5, -3]}
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />

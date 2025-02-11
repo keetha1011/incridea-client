@@ -42,7 +42,6 @@ export const Experience = () => {
     const handleResize = () => {
       const landscape = window.innerWidth > window.innerHeight;
       setIsLandscape(landscape);
-      setFov(landscape ? 60 : 100);
     };
 
     window.addEventListener("resize", handleResize);
@@ -57,7 +56,7 @@ export const Experience = () => {
           camera={{
             position: [0, 0, 0],
             near: 0.01,
-            fov: fov,
+            fov: isLandscape ? 60 : 100,
           }}
           className="absolute inset-0"
           gl={{ antialias: false, pixelRatio: 0.1 }}
