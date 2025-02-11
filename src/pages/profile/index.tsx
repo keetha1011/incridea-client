@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client";
 import "locomotive-scroll/dist/locomotive-scroll.css";
 import { type HTMLAttributes, useEffect } from "react";
 import toast from "react-hot-toast";
-import { AddXpDocument, GetUserXpDocument } from "~/generated/generated";
+import { AddXpDocument, GetUserXpDocument, Role } from "~/generated/generated";
 import Loader from "~/components/loader";
 import { useAuth } from "~/hooks/useAuth";
 import ProfileCard from "./ProfileCard";
@@ -91,6 +91,11 @@ const Profile: NextPage = () => {
         </h1>
       </div>
     );
+
+    if(user.role === Role.User){
+      void router.push("/register");
+      return null;
+    }
 
   return (
     <main

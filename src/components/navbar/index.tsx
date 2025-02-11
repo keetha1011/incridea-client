@@ -131,7 +131,7 @@ const Navbar = () => {
                   : user.role === Role.User
                     ? "/register"
                     : pathname === "/profile"
-                      ? "/dashboard"
+                      ? user.role !== Role.Participant ?  "/dashboard" : "/"
                       : "/profile"
               }
               className={cn(
@@ -144,8 +144,8 @@ const Navbar = () => {
                 : user.role === Role.User
                   ? "REGISTER"
                   : pathname === "/profile"
-                    ? "DASHBOARD"
-                    : "PROFILE"}
+                    ? user.role !== Role.Participant ?  "DASHBOARD"
+ : "HOME"                    : "PROFILE"}
             </Link>
             {/* {user?.role === Role.User ? (
               <Link href="/profile" ref={textRef}>
