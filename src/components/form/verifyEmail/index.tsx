@@ -32,7 +32,7 @@ const VerifyEmailComponent: FunctionComponent = () => {
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center">
-      {loading && <Spinner intent={"white"} className="text-[#dd5c6e]" />}
+      {loading && <Spinner intent={"primary"} className="text-[#dd5c6e]" />}
       {!token && (
         <div className="flex min-w-[300px] flex-col items-center justify-center rounded-md bg-primary-800/80  p-12 text-red-500">
           <MdError className="mx-auto my-6 text-7xl" />

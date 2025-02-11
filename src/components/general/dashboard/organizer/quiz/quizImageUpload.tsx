@@ -35,7 +35,7 @@ const QuizImageUpload = React.memo(
 
     const deleteImage = async (url: string) => {
       const res = await fetch(
-        `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadrthing/delete`,
+        `${env.NEXT_PUBLIC_SERVER_URL}/uploadthing/delete`,
         {
           method: "POST",
           headers: {
@@ -150,9 +150,18 @@ const QuizImageUpload = React.memo(
           }}
           onUploadError={(error) => {
             console.log(error);
-            toast.error("Image upload failed, please upload other image", {
-              position: "bottom-right",
-            });
+            if (error.message === "Invalid config: FileSizeMismatch") {
+              toast.error(
+                "Image upload failed, please upload image less than 512KB",
+                {
+                  position: "bottom-right",
+                },
+              );
+            } else {
+              toast.error("Image upload failed, please upload other image", {
+                position: "bottom-right",
+              });
+            }
             setManualLoading(false);
           }}
         />
