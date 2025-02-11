@@ -10,6 +10,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { BiLoaderAlt } from "react-icons/bi";
 import { Save } from "lucide-react";
 import { GetQuizByEventRoundDocument } from "~/generated/generated";
+import Modal from "~/components/modal";
 
 // BELOW 4 lines of COMMENTS ARE KINDA NOT USEFUL BECAUSE HYDRATION ERROR HAS BEEN FIXED
 // BUT STILL KEEPING IT FOR REFERENCE
@@ -637,6 +638,10 @@ const Quiz: React.FC<{
     }
   };
 
+  const handleDeleteLocal = () => {
+    setLocalQuestions([]);
+  };
+
   useEffect(() => {
     const combinedQuestions = [...localQuestions, ...dbQuestions];
 
@@ -663,8 +668,45 @@ const Quiz: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localQuestions, dbQuestions]);
 
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   return (
     <>
+      {showModal && (
+        <Modal
+          onClose={() => setShowModal(false)}
+          title="Discard Draft"
+          size="small"
+          showModal={showModal}
+        >
+          <div className="pl-6 pr-6 mt-3">
+            Do you really want to discard the draft?
+            <div className="flex justify-center gap-4 mt-6 mb-6">
+              <Button
+                className="rounded-md h-14 w-32 bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                intent={"dark"}
+                size={"large"}
+                onClick={() => {
+                  setShowModal(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="rounded-md h-14 w-32 bg-amber-600 hover:bg-amber-500 text-white transition-all duration-300 transform hover:scale-105 shadow-lg"
+                intent={"danger"}
+                size={"large"}
+                onClick={() => {
+                  handleDeleteLocal();
+                  setShowModal(false);
+                }}
+              >
+                Discard
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
       {quizLoading && (
         <div className="flex justify-center items-center h-full">
           <BiLoaderAlt className="animate-spin text-4xl text-amber-500" />
@@ -775,24 +817,35 @@ const Quiz: React.FC<{
           ))}
         </div>
         <div className="flex mt-4 relative justify-between flex-row">
-          <Button
-            className="rounded-md h-14 w-auto bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
-            intent={saved ? "info" : "danger"}
-            size={"large"}
-            disabled={updateQuizLoading}
-            onClick={handlePrint}
-          >
-            {updateQuizLoading ? (
-              <>
-                <BiLoaderAlt className="animate-spin text-xl text-amber-300" />
-                Saving Draft...{" "}
-              </>
-            ) : (
-              <>
-                <Save className="text-xl" /> Save Draft
-              </>
-            )}
-          </Button>
+          <div className="flex gap-12">
+            <Button
+              className="rounded-md h-14 w-auto bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              intent={"dark"}
+              size={"large"}
+              disabled={saved ? true : false}
+              onClick={() => setShowModal(true)}
+            >
+              Discard Draft
+            </Button>
+            <Button
+              className="rounded-md h-14 w-auto bg-emerald-600 hover:bg-emerald-500 text-amber-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              intent={saved ? "info" : "danger"}
+              size={"large"}
+              disabled={updateQuizLoading}
+              onClick={handlePrint}
+            >
+              {updateQuizLoading ? (
+                <>
+                  <BiLoaderAlt className="animate-spin text-xl text-amber-300" />
+                  Saving Draft...{" "}
+                </>
+              ) : (
+                <>
+                  <Save className="text-xl" /> Save Draft
+                </>
+              )}
+            </Button>
+          </div>
           <Button
             intent={"success"}
             onClick={handleAddQuestions}
