@@ -75,7 +75,7 @@ function Instruction() {
         window.removeEventListener("resize", handleResize);
       }
     };
-  }, []);
+  }, [isLandscape]);
 
   if (gameAnimationContext.gameStatus.current === GameStatus.win) {
     return (

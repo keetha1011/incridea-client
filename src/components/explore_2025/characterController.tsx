@@ -31,7 +31,7 @@ const lerpAngle = (start: number, end: number, t: number) => {
   return normalizeAngle(start + (end - start) * t);
 };
 
-type Stone = {
+export type Stone = {
   id: number;
   pos: [number, number, number];
 };
@@ -43,7 +43,7 @@ type Location = {
 };
 
 // Process stone and location data
-const stones: Stone[] = stonesData.stones.map((stone) => ({
+export const stones: Stone[] = stonesData.stones.map((stone) => ({
   ...stone,
   pos: [stone.pos[0] ?? 0, stone.pos[1] ?? 0, stone.pos[2] ?? 0] as [
     number,
@@ -64,7 +64,6 @@ export const CharacterController = () => {
   const [isLandscape, setIsLandscape] = useState(
     window.innerWidth > window.innerHeight,
   );
-
   const router = useRouter();
 
   useEffect(() => {
@@ -97,10 +96,9 @@ export const CharacterController = () => {
   const [spacebarPressed, setSpacebarPressed] = useState(false);
   const [spacebarDisabled, setSpacebarDisabled] = useState(false);
   const [visibility, setVisibility] = useState<boolean[]>([]);
-  const [totalVisibility, setTotalVisibility] = useState(
-    localStorage.getItem("stoneVisibility") ??
-      "[true,true,true,true,true,true]",
-  );
+  const prevVisibility = useRef<boolean[]>([]);
+
+  const [setStoneVisiblity] = useMutation(UpdateStoneVisibilitiesDocument);
 
   const handleJump = () => {
     const keyDownEvent = new KeyboardEvent("keydown", {
@@ -118,23 +116,6 @@ export const CharacterController = () => {
       });
       document.dispatchEvent(keyUpEvent);
     }, 100);
-  };
-
-  const [updateStoneVisibilities] = useMutation(
-    UpdateStoneVisibilitiesDocument,
-    {
-      variables: {
-        stoneId: totalVisibility,
-      },
-      refetchQueries: ["GetStoneVisibilities"],
-      awaitRefetchQueries: true,
-    },
-  );
-
-  const handleUpdateStoneVisibilities = async () => {
-    await updateStoneVisibilities().then(() => {
-      return;
-    });
   };
 
   useEffect(() => {
@@ -205,26 +186,66 @@ export const CharacterController = () => {
     };
   }, [get]);
 
-  useEffect(() => {
-    const storedVisibility = localStorage.getItem("stoneVisibility");
-    if (storedVisibility) {
-      setVisibility(JSON.parse(storedVisibility) as never);
-    } else {
-      const initialVisibility = stones.map(() => true);
-      setVisibility(initialVisibility);
-      localStorage.setItem(
-        "stoneVisibility",
-        JSON.stringify(initialVisibility),
-      );
+  // Update the stone visibilities on change
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleSetTimeStone = async (visibilityString: string) => {
+    try {
+      await setStoneVisiblity({
+        variables: { stoneId: visibilityString },
+      });
+    } catch (error) {
+      console.error("Error updating stone visibilities:", error);
     }
+  };
 
-    console.log(totalVisibility);
-  }, []);
+  // TimeStones: update the visibility (and trigger the mutation if changed)
+  useEffect(() => {
+    const updateVisibility = async () => {
+      const storedVisibility = localStorage.getItem("stoneVisibility");
+      if (storedVisibility) {
+        const parsedVisibility = JSON.parse(storedVisibility) as boolean[];
+        const visibilityString = parsedVisibility
+          .map((v) => (v ? "1" : "0"))
+          .join("");
+        const prevVisibilityString = prevVisibility.current
+          .map((v) => (v ? "1" : "0"))
+          .join("");
+
+        if (visibilityString !== prevVisibilityString) {
+          await handleSetTimeStone(visibilityString);
+        }
+        setVisibility(parsedVisibility);
+        prevVisibility.current = parsedVisibility; // Update previous state
+      } else {
+        const initialVisibility = stones.map(() => true);
+        setVisibility(initialVisibility);
+        localStorage.setItem(
+          "stoneVisibility",
+          JSON.stringify(initialVisibility),
+        );
+        prevVisibility.current = initialVisibility; // Store initial value
+      }
+    };
+
+    // Run once immediately...
+    void updateVisibility();
+
+    const interval = setInterval(() => {
+      void updateVisibility;
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [handleSetTimeStone]);
+
+  const stoneModels = useMemo(() => {
+    return stones.map((stone, index) => {
+      if (!visibility[index]) return null;
+      return <mesh key={stone.id} position={stone.pos}></mesh>;
+    });
+  }, [visibility]);
 
   const countdowns = useRef(
     new Map<number, { timer: NodeJS.Timeout; count: number }>(),
   );
-
   const redirectedLocations = useRef(new Set<number>());
 
   useFrame(({ camera, scene }) => {
@@ -305,6 +326,7 @@ export const CharacterController = () => {
 
       rb.current.setLinvel(vel, true);
 
+      // Check if the player is close to any stone
       stones.forEach((stone, index) => {
         const distance = Math.sqrt(
           (pos.x - stone.pos[0]) ** 2 +
@@ -323,6 +345,7 @@ export const CharacterController = () => {
         }
       });
 
+      // Location redirection logic
       locations.forEach((location) => {
         const distance = Math.sqrt(
           (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
@@ -389,9 +412,7 @@ export const CharacterController = () => {
               }
             }, 1000);
             countdowns.current.set(location.id, { timer, count });
-            toast("", {
-              id: location.id.toString(),
-            });
+            toast("", { id: location.id.toString() });
           }
         } else {
           if (countdowns.current.has(location.id)) {
@@ -407,17 +428,16 @@ export const CharacterController = () => {
       cameraPosition.current.getWorldPosition(cameraWorldPosition.current);
       cameraTarget.current.getWorldPosition(cameraLookAtWorldPosition.current);
 
-      // Set up the raycaster
-      raycaster.current.set(
-        cameraLookAtWorldPosition.current,
-        cameraDirection.current,
-      );
       cameraDirection.current
         .subVectors(
           cameraWorldPosition.current,
           cameraLookAtWorldPosition.current,
         )
         .normalize();
+      raycaster.current.set(
+        cameraLookAtWorldPosition.current,
+        cameraDirection.current,
+      );
 
       const intersects = raycaster.current.intersectObjects(
         scene.children,
@@ -460,13 +480,6 @@ export const CharacterController = () => {
       );
     }
   });
-
-  const stoneModels = useMemo(() => {
-    return stones.map((stone, index) => {
-      if (!visibility[index]) return null;
-      return <mesh key={stone.id} position={stone.pos}></mesh>;
-    });
-  }, [visibility]);
 
   return (
     <RigidBody
