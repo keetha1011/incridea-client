@@ -3,7 +3,7 @@ import { type FormEventHandler, type FunctionComponent, useState } from "react";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { FaAngleLeft } from "react-icons/fa";
 
-import Button from "~/components/button";
+import {Button} from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { ResetPasswordEmailDocument } from "~/generated/generated";
 
@@ -66,7 +66,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
         {data?.sendPasswordResetEmail.__typename ===
         "MutationSendPasswordResetEmailSuccess" ? (
           <>
-            <div className="flex flex-col items-center gap-2 rounded-md bg-secondary-300 p-4 text-center font-semibold text-[#d7037f]">
+            <div className="flex flex-col items-center gap-2 rounded-md bg-primary-900/70 p-4 pb-2 text-center font-semibold text-secondary-600 mt-4">
               <BiCheckCircle size={"2rem"} /> Reset link sent to your email.
               Please check your inbox.
             </div>
@@ -88,7 +88,7 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
               placeholder="Email"
             />
 
-            <Button type="submit" className="mt-4">
+            <Button type="submit" className="mt-4 mb-2 font-life-craft text-lg tracking-widest">
               Send Reset Link
             </Button>
 
@@ -99,18 +99,17 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
             )}
 
             {(error ?? mutationError) && (
-              <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 font-semibold text-red-500">
-                <BiErrorCircle size={"1.3rem"} />
+              <div className="flex min-w-full items-center gap-3 overflow-x-auto rounded-md bg-primary-900/70 p-2 px-4 text-sm font-semibold text-red-500">
+                <BiErrorCircle size={"2rem"} />
                 {error ?? mutationError?.message}
               </div>
             )}
           </>
         )}
         <Button
-          intent={"ghost"}
-          className="mt-5"
+          variant={"ghost"}
+          className="mt-3 font-life-craft text-lg tracking-widest"
           onClick={() => setWhichForm("signIn")}
-          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
         >
           <FaAngleLeft /> Go Back
         </Button>

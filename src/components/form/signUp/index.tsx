@@ -15,7 +15,7 @@ import {
 import { BiErrorCircle } from "react-icons/bi";
 import { BsChevronExpand } from "react-icons/bs";
 
-import Button from "~/components/button";
+import {Button} from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { CONSTANT } from "~/constants";
 import {
@@ -422,7 +422,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             </label>
           </div>
 
-          <Button className="mt-3">Sign Up</Button>
+          <Button className="mt-3 font-life-craft text-lg tracking-widest">Sign Up</Button>
         </>
       )}
 
@@ -470,17 +470,16 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
       <div className="relative mt-2 flex flex-col text-center">
         <hr className="my-3 border-accent-50" />
-        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-secondary-800 px-3 text-sm text-accent-50 md:px-2">
+        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-accent-900/90 px-3 text-sm text-accent-50 md:px-2">
           Already have an account?
         </h4>
         <Button
-          intent={"ghost"}
+          variant={"ghost"}
           onClick={() => {
             setWhichForm("signIn");
           }}
           type="button"
-          className="mt-4"
-          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
+          className="mt-4 font-life-craft text-lg tracking-widest"
         >
           Sign in instead
         </Button>
@@ -497,5 +496,4 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     </form>
   );
 };
-
 export default SignUpForm;
