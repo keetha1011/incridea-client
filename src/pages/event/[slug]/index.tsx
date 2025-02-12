@@ -22,7 +22,6 @@ import {
   PublishedEventsSlugDocument,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
-import ScrollButtons from "~/components/scrollButtons";
 
 type Props =
   | {

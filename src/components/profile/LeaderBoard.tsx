@@ -55,10 +55,10 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
       let levelPoints = 0;
 
       for (const threshold of newLevelThresholds) {
+        totalPoints += threshold;
+        levelPoints = threshold;
         if (totalXp >= threshold) {
           level++;
-          totalPoints += threshold;
-          levelPoints = threshold;
         } else {
           break;
         }
@@ -67,6 +67,8 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
       setXp(totalXp);
       if (userXp.data.getUserXp.data[0])
         setUser(userXp.data.getUserXp.data[0].user.id);
+      console.log(totalPoints,totalXp, newLevelThresholds);
+      
       setNeedMore(totalPoints - totalXp);
       setProgress(((levelPoints - totalPoints + totalXp) / levelPoints) * 100);
     }
@@ -182,21 +184,29 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
         <div className={`h-2 bg-red-600`} style={{width: `${progress}%`}}></div>
       </div>
 
-      <div className="text-white w-full px-2">
+      <div className="text-white w-full px-2 mb-2">
         <div className="flex justify-between w-full mb-4 flex-row px-4 max-w-md mx-auto">
-          <div className="font-semibold text-sm">Stage <span className="text-secondary-500 font-bold text-base">{level} 🗺</span></div>
-          <div className="font-semibold text-sm">Gems <span className="text-secondary-500 font-bold text-base">{xp} 💎</span></div>
+          <div className="font-semibold text-sm">Domain <span className="text-secondary-500 font-bold text-base">{level} 🗺</span></div>
+          <div className="font-semibold text-sm">Timestones <span className="text-secondary-500 font-bold text-base">{xp} 💎</span></div>
         </div>
 
-        {rank === 0 && false ? (<>
-        <div className="text-xs opacity-70 text-center my-2">
-          You need to collect more gemstones to get yourself in the leaderboard
+        {rank === 0 ? (<>
+        <div className="text-sm opacity-90 text-center my-2">
+          You need to collect {needMneedMoreore} 💎 TimeStones to join the leaderboard
         </div>
         </>) : (<>
-        {/* TODO rank */}
-        <div>
-          <Image src={`/${CONSTANT.YEAR}/profile/trophy.svg`} alt="trophy" width={100} height={100}/>
-        </div>trophy
+        <div className="border bg-primary-500/20 border-secondary-500 max-w-md mx-auto rounded-full px-4 py-2 flex flex-row justify-between items-center">
+          <div className="text-sm flex flex-row flex-nowrap gap-1 font-semibold">
+            <Image className="size-10" src={`/${CONSTANT.YEAR}/profile/trophy.webp`} alt="trophy" width={100} height={100}/>
+            <div>
+              <p>Leaderboard</p><p className="text-accent-400">Rank {rank}</p>
+            </div>
+          </div>
+          <div className="text-sm flex flex-col gap-1 font-semibold">
+            <p>You need</p>
+            <p><span className="text-accent-400">{needMneedMoreore}</span> 💎 more</p>
+          </div>
+        </div>
           </>)}
       </div>
       <div className="w-full flex flex-col gap-2 items-center">
