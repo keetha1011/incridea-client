@@ -41,18 +41,27 @@ const Sponsors: NextPage = () => {
           <VolumeX className="sm:w-6 sm:h-6 text-amber-500" />
         )}
       </button>
-
-      {/* Heading Section */}
-      <div className="mt-8 mb-12 mx-auto flex flex-col items-center gap-2 px-10">
-        <h1 className="relative font-life-craft text-center text-5xl tracking-wider text-white">
-          OUR SPONSORS
-          <div className="absolute -inset-4 -z-10 animate-pulse rounded-lg bg-emerald-900/50 blur-lg" />
-        </h1>
-        <p className="font-black-chancery text-center text-lg text-gray-100">
-          Big names backing an extraordinary fest
+      <div className="scroll-helper mx-1 sm:mx-3 absolute left-auto top-[45%] md:top-[50%] lg:right-0  -translate-y-1/2 flex flex-col items-center gap-3 text-amber-500 z-10">
+        <p
+          className="text-[0.7rem] sm:text-[0.9rem] lg:text-[1rem] font-medium writing-mode-vertical transform rotate-0"
+          style={{ writingMode: "vertical-lr" }}
+        >
+          Slowly scroll up-down to explore more sponsors
         </p>
+        <MousePointerClick className="w-4 h-4 sm:w-6 sm:h-6" />
+        <ArrowDown className="w-4 h-4 sm:w-6 sm:h-6" />
       </div>
-      <div className="h-5" />
+      <div className="w-[98%] mx-auto py-8">
+        <div className="mt-14 mx-auto flex w-fit flex-col items-center gap-2 px-10">
+          <h1 className="relative font-life-craft text-center text-3xl md:text-4xl lg:text-5xl tracking-wider text-amber-500">
+            OUR SPONSORS
+            <div className="absolute -inset-4 -z-10 animate-pulse rounded-lg bg-emerald-900/50 blur-lg" />
+          </h1>
+          <p className="font-black-chancery text-center text-[1rem] md:text-lg text-emerald-300">
+            Fueling Eternity with Iconic names
+          </p>
+        </div>
+      </div>
 
       {/* Carousel Section */}
       <div className="flex-1">
