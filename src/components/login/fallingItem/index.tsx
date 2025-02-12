@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React, { type FunctionComponent, useEffect, useState } from "react";
+import { CONSTANT } from "~/constants";
 
 type Prop = {
   delay: number;
@@ -60,7 +61,7 @@ const FallingItem: FunctionComponent<Prop> = ({ delay }) => {
       }}
     >
       <Image
-        src={`/2025/leaderboard/${src}`}
+        src={`/${CONSTANT.YEAR}/leaderboard/${src}`}
         alt={src}
         width={size.width}
         height={size.height}
