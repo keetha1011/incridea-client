@@ -43,6 +43,14 @@ export default function BackGroundGradient({
     }
   }, []);
 
+  useEffect(() => {
+    if(typeof window !== "undefined"){
+      if(window.innerWidth < 780){
+        particlesConfig.particles.number.value = 50
+      }
+    }
+  })
+
   return (
     <div
       ref={bgRef}

@@ -4,10 +4,12 @@ import gsap from "gsap";
 import Image from "next/image";
 import React, { useContext, useRef } from "react";
 import { LoaderContext } from "./loaderContext";
+import { CONSTANT } from "~/constants";
 
-const circleImage = "/2025/landing/loader/circle.png";
-const backgroundImage = "/2025/landing/loader/background.png";
-const logoImage = "/2025/landing/loader/logo-combined.png";
+// Images placed in public folder for faster loading
+const circleImage = `/${CONSTANT.YEAR}/landing/loader/circle.webp`;
+const backgroundImage = `/${CONSTANT.YEAR}/landing/loader/background.webp`;
+const logoImage = `/${CONSTANT.YEAR}/landing/loader/logo-combined.webp`;
 
 export default function BlackHoleLoader() {
   const background = useRef(null);

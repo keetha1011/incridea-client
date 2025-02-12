@@ -17,6 +17,7 @@ import EditTeamModal from "~/components/general/profile/editTeam";
 import DeleteTeamModal from "~/components/general/profile/deleteTeam";
 import ConfirmTeamModal from "~/components/general/profile/confirmTeam";
 import LeaveTeamModal from "../general/profile/leaveTeamModal";
+import { CONSTANT } from "~/constants";
 
 const EventCard: FC<{
   teams: Extract<
@@ -46,7 +47,7 @@ const EventCard: FC<{
       <div className="flex flex-col items-center justify-center text-black">
         <div className="relative">
           <Image
-            src={`https://res.cloudinary.com/dqy4wpxhn/image/upload/v1682653090/Events/VOCAL_TWIST_%28WESTERN%29_1682653088345.jpg`}
+            src={event.image ?? `/${CONSTANT.YEAR}/vertical_logo.png`}
             alt={event.name}
             height={300}
             width={300}
@@ -83,6 +84,7 @@ const EventCard: FC<{
               className="mt-5 flex w-full flex-col items-center justify-center gap-2 rounded-xl border border-secondary-300 p-3"
             >
               <div className="flex items-center gap-5">
+                {/* QR code color white */}
                 <QRCodeSVG
                   color="#ffffff"
                   fgColor="#ffffff"
