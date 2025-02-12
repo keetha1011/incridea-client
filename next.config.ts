@@ -30,13 +30,17 @@ const config: NextConfig = {
         protocol: "https",
         hostname: "utfs.io",
       },
-	// {
-  //       protocol: "http",
-  //       hostname: "localhost",
-  //     },
+      // {
+      //       protocol: "http",
+      //       hostname: "localhost",
+      //     },
       {
         protocol: "https",
         hostname: "x79smvkrpn.ufs.sh",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
       },
     ],
   },

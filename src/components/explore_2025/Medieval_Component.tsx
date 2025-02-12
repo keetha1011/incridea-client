@@ -34,8 +34,6 @@ export const Experience = () => {
       : true,
   );
 
-  const [fov, setFov] = useState(60);
-
   const [isRunOn, setIsRunOn] = useState(false);
 
   useEffect(() => {
@@ -49,7 +47,7 @@ export const Experience = () => {
   }, []);
 
   return (
-    <div className="relative w-full h-[95vh]">
+    <div className="relative w-full h-[100vh]">
       <KeyboardControls map={keyboardMap}>
         <Canvas
           shadows
@@ -71,8 +69,8 @@ export const Experience = () => {
                 intensity={3}
                 castShadow
                 position={[-5, 20, -15]}
-                shadow-mapSize-width={isLandscape ? 4096 : 512}
-                shadow-mapSize-height={isLandscape ? 4096 : 512}
+                shadow-mapSize-width={isLandscape ? 1024 : 512}
+                shadow-mapSize-height={isLandscape ? 1024 : 512}
                 shadow-bias={-0.00005}
               >
                 <OrthographicCamera
