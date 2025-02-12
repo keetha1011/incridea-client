@@ -16,7 +16,7 @@ import HomeButton from "~/components/button/home";
 export default function Landing() {
   return (
     <SessionProvider>
-      <main className="relative h-screen overflow-hidden">
+      <main className="relative h-screen overflow-hidden select-none">
         <div className="absolute top-0">
           <HomeUi />
           <HomeFooter />

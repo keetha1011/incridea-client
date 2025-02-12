@@ -373,7 +373,7 @@ function Band({
                         justifyContent="center"
                       >
                         <ThreeImage
-                          src={"assets/png/ryoko.png"}
+                          src={user.profileImage ?? "assets/png/ryoko.png"}
                           width={130}
                           aspectRatio={0.7}
                           borderRadius={6}
