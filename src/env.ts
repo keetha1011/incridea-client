@@ -48,6 +48,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL: z.string().url(),
     NEXT_PUBLIC_UPLOADTHING_URL: z.string().url(),
     NEXT_PUBLIC_RAZORPAY_KEY: z.string(),
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string(),
   },
 
   /**
@@ -66,6 +67,8 @@ export const env = createEnv({
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL:
       process.env.NEXT_PUBLIC_SERVER_WEBSOCKET_URL,
     NEXT_PUBLIC_UPLOADTHING_URL: process.env.NEXT_PUBLIC_UPLOADTHING_URL,
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID:
+      process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
