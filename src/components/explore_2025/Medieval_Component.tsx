@@ -1,6 +1,6 @@
-import React, { Suspense, useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect, useRef } from "react";
 import * as UIButtons from "~/components/explore_2025/UI";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { KeyboardControls, Sky } from "@react-three/drei";
 import { OrthographicCamera } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
@@ -27,6 +27,28 @@ const keyboardMap = [
   { name: "jump", keys: ["Space"] },
 ];
 
+const FPSMonitor = ({
+  setEnableEffects,
+}: {
+  setEnableEffects: (state: boolean) => void;
+}) => {
+  const lastFrameTime = useRef(performance.now());
+  const frameCount = useRef(0);
+
+  useFrame(() => {
+    frameCount.current++;
+    const now = performance.now();
+    if (now - lastFrameTime.current >= 1000) {
+      const fps = frameCount.current;
+      setEnableEffects(fps >= 30);
+      frameCount.current = 0;
+      lastFrameTime.current = now;
+    }
+  });
+
+  return null;
+};
+
 export const Experience = () => {
   const [isLandscape, setIsLandscape] = useState(
     typeof window !== "undefined"
@@ -35,6 +57,7 @@ export const Experience = () => {
   );
 
   const [isRunOn, setIsRunOn] = useState(false);
+  const [enableEffects, setEnableEffects] = useState(true);
 
   useEffect(() => {
     const handleResize = () => {
@@ -93,7 +116,9 @@ export const Experience = () => {
             <Sky />
           </Suspense>
 
-          {isLandscape && (
+          <FPSMonitor setEnableEffects={setEnableEffects} />
+
+          {enableEffects && (
             <EffectComposer enableNormalPass>
               <Vignette eskil={false} offset={0.3} darkness={0.7} />
               <Bloom
