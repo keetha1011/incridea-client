@@ -15,10 +15,11 @@ export default function Footer() {
     router.pathname === "/gallery" ||
     router.pathname.startsWith("/explore") ||
     router.pathname === "/pronites" ||
-    router.pathname.startsWith("/event/")
-  ) {
+    router.pathname.startsWith("/event/") ||
+    router.pathname === "/sponsors"
+  )
     return null;
-  }
+
   return <FooterBody />;
 }
 

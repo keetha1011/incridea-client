@@ -24,13 +24,13 @@ import { client } from "~/lib/apollo";
 
 type Props =
   | {
-      event: EventByIdQuery["eventById"];
-      error?: never;
-    }
+    event: EventByIdQuery["eventById"];
+    error?: never;
+  }
   | {
-      event?: never;
-      error: string;
-    };
+    event?: never;
+    error: string;
+  };
 
 const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
   try {

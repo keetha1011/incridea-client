@@ -70,15 +70,6 @@ export const lifeCraft = LocalFont({
   style: "normal",
 });
 
-// Have to delete this font since it's only used in coming soon page
-export const blackChancery = LocalFont({
-  src: "../font/BlackChancery.ttf",
-  weight: "400",
-  variable: "--font-black-chancery",
-  display: "swap",
-  style: "normal",
-});
-
 export default function App({
   Component,
   pageProps: { session: _session, ...pageProps },
@@ -139,18 +130,17 @@ export default function App({
       </AnimatePresence>
 
       <ApolloProvider client={apolloClient}>
+        <Toaster />
         <HeadComponent
           title="Incridea"
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <LoaderProvider>
           <BackGroundGradient>
-            <Toaster />
             <div
               className={cn(
                 trap.variable,
                 lifeCraft.variable,
-                blackChancery.variable,
                 "min-h-screen font-trap tracking-wider text-lg",
               )}
             >
