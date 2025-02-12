@@ -24,13 +24,13 @@ import { client } from "~/lib/apollo";
 
 type Props =
   | {
-    event: EventByIdQuery["eventById"];
-    error?: never;
-  }
+      event: EventByIdQuery["eventById"];
+      error?: never;
+    }
   | {
-    event?: never;
-    error: string;
-  };
+      event?: never;
+      error: string;
+    };
 
 const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
   try {
@@ -148,7 +148,7 @@ const Page = ({
                   />
                 )}
                 <h1
-                  className={`px-4 pb-0 text-center font-VikingHell text-3xl font-bold capitalize tracking-wider sm:p-0 md:text-6xl`}
+                  className={`px-4 pb-0 text-center font-life-craft text-3xl tracking-wider sm:p-0 md:text-6xl text-[#D79128]`}
                 >
                   {event.name}
                 </h1>
@@ -168,7 +168,7 @@ const Page = ({
                 <div className={`order-2 w-full space-y-1.5`}>
                   {/* <hr className="w-48 h-1 mx-auto my-4 bg-secondary-800 border-0 rounded " /> */}
                   <h2
-                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl text-[#D79128]`}
+                    className={`mb-2 text-2xl tracking-wider md:text-4xl text-[#D79128] font-bold`}
                   >
                     Details
                   </h2>
@@ -264,9 +264,7 @@ const Page = ({
             >
               <div className={``}>
                 <div className={`order-3 w-full`}>
-                  <h2
-                    className={`mb-2 font-VikingHell text-2xl tracking-wider md:text-4xl`}
-                  >
+                  <h2 className={`mb-2 text-2xl tracking-wider md:text-4xl`}>
                     Organizers
                   </h2>
                   <div className={`w-full space-y-2`}>
