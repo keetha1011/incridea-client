@@ -1,18 +1,18 @@
 import { useMutation } from "@apollo/client";
 import React, { type FC, useState } from "react";
 import { toast } from "react-hot-toast";
+import { MdVerified } from "react-icons/md";
 
 import { Button } from "~/components/button/button";
-import { ConfirmTeamDocument } from "~/generated/generated";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "~/components/modal/modal";
-import { MdVerified } from "react-icons/md";
+import { ConfirmTeamDocument } from "~/generated/generated";
 
 const ConfirmTeamModal: FC<{
   teamId: string;
@@ -47,8 +47,9 @@ const ConfirmTeamModal: FC<{
 
   return (
     <>
+      <br />
       <Button
-        className="mt-1 rounded-full hover:rounded-full transition-all duration-300"
+        className="mt-1 rounded-full transition-all duration-300 hover:rounded-full"
         onClick={(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
           e.preventDefault();
           e.stopPropagation();
@@ -67,7 +68,7 @@ const ConfirmTeamModal: FC<{
               You Team will be registered. This cannot be undone
             </DialogDescription>
           </DialogHeader>
-          <div className="w-full flex flex-row flex-nowrap justify-center gap-4">
+          <div className="flex w-full flex-row flex-nowrap justify-center gap-4">
             <DialogClose asChild>
               <Button variant={"destructive"}>Cancel</Button>
             </DialogClose>
