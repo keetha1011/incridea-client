@@ -1,4 +1,5 @@
 import Router from "next/router";
+import toast from "react-hot-toast";
 import { CONSTANT } from "~/constants";
 
 import { env } from "~/env";
@@ -52,7 +53,7 @@ export const makePayment = async (setSDKLoading?: (_: boolean) => void) => {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   } else {
-    alert("Something went wrong");
+    toast.error("Something went wrong");
     console.log(data);
   }
 

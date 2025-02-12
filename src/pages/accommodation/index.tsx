@@ -15,6 +15,7 @@ const Accommodation: NextPage = () => {
   if (loading) return <Loader />;
   if (!user) void router.push("/login");
   if (user?.college?.id == "1") void router.push("/profile");
+
   return (
     <>
       <div className="min-h-screen  px-4 pb-10 pt-32 text-white md:px-6">
@@ -32,7 +33,7 @@ const Accommodation: NextPage = () => {
             Choose your Accommodation
           </h2>
           <h5 className="mx-auto mt-5 max-w-7xl text-center text-base md:mt-7 md:text-xl">
-            Before you roll your dice and choose your destiny
+            Before you travel thru time and choose your destination
           </h5>
 
           <div className="mx-auto mt-6 flex max-w-7xl flex-col items-center justify-evenly gap-5 rounded-xl bg-white/20 px-5 py-4 md:mt-8 md:flex-row md:px-10 md:py-7">

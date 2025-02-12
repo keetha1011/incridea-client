@@ -1,7 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import "locomotive-scroll/dist/locomotive-scroll.css";
 import { type GetStaticProps } from "next";
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BiCategory } from "react-icons/bi";
@@ -16,8 +15,7 @@ import {
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
 
-import styles from "./styles.module.css";
-import CopperButton from "~/components/copperButton";
+import { CONSTANT } from "~/constants";
 
 enum AllCategory {
   ALL = "ALL",
@@ -67,10 +65,10 @@ const Page = ({ data }: Props) => {
     if (currentDayFilter !== "All") {
       const filteredDay = new Date(
         currentDayFilter === "DAY 1"
-          ? "2024-02-22"
+          ? CONSTANT.DATE.INCRIDEA.DAY1
           : currentDayFilter === "DAY 2"
-            ? "2024-02-23"
-            : "2024-02-24",
+            ? CONSTANT.DATE.INCRIDEA.DAY2
+            : CONSTANT.DATE.INCRIDEA.DAY3
       ).getDate();
       tempFilteredEvents = tempFilteredEvents.filter((event) =>
         event.rounds.some((round) => round.date?.getDate() === filteredDay),
@@ -109,9 +107,8 @@ const Page = ({ data }: Props) => {
           <div
             data-scroll-container
             ref={containerRef}
-            className={`relative px-2 md:px-10 ${
-              filteredEvents.length > 0 ? "pt-28" : "pt-10 md:pt-20"
-            } flex flex-col items-center justify-center`}
+            className={`relative px-2 md:px-10 ${filteredEvents.length > 0 ? "pt-28" : "pt-10 md:pt-20"
+              } flex flex-col items-center justify-center`}
           >
             <div
               data-scroll-section
@@ -152,9 +149,9 @@ const Page = ({ data }: Props) => {
                       <IoTodayOutline size="16" />
                       {currentDayFilter !== "All"
                         ? currentDayFilter
-                            .toLowerCase()
-                            .replace(/_/g, " ")
-                            .replace(/\b\w/g, (char) => char.toUpperCase())
+                          .toLowerCase()
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())
                         : "Day"}
                     </Menu.Button>
                     <Transition
@@ -168,42 +165,25 @@ const Page = ({ data }: Props) => {
                       <Menu.Items className="absolute top-11 mt-1 z-10 flex flex-col gap-2 overflow-hidden rounded-3xl border border-primary-300/80 bg-primary-800 p-2 text-center shadow-2xl shadow-black/80">
                         {dayFilters.map((filter) => (
                           <Menu.Item key={filter}>
-                            <button
-                              className={`${
-                                currentDayFilter === filter
-                                  ? "bg-white/20"
-                                  : "bg-black/10"
-                              } w-full rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
-                              onClick={() => setCurrentDayFilter(filter)}
-                            >
-                              {
-                                filter
-                                  .toLowerCase()
-                                  .replace(/\b\w/g, (char) =>
-                                    char.toUpperCase(),
-                                  )
-                                  .split(" ")[0]
-                              }{" "}
-                              {filter.split(" ")[1]}
-                            </button>
-                            <button
-                              className={`${
-                                currentDayFilter === filter
-                                  ? "bg-white/20"
-                                  : "bg-black/10"
-                              } w-full rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
-                              onClick={() => setCurrentDayFilter(filter)}
-                            >
-                              {
-                                filter
-                                  .toLowerCase()
-                                  .replace(/\b\w/g, (char) =>
-                                    char.toUpperCase(),
-                                  )
-                                  .split(" ")[0]
-                              }{" "}
-                              {filter.split(" ")[1]}
-                            </button>
+                            {() => (
+                              <button
+                                className={`${currentDayFilter === filter
+                                    ? "bg-white/20"
+                                    : "bg-black/10"
+                                  } w-36 rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                onClick={() => setCurrentDayFilter(filter)}
+                              >
+                                {
+                                  filter
+                                    .toLowerCase()
+                                    .replace(/\b\w/g, (char) =>
+                                      char.toUpperCase(),
+                                    )
+                                    .split(" ")[0]
+                                }{" "}
+                                {filter.split(" ")[1]}
+                              </button>
+                            )}
                           </Menu.Item>
                         ))}
                       </Menu.Items>
@@ -220,9 +200,9 @@ const Page = ({ data }: Props) => {
                       <BiCategory size="16" />
                       {currentCategoryFilter !== AllCategory.ALL
                         ? currentCategoryFilter
-                            .toLowerCase()
-                            .replace(/_/g, " ")
-                            .replace(/\b\w/g, (char) => char.toUpperCase())
+                          .toLowerCase()
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())
                         : "Category"}
                     </Menu.Button>
                     <Transition
@@ -237,32 +217,33 @@ const Page = ({ data }: Props) => {
                         {[
                           Object.keys(EventCategory),
                           Object.keys(AllCategory),
-                        ].map((e, idx) =>
-                          e.map((filter) => (
-                            <Menu.Item key={idx}>
-                              <button
-                                className={`${
-                                  currentCategoryFilter ===
-                                  (filter as EventCategory | AllCategory)
-                                    ? "bg-white/20"
-                                    : "bg-black/10"
-                                } w-full rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
-                                onClick={() =>
-                                  setCurrentCategoryFilter(
-                                    filter as EventCategory | AllCategory,
-                                  )
-                                }
-                              >
-                                {filter
-                                  .replace("_", " ")
-                                  .toLowerCase()
-                                  .replace(/\b\w/g, (char) =>
-                                    char.toUpperCase(),
-                                  )}
-                              </button>
-                            </Menu.Item>
-                          )),
-                        )}
+                        ].map((e, idx) => {
+                          return e.map((filter) => {
+                            return (
+                              <Menu.Item key={idx}>
+                                <button
+                                  className={`${currentCategoryFilter ===
+                                      (filter as EventCategory | AllCategory)
+                                      ? "bg-white/20"
+                                      : "bg-black/10"
+                                    } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                  onClick={() =>
+                                    setCurrentCategoryFilter(
+                                      filter as EventCategory | AllCategory,
+                                    )
+                                  }
+                                >
+                                  {filter
+                                    .replace("_", " ")
+                                    .toLowerCase()
+                                    .replace(/\b\w/g, (char) =>
+                                      char.toUpperCase(),
+                                    )}
+                                </button>
+                              </Menu.Item>
+                            );
+                          });
+                        })}
                       </Menu.Items>
                     </Transition>
                   </Menu>

@@ -41,6 +41,7 @@ const LoadingScreen = () => {
       gsap.killTweensOf([container, logo, hourglass]);
     };
   }, []);
+
   return (
     <div ref={containerRef} className={styles.loadingScreen}>
       <div className="relative h-screen w-screen flex flex-col items-center justify-center">
