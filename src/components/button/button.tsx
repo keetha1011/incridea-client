@@ -17,7 +17,7 @@ const buttonVariants = cva(
           "border border-input bg-transparent text-white border-secondary-500 shadow-sm hover:bg-accent-7+00 hover:text-accent-foreground",
         secondary:
           "bg-accent-700/80 text-secondary-foreground shadow-sm hover:bg-accent-600/80 border-2 border-primary-500",
-        ghost: "hover:bg-accent-300/50 hover:text-accent-foreground",
+        ghost: "hover:bg-accent-500/10 bg-transparent border-2 border-secondary-500 backdrop-blur-sm",
         link: "text-primary underline-offset-4 hover:underline",
       },
       size: {
@@ -47,7 +47,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(
           buttonVariants({ variant, size }),
-          "hover:scale-110 transition-all duration-300",
+          "hover:scale-[105%] transition-all duration-300",
           className,
         )}
         ref={ref}

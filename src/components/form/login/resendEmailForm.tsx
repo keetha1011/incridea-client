@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { FaAngleLeft } from "react-icons/fa";
 
-import Button from "~/components/button";
+import {Button} from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { EmailVerificationDocument } from "~/generated/generated";
 
@@ -109,7 +109,7 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
               </div>
             )}
 
-            <Button type="submit" className="my-2">
+            <Button type="submit" className="my-2 font-life-craft text-lg tracking-widest">
               Send Verification Email
             </Button>
 
@@ -122,9 +122,9 @@ const ResendEmail = ({ setWhichForm, setGotDialogBox }: Props) => {
         )}
 
         <Button
-          intent={"ghost"}
+          variant={"ghost"}
+          className="font-life-craft text-lg tracking-widest"
           onClick={() => setWhichForm("signIn")}
-          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
         >
           <FaAngleLeft /> Go Back
         </Button>

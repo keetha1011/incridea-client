@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Bed, LogOut, QrCode } from "lucide-react";
+import { Bed, LogOut, QrCode, User } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -9,10 +9,12 @@ import {
   GetUserXpDocument,
   GetXpLeaderboardDocument,
 } from "~/generated/generated";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 
 const techTeamPid = [11, 15, 2, 1, 10, 9, 509, 59, 4, 8, 13, 16, 291, 74];
-function LeaderBoard({ setQr }: { setQr: () => void }) {
+function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean }) {
   const router = useRouter();
+  const session = useAuth();
 
   const [level, setLevel] = useState(0);
   const [xp, setXp] = useState(0);
@@ -141,6 +143,35 @@ function LeaderBoard({ setQr }: { setQr: () => void }) {
 
   return (
     <div className="w-full flex flex-col gap-2  items-center justify-evenly row-span-1 border-secondary-500/50 border-t-2 p-2">
+
+<div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
+          <Button
+            className="w-full hover:scale-[105%] hover:bg-primary-800/60 text-white hover:text-white sm:max-w-full max-w-sm"
+            variant={"outline"}
+            onClick={() => setQr()}
+          >
+            {!isShowQr ?(
+              <>
+                <QrCode className="stroke-secondary-200" />
+                Show QR
+              </>
+            ) 
+            :(<>
+            <User className="stroke-secondary-200" />
+            Show Name
+            </>)
+          }
+          </Button>
+          <Button
+            variant={"destructive"}
+            className="w-full hover:scale-[105%]"
+            onClick={async () => {
+              await signOut();
+            }}
+          >
+            Log out <LogOut />
+          </Button>
+        </div>
       <div className="w-full h-fit relative overflow-hidden rounded-xl border-secondary-500/50 border-2 mt-2">
         <div className={`h-2 bg-red-600 w-[${progress}%]`}></div>
       </div>
@@ -161,14 +192,24 @@ function LeaderBoard({ setQr }: { setQr: () => void }) {
         </div>
       </div>
       <div className="w-full flex flex-col gap-2 items-center">
-        <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
+        {/* TODO: Move component to the top */}
+        {/* <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
           <Button
             className="w-full hover:scale-[105%] hover:bg-primary-800/60 text-white hover:text-white sm:max-w-full max-w-sm"
             variant={"outline"}
             onClick={() => setQr()}
           >
-            <QrCode className="stroke-secondary-200" />
-            Show QR
+            {!isShowQr ?(
+              <>
+                <QrCode className="stroke-secondary-200" />
+                Show QR
+              </>
+            ) 
+            :(<>
+            <User className="stroke-secondary-200" />
+            Show Name
+            </>)
+          }
           </Button>
           <Button
             variant={"destructive"}
@@ -179,20 +220,23 @@ function LeaderBoard({ setQr }: { setQr: () => void }) {
           >
             Log out <LogOut />
           </Button>
-        </div>
+        </div> */}
+
         <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
           <Button
             onClick={() => router.push("/leaderboard")}
-            className="w-full px-1 hover:scale-[105%]"
+            className="w-full px-1"
           >
             <FaAward className="mr-1 inline-block" />
             Leaderboard
           </Button>
 
-          <Button className="py-2 w-full px-1 hover:scale-[105%]">
-            <Bed />
-            Accomodation
-          </Button>
+          {session.status === AuthStatus.AUTHENTICATED && session.user.college && session.user.college?.id !== "1" && 
+            <Button className="py-2 w-full px-1 hover:scale-[105%]">
+              <Bed />
+              Accomodation
+            </Button>
+          }
         </div>
       </div>
     </div>
