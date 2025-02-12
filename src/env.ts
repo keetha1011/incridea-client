@@ -34,7 +34,7 @@ export const env = createEnv({
    * Specify your client-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars. To expose them to the client, prefix them with
    * `NEXT_PUBLIC_`.
-  */
+   */
   client: {
     NEXT_PUBLIC_NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -48,6 +48,7 @@ export const env = createEnv({
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL: z.string().url(),
     NEXT_PUBLIC_UPLOADTHING_URL: z.string().url(),
     NEXT_PUBLIC_RAZORPAY_KEY: z.string(),
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: z.string(),
   },
 
   /**
@@ -66,6 +67,8 @@ export const env = createEnv({
     NEXT_PUBLIC_SERVER_WEBSOCKET_URL:
       process.env.NEXT_PUBLIC_SERVER_WEBSOCKET_URL,
     NEXT_PUBLIC_UPLOADTHING_URL: process.env.NEXT_PUBLIC_UPLOADTHING_URL,
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID:
+      process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -149,7 +149,7 @@ const NavItem: React.FC<NavItemProps> = ({ active, label, href }) => {
 
   return (
     <li
-      className="absolute group font-legendaire left-1/2 top-1/2 origin-left nav-item text-em-[54/16] pointer-events-auto"
+      className="absolute group font-life-craft left-1/2 top-1/2 origin-left nav-item text-em-[54/16] pointer-events-auto"
       ref={itemRef}
     >
       <a href={href}>

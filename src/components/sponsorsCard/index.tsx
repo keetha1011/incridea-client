@@ -26,7 +26,7 @@ const SponsorGearCarousel = ({
   const isAnimating = useRef(false);
 
   useEffect(() => {
-    audioRef.current = new Audio("/assets/audio/GearClockAudio.mp3");
+    audioRef.current = new Audio("/2025/audio/GearClockAudio.mp3");
     if (audioRef.current) {
       audioRef.current.volume = 0.2;
     }
@@ -39,11 +39,11 @@ const SponsorGearCarousel = ({
     });
 
     gsap.to(".scroll-helper", {
-      y: "10px",
-      duration: 1,
+      y: "-2px",
+      duration: 1.5,
       repeat: -1,
       yoyo: true,
-      ease: "power1.inOut",
+      ease: "power2.inOut",
     });
 
     gsap.to(".audio-helper", {
@@ -135,7 +135,7 @@ const SponsorGearCarousel = ({
   return (
     <div
       ref={scrollContainerRef}
-      className="relative w-full h-[calc(100vh-12rem)] overflow-y-scroll scrollbar-hide overflow-x-clip"
+      className="relative w-full h-[calc(100dvh-12rem)] overflow-y-scroll scrollbar-hide overflow-x-clip"
     >
       <div ref={containerRef} className="relative w-full">
         <div className="sticky top-[calc(12rem+40px)] lg:top-[calc(14rem+50px)] -translate-y-1/2 w-full">
@@ -154,7 +154,7 @@ const SponsorGearCarousel = ({
 
           <div
             ref={largeGearRef}
-            className="absolute left-[25%] top-[50%] md:left-[30%] md:top-[59%] lg:left-[28%] lg:top-[60%] xl:left-[33%] xl:top-[63%] -translate-y-1/2"
+            className="absolute left-[25%] top-[55%] md:left-[30%] md:top-[59%] lg:left-[28%] lg:top-[60%] xl:left-[33%] xl:top-[63%] -translate-y-1/2"
           >
             <div className="sm:w-[541px] sm:h-[541px] md:w-[581px] md:h-[581px] lg:w-[696px] lg:h-[696px]">
               <img
@@ -167,9 +167,9 @@ const SponsorGearCarousel = ({
 
           <div
             ref={cardRef}
-            className="h-[512px] sm:h-auto absolute mt-10 lg:mt-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-auto mx-auto max-w-xl"
+            className="sm:h-auto absolute mt-10 lg:mt-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-[32rem] mx-auto lg:w-[36rem]"
           >
-            <div className="bg-[#054432]/90 backdrop-blur-sm rounded-xl border-2 border-amber-500/50 shadow-lg p-4 md:p-6 hover:border-amber-500 transition-colors">
+            <div className="bg-[#054432]/90 backdrop-blur-sm rounded-xl border-2 border-amber-500/50 shadow-lg p-4 md:p-6 hover:border-amber-500 transition-colors overflow-clip">
               <div className="flex flex-col items-center gap-4">
                 {sponsors[currentIndex]?.title && (
                   <h3 className="text-center text-2xl text-amber-500 font-life-craft">
@@ -195,7 +195,9 @@ const SponsorGearCarousel = ({
                   )}
                 </div>
 
-                <div className="text-center">
+                <div
+                  className={`text-center ${sponsors[currentIndex]?.websiteURL ? "mb-6" : ""}`}
+                >
                   {sponsors[currentIndex] && (
                     <>
                       <h3 className="text-2xl text-amber-500 mb-2 font-life-craft">
@@ -216,7 +218,7 @@ const SponsorGearCarousel = ({
                     className="absolute text-sm md:text-[1rem] bottom-0 translate-y-1/2 group flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
                   >
                     Visit Website
-                    <ExternalLink className="transition-transform group-hover:translate-x-1" />
+                    <ExternalLink className="size-5" />
                   </a>
                 )}
               </div>

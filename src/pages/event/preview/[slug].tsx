@@ -24,13 +24,13 @@ import { client } from "~/lib/apollo";
 
 type Props =
   | {
-      event: EventByIdQuery["eventById"];
-      error?: never;
-    }
+    event: EventByIdQuery["eventById"];
+    error?: never;
+  }
   | {
-      event?: never;
-      error: string;
-    };
+    event?: never;
+    error: string;
+  };
 
 const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
   try {
@@ -120,7 +120,7 @@ const Page = ({
     <div className={`relative flex items-center justify-center`}>
       <Image
         alt="events-bg"
-        src="/assets/eventSlug/eventBg.jpg"
+        src="/2025/eventBg.jpg"
         height={1920}
         width={1080}
         priority

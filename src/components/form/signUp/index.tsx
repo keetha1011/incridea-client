@@ -15,8 +15,9 @@ import {
 import { BiErrorCircle } from "react-icons/bi";
 import { BsChevronExpand } from "react-icons/bs";
 
-import Button from "~/components/button";
+import {Button} from "~/components/button/button";
 import Spinner from "~/components/spinner";
+import { CONSTANT } from "~/constants";
 import {
   CollegesDocument,
   EmailVerificationDocument,
@@ -69,7 +70,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     if (collegeData?.colleges.__typename !== "QueryCollegesSuccess") return [];
 
     const nmamit = collegeData.colleges.data.find(
-      (college) => college.name === "N.M.A.M. Institute of Technology",
+      (college) => college.name === CONSTANT.COLLEGE_NAME,
     );
     const other = collegeData.colleges.data.find(
       (college) => college.name === "Other",
@@ -77,7 +78,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     const sortedColleges = [...(collegeData.colleges.data ?? [])]
       .filter((college) => {
         return (
-          college.name !== "N.M.A.M. Institute of Technology" &&
+          college.name !== CONSTANT.COLLEGE_NAME &&
           college.name !== "Other"
         );
       })
@@ -103,11 +104,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     query === ""
       ? sortedColleges
       : sortedColleges?.filter((college) => {
-          return college?.name
-            .toLowerCase()
-            .replace(/[.,\s]/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""));
-        });
+        return college?.name
+          .toLowerCase()
+          .replace(/[.,\s]/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""));
+      });
 
   const resendEmail = async () => {
     setEmailSuccess(false);
@@ -142,7 +143,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       return;
     }
 
-    if (selectedCollege?.name === "N.M.A.M. Institute of Technology") {
+    if (selectedCollege?.name === CONSTANT.COLLEGE_NAME) {
       if (userInfo.email.split("@").length > 1) {
         setError('Please only enter your USN without "@nmamit.in"');
         return;
@@ -166,7 +167,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       variables: {
         name: userInfo.name,
         email:
-          selectedCollege?.name === "N.M.A.M. Institute of Technology"
+          selectedCollege?.name === CONSTANT.COLLEGE_NAME
             ? `${userInfo.email.trim()}@nmamit.in`
             : userInfo.email,
         password: userInfo.password,
@@ -179,7 +180,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
           await emailVerificationMutation({
             variables: {
               email:
-                selectedCollege?.name === "N.M.A.M. Institute of Technology"
+                selectedCollege?.name === CONSTANT.COLLEGE_NAME
                   ? `${userInfo.email}@nmamit.in`
                   : userInfo.email,
             },
@@ -221,9 +222,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${
-        loading && "pointer-events-none cursor-not-allowed"
-      }`}
+      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${loading && "pointer-events-none cursor-not-allowed"
+        }`}
     >
       <p className="mb-2 text-center text-2xl font-semibold">
         Welcome Time Traveler
@@ -237,9 +237,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             name="name"
             type="text"
             required
-            className={`${
-              selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
-            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
+            className={`${selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
+              } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
             placeholder="Name"
           />
 
@@ -300,10 +299,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                     filteredColleges?.map((college) => (
                       <Combobox.Option
                         className={({ active }) =>
-                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
-                            active
-                              ? "bg-secondary-600 text-white"
-                              : "text-gray-900"
+                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${active
+                            ? "bg-secondary-600 text-white"
+                            : "text-gray-900"
                           }`
                         }
                         key={college?.id}
@@ -351,13 +349,12 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               onChange={handleChange}
               name="email"
               required
-              className={`${
-                selectedCollege?.name == "N.M.A.M. Institute of Technology" &&
+              className={`${selectedCollege?.name == CONSTANT.COLLEGE_NAME &&
                 "pr-28"
-              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
+                } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
               placeholder="Email"
             />
-            {selectedCollege?.name === "N.M.A.M. Institute of Technology" && (
+            {selectedCollege?.name === CONSTANT.COLLEGE_NAME && (
               <span className="absolute right-0 top-0 mr-3 mt-2">
                 @nmamit.in
               </span>
@@ -425,7 +422,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             </label>
           </div>
 
-          <Button className="mt-3">Sign Up</Button>
+          <Button className="mt-3 font-life-craft text-lg tracking-widest">Sign Up</Button>
         </>
       )}
 
@@ -451,7 +448,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         <div className="flex flex-col items-center gap-3 rounded-md bg-primary-900/70 p-4 text-center font-semibold text-secondary-600">
           <div>
             Verification email sent to {userInfo.email}
-            {selectedCollege?.name === "N.M.A.M. Institute of Technology" &&
+            {selectedCollege?.name === CONSTANT.COLLEGE_NAME &&
               "@nmamit.in"}
             <br />
             Please check your inbox.
@@ -473,17 +470,16 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
 
       <div className="relative mt-2 flex flex-col text-center">
         <hr className="my-3 border-accent-50" />
-        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-secondary-800 px-3 text-sm text-accent-50 md:px-2">
+        <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-accent-900/90 px-3 text-sm text-accent-50 md:px-2">
           Already have an account?
         </h4>
         <Button
-          intent={"ghost"}
+          variant={"ghost"}
           onClick={() => {
             setWhichForm("signIn");
           }}
           type="button"
-          className="mt-4"
-          style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
+          className="mt-4 font-life-craft text-lg tracking-widest"
         >
           Sign in instead
         </Button>
@@ -500,5 +496,4 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     </form>
   );
 };
-
 export default SignUpForm;

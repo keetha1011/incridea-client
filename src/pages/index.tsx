@@ -2,28 +2,23 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
-import { type NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import Parallax from "parallax-js";
-import { type FC, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 
-import Button from "~/components/button";
-import Spinner from "~/components/spinner";
 import { AuthStatus, useAuth } from "~/hooks/useAuth";
 import { cn } from "~/lib/utils";
 import styles from "~/components/coming-soon/shootingStars.module.css";
 import { SessionProvider } from "next-auth/react";
-import Navbar from "~/components/navbar";
 import HomeButton from "~/components/button/home";
 
 export default function Landing() {
   return (
     <SessionProvider>
-      <main className="relative h-screen overflow-hidden">
+      <main className="relative h-screen overflow-hidden select-none">
         <div className="absolute top-0">
           <HomeUi />
-          <Navbar />
-          {/* <Menu router={router} /> */}
           <HomeFooter />
         </div>
       </main>
@@ -44,11 +39,17 @@ export const HomeFooter = () => {
   return (
     <footer
       className={cn(
-        "absolute bottom-0 flex w-full flex-col gap-2 text-green-950 shadow-zinc-950 font-bold md:gap-4 pt-4 h-14 ",
+        "absolute bottom-0 flex w-full flex-col gap-2 text-green-900 font-bold text-[1rem] md:gap-4 h-14 ",
       )}
     >
       {show && (
-        <ul className="mb-5 mx-auto  flex flex-1 flex-row flex-wrap shadow-zinc-950 items-center justify-center gap-2 whitespace-nowrap text-xs sm:text-xs md:gap-5">
+        <ul
+          className="mb-5 mx-auto  flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap md:gap-5"
+          style={{
+            textShadow:
+              "0 0 3px rgba(255, 215, 0, 1), 0 0 6px rgba(255, 215, 0, 0.8), 0 0 12px rgba(255, 215, 0, 0.6)",
+          }}
+        >
           <li className="transition-colors duration-300 hover:text-green-900">
             <Link href="/privacy">Privacy Policy</Link>
           </li>
@@ -71,116 +72,24 @@ export const HomeFooter = () => {
         </ul>
       )}
       {!show && (
-        <p className="text-center text-xs mx-auto">
+        <p
+          className="text-center mx-auto"
+          style={{
+            textShadow:
+              "0 0 3px rgba(255, 215, 0, 1), 0 0 6px rgba(255, 215, 0, 0.8), 0 0 12px rgba(255, 215, 0, 0.6)",
+          }}
+        >
           <Link
             className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-green-900"
             href="/team"
           >
-            Made with <BsFillSuitHeartFill className="mx-2 fill-red-700" /> by
+            Made with &nbsp;<span className="text-red-600">❤</span>&nbsp; by
             Technical Team
           </Link>
           © Incridea 2025
         </p>
       )}
     </footer>
-  );
-};
-
-export const Menu: FC<{
-  router: NextRouter;
-}> = ({ router }) => {
-  const navItems = [
-    { href: "/events", target: "Events" },
-    { href: "/pronites", target: "Pronite" },
-    { href: "/gallery", target: "Gallery" },
-    { href: "/about", target: "About" },
-    { href: "/sponsors", target: "Sponsors" },
-    // TODO: remember to change in mainMenuModal.tsx
-  ];
-
-  const { user, loading } = useAuth();
-
-  return (
-    <div className="absolute bottom-0 left-0 flex h-full w-screen flex-col items-center justify-center overflow-x-hidden">
-      <div className="absolute bottom-10 my-24 hidden w-fit flex-col items-center gap-3 sm:flex-row md:gap-10 lg:flex">
-        <Button
-          intent={"primary"}
-          className="h-fit w-52 px-4 sm:px-12"
-          size={"xlarge"}
-          onClick={async () => {
-            if (loading) return;
-            if (user) await router.push("/profile");
-            else await router.push("/login");
-          }}
-        >
-          {loading ? (
-            <Spinner size="small" className="py-[2px]" intent={"white"} />
-          ) : user ? (
-            "Profile"
-          ) : (
-            "Register"
-          )}
-        </Button>
-        <Button
-          intent={"ghost"}
-          className="h-fit w-52 px-4 sm:px-12"
-          size={"xlarge"}
-          onClick={async () => await router.push("/explore")}
-        >
-          Explore
-        </Button>
-      </div>
-      <div className="absolute -right-8 bottom-[15%] flex h-fit w-fit flex-col space-y-5 lg:absolute">
-        <h3
-          className={cn(
-            "hidden text-center text-2xl tracking-widest text-white sm:text-4xl md:mb-5 md:block",
-            // VikingHell.className,
-          )}
-        >
-          Menu
-        </h3>
-        {
-          <>
-            <Button
-              intent={"ghost"}
-              className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
-              size={"xlarge"}
-              onClick={async () => {
-                if (loading) return;
-                if (user) await router.push("/profile");
-                else await router.push("/login");
-              }}
-            >
-              {loading ? (
-                <Spinner size="small" className="py-[2px]" />
-              ) : user ? (
-                "Profile"
-              ) : (
-                "Register"
-              )}
-            </Button>
-            <Button
-              intent={"ghost"}
-              className="block w-52 justify-center !bg-primary-800/70 px-12 md:w-80 md:justify-end md:px-16 lg:hidden"
-              size={"xlarge"}
-              onClick={async () => await router.push("/explore")}
-            >
-              Explore
-            </Button>
-          </>
-        }
-        {navItems.map((e, i) => (
-          <Link key={i} href={e.href}>
-            <Button
-              className="w-52 justify-center px-12 md:w-80 md:justify-end md:px-16"
-              size={"xlarge"}
-            >
-              {e.target}
-            </Button>
-          </Link>
-        ))}
-      </div>
-    </div>
   );
 };
 
@@ -365,7 +274,7 @@ export const HomeUi = () => {
         </div>
         {/* <div data-depth="0.05" className="absolute w-screen h-screen z-[19]">
           <Image
-            src={`/assets/landing/EOEShadow.webp`}
+            src={`/2025/landing/EOEShadow.webp`}
             priority
             width={640}
             height={640}

@@ -7,7 +7,6 @@ import Loader from "~/components/loader";
 import LoginCard from "~/components/login/card";
 import EasterBomb from "~/components/login/easterBomb";
 import FallingItem from "~/components/login/fallingItem";
-import LoginPortal from "~/components/login/portal";
 import { env } from "~/env";
 import { Role } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
@@ -93,7 +92,7 @@ const SignIn: NextPage = () => {
   ) => void = (newForm) => {
     if (whichForm === newForm || transitioning) return;
 
-    const audio1 = new Audio("/assets/audio/gearsounds.mp3");
+    const audio1 = new Audio("/2025/audio/gearsounds.mp3");
     audio1
       .play()
       .then(() => {
@@ -219,10 +218,8 @@ const SignIn: NextPage = () => {
           <div
             className={`relative flex min-h-[73vh] h-screen flex-col justify-between [perspective:500px] [transform-style:preserve-3d] overflow-hidden`}
           >
-            {/* <LoginPortal isTop={true} /> */}
-
             {/* TODO: Change the time delay here according to time delay set for free-fall animation in tailwind.config.js */}
-            {/*
+            {/* 
         <div className="absolute -top-[10vh] left-2/4 z-30 h-0 w-[65vw] -translate-x-2/4 md:w-[440px]">
           <EasterBomb />
         </div> */}

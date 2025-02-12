@@ -195,39 +195,39 @@ const EditEvent: FC<{
               </div>
               {(eventType === EventType.Team ||
                 eventType === EventType.TeamMultipleEntry) && (
-                <div className="grow basis-full md:basis-1/3">
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Team Size
-                  </label>
+                  <div className="grow basis-full md:basis-1/3">
+                    <label className="mb-2 block text-sm font-medium text-white">
+                      Team Size
+                    </label>
 
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      id="minTeamSize"
-                      className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-                      placeholder="Min Team Size..."
-                      value={minTeamSize}
-                      onChange={(e) =>
-                        setMinTeamSize(Number(e.target.value) || 0)
-                      }
-                      min={1}
-                    />
-                    <span className="text-white">to</span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        id="minTeamSize"
+                        className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                        placeholder="Min Team Size..."
+                        value={minTeamSize}
+                        onChange={(e) =>
+                          setMinTeamSize(Number(e.target.value) || 0)
+                        }
+                        min={1}
+                      />
+                      <span className="text-white">to</span>
 
-                    <input
-                      type="number"
-                      id="maxTeamSize"
-                      className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-                      placeholder="Max Team Size..."
-                      min={1}
-                      value={maxTeamSize}
-                      onChange={(e) =>
-                        setMaxTeamSize(Number(e.target.value) || 0)
-                      }
-                    />
+                      <input
+                        type="number"
+                        id="maxTeamSize"
+                        className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                        placeholder="Max Team Size..."
+                        min={1}
+                        value={maxTeamSize}
+                        onChange={(e) =>
+                          setMaxTeamSize(Number(e.target.value) || 0)
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
 
             <div className="mb-6 flex flex-wrap justify-between gap-6">
@@ -236,7 +236,7 @@ const EditEvent: FC<{
                   Banner
                 </label>
                 <UploadButton
-                  endpoint="eventUploader"
+                  endpoint="event"
                   onUploadBegin={() => {
                     setUploading(true);
                   }}

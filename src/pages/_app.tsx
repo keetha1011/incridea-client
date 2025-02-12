@@ -15,6 +15,7 @@ import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
 import BackGroundGradient from "~/components/layout/background";
 import { LoaderProvider } from "~/components/loader/loaderContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
@@ -116,22 +117,26 @@ export default function App({
   }, [router, handleLoadingStart, handleLoadingComplete]);
   const shouldRenderNavbar =
     !router.pathname.startsWith("/explore") &&
-    !router.pathname.startsWith("/theme");
+    !router.pathname.startsWith("/theme") &&
+    !router.pathname.startsWith("/coming-soon");
 
   return (
     <>
+      <GoogleAnalytics
+        gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ?? ""}
+      />
       <AnimatePresence mode="wait">
         {isLoading && <LoadingScreen />}
       </AnimatePresence>
 
       <ApolloProvider client={apolloClient}>
+        <Toaster />
         <HeadComponent
           title="Incridea"
           description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
         />
         <LoaderProvider>
           <BackGroundGradient>
-            <Toaster />
             <div
               className={cn(
                 trap.variable,

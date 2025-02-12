@@ -49,7 +49,7 @@ const LoginCard: FunctionComponent<LoginCardProps> = ({
       style={{ ...cardStyle }}
     >
       <div className="relative size-full">
-        <div className="absolute left-2/4 top-0 -translate-x-2/4 max-h-[75vh] min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl px-3 py-3 text-accent-100 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  lg:max-h-[76vh] bg-gradient-to-br from-green-800/95 to-green-700/80">
+        <div className="absolute left-2/4 top-0 -translate-x-2/4 min-w-[80vw] max-w-[80vw] overflow-y-auto rounded-xl px-3 py-3 text-accent-100 transition-all ease-in-out sm:min-w-[350px] sm:max-w-[350px]  bg-gradient-to-br from-green-800/95 to-green-700/80">
           {whichForm === "signIn" ? (
             <SignInForm
               redirectUrl={redirectUrl}

@@ -49,14 +49,19 @@ const Register: NextPage = () => {
             <li>
               {" "}
               Students of <u>NMAM Institute of Technology</u>, who pays{" "}
-              <span className="font-semibold">₹{CONSTANT.REG_AMOUNT_IN_INR.INTERNAL}(+2.22% Razorpay charges)</span> will have access to
-              all events and pronites
+              <span className="font-semibold">
+                ₹{CONSTANT.REG_AMOUNT_IN_INR.INTERNAL}(+2.22% Razorpay charges)
+              </span>{" "}
+              will have access to all events and pronites
             </li>
             <li>
               {" "}
-              Students of external <u>Engineering and Sister Nitte colleges</u>, who
-              pays <span className="font-semibold">₹{CONSTANT.REG_AMOUNT_IN_INR.EXTERNAL}(+2.22% Razorpay charges)</span> will have access
-              to all events and pronites.
+              Students of external <u>Engineering and Sister Nitte colleges</u>,
+              who pays{" "}
+              <span className="font-semibold">
+                ₹{CONSTANT.REG_AMOUNT_IN_INR.EXTERNAL}(+2.22% Razorpay charges)
+              </span>{" "}
+              will have access to all events and pronites.
             </li>
           </ol>
           <div className="mt-4">
@@ -68,18 +73,18 @@ const Register: NextPage = () => {
             </Link>{" "}
             about the guidelines and regulations
           </div>
-          {
-            CONSTANT.REGISTRATIONS_OPEN ?
-
-            <Button className="mb-4 mt-8 flex gap-2"
-
-            onClick={() => makePayment()}
-            >Register Now</Button>
-          :
-<h2 className="mt-2 text-xs text-gray-100 md:text-sm">
-            Registration are closed.
+          {CONSTANT.REGISTRATIONS_OPEN ? (
+            <Button
+              className="mb-4 mt-8 flex gap-2"
+              onClick={() => makePayment()}
+            >
+              Register Now
+            </Button>
+          ) : (
+            <h2 className="mt-2 text-xs text-gray-100 md:text-sm">
+              Registration are closed.
             </h2>
-          }
+          )}
           <h1 className="mt-2 text-xs text-gray-100 md:text-sm">
             By clicking the above button, you agree to the mentioned terms and
             conditions

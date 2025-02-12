@@ -3,7 +3,6 @@ import Image from "next/image";
 
 import ResetPassword from "~/components/form/resetPassword";
 import { useEffect, useState } from "react";
-import LoginPortal from "~/components/login/portal";
 import { env } from "~/env";
 
 const Reset: NextPage = () => {
