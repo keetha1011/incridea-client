@@ -15,6 +15,7 @@ import { cn } from "~/lib/utils";
 import "~/styles/globals.css";
 import BackGroundGradient from "~/components/layout/background";
 import { LoaderProvider } from "~/components/loader/loaderContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
@@ -130,6 +131,9 @@ export default function App({
 
   return (
     <>
+      <GoogleAnalytics
+        gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID ?? ""}
+      />
       <AnimatePresence mode="wait">
         {isLoading && <LoadingScreen />}
       </AnimatePresence>

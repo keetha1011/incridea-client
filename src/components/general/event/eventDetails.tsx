@@ -1,15 +1,16 @@
-import React from "react";
-
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.bubble.css";
 import styles from "./eventDetails.module.css";
 
-function EventDetails({ details }: { details: string }) {
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
+export default function EventDetails({ details }: { details: string }) {
   return (
-    // TODO(Omkar): check if styles are getting added properly, urgent
-    <section
+    <ReactQuill
+      value={details}
+      readOnly={true}
+      theme="bubble"
       className={`${styles.markup} event-description w-full`}
-      dangerouslySetInnerHTML={{ __html: details }}
-    ></section>
+    />
   );
 }
-
-export default EventDetails;
