@@ -13,10 +13,11 @@ import PublishEventModal from "./publishEventModal";
 import RoundsDone from "./roundsDone";
 import SearchUsersModal from "./searchUsersModal";
 import ViewEvent from "./viewEventModal";
+import RegistrationToggle from "~/components/general/dashboard/admin/registrationToggle";
 
 const AdminTab: FC<{
   AdminId: string;
-}> = ({}) => {
+}> = ({ }) => {
   const first = 200;
   const { data: branches, loading: branchesLoading } = useQuery(
     BranchesDocument,
@@ -33,12 +34,15 @@ const AdminTab: FC<{
     <>
       <div>
         {/* Admin Header */}
-        <div className="mt-6 flex flex-row items-center justify-start text-center md:m-3 md:justify-end">
-          <div className="mx-3 flex items-center justify-center">
-            <SearchUsersModal />
-          </div>
-          <div className="flex items-center justify-center">
-            <CollegesModal />
+        <div className="mt-6 flex flex-col gap-4 md:flex-row items-center justify-between text-center md:m-3">
+          <RegistrationToggle />
+          <div className="flex gap-4">
+            <div className="mx-3 flex items-center justify-center">
+              <SearchUsersModal />
+            </div>
+            <div className="flex items-center justify-center">
+              <CollegesModal />
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-1 md:flex-row md:justify-between">
@@ -79,11 +83,10 @@ const AdminTab: FC<{
                     <RoundsDone eventId={event?.node?.id} />
                   </h1>
                   <h1
-                    className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${
-                      event?.node?.published
-                        ? "border-green-500 text-green-500"
-                        : "border-red-500 text-red-500"
-                    }`}
+                    className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${event?.node?.published
+                      ? "border-green-500 text-green-500"
+                      : "border-red-500 text-red-500"
+                      }`}
                   >
                     {event?.node.published ? "Published" : "Pending"}
                   </h1>

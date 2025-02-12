@@ -9,7 +9,7 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiErrorCircle } from "react-icons/bi";
 
-import Button from "~/components/button";
+import {Button} from "~/components/button/button";
 import Spinner from "~/components/spinner";
 
 type SignInFormProps = {
@@ -127,7 +127,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           Forgot your password?
         </button>
 
-        <Button intent={`primary`} type="submit" className="mx-1">
+        <Button variant={"default"} type="submit" className="mx-1 text-lg font-life-craft tracking-widest">
           Login
         </Button>
 
@@ -157,17 +157,15 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
 
         <div className="relative mt-3 flex flex-col text-center md:mt-2">
           <hr className="my-3 border-accent-50" />
-          <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-secondary-800 px-3 py-[1px] text-sm text-accent-50">
+          <h4 className="absolute right-1/2 top-0.5 mx-auto w-max translate-x-1/2 rounded-full bg-accent-900/90 px-3 py-[1px] text-sm text-accent-50">
             New here?
           </h4>
           <Button
             onClick={() => {
               setWhichForm("signUp");
             }}
-            type="button"
-            intent={"ghost"}
-            className="mx-1 mt-5"
-            style={{ backgroundColor: "#00995e", color: "#f7e9d4" }}
+            variant={"ghost"}
+            className="mx-1 mt-5 font-life-craft text-lg tracking-widest"
           >
             Sign up instead
           </Button>

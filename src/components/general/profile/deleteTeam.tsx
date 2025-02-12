@@ -4,16 +4,16 @@ import { BiTrashAlt } from "react-icons/bi";
 import { FaSignOutAlt } from "react-icons/fa";
 
 import { Button } from "~/components/button/button";
-import createToast from "~/components/toast";
-import { DeleteTeamDocument } from "~/generated/generated";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogClose,
 } from "~/components/modal/modal";
+import createToast from "~/components/toast";
+import { DeleteTeamDocument } from "~/generated/generated";
 
 const DeleteTeamModal: FC<{
   teamId: string;
@@ -60,7 +60,7 @@ const DeleteTeamModal: FC<{
       </div>
 
       <Dialog open={showModal} onOpenChange={setShowModal}>
-        <DialogContent>
+        <DialogContent className="z-50">
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>
             <DialogDescription>
@@ -72,7 +72,7 @@ const DeleteTeamModal: FC<{
               This cannot be undone
             </DialogDescription>
           </DialogHeader>
-          <div className="w-full flex flex-row flex-nowrap justify-center gap-4">
+          <div className="flex w-full flex-row flex-nowrap justify-center gap-4">
             <DialogClose asChild>
               <Button variant={"destructive"}>Cancel</Button>
             </DialogClose>

@@ -67,7 +67,7 @@ const UserEvents: FC<{
             </Button>
           </div>
         ) : (
-          <div className="w-full max-w-6xl mx-auto mt-8 h-full overflow-auto grid 2xl:grid-cols-3 lg:grid-cols-2 px-2 gap-y-6 pb-6 gap-x-2">
+          <div className="w-full max-w-6xl mx-auto mt-8 h-full md:max-h-[65vh] overflow-auto grid 2xl:grid-cols-3 lg:grid-cols-2 px-2 gap-y-6 pb-6 gap-x-2">
             {events?.registeredEvents.__typename ===
               "QueryRegisteredEventsSuccess" &&
               events.registeredEvents.data.map((event, idx) => {
@@ -77,24 +77,6 @@ const UserEvents: FC<{
                 return (
                   <>
                     <EventCard
-                      isCompleted={isCompleted}
-                      teams={event.teams}
-                      event={event}
-                      userId={userId}
-                    />
-                     <EventCard
-                      isCompleted={isCompleted}
-                      teams={event.teams}
-                      event={event}
-                      userId={userId}
-                    />
-                     <EventCard
-                      isCompleted={isCompleted}
-                      teams={event.teams}
-                      event={event}
-                      userId={userId}
-                    />
-                     <EventCard
                       isCompleted={isCompleted}
                       teams={event.teams}
                       event={event}

@@ -36,6 +36,7 @@ import qrcodeDataURI from "~/utils/qr";
 import { idToPid } from "~/utils/id";
 import { QueryResult } from "@apollo/client";
 import { useAuth } from "~/hooks/useAuth";
+import { CONSTANT } from "~/constants";
 
 type BadgeGLTF = GLTF &
   ObjectMap & {
@@ -153,8 +154,8 @@ function Band({
     angularDamping: 2,
     linearDamping: 2,
   };
-  const { nodes, materials } = useGLTF("/2025/3d/profile_tag.glb") as BadgeGLTF;
-  const texture = useTexture("/2025/badgelogo.png");
+  const { nodes, materials } = useGLTF(`/${CONSTANT.YEAR}/3d/profile_tag.glb`) as BadgeGLTF;
+  const texture = useTexture(`/${CONSTANT.YEAR}/badgelogo.png`);
   const { width, height } = useThree((state) => state.size);
   const [curve] = useState(
     () =>
@@ -373,7 +374,7 @@ function Band({
                         justifyContent="center"
                       >
                         <ThreeImage
-                          src={"assets/png/ryoko.png"}
+                          src={user.profileImage ?? "assets/png/ryoko.png"}
                           width={130}
                           aspectRatio={0.7}
                           borderRadius={6}
@@ -484,7 +485,7 @@ function Band({
   );
 }
 
-useGLTF.preload("/2025/3d/profile_tag.glb");
+useGLTF.preload(`/${CONSTANT.YEAR}/3d/profile_tag.glb`);
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 declare module "@react-three/fiber" {

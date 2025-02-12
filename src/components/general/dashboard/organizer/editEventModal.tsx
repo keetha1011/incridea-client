@@ -4,13 +4,13 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineEdit } from "react-icons/ai";
 import "react-quill/dist/quill.snow.css";
+import styles from "src/components/general/event/eventDetails.module.css";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
 import { UploadButton } from "~/components/uploadthing/button";
-
 import {
   type EventByOrganizerQuery,
   EventCategory,
@@ -125,7 +125,7 @@ export default function EditEventModal({
                 id="name"
                 onChange={(e) => setName(e.target.value)}
                 value={name}
-                className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
                 placeholder="Event Name..."
                 required
               />
@@ -140,6 +140,41 @@ export default function EditEventModal({
               <ReactQuill
                 theme="snow"
                 value={editorState}
+                className={`${styles.markup} event-description w-full`}
+                modules={{
+                  toolbar: {
+                    container: [
+                      [{ header: "1" }, { header: "2" }, { font: [] }],
+                      [{ size: [] }],
+                      ["bold", "italic", "underline", "strike", "blockquote"],
+                      [
+                        { list: "ordered" },
+                        { list: "bullet" },
+                        { indent: "-1" },
+                        { indent: "+1" },
+                      ],
+                      ["link", "image", "video"],
+                      ["clean"],
+                    ],
+                  },
+                }}
+                formats={[
+                  "header",
+                  "font",
+                  "size",
+                  "bold",
+                  "italic",
+                  "underline",
+                  "strike",
+                  "blockquote",
+                  "list",
+                  "bullet",
+                  "indent",
+                  "link",
+                  "image",
+                  "video",
+                ]}
+                style={{ color: "white" }}
                 onChange={(value) => {
                   setEditorState(value);
                 }}
@@ -159,7 +194,7 @@ export default function EditEventModal({
                   required
                   onChange={(e) => setVenue(e.target.value)}
                   value={venue ?? ""}
-                  className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                  className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
                   placeholder="LC01"
                 />
               </div>
@@ -171,10 +206,14 @@ export default function EditEventModal({
                   id="eventType"
                   value={eventType}
                   onChange={(e) => setEventType(e.target.value as EventType)}
-                  className="h-10 w-full rounded-lg border border-gray-600 bg-gray-600 px-4 pr-16 text-sm ring-gray-500 focus:outline-none focus:ring-2"
+                  className="h-10 w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 px-4 pr-16 text-sm ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
                 >
                   {Object.values(EventType).map((type) => (
-                    <option key={type} value={type}>
+                    <option
+                      key={type}
+                      value={type}
+                      className="bg-[#D79128] text-black"
+                    >
                       {type}
                     </option>
                   ))}
@@ -188,10 +227,14 @@ export default function EditEventModal({
                   id="category"
                   value={category as string}
                   onChange={(e) => setCategory(e.target.value as EventCategory)}
-                  className="h-10 w-full rounded-lg border border-gray-600 bg-gray-600 px-4 pr-16 text-sm ring-gray-500 focus:outline-none focus:ring-2"
+                  className="h-10 w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 px-4 pr-16 text-sm ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
                 >
                   {Object.values(EventCategory).map((type) => (
-                    <option key={type} value={type}>
+                    <option
+                      key={type}
+                      value={type}
+                      className="bg-white text-black"
+                    >
                       {type}
                     </option>
                   ))}
@@ -211,46 +254,46 @@ export default function EditEventModal({
                   type="number"
                   id="fees"
                   onChange={(e) => setFees(Number(e.target.value) || 0)}
-                  className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                  className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
                   placeholder="Entry Fees..."
                   defaultValue={event.fees}
                 />
               </div>
               {(eventType === EventType.Team ||
                 eventType === EventType.TeamMultipleEntry) && (
-                  <div className="grow basis-full md:basis-1/3">
-                    <label className="mb-2 block text-sm font-medium text-white">
-                      Team Size
-                    </label>
+                <div className="grow basis-full md:basis-1/3">
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Team Size
+                  </label>
 
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="number"
-                        id="minTeamSize"
-                        className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-                        placeholder="Min Team Size..."
-                        value={minTeamSize}
-                        onChange={(e) =>
-                          setMinTeamSize(Number(e.target.value) || 0)
-                        }
-                        min={1}
-                      />
-                      <span className="text-white">to</span>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      id="minTeamSize"
+                      className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
+                      placeholder="Min Team Size..."
+                      value={minTeamSize}
+                      onChange={(e) =>
+                        setMinTeamSize(Number(e.target.value) || 0)
+                      }
+                      min={1}
+                    />
+                    <span className="text-white">to</span>
 
-                      <input
-                        type="number"
-                        id="maxTeamSize"
-                        className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-                        placeholder="Max Team Size..."
-                        min={1}
-                        value={maxTeamSize}
-                        onChange={(e) =>
-                          setMaxTeamSize(Number(e.target.value) || 0)
-                        }
-                      />
-                    </div>
+                    <input
+                      type="number"
+                      id="maxTeamSize"
+                      className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
+                      placeholder="Max Team Size..."
+                      min={1}
+                      value={maxTeamSize}
+                      onChange={(e) =>
+                        setMaxTeamSize(Number(e.target.value) || 0)
+                      }
+                    />
                   </div>
-                )}
+                </div>
+              )}
             </div>
 
             <div className="mb-6 flex flex-wrap justify-between gap-6">
@@ -309,7 +352,7 @@ export default function EditEventModal({
                   <input
                     type="number"
                     id="maxTeams"
-                    className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                    className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
                     placeholder="Max Teams..."
                     min={1}
                     value={maxTeams}
@@ -319,7 +362,7 @@ export default function EditEventModal({
                     }}
                   />
                 ) : (
-                  <div className="block rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 opacity-50 ring-gray-500 focus:outline-none focus:ring-2">
+                  <div className="block rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 opacity-50 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2">
                     No Limit
                   </div>
                 )}

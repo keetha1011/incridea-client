@@ -2,6 +2,11 @@ import React, { useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
 import styles from "./loader.module.css";
+import { CONSTANT } from "~/constants";
+
+// Images in public folder for faster loading
+const hourglass = `/${CONSTANT.YEAR}/loader/hourglass.webp`;
+const logo = `/${CONSTANT.YEAR}/loader/Echoes_of_Eternity_Logo.webp`;
 
 const LoadingScreen = () => {
   const containerRef = useRef(null);
@@ -36,6 +41,7 @@ const LoadingScreen = () => {
       gsap.killTweensOf([container, logo, hourglass]);
     };
   }, []);
+
   return (
     <div ref={containerRef} className={styles.loadingScreen}>
       <div className="relative h-screen w-screen flex flex-col items-center justify-center">
@@ -43,8 +49,8 @@ const LoadingScreen = () => {
           <div className={styles.particlesContainer}></div>
         </div>
         <div ref={hourglassRef} className={styles.hourglass}>
-          <img
-            src="/2025/loader/hourglass.png"
+          <Image
+            src={hourglass}
             width={150}
             height={150}
             alt=""
@@ -54,8 +60,8 @@ const LoadingScreen = () => {
           ref={logoRef}
           className="absolute bottom-[22%] md:bottom-[20%] xl:-translate-1/2"
         >
-          <img
-            src="/2025/loader/Echoes_of_Eternity_Logo.png"
+          <Image
+            src={logo}
             width={300}
             height={300}
             alt="Echoes of Eternity Logo"

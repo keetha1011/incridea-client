@@ -5,7 +5,9 @@ import { type ComponentProps } from "react";
 import { env } from "~/env";
 
 const UploadDropzone = (
-  props: ComponentProps<ReturnType<typeof generateUploadDropzone>>,
+  props: ComponentProps<ReturnType<typeof generateUploadDropzone>> & {
+    customId?: string;
+  },
 ) => {
   const Comp = generateUploadDropzone({
     url: `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadthing`,
@@ -16,6 +18,7 @@ const UploadDropzone = (
       {...props}
       headers={async () => ({
         Authorization: (await getSession())?.accessToken ?? "",
+        ...(props.customId ? { custom_id: props.customId } : {}),
       })}
     />
   );

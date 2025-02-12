@@ -1,11 +1,12 @@
 import { Calendar, MapPin, Users } from "lucide-react";
 import { useRouter } from "next/router";
-import React from "react";
+import { useEffect, useRef } from "react";
 
 import { env } from "~/env";
 import { type PublishedEventsQuery } from "~/generated/generated";
 import { generateEventUrl } from "~/utils/url";
 import Image from "next/image";
+import gsap from "gsap";
 
 const Event = ({
   data,
@@ -64,18 +65,44 @@ const Event = ({
       },
     ];
   };
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const shineRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const shine = shineRef.current;
+
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo(
+      shine,
+      { x: "-100%" },
+      { x: "100%", duration: 0.5, ease: "power1.inOut" },
+    );
+
+    const button = buttonRef.current;
+    if (button) {
+      button.addEventListener("mouseenter", () => {
+        tl.play(0); // Ensuring it's not returning a Promise
+      });
+
+      return () => {
+        button.removeEventListener("mouseenter", () => {
+          tl.play(0);
+        });
+      };
+    }
+  }, []);
 
   return (
     <div
       data-scroll
       onClick={() => router.push(generateEventUrl(data.name, data.id))}
-      className={`relative flex w-full max-w-[80%] sm:max-w-sm md:max-w-md cursor-pointer flex-col mb-28 rounded-2xl transition-transform duration-300 hover:scale-[1.02] sm:mt-10 md:mt-20 mx-auto sm:mx-0`}
+      className={`relative flex w-full max-w-[80%] sm:max-w-sm md:max-w-md cursor-pointer flex-col rounded-2xl transition-transform duration-300 hover:scale-[1.02] sm:mt-10 mx-auto sm:mx-0`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 145.68 254"
         className="w-full h-full object-cover rounded-2xl"
-        style={{ transform: "scale(1)" }}
+        style={{ transform: "scale(0.95)" }}
       >
         <defs>
           <style>{`
@@ -177,19 +204,25 @@ const Event = ({
             >
               <g>
                 <div
-                  className="h-5 w-[136px] bg-white/90 flex justify-center items-center relative"
+                  className="h-5 w-[136px] bg-gradient-to-tr bg-opacity-50 from-primary-950 via-primary-900/90 to-primary-950 flex justify-center items-center relative"
                   style={{
                     clipPath:
                       "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
                     // boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.8)", // Simulates a border
                   }}
+                  ref={buttonRef}
                 >
                   <text
-                    className="text-black font-life-craft tracking-widest italic font-semibold text-sm uppercase cursor-pointer mt-1"
+                    className="text-white font-life-craft tracking-widest italic font-semibold text-sm uppercase cursor-pointer mt-1"
                     textAnchor="middle"
                     fill="#E6C98D"
                   >
                     Register
+                    <div
+                      ref={shineRef}
+                      className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent z-10"
+                      style={{ pointerEvents: "none" }}
+                    />
                   </text>
                 </div>
               </g>

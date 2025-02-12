@@ -165,12 +165,12 @@ const LeaderBoard: NextPage = () => {
         <div className="relative min-h-screen py-32">
           <div className="flex flex-col justify-center items-center py-6">
             <h1 className="font-VikingHell text-white py-6 text-4xl font-bold">
-              XP Leaderboard
+              Timestone Leaderboard
             </h1>
 
             <h3 className="mx-2  text-center text-xl text-white md:mx-0 md:text-xl ">
-              Embark on an XP Quest: Uncover Hidden Timestones and Level Up Your
-              Experience!
+              Uncover Hidden Timestones and Level Up Your
+              Experience to win Exciting Prizes!
             </h3>
           </div>
 
@@ -184,7 +184,7 @@ const LeaderBoard: NextPage = () => {
             <h1 className="basis-1/4 text-center">Position</h1>
             <h1 className="basis-1/4 text-center">Player Id</h1>
             <h1 className="basis-1/4 text-center">Player Name</h1>
-            <h1 className="basis-1/4 text-center">Xp Gained</h1>
+            <h1 className="basis-1/4 text-center">Timestones Gained</h1>
           </div>
           {leaderboardLoading && (
             <div className="mt-10 flex items-center justify-center">
@@ -241,7 +241,7 @@ const LeaderBoard: NextPage = () => {
             {sortedLeaderboard.length === 0 && !leaderboardLoading && (
               <div className="mx-3 mt-2 flex items-center justify-center">
                 <span className="text-base text-gray-300 md:text-xl">
-                  The XP leaderboard is currently as empty as a blank canvas,
+                  The Timestone leaderboard is currently as empty as a blank canvas,
                   waiting for the vibrant colors of your achievements to fill it
                   up!
                 </span>

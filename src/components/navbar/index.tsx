@@ -144,21 +144,8 @@ const Navbar = () => {
                 : user.role === Role.User
                   ? "REGISTER"
                   : pathname === "/profile"
-                    ? user.role !== Role.Participant ?  "DASHBOARD"
- : "HOME"                    : "PROFILE"}
+                    ? user.role !== Role.Participant ?  "DASHBOARD" : "HOME" : "PROFILE"}
             </Link>
-            {/* {user?.role === Role.User ? (
-              <Link href="/profile" ref={textRef}>
-                PROFILE
-              </Link>
-            ) : (
-              <Link
-                href={"/register"}
-                ref={textRef}
-                className="absolute scale-[60%] translate-y-1">
-                REGISTER
-              </Link>
-            )} */}
           </div>
         </button>
 

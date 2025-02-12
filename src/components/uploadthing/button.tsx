@@ -1,11 +1,11 @@
 import { generateUploadButton } from "@uploadthing/react";
 import { getSession } from "next-auth/react";
-import { type ComponentProps } from "react";
+import { memo, type ComponentProps } from "react";
 
 import { env } from "~/env";
 
-const UploadButton = (
-  props: ComponentProps<ReturnType<typeof generateUploadButton>>,
+const UploadButton = memo((
+  props: ComponentProps<ReturnType<typeof generateUploadButton>> & { customId?: string },
 ) => {
   const Comp = generateUploadButton({
     url: `${env.NEXT_PUBLIC_SERVER_HTTP_URL}/uploadthing`,
@@ -16,9 +16,12 @@ const UploadButton = (
       {...props}
       headers={async () => ({
         Authorization: (await getSession())?.accessToken ?? "",
+        ...(props.customId ? { custom_id: props.customId } : {})
       })}
     />
   );
-};
+})
+
+UploadButton.displayName = "UploadButton";
 
 export { UploadButton };

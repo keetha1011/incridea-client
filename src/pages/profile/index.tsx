@@ -15,6 +15,8 @@ import { env } from "~/env";
 import Link from "next/link";
 import LeaderBoard from "~/components/profile/LeaderBoard";
 import { Button } from "~/components/button/button";
+import { UserPen } from "lucide-react";
+import AvatarModal from "~/components/profile/avatarModal";
 
 const Profile: NextPage = () => {
   const { error, user: user, loading } = useAuth();
@@ -22,6 +24,7 @@ const Profile: NextPage = () => {
   const router = useRouter();
   const [bombXp, setBombXp] = useState<boolean>(false);
   const [showQr, setShowQr] = useState<boolean>(false);
+  const [showAvatarModal, setShowAvatarModal] = useState<boolean>(false)
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
       levelId: "2",
@@ -102,10 +105,15 @@ const Profile: NextPage = () => {
     >
       <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8 h-full pb-8 relative">
         <div className="md:w-[30rem] w-full h-[85vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col gap-0 md:sticky md:top-[10%]">
-          <div className="w-full h-full">
+          <div className="w-full h-full relative">
+            <AvatarModal showModal={showAvatarModal} setShowModal={setShowAvatarModal}/>
+            <Button onClick={() => setShowAvatarModal(!showAvatarModal)} className="border-none size-10 rounded-md border-secondary-500 stroke-secondary-500 absolute top-5 left-5 z-50">
+              <UserPen className="scale-[200%]"/>
+            </Button>
             <ProfileCard user={user} showQR={showQr} />
           </div>
           <LeaderBoard
+            isShowQr={showQr}
             setQr={() => {
               setShowQr(!showQr);
             }}

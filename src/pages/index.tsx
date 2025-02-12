@@ -16,7 +16,7 @@ import HomeButton from "~/components/button/home";
 export default function Landing() {
   return (
     <SessionProvider>
-      <main className="relative h-screen overflow-hidden">
+      <main className="relative h-screen overflow-hidden select-none">
         <div className="absolute top-0">
           <HomeUi />
           <HomeFooter />
@@ -295,6 +295,7 @@ export const HomeUi = () => {
                     await router.push("/login");
                   }
                 }}
+                variant="default"
               >
                 {session.status === AuthStatus.LOADING
                   ? "Loading..."
@@ -303,7 +304,10 @@ export const HomeUi = () => {
                     : "Login"}
               </HomeButton>
 
-              <HomeButton onClick={async () => await router.push("/explore")}>
+              <HomeButton
+                onClick={async () => await router.push("/explore")}
+                variant="default"
+              >
                 Explore
               </HomeButton>
             </div>

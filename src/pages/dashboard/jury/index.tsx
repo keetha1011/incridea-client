@@ -10,6 +10,7 @@ import { IoPeopleOutline } from "react-icons/io5";
 
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
+import { CONSTANT } from "~/constants";
 import {
   EventCategory,
   PublishedEventsDocument,
@@ -81,10 +82,10 @@ const Jury = () => {
     if (currentDayFilter !== "All") {
       const filteredDay = new Date(
         currentDayFilter === "DAY 1"
-          ? "2024-02-22"
+          ? CONSTANT.DATE.INCRIDEA.DAY1
           : currentDayFilter === "DAY 2"
-            ? "2024-02-23"
-            : "2024-02-24",
+            ? CONSTANT.DATE.INCRIDEA.DAY2
+            : CONSTANT.DATE.INCRIDEA.DAY3,
       ).getDate();
       tempFilteredEvents = tempFilteredEvents?.filter((event) =>
         event.rounds.some((round) => round.date?.getDate() === filteredDay),
@@ -128,10 +129,10 @@ const Jury = () => {
             if (
               new Date(
                 currentDayFilter === "DAY 1"
-                  ? "2024-02-22"
+                  ? CONSTANT.DATE.INCRIDEA.DAY1
                   : currentDayFilter === "DAY 2"
-                    ? "2024-02-23"
-                    : "2024-02-24",
+                    ? CONSTANT.DATE.INCRIDEA.DAY2
+                    : CONSTANT.DATE.INCRIDEA.DAY3
               ).getDate() ===
               winner.event.rounds[
                 winner.event.rounds.length - 1
@@ -175,10 +176,10 @@ const Jury = () => {
             if (
               new Date(
                 currentDayFilter === "DAY 1"
-                  ? "2024-02-22"
+                  ? CONSTANT.DATE.INCRIDEA.DAY1
                   : currentDayFilter === "DAY 2"
-                    ? "2024-02-23"
-                    : "2024-02-24",
+                    ? CONSTANT.DATE.INCRIDEA.DAY2
+                    : CONSTANT.DATE.INCRIDEA.DAY3
               ).getDate() ===
               winner.event.rounds[
                 winner.event.rounds.length - 1
@@ -221,9 +222,8 @@ const Jury = () => {
     const a = document.createElement("a");
     a.style.display = "none";
     a.href = url;
-    a.download = `${currentDayFilter} ${
-      currentBranchFilter === "ALL" ? "Branch" : "Core"
-    } Winners.csv`;
+    a.download = `${currentDayFilter} ${currentBranchFilter === "ALL" ? "Branch" : "Core"
+      } Winners.csv`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -287,11 +287,10 @@ const Jury = () => {
                     <Menu.Item key={filter}>
                       {() => (
                         <button
-                          className={`${
-                            currentBranchFilter === filter
-                              ? "bg-black/50"
-                              : "bg-black/20"
-                          } m-1.5 mb-0 w-32 rounded-sm px-3 py-2 text-sm text-white`}
+                          className={`${currentBranchFilter === filter
+                            ? "bg-black/50"
+                            : "bg-black/20"
+                            } m-1.5 mb-0 w-32 rounded-sm px-3 py-2 text-sm text-white`}
                           onClick={() => setCurrentBranchFilter(filter)}
                         >
                           {filter}
@@ -316,11 +315,10 @@ const Jury = () => {
                     <Menu.Item key={filter}>
                       {() => (
                         <button
-                          className={`${
-                            currentDayFilter === filter
-                              ? "bg-black/50"
-                              : "bg-black/20"
-                          } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
+                          className={`${currentDayFilter === filter
+                            ? "bg-black/50"
+                            : "bg-black/20"
+                            } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                           onClick={() => setCurrentDayFilter(filter)}
                         >
                           {filter}
@@ -344,12 +342,11 @@ const Jury = () => {
               e.map((filter) => (
                 <span
                   key={filter}
-                  className={`${
-                    (filter as EventCategory | AllCategory) ===
+                  className={`${(filter as EventCategory | AllCategory) ===
                     currentCategoryFilter
-                      ? "border-b-4 bg-black/10"
-                      : "hover:bg-black/10"
-                  } grow cursor-pointer rounded-sm border-black/30 px-3 py-1 text-center text-white`}
+                    ? "border-b-4 bg-black/10"
+                    : "hover:bg-black/10"
+                    } grow cursor-pointer rounded-sm border-black/30 px-3 py-1 text-center text-white`}
                   onClick={() =>
                     setCurrentCategoryFilter(
                       filter as EventCategory | AllCategory,
@@ -379,11 +376,10 @@ const Jury = () => {
                   <Menu.Item key={filter}>
                     {() => (
                       <button
-                        className={`${
-                          currentBranchFilter === filter
-                            ? "bg-black/50"
-                            : "bg-black/20"
-                        } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
+                        className={`${currentBranchFilter === filter
+                          ? "bg-black/50"
+                          : "bg-black/20"
+                          } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                         onClick={() => setCurrentBranchFilter(filter)}
                       >
                         {filter}
@@ -412,12 +408,11 @@ const Jury = () => {
                       <Menu.Item key={filter}>
                         {() => (
                           <button
-                            className={`${
-                              currentCategoryFilter ===
+                            className={`${currentCategoryFilter ===
                               (filter as EventCategory | AllCategory)
-                                ? "bg-black/50"
-                                : "bg-black/20"
-                            } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
+                              ? "bg-black/50"
+                              : "bg-black/20"
+                              } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                             onClick={() =>
                               setCurrentCategoryFilter(
                                 filter as EventCategory | AllCategory,
@@ -447,11 +442,10 @@ const Jury = () => {
                   <Menu.Item key={filter}>
                     {() => (
                       <button
-                        className={`${
-                          currentDayFilter === filter
-                            ? "bg-black/50"
-                            : "bg-black/20"
-                        } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
+                        className={`${currentDayFilter === filter
+                          ? "bg-black/50"
+                          : "bg-black/20"
+                          } m-1.5 mb-0 w-36 rounded-sm px-3 py-2 text-sm text-white`}
                         onClick={() => setCurrentDayFilter(filter)}
                       >
                         {filter.replace("_", " ")}

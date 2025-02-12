@@ -6,6 +6,7 @@ import { AiOutlineTeam } from "react-icons/ai";
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import createToast from "~/components/toast";
+import { CONSTANT } from "~/constants";
 import { JoinTeamDocument } from "~/generated/generated";
 import { teamIdToId } from "~/utils/id";
 
@@ -74,7 +75,7 @@ const JoinTeamModal = () => {
               onChange={(e) => setTeamId(e.target.value)}
               name="teamName"
               id="teamName"
-              placeholder="T24-10902"
+              placeholder={`${CONSTANT.TID_FORMAT}00000`}
               required
               className="w-full rounded-full bg-primary-600 px-2 py-1 ring-primary-200/40 focus:outline-none focus:ring"
             />
