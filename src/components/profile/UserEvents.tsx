@@ -82,6 +82,24 @@ const UserEvents: FC<{
                       event={event}
                       userId={userId}
                     />
+                     <EventCard
+                      isCompleted={isCompleted}
+                      teams={event.teams}
+                      event={event}
+                      userId={userId}
+                    />
+                     <EventCard
+                      isCompleted={isCompleted}
+                      teams={event.teams}
+                      event={event}
+                      userId={userId}
+                    />
+                     <EventCard
+                      isCompleted={isCompleted}
+                      teams={event.teams}
+                      event={event}
+                      userId={userId}
+                    />
                   </>
                 );
               })}

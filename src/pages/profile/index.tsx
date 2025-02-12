@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { AddXpDocument, GetUserXpDocument, Role } from "~/generated/generated";
 import Loader from "~/components/loader";
 import { useAuth } from "~/hooks/useAuth";
-import ProfileCard from "./ProfileCard";
+import ProfileCard from "~/components/profile/ProfileCard";
 import UserEvents from "~/components/profile/UserEvents";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
@@ -13,9 +13,7 @@ import { type NextPage } from "next";
 import Image from "next/image";
 import { env } from "~/env";
 import Link from "next/link";
-import { cn } from "~/lib/utils";
-import { signOut } from "next-auth/react";
-import LeaderBoard from "./LeaderBoard";
+import LeaderBoard from "~/components/profile/LeaderBoard";
 import { Button } from "~/components/button/button";
 
 const Profile: NextPage = () => {
@@ -100,26 +98,12 @@ const Profile: NextPage = () => {
   return (
     <main
       ref={containerRef}
-      className="md:h-[calc(100vh-5rem)] h-fit flex w-screen md:p-8 p-4 md:mb-8"
+      className=" h-fit flex w-screen md:p-8 p-4 md:mb-8"
     >
-      <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8 h-full pb-8">
-        <div className="md:w-[30rem] w-full md:h-full h-[80vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col gap-0">
+      <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8 h-full pb-8 relative">
+        <div className="md:w-[30rem] w-full h-[85vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col gap-0 md:sticky md:top-[10%]">
           <div className="w-full h-full">
             <ProfileCard user={user} showQR={showQr} />
-
-            {/* <div className="absolute w-full flex justify-between gap-2 p-4 bottom-0">
-              <Button onClick={() => setShowQr((s) => !s)}>
-                {showQr ? "Show Details" : "Show QR"}
-              </Button>
-              <Button
-                onClick={async () => {
-                  await signOut();
-                }}
-                className="!bg-red-500"
-              >
-                Logout
-              </Button>
-            </div> */}
           </div>
           <LeaderBoard
             setQr={() => {
@@ -127,7 +111,9 @@ const Profile: NextPage = () => {
             }}
           />
         </div>
-        <div className="w-full md:h-full h-[85vh] col-span-3">
+
+        {/* md:h-full h-[85vh] */}
+        <div className="w-full  col-span-3">
           <UserEvents userId={user?.id} />
         </div>
       </div>
@@ -136,21 +122,3 @@ const Profile: NextPage = () => {
 };
 
 export default Profile;
-
-// function Button({
-//   children,
-//   className,
-//   ...rest
-// }: HTMLAttributes<HTMLButtonElement>) {
-//   return (
-//     <button
-//       {...rest}
-//       className={cn(
-//         className,
-//         "-skew-x-12 mx-1 px-4 py-2 bg-[#D79128] text-white font-bold rounded-md shadow-md hover:bg-yellow-500",
-//       )}
-//     >
-//       {children}
-//     </button>
-//   );
-// }
