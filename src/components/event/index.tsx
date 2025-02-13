@@ -176,7 +176,7 @@ const Event = ({
           }}
           className="image-container"
         >
-          {data.image && (
+          {event.image && (
             <Image
               src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
               alt={event.name}
