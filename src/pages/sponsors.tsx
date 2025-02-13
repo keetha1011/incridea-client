@@ -14,7 +14,7 @@ const Sponsors: NextPage = () => {
   };
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="h-full flex flex-col">
       {/* Navbar Spacing */}
       <div className="h-16" />
 
@@ -43,7 +43,7 @@ const Sponsors: NextPage = () => {
       </button>
 
       {/* Heading Section */}
-      <div className="mt-8 mb-12 mx-auto flex flex-col items-center gap-2 px-10">
+      <div className="mt-12 mb-12 mx-auto flex flex-col items-center gap-2 px-10">
         <h1 className="relative font-life-craft text-center text-5xl tracking-wider text-white">
           OUR SPONSORS
           <div className="absolute -inset-4 -z-10 animate-pulse rounded-lg bg-emerald-900/50 blur-lg" />
@@ -55,7 +55,7 @@ const Sponsors: NextPage = () => {
       <div className="h-5" />
 
       {/* Carousel Section */}
-      <div className="flex-1">
+      <div className="flex-1 ">
         <SponsorGearCarousel
           sponsors={CONSTANT.SPONSORS}
           isSoundEnabled={isSoundEnabled}

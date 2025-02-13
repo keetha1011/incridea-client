@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import Banner from "~/components/aboutUs/banner";
+import { CONSTANT } from "~/constants";
 
 const images = [
   { id: "1.webp", alt: "Image 1" },
@@ -18,8 +19,9 @@ const About = () => {
   const [isActive, setIsActive] = useState(false);
 
   return (
-    <div className="max-w-screen-2xl mx-auto p-4 md:p-12 flex flex-col gap-y-2 md:gap-16">
+    <div className="max-w-screen-2xl mx-auto p-4 md:p-32 pb-10 flex flex-col gap-y-2 md:gap-16">
       <div className="flex min-h-screen flex-col gap-y-2 md:gap-16">
+
         <Banner video={"https://vimeo.com/1055845788?share=copy"} credits="" />
 
         <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
@@ -37,8 +39,8 @@ const About = () => {
               (NMAMIT), Nitte, established in 1986 and recognized by the
               All-India Council for Technical Education, New Delhi, has been a
               constituent college of Nitte (Deemed to be University), Mangaluru,
-              since June 2022. NMAMIT is placed in the Rank band 101-150 in the
-              National Institutional Ranking Framework (NIRF) 2023 by the
+              since June 2022. NMAMIT is placed in the Rank band 151-200 in the
+              National Institutional Ranking Framework (NIRF) 2024 by the
               Ministry of Education, Government of India. NMAMIT, the off-campus
               centre of Nitte DU located at Nitte Village, has active
               collaborations with several international universities and
@@ -52,18 +54,20 @@ const About = () => {
               students interested in taking up research work leading to Ph.D.
               For details, visit{" "}
               <a
-                href="https://nmamit.nitte.edu.in/"
+                href="https://www.nitte.edu.in/nmamit"
                 target="_blank"
                 rel="noreferrer"
                 className="underline underline-offset-4"
               >
-                www.nmamit.nitte.edu.in
+                www.nitte.edu.in/nmamit
               </a>
             </div>
           </div>
         </span>
       </div>
+
       <Banner video={"https://vimeo.com/1055896700?share=copy"} credits="" />
+
       <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
         <div className="relative flex flex-col items-center justify-between gap-16 lg:flex-row">
           {/* Gallery Section - Contained width, proper spacing */}
@@ -185,7 +189,7 @@ const About = () => {
               footfall of around <span className="font-bold">45,000</span>,
               making it one of the most happening fests in the region. With
               grand successes over the years and a flair for perfection, we
-              intend to make Incridea &apos;24 and grand success and the best
+              intend to make Incridea &apos;{CONSTANT.YEAR_SHORT} and grand success and the best
               one so far.
             </div>
           </div>

@@ -24,12 +24,12 @@ const EventSEO = ({
 }: SEOProps) => {
 
 
-    console.log(title,description,image,url)
+    console.log(title, description, image, url)
     return (
         <Head>
             {/* Open Graph */}
             <meta property="og:url" content={url ?? "https://incridea.in"} />
-            <meta property="og:title" content={title ?? "Incridea | Techno-Cultural Fest of NMAM Institute of Technology"} />
+            <meta property="og:title" content={title ?? "Incridea | Techno-Cultural Fest of NMAM Institute of Technology"} />
             <meta property="og:description" content={description ?? " National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."} />
             <meta property="og:image" content={image ?? "/favicon/favicon-16x16.png"} />
         </Head>

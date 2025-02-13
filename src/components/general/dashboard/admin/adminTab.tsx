@@ -64,7 +64,7 @@ const AdminTab: FC<{
               </div>
             )}
             <div className="max-h-80 md:max-h-screen w-full overflow-y-auto text-center md:h-[500px]">
-              {events?.events?.edges.sort()?.map((event, i) => (
+              {Array.from(events?.events?.edges ?? []).sort((a, b) => a.node.name < b.node.name ? -1 : 1)?.map((event, i) => (
                 <div
                   key={i}
                   className={`mb-3 ml-2 flex flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-center md:rounded-none md:p-4`}
@@ -123,23 +123,24 @@ const AdminTab: FC<{
             )}
             <div className="max-h-60 overflow-y-auto md:h-96 md:max-h-screen">
               {branches?.getBranches.__typename === "QueryGetBranchesSuccess" &&
-                branches.getBranches.data.sort()?.map((branch, i) => (
-                  <div
-                    key={i}
-                    className={`mb-3 flex flex-col items-start justify-between gap-3 rounded-lg bg-white/10 p-3 md:my-0 md:ml-0 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-4`}
-                  >
-                    <h1 className="basis-1/2 py-0.5 pl-2 text-start text-lg">
-                      {branch?.name}
-                    </h1>
-                    <h1 className="flex basis-1/2 justify-end py-0.5 pr-1 text-end text-lg">
-                      <AddBranchRep
-                        branchId={branch?.id}
-                        branchName={branch?.name}
-                        branchReps={branch?.branchReps}
-                      />
-                    </h1>
-                  </div>
-                ))}
+                Array.from(branches.getBranches.data).sort(
+                  (a, b) => a.name.toLowerCase() < b.name.toLowerCase() ? -1 : 1)?.map((branch, i) => (
+                    <div
+                      key={i}
+                      className={`mb-3 flex flex-col items-start justify-between gap-3 rounded-lg bg-white/10 p-3 md:my-0 md:ml-0 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-4`}
+                    >
+                      <h1 className="basis-1/2 py-0.5 pl-2 text-start text-lg">
+                        {branch?.name}
+                      </h1>
+                      <h1 className="flex basis-1/2 justify-end py-0.5 pr-1 text-end text-lg">
+                        <AddBranchRep
+                          branchId={branch?.id}
+                          branchName={branch?.name}
+                          branchReps={branch?.branchReps}
+                        />
+                      </h1>
+                    </div>
+                  ))}
             </div>
             <AddBranchModal />
           </div>

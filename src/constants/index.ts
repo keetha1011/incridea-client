@@ -6,6 +6,7 @@ const CONSTANT = {
   PID_FORMAT: "INC25-" as const,
   TID_FORMAT: "T25-" as const,
   YEAR: 2025 as const,
+  YEAR_SHORT: 25 as const,
   REG_AMOUNT_IN_INR: {
     INTERNAL: 350,
     EXTERNAL: 450,

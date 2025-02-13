@@ -8,7 +8,6 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import LocalFont from "next/font/local";
 import Footer from "~/components/footer";
-import HeadComponent from "~/components/head";
 import LoadingScreen from "~/components/loader";
 import { useApollo } from "~/lib/apollo";
 import { cn } from "~/lib/utils";

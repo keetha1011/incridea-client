@@ -65,7 +65,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           setGotDialogBox(false);
           setUserInfo({ email: "", password: "" });
           await router.push(
-            redirectUrl ? decodeURIComponent(redirectUrl) : "/register", // changed from profile
+            redirectUrl ? decodeURIComponent(redirectUrl) : "/register",
           );
         }
       })
@@ -80,9 +80,8 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
   return (
     <>
       <form
-        className={`relative z-40 flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${
-          loading && "pointer-events-none cursor-not-allowed"
-        }`}
+        className={`relative z-40 flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${loading && "pointer-events-none cursor-not-allowed"
+          }`}
         onSubmit={handleSubmit}
       >
         <h2 className="text-center text-3xl font-semibold">Welcome back!</h2>

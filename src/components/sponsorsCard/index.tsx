@@ -141,9 +141,9 @@ const SponsorGearCarousel = ({
         <div className="sticky top-[calc(12rem+40px)] lg:top-[calc(14rem+50px)] -translate-y-1/2 w-full">
           <div
             ref={smallGearRef}
-            className="absolute  sm:left-[6%] sm:top-[50%] md:left-[13%] md:top-[60%] lg:left-[16%] lg:top-[55%] xl:left-[24%] xl:top-[60%] -translate-y-1/2"
+            className="absolute sm:left-[6%] sm:top-[50%] md:left-[13%] md:top-[60%] lg:left-[16%] lg:top-[55%] xl:left-[24%] xl:top-[60%] -translate-y-1/2"
           >
-            <div className="w-72 h-72 sm:w-[301px] sm:h-[301px] md:w-72 md:h-72 lg:w-[291px] lg:h-[291px]">
+            <div className="size-72 sm:w-[301px] sm:h-[301px] md:w-72 md:h-72 lg:w-[291px] lg:h-[291px]">
               <img
                 src="/2025/sponsors/GearClock.png"
                 alt="SmallGear"
@@ -167,32 +167,31 @@ const SponsorGearCarousel = ({
 
           <div
             ref={cardRef}
-            className="sm:h-auto absolute mt-10 lg:mt-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-[32rem] mx-auto lg:w-[36rem]"
+            className="sm:h-auto absolute mt-10 lg:mt-10 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] sm:w-[32rem] mx-auto lg:w-[36rem]"
           >
-            <div className="bg-[#054432]/90 backdrop-blur-sm rounded-xl border-2 border-amber-500/50 shadow-lg p-4 md:p-6 hover:border-amber-500 transition-colors overflow-clip">
+            <div className="bg-[#054432]/90 backdrop-blur-sm rounded-xl border-2 border-amber-500/50 shadow-lg p-10 hover:border-amber-500 transition-colors overflow-clip">
               <div className="flex flex-col items-center gap-4">
                 {sponsors[currentIndex]?.title && (
                   <h3 className="text-center text-2xl text-amber-500 font-life-craft">
                     {sponsors[currentIndex].title}
                   </h3>
                 )}
-                <div className="relative w-32 h-32 md:w-40 md:h-40">
+                <div className="relative size-32 md:size-40">
                   <img
                     src={`/2025/sponsors/${sponsors[currentIndex]?.logo}`}
                     alt={sponsors[currentIndex]?.name ?? "Sponsor Logo"}
                     className="object-contain"
                   />
                 </div>
-
                 <div
-                  className={`text-center ${sponsors[currentIndex]?.websiteURL ? "mb-6" : ""}`}
+                  className="text-center"
                 >
                   {sponsors[currentIndex] && (
                     <>
                       <h3 className="text-2xl text-amber-500 mb-2 font-life-craft">
                         {sponsors[currentIndex].name}
                       </h3>
-                      <p className="text-emerald-100/90 text-xs md:text-sm p-1 text-left md:text-center ">
+                      <p className="text-emerald-100/90 text-xs md:text-sm p-1 text-center md:text-center ">
                         {sponsors[currentIndex].desc}
                       </p>
                     </>
@@ -204,7 +203,7 @@ const SponsorGearCarousel = ({
                     href={sponsors[currentIndex].websiteURL}
                     target="_blank"
                     rel="noreferrer"
-                    className="absolute text-sm md:text-[1rem] bottom-0 translate-y-1/2 group flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
+                    className="text-sm md:text-[1rem] bottom-0 translate-y-1/2 group flex items-center gap-2 px-3 py-1 md:px-4 md:py-2 bg-amber-500 text-[#054432] hover:bg-amber-400 transition-all hover:scale-105 rounded-tl-2xl rounded-br-2xl rounded-tr-sm rounded-bl-sm"
                   >
                     Visit Website
                     <ExternalLink className="size-5" />

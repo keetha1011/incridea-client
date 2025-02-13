@@ -44,8 +44,8 @@ export default function BackGroundGradient({
   }, []);
 
   useEffect(() => {
-    if(typeof window !== "undefined"){
-      if(window.innerWidth < 780){
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 780) {
         particlesConfig.particles.number.value = 50
       }
     }
@@ -56,12 +56,12 @@ export default function BackGroundGradient({
       ref={bgRef}
       className="w-screen min-h-screen relative bg-[rgb(0,51,31)] backdrop-blur-3xl"
     >
-      <Particles
+      {/* <Particles
         init={particlesInit}
         options={particlesConfig}
         loaded={particlesLoaded}
         className="absolute top-0 left-0 w-full h-full z-0"
-      />
+      /> */}
       <div className="relative z-10">{children}</div>
     </div>
   );
