@@ -1,10 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
-import { SlVolume2, SlVolumeOff } from "react-icons/sl";
-import Image from "next/image";
-import Button from "~/components/button";
-import { IoIosSkipForward } from "react-icons/io";
 import { router } from "next/client";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import { IoIosSkipForward } from "react-icons/io";
+import { SlVolume2, SlVolumeOff } from "react-icons/sl";
+import YouTube, { YouTubePlayer, YouTubeProps } from "react-youtube";
+
+import Button from "~/components/button";
 
 export const VideoPlayer = (props: { props: [string, string] }) => {
   const [clickThru, setClickThru] = useState<boolean>(true);
@@ -77,7 +78,7 @@ export const VideoPlayer = (props: { props: [string, string] }) => {
         className="absolute z-40 flex h-screen w-screen items-center justify-center bg-black"
       >
         <Image
-          src="/2025/logo-combined.png"
+          src="/2025/loader/Echoes_Of_Eternity_Logo.webp"
           alt=""
           height={240}
           width={240}
