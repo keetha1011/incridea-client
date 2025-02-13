@@ -17,6 +17,7 @@ import { MdOutlineMailOutline } from "react-icons/md";
 
 import EventDetails from "~/components/general/event/eventDetails";
 import EventRegistration from "~/components/general/event/eventRegistration";
+import EventSEO from "~/components/SEO/EventSEO";
 import { env } from "~/env";
 import {
   EventByIdDocument,
@@ -25,6 +26,7 @@ import {
   PublishedEventsSlugDocument,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
+import { usePathname } from 'next/navigation'
 
 type Props =
   | {
@@ -92,6 +94,7 @@ const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 };
 
 const Page = ({ event, error }: Props) => {
+  const pathname = usePathname()
   const getEventAttributes = () => {
     if (!event) return [];
 
@@ -161,6 +164,7 @@ const Page = ({ event, error }: Props) => {
         className={`w-screen h-screen object-cover object-center top-0 left-0 absolute`}
       />
       <Toaster />
+      <EventSEO title={event?.name} description={event?.description} image={event?.image} url={pathname}/>
       {error && (
         <div
           className={`absolute inset-0 flex h-screen flex-col items-center justify-center gap-5 p-10 text-white`}
