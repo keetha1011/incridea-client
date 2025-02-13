@@ -76,7 +76,8 @@ const Page = ({ data }: Props) => {
     }
     if (currentCategoryFilter !== AllCategory.ALL)
       tempFilteredEvents = tempFilteredEvents.filter(
-        (event) => event.category === currentCategoryFilter,
+        (event) =>
+          event.category.replace("_", "").toLowerCase() === currentCategoryFilter.toLocaleLowerCase()
       );
 
     setFilteredEvents(tempFilteredEvents);
@@ -218,9 +219,9 @@ const Page = ({ data }: Props) => {
                           Object.keys(EventCategory),
                           Object.keys(AllCategory),
                         ].map((e, idx) => {
-                          return e.map((filter) => {
+                          return e.map((filter, id) => {
                             return (
-                              <Menu.Item key={idx}>
+                              <Menu.Item key={id * 100000000 + idx}>
                                 <button
                                   className={`${currentCategoryFilter ===
                                     (filter as EventCategory | AllCategory)
