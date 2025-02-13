@@ -19,13 +19,14 @@ const links: {
   label: string;
   href: string;
 }[] = [
-  { label: "Home", href: "/" },
-  { label: "Explore", href: "/explore" },
-  { label: "Events", href: "/events" },
-  { label: "Sponsors", href: "/sponsors" },
-  { label: "Pronites", href: "/pronites" },
-  { label: "About", href: "/about" },
-];
+    { label: "Home", href: "/" },
+    { label: "Explore", href: "/explore" },
+    { label: "Events", href: "/events" },
+    // { label: "Sponsors", href: "/sponsors" },
+    { label: "Gallery", href: "/gallery" },
+    { label: "Pronites", href: "/pronites" },
+    { label: "About", href: "/about" },
+  ];
 
 const REPS = 6;
 const DISPLAY_LINKS_LENGTH = links.length * REPS;

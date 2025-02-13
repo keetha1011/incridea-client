@@ -201,7 +201,7 @@ export const CharacterController = () => {
 
   // TimeStones: update the visibility (and trigger the mutation if changed)
   useEffect(() => {
-    const updateVisibility = async () => {
+    const updateVisibility = () => {
       const storedVisibility = localStorage.getItem("stoneVisibility");
       if (storedVisibility) {
         const parsedVisibility = JSON.parse(storedVisibility) as boolean[];
@@ -333,8 +333,8 @@ export const CharacterController = () => {
       stones.forEach((stone, index) => {
         const distance = Math.sqrt(
           (pos.x - stone.pos[0]) ** 2 +
-            (pos.y - stone.pos[1]) ** 2 +
-            (pos.z - stone.pos[2]) ** 2,
+          (pos.y - stone.pos[1]) ** 2 +
+          (pos.z - stone.pos[2]) ** 2,
         );
         if (distance <= 0.5 && visibility[index]) {
           const newVisibility = [...visibility];
@@ -352,7 +352,7 @@ export const CharacterController = () => {
       locations.forEach((location) => {
         const distance = Math.sqrt(
           (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
-            (pos.z - (location.pos?.[1] ?? 0)) ** 2,
+          (pos.z - (location.pos?.[1] ?? 0)) ** 2,
         );
 
         if (redirectedLocations.current.has(location.id)) {
@@ -368,7 +368,7 @@ export const CharacterController = () => {
             const timer = setInterval(() => {
               const currentDistance = Math.sqrt(
                 (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
-                  (pos.z - (location.pos?.[1] ?? 0)) ** 2,
+                (pos.z - (location.pos?.[1] ?? 0)) ** 2,
               );
 
               // If the user has moved out of range, cancel the countdown.
@@ -451,9 +451,9 @@ export const CharacterController = () => {
         intersects.length > 0 &&
         intersects[0] &&
         intersects[0].distance <
-          cameraWorldPosition.current.distanceTo(
-            cameraLookAtWorldPosition.current,
-          )
+        cameraWorldPosition.current.distanceTo(
+          cameraLookAtWorldPosition.current,
+        )
       ) {
         if (intersects[0]) {
           const newCameraPos = cameraLookAtWorldPosition.current

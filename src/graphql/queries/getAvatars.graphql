@@ -1,6 +1,5 @@
 query GetAvatars {
   getAvatars {
-    id
     name
     url
   }
