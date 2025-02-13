@@ -37,7 +37,9 @@ export default function EditEventModal({
   const [minTeamSize, setMinTeamSize] = useState(event.minTeamSize);
   const [venue, setVenue] = useState(event.venue);
   const [fees, setFees] = useState(event.fees);
-  const [banner, setBanner] = useState(`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`);
+  const [banner, setBanner] = useState(
+    `${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`,
+  );
   const [uploading, setUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [category, setCategory] = useState(event.category);
@@ -115,6 +117,14 @@ export default function EditEventModal({
         <div className="p-5">
           <div className="mt-2">
             <div className="mb-6">
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setEditorState(event.description ?? "")}
+                  className="mb-2 block text-sm font-medium text-white bg-[#D79128] bg-opacity-50 p-2.5 rounded-lg"
+                >
+                  Refresh
+                </button>
+              </div>
               <label
                 htmlFor="name"
                 className="mb-2 block text-sm font-medium text-white"
@@ -262,39 +272,39 @@ export default function EditEventModal({
               </div>
               {(eventType === EventType.Team ||
                 eventType === EventType.TeamMultipleEntry) && (
-                  <div className="grow basis-full md:basis-1/3">
-                    <label className="mb-2 block text-sm font-medium text-white">
-                      Team Size
-                    </label>
+                <div className="grow basis-full md:basis-1/3">
+                  <label className="mb-2 block text-sm font-medium text-white">
+                    Team Size
+                  </label>
 
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="number"
-                        id="minTeamSize"
-                        className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
-                        placeholder="Min Team Size..."
-                        value={minTeamSize}
-                        onChange={(e) =>
-                          setMinTeamSize(Number(e.target.value) || 0)
-                        }
-                        min={1}
-                      />
-                      <span className="text-white">to</span>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      id="minTeamSize"
+                      className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
+                      placeholder="Min Team Size..."
+                      value={minTeamSize}
+                      onChange={(e) =>
+                        setMinTeamSize(Number(e.target.value) || 0)
+                      }
+                      min={1}
+                    />
+                    <span className="text-white">to</span>
 
-                      <input
-                        type="number"
-                        id="maxTeamSize"
-                        className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
-                        placeholder="Max Team Size..."
-                        min={1}
-                        value={maxTeamSize}
-                        onChange={(e) =>
-                          setMaxTeamSize(Number(e.target.value) || 0)
-                        }
-                      />
-                    </div>
+                    <input
+                      type="number"
+                      id="maxTeamSize"
+                      className="block w-full rounded-lg border border-[#D79128] bg-[#D79128] bg-opacity-35 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 backdrop-blur-md focus:outline-none focus:ring-2"
+                      placeholder="Max Team Size..."
+                      min={1}
+                      value={maxTeamSize}
+                      onChange={(e) =>
+                        setMaxTeamSize(Number(e.target.value) || 0)
+                      }
+                    />
                   </div>
-                )}
+                </div>
+              )}
             </div>
 
             <div className="mb-6 flex flex-wrap justify-between gap-6">
