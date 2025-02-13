@@ -10,6 +10,7 @@ import { IoPeopleOutline } from "react-icons/io5";
 
 import Dashboard from "~/components/layout/dashboard";
 import Spinner from "~/components/spinner";
+import { CONSTANT } from "~/constants";
 import {
   EventCategory,
   PublishedEventsDocument,
@@ -81,10 +82,10 @@ const Jury = () => {
     if (currentDayFilter !== "All") {
       const filteredDay = new Date(
         currentDayFilter === "DAY 1"
-          ? "2024-02-22"
+          ? CONSTANT.DATE.INCRIDEA.DAY1
           : currentDayFilter === "DAY 2"
-            ? "2024-02-23"
-            : "2024-02-24",
+            ? CONSTANT.DATE.INCRIDEA.DAY2
+            : CONSTANT.DATE.INCRIDEA.DAY3,
       ).getDate();
       tempFilteredEvents = tempFilteredEvents?.filter((event) =>
         event.rounds.some((round) => round.date?.getDate() === filteredDay),
@@ -128,10 +129,10 @@ const Jury = () => {
             if (
               new Date(
                 currentDayFilter === "DAY 1"
-                  ? "2024-02-22"
+                  ? CONSTANT.DATE.INCRIDEA.DAY1
                   : currentDayFilter === "DAY 2"
-                    ? "2024-02-23"
-                    : "2024-02-24",
+                    ? CONSTANT.DATE.INCRIDEA.DAY2
+                    : CONSTANT.DATE.INCRIDEA.DAY3,
               ).getDate() ===
               winner.event.rounds[
                 winner.event.rounds.length - 1
@@ -175,10 +176,10 @@ const Jury = () => {
             if (
               new Date(
                 currentDayFilter === "DAY 1"
-                  ? "2024-02-22"
+                  ? CONSTANT.DATE.INCRIDEA.DAY1
                   : currentDayFilter === "DAY 2"
-                    ? "2024-02-23"
-                    : "2024-02-24",
+                    ? CONSTANT.DATE.INCRIDEA.DAY2
+                    : CONSTANT.DATE.INCRIDEA.DAY3,
               ).getDate() ===
               winner.event.rounds[
                 winner.event.rounds.length - 1

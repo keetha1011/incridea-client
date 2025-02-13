@@ -5,7 +5,7 @@ const Refund: NextPage = () => {
     <div className="relative min-h-screen overflow-x-hidden overflow-y-hidden p-5 pt-32 py-10 text-gray-100 ">
       <div className="mx-auto w-full max-w-7xl">
         <h1
-          className={`mb-3 text-center lg:text-6xl tracking-wider font-life-craft`}
+          className={`mb-3 text-center md:text-6xl text-4xl tracking-wider font-life-craft`}
         >
           Refund Policy
         </h1>

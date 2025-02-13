@@ -30,8 +30,6 @@ const Admin: NextPage = () => {
 
   return (
     <Dashboard>
-      <Toaster />
-      {/* Welcome Header */}
       <h1 className="mb-3 text-4xl">
         Welcome <span className="font-semibold">{user?.name}</span>!
       </h1>

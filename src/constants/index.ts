@@ -1,10 +1,10 @@
 import { SPONSORS } from "~/constants/sponsors";
 
 const CONSTANT = {
-  REGISTRATIONS_OPEN: true,
   BASE_URL: "https://incridea.in" as const,
   COLLEGE_NAME: "NMAM Institute of Technology",
   PID_FORMAT: "INC25-" as const,
+  TID_FORMAT: "T25-" as const,
   YEAR: 2025 as const,
   REG_AMOUNT_IN_INR: {
     INTERNAL: 350,

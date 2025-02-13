@@ -41,6 +41,7 @@ const LoadingScreen = () => {
       gsap.killTweensOf([container, logo, hourglass]);
     };
   }, []);
+
   return (
     <div ref={containerRef} className={styles.loadingScreen}>
       <div className="relative h-screen w-screen flex flex-col items-center justify-center">
@@ -48,12 +49,7 @@ const LoadingScreen = () => {
           <div className={styles.particlesContainer}></div>
         </div>
         <div ref={hourglassRef} className={styles.hourglass}>
-          <Image
-            src={hourglass}
-            width={150}
-            height={150}
-            alt=""
-          />
+          <Image src={hourglass} width={150} height={150} alt="" />
         </div>
         <div
           ref={logoRef}

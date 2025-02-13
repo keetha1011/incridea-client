@@ -141,7 +141,7 @@ export default function AddParticipantToTeam({
             <input
               type="text"
               className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-              placeholder="INC24-0069"
+              placeholder={`${CONSTANT.PID_FORMAT}0000`}
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
             />

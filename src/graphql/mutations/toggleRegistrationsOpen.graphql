@@ -1,0 +1,14 @@
+mutation ToggleRegistrationsOpen {
+  toggleRegistrationsOpen {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on MutationToggleRegistrationsOpenSuccess {
+      __typename
+      data {
+        registrationsOpen
+      }
+    }
+  }
+}

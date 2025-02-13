@@ -13,6 +13,7 @@ import PublishEventModal from "./publishEventModal";
 import RoundsDone from "./roundsDone";
 import SearchUsersModal from "./searchUsersModal";
 import ViewEvent from "./viewEventModal";
+import RegistrationToggle from "~/components/general/dashboard/admin/registrationToggle";
 
 const AdminTab: FC<{
   AdminId: string;
@@ -33,12 +34,15 @@ const AdminTab: FC<{
     <>
       <div>
         {/* Admin Header */}
-        <div className="mt-6 flex flex-row items-center justify-start text-center md:m-3 md:justify-end">
-          <div className="mx-3 flex items-center justify-center">
-            <SearchUsersModal />
-          </div>
-          <div className="flex items-center justify-center">
-            <CollegesModal />
+        <div className="mt-6 flex flex-col gap-4 md:flex-row items-center justify-between text-center md:m-3">
+          <RegistrationToggle />
+          <div className="flex gap-4">
+            <div className="mx-3 flex items-center justify-center">
+              <SearchUsersModal />
+            </div>
+            <div className="flex items-center justify-center">
+              <CollegesModal />
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-1 md:flex-row md:justify-between">

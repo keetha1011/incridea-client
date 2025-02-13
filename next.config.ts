@@ -14,6 +14,8 @@ import { type NextConfig } from "next";
 import "./src/env";
 
 const config: NextConfig = {
+  distDir: process.env.BUILD_DIR ?? ".next",
+
   reactStrictMode: true,
 
   images: {
@@ -30,13 +32,13 @@ const config: NextConfig = {
         protocol: "https",
         hostname: "utfs.io",
       },
-	// {
-  //       protocol: "http",
-  //       hostname: "localhost",
-  //     },
       {
         protocol: "https",
         hostname: "x79smvkrpn.ufs.sh",
+      },
+      {
+        protocol: "https",
+        hostname: "example.com",
       },
     ],
   },

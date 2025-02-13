@@ -297,7 +297,7 @@ const LeaderBoard: NextPage = () => {
                 <h1 className="flex basis-1/4 flex-row items-center justify-center text-center text-sm font-semibold md:text-xl ">
                   {user.levelPoints}
                   <Image
-                    src={"/2025/leaderboard/stone.webp"}
+                    src={"/2025/assets/explore/stone.webp"}
                     width={isMobile ? 40 : 100}
                     height={isMobile ? 40 : 100}
                     alt="Time Stone"

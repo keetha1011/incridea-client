@@ -21,7 +21,7 @@ const SPONSORS: Sponsor[] = [
     title: "Core Title Sponsor ",
     desc: "For exquisite jewelry, S L Shet Gold & Diamond House in Mangalore has been a prominent name. With extensive experience in the gems and jewellery industry, this establishment has gained recognition for its stunning designs and collections.Renowned for its handpicked and exclusive designs showcased in its gold and diamond jewellery collections, the fine craftsmanship accentuates each precious piece.Catering to a wide range of tastes and is suitable for special occasions like weddings and ceremonies.",
     websiteURL: "",
-    logo: "S_L_Shet_Logo.png",
+    logo: "S_L_Shet_Logo.webp",
   },
   {
     name: "Nandini",
@@ -42,7 +42,7 @@ const SPONSORS: Sponsor[] = [
     title: "Sponsor",
     desc: "Discover healthcare excellence at Radha Medicals, your trusted destination for all your medical needs.With a commitment to providing top- notch services and quality products, Radha Medicals ensures your well - being is their priority.From prescription medications to over - the - counter remedies, our knowledgeable staff is here to assist you every step of the way.Experience convenience and care with Radha Medicals, Mangalore- your partner in health.",
     websiteURL: "",
-    logo: "download_6_1.png",
+    logo: "Radha_Medicals.png",
   },
   {
     name: "LIC",

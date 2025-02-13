@@ -3,7 +3,7 @@ import { type FormEventHandler, type FunctionComponent, useState } from "react";
 import { BiCheckCircle, BiErrorCircle } from "react-icons/bi";
 import { FaAngleLeft } from "react-icons/fa";
 
-import {Button} from "~/components/button/button";
+import { Button } from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { ResetPasswordEmailDocument } from "~/generated/generated";
 
@@ -84,11 +84,14 @@ const ResetPasswordForm: FunctionComponent<ResetPasswordFormProps> = ({
               }}
               type="email"
               required
-              className="md:focus:border-[#dd5c6e]-500 border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-white"
+              className="md:focus:border-[#dd5c6e]-500 border-b border-gray-400 bg-transparent px-1 py-2 outline-none transition-all placeholder:text-white/90"
               placeholder="Email"
             />
 
-            <Button type="submit" className="mt-4 mb-2 font-life-craft text-lg tracking-widest">
+            <Button
+              type="submit"
+              className="mt-4 mb-2 font-life-craft text-lg tracking-widest"
+            >
               Send Reset Link
             </Button>
 

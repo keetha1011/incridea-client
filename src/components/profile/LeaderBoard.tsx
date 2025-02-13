@@ -16,7 +16,13 @@ import { AuthStatus, useAuth } from "~/hooks/useAuth";
 
 const techTeamPid = CONSTANT.PID.TECH_TEAM;
 
-function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean }) {
+function LeaderBoard({
+  setQr,
+  isShowQr,
+}: {
+  setQr: () => void;
+  isShowQr: boolean;
+}) {
   const router = useRouter();
   const session = useAuth();
 
@@ -67,13 +73,12 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
       setXp(totalXp);
       if (userXp.data.getUserXp.data[0])
         setUser(userXp.data.getUserXp.data[0].user.id);
-      console.log(totalPoints,totalXp, newLevelThresholds);
-      
+      console.log(totalPoints, totalXp, newLevelThresholds);
+
       setNeedMore(totalPoints - totalXp);
       setProgress(((levelPoints - totalPoints + totalXp) / levelPoints) * 100);
     }
-    console.log("Progress : ",progress);
-    
+    console.log("Progress : ", progress);
   }, [userXp.data]);
 
   type UserTotalPoints = {
@@ -151,8 +156,94 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
 
   return (
     <div className="w-full flex flex-col gap-2  items-center justify-evenly row-span-1 border-secondary-500/50 border-t-2 p-2">
+      <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
+        <Button
+          className="w-full hover:scale-[105%] hover:bg-primary-800/60 text-white hover:text-white sm:max-w-full max-w-sm"
+          variant={"outline"}
+          onClick={() => setQr()}
+        >
+          {!isShowQr ? (
+            <>
+              <QrCode className="stroke-secondary-200" />
+              Show QR
+            </>
+          ) : (
+            <>
+              <User className="stroke-secondary-200" />
+              Show Name
+            </>
+          )}
+        </Button>
+        <Button
+          variant={"destructive"}
+          className="w-full hover:scale-[105%]"
+          onClick={async () => {
+            await signOut();
+          }}
+        >
+          Log out <LogOut />
+        </Button>
+      </div>
+      <div className="w-full h-fit relative overflow-hidden rounded-xl border-secondary-500/50 border-2 mt-2">
+        <div
+          className={`h-2 bg-amber-600`}
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
 
-<div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
+      <div className="text-white w-full px-2 mb-2">
+        <div className="flex justify-between w-full mb-4 flex-row px-4 max-w-md mx-auto">
+          <div className="font-semibold text-sm">
+            Domain{" "}
+            <span className="text-secondary-500 font-bold text-base">
+              {level} 🗺
+            </span>
+          </div>
+          <div className="font-semibold text-sm">
+            Timestones{" "}
+            <span className="text-secondary-500 font-bold text-base">
+              {xp} 💎
+            </span>
+          </div>
+        </div>
+
+        {rank === 0 ? (
+          <>
+            <div className="text-sm opacity-90 text-center my-2">
+              You need to collect {needMneedMoreore} 💎 TimeStones to join the
+              leaderboard
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="border bg-primary-500/20 border-secondary-500 max-w-md mx-auto rounded-full px-4 py-2 flex flex-row justify-between items-center">
+              <div className="text-sm flex flex-row flex-nowrap gap-1 font-semibold">
+                <Image
+                  className="size-10"
+                  src={`/${CONSTANT.YEAR}/profile/trophy.webp`}
+                  alt="trophy"
+                  width={100}
+                  height={100}
+                />
+                <div>
+                  <p>Leaderboard</p>
+                  <p className="text-accent-400">Rank {rank}</p>
+                </div>
+              </div>
+              <div className="text-sm flex flex-col gap-1 font-semibold">
+                <p>You need</p>
+                <p>
+                  <span className="text-accent-400">{needMneedMoreore}</span> 💎
+                  more
+                </p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="w-full flex flex-col gap-2 items-center">
+        {/* TODO: Move component to the top */}
+        {/* <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
           <Button
             className="w-full hover:scale-[105%] hover:bg-primary-800/60 text-white hover:text-white sm:max-w-full max-w-sm"
             variant={"outline"}
@@ -163,7 +254,7 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
                 <QrCode className="stroke-secondary-200" />
                 Show QR
               </>
-            ) 
+            )
             :(<>
             <User className="stroke-secondary-200" />
             Show Name
@@ -179,37 +270,7 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
           >
             Log out <LogOut />
           </Button>
-        </div>
-      <div className="w-full h-fit relative overflow-hidden rounded-xl border-secondary-500/50 border-2 mt-2">
-        <div className={`h-2 bg-red-600`} style={{width: `${progress}%`}}></div>
-      </div>
-
-      <div className="text-white w-full px-2 mb-2">
-        <div className="flex justify-between w-full mb-4 flex-row px-4 max-w-md mx-auto">
-          <div className="font-semibold text-sm">Domain <span className="text-secondary-500 font-bold text-base">{level} 🗺</span></div>
-          <div className="font-semibold text-sm">Timestones <span className="text-secondary-500 font-bold text-base">{xp} 💎</span></div>
-        </div>
-
-        {rank === 0 ? (<>
-        <div className="text-sm opacity-90 text-center my-2">
-          You need to collect {needMneedMoreore} 💎 TimeStones to join the leaderboard
-        </div>
-        </>) : (<>
-        <div className="border bg-primary-500/20 border-secondary-500 max-w-md mx-auto rounded-full px-4 py-2 flex flex-row justify-between items-center">
-          <div className="text-sm flex flex-row flex-nowrap gap-1 font-semibold">
-            <Image className="size-10" src={`/${CONSTANT.YEAR}/profile/trophy.webp`} alt="trophy" width={100} height={100}/>
-            <div>
-              <p>Leaderboard</p><p className="text-accent-400">Rank {rank}</p>
-            </div>
-          </div>
-          <div className="text-sm flex flex-col gap-1 font-semibold">
-            <p>You need</p>
-            <p><span className="text-accent-400">{needMneedMoreore}</span> 💎 more</p>
-          </div>
-        </div>
-          </>)}
-      </div>
-      <div className="w-full flex flex-col gap-2 items-center">
+        </div> */}
 
         <div className="w-full flex xl:flex-row md:flex-col sm:flex-row flex-col justify-between items-center flex-nowrap gap-2 sm:max-w-full max-w-sm">
           <Button
@@ -220,12 +281,16 @@ function LeaderBoard({ setQr, isShowQr }: { setQr: () => void; isShowQr: boolean
             Leaderboard
           </Button>
 
-          {session.status === AuthStatus.AUTHENTICATED && session.user.college && session.user.college?.id !== "1" && 
-            <Button className="py-2 w-full px-1 hover:scale-[105%]">
-              <Bed />
-              Accomodation
-            </Button>
-          }
+          {session.status === AuthStatus.AUTHENTICATED &&
+            session.user.college &&
+            session.user.college.id !== "1" && (
+              <Button className="py-2 w-full px-1 hover:scale-[105%]" asChild>
+                <Link href="/accommodation">
+                  <Bed />
+                  Accomodation
+                </Link>
+              </Button>
+            )}
         </div>
       </div>
     </div>

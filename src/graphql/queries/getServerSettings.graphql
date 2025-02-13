@@ -1,0 +1,12 @@
+query GetRegistrationsOpen {
+  getRegistrationsOpen {
+    ... on Error {
+      __typename
+      message
+    }
+    ... on QueryGetRegistrationsOpenSuccess {
+      __typename
+      data
+    }
+  }
+}

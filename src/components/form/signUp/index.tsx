@@ -16,6 +16,7 @@ import { BiErrorCircle } from "react-icons/bi";
 import { BsChevronExpand } from "react-icons/bs";
 
 import { Button } from "~/components/button/button";
+import { Button } from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { CONSTANT } from "~/constants";
 import {
@@ -237,7 +238,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             required
             className={`${
               selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
-            } border-b border-gray-200 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-gray-400 md:text-base md:focus:border-[#dd5c6e]`}
+            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
             placeholder="Name"
           />
 
@@ -257,7 +258,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                   required
                   placeholder="College"
                   displayValue={(college: { name: string }) => college.name}
-                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-gray-400 md:text-base"
+                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-white/90 md:text-base"
                   onChange={(e) => setQuery(e.target.value)}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -351,7 +352,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               required
               className={`${
                 selectedCollege?.name == CONSTANT.COLLEGE_NAME && "pr-28"
-              } w-full border-b border-gray-200 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-gray-400 md:text-base md:focus:border-[#dd5c6e]`}
+              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
               placeholder="Email"
             />
             {selectedCollege?.name === CONSTANT.COLLEGE_NAME && (
@@ -368,7 +369,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               type={showPassword ? "text" : "password"}
               required
               placeholder="Password"
-              className="w-full border-b border-gray-200 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-gray-400 md:text-base md:focus:border-[#dd5c6e]"
+              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]"
             />
             <button
               type="button"
@@ -385,7 +386,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             type="text"
             required
             placeholder="Mobile"
-            className="border-b border-gray-200 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-gray-400 md:text-base md:focus:border-[#dd5c6e]"
+            className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]"
           />
 
           <div className="flex">

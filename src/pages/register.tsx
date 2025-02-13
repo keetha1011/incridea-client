@@ -1,3 +1,5 @@
+import { useQuery } from "@apollo/client";
+import { Bed } from "lucide-react";
 import { type NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,14 +9,18 @@ import Button from "~/components/button";
 import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
 import Loader from "~/components/loader";
 import { CONSTANT } from "~/constants";
-import { Role } from "~/generated/generated";
-import { useAuth } from "~/hooks/useAuth";
+import { GetRegistrationsOpenDocument, Role } from "~/generated/generated";
+import { AuthStatus, useAuth } from "~/hooks/useAuth";
 import { makePayment } from "~/utils/razorpay";
 
 const Register: NextPage = () => {
-  const { user, loading: userLoading } = useAuth();
+  const { user, loading: userLoading, status: useStatus } = useAuth();
   const router = useRouter();
   const [showModal, setShowModal] = useState<boolean>(false);
+
+  const { data: registrationData, loading: registrationLoading } = useQuery(
+    GetRegistrationsOpenDocument,
+  );
 
   if (userLoading) return <Loader />;
   if (!user) void router.push("/login");
@@ -73,18 +79,38 @@ const Register: NextPage = () => {
             </Link>{" "}
             about the guidelines and regulations
           </div>
-          {CONSTANT.REGISTRATIONS_OPEN ? (
-            <Button
-              className="mb-4 mt-8 flex gap-2"
-              onClick={() => makePayment()}
-            >
-              Register Now
-            </Button>
-          ) : (
-            <h2 className="mt-2 text-xs text-gray-100 md:text-sm">
-              Registration are closed.
-            </h2>
-          )}
+
+          <div className="flex flex-col-reverse justify-between items-center md:flex-row">
+            {registrationLoading || !registrationData ? (
+              <Button intent="info">Loading...</Button>
+            ) : registrationData.getRegistrationsOpen.__typename === "Error" ? (
+              <Button className="mb-4 mt-8 flex gap-2" disabled>
+                Unexpected error occured
+              </Button>
+            ) : registrationData.getRegistrationsOpen.data ? (
+              <Button
+                className="mb-4 mt-8 flex gap-2"
+                onClick={() => makePayment()}
+              >
+                Register Now
+              </Button>
+            ) : (
+              <Button className="mb-4 mt-8 flex gap-2" disabled>
+                Registration are closed.
+              </Button>
+            )}
+            {useStatus === AuthStatus.AUTHENTICATED &&
+              user.college &&
+              user.college.id !== "1" && (
+                <Link href="/accommodation">
+                  <Button className="mb-4 mt-8 flex gap-2">
+                    <Bed />
+                    Accomodation
+                  </Button>
+                </Link>
+              )}
+          </div>
+
           <h1 className="mt-2 text-xs text-gray-100 md:text-sm">
             By clicking the above button, you agree to the mentioned terms and
             conditions

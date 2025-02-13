@@ -1,19 +1,21 @@
+import { CONSTANT } from "~/constants";
+
 export const idToPid = (id: string) => {
-  return `INC24-${id?.padStart(4, "0").toString()}`;
+  return `${CONSTANT.PID_FORMAT}${id?.padStart(4, "0").toString()}`;
 };
 
 export const pidToId = (pid: string) => {
-  return pid.startsWith("INC24-")
+  return pid.startsWith(CONSTANT.PID_FORMAT)
     ? parseInt(pid.split("-")[1]!).toString()
     : "";
 };
 
 export const idToTeamId = (id: string) => {
-  return `T24-${id?.padStart(5, "0").toString()}`;
+  return `${CONSTANT.TID_FORMAT}${id?.padStart(5, "0").toString()}`;
 };
 
 export const teamIdToId = (teamId: string) => {
-  return teamId.startsWith("T24-")
+  return teamId.startsWith(CONSTANT.TID_FORMAT)
     ? parseInt(teamId.split("-")[1]!).toString()
     : "";
 };
