@@ -100,6 +100,16 @@ const TeamMembers = [
     quote: "Kon'nichiwa",
     avatar: "",
   },
+  // {
+  //   name: "Karthik Salian",
+  //   role: "Frontend",
+  //   instagram: "https://www.instagram.com/nandanpi__/",
+  //   github: "https://github.com/nandanpi",
+  //   linkedin: "https://www.linkedin.com/in/nandanpai09",
+  //   image: "/2025/team/nandan.jpeg",
+  //   quote: "My touch is the solution to all problems 🥰",
+  //   avatar: "",
+  // },
   {
     name: "Nandan R Pai",
     role: "Full Stack",
