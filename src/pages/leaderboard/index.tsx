@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import styles from "~/components/event/styles.module.css";
 import FallingItem from "~/components/login/fallingItem";
 import Spinner from "~/components/spinner";
-import { env } from "~/env";
+import { CONSTANT } from "~/constants";
 import { GetXpLeaderboardDocument } from "~/generated/generated";
 import { idToPid } from "~/utils/id";
 
@@ -59,6 +59,11 @@ const LeaderBoard: NextPage = () => {
     };
   };
 
+  const { data: Leaderboard, loading: leaderboardLoading } = useQuery(
+    GetXpLeaderboardDocument,
+    {},
+  );
+
   const [sortedLeaderboard, setSortedLeaderboard] = useState<
     {
       levelPoints: number;
@@ -67,143 +72,71 @@ const LeaderBoard: NextPage = () => {
       count: number;
       createdAt: Date;
     }[]
-  >([
-    {
-      levelPoints: 1200,
-      name: "Gagan Salian",
-      userId: "101",
-      count: 5,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 1150,
-      name: "Priya Santhosh",
-      userId: "102",
-      count: 4,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 1100,
-      name: "Rajesh Prabhu",
-      userId: "103",
-      count: 4,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 1000,
-      name: "Anjali Shetty",
-      userId: "104",
-      count: 3,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 950,
-      name: "Vikram Vihar",
-      userId: "105",
-      count: 3,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 900,
-      name: "Neha Gupta",
-      userId: "106",
-      count: 3,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 850,
-      name: "Rahul Verma",
-      userId: "107",
-      count: 2,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 800,
-      name: "Meera Reddy",
-      userId: "108",
-      count: 2,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 750,
-      name: "Suresh Iyer",
-      userId: "109",
-      count: 2,
-      createdAt: new Date(),
-    },
-    {
-      levelPoints: 700,
-      name: "Divya Nair",
-      userId: "110",
-      count: 1,
-      createdAt: new Date(),
-    },
-  ]);
+  >([]);
 
-  // useEffect(() => {
-  //   // if (
-  //   //   Leaderboard?.getXpLeaderboard.__typename ===
-  //   //   "QueryGetXpLeaderboardSuccess"
-  //   // )
-  //   {
-  //     const userTotalPoints: UserTotalPoints = {};
+  useEffect(() => {
+    if (
+      Leaderboard?.getXpLeaderboard.__typename ===
+      "QueryGetXpLeaderboardSuccess"
+    ) {
+      const userTotalPoints: UserTotalPoints = {};
 
-  //     Leaderboard?.getXpLeaderboard.data.forEach((item) => {
-  //       const userId = item.user.id;
-  //       const levelPoints = item.level.point;
-  //       const userName = item.user.name;
-  //       const levelCount = 1;
-  //       const createdAt = item.createdAt;
+      Leaderboard?.getXpLeaderboard.data.forEach((item) => {
+        const userId = item.user.id;
+        const levelPoints = item.level.point;
+        const userName = item.user.name;
+        const levelCount = 1;
+        const createdAt = item.createdAt;
 
-  //       // Check if the user ID is already in the userTotalPoints object
-  //       if (userTotalPoints[userId]) {
-  //         // If yes, add the level points to the existing total
-  //         userTotalPoints[userId].levelPoints += levelPoints;
-  //         userTotalPoints[userId].count += levelCount;
-  //         //store only the latest date
-  //         if (createdAt > userTotalPoints[userId].createdAt) {
-  //           userTotalPoints[userId].createdAt = createdAt;
-  //         }
-  //       } else {
-  //         if (
-  //           techTeamPid.includes(parseInt(userId)) &&
-  //           parseInt(item.level.id) <= 6
-  //         )
-  //           return;
-  //         // If no, create a new entry for the user ID
-  //         userTotalPoints[userId] = {
-  //           levelPoints,
-  //           name: userName,
-  //           count: 1,
-  //           createdAt: createdAt,
-  //         };
-  //       }
-  //     });
-  //     // Convert userTotalPoints to an array of objects
-  //     const userTotalPointsArray = Object.entries(userTotalPoints).map(
-  //       ([userId, data]) => ({
-  //         userId,
-  //         ...data,
-  //       })
-  //     );
+        // Check if the user ID is already in the userTotalPoints object
+        if (userTotalPoints[userId]) {
+          // If yes, add the level points to the existing total
+          userTotalPoints[userId].levelPoints += levelPoints;
+          userTotalPoints[userId].count += levelCount;
+          //store only the latest date
+          if (createdAt > userTotalPoints[userId].createdAt) {
+            userTotalPoints[userId].createdAt = createdAt;
+          }
+        } else {
+          if (
+            techTeamPid.includes(parseInt(userId)) &&
+            parseInt(item.level.id) <= 6
+          )
+            return;
+          // If no, create a new entry for the user ID
+          userTotalPoints[userId] = {
+            levelPoints,
+            name: userName,
+            count: 1,
+            createdAt: createdAt,
+          };
+        }
+      });
+      // Convert userTotalPoints to an array of objects
+      const userTotalPointsArray = Object.entries(userTotalPoints).map(
+        ([userId, data]) => ({
+          userId,
+          ...data,
+        })
+      );
 
-  //     // Sort the array in descending order based on total points
-  //     userTotalPointsArray.sort((a, b) => b.levelPoints - a.levelPoints);
+      // Sort the array in descending order based on total points
+      userTotalPointsArray.sort((a, b) => b.levelPoints - a.levelPoints);
 
-  //     //also sort based on the latest date but points should be primary
-  //     userTotalPointsArray.sort((a, b) => {
-  //       if (a.levelPoints === b.levelPoints) {
-  //         return (
-  //           new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  //         );
-  //       }
-  //       return b.levelPoints - a.levelPoints;
-  //     });
-  //     // Limit to the top 15 entries
-  //     const top15Users = userTotalPointsArray.slice(0, 15);
-  //     setSortedLeaderboard(top15Users);
-  //   }
-  // }, [Leaderboard]);
+      //also sort based on the latest date but points should be primary
+      userTotalPointsArray.sort((a, b) => {
+        if (a.levelPoints === b.levelPoints) {
+          return (
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          );
+        }
+        return b.levelPoints - a.levelPoints;
+      });
+      // Limit to the top 15 entries
+      const top15Users = userTotalPointsArray.slice(0, 15);
+      setSortedLeaderboard(top15Users);
+    }
+  }, [Leaderboard]);
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
@@ -254,11 +187,11 @@ const LeaderBoard: NextPage = () => {
             <h1 className="basis-1/4 text-center">Timekeeper Name</h1>
             <h1 className="basis-1/4 text-center">Time Stones Gained</h1>
           </div>
-          {/* {leaderboardLoading && (
+          {leaderboardLoading && (
             <div className="mt-10 flex items-center justify-center">
               <Spinner className="text-gray-300" />
             </div>
-          )} */}
+          )}
           <div className="mx-5 flex flex-col gap-2 text-center text-white md:mx-36">
             {sortedLeaderboard.map((user, i) => (
               <div
@@ -275,12 +208,12 @@ const LeaderBoard: NextPage = () => {
                   <Image
                     src={
                       i === 0
-                        ? `/assets/png/level3.png`
+                        ? `/${CONSTANT.YEAR}/leaderboard/level3.png`
                         : i === 1
-                          ? `/assets/png/level2.png`
+                          ? `/${CONSTANT.YEAR}/leaderboard/level2.png`
                           : i === 2
-                            ? `/assets/png/level1.png`
-                            : `/assets/png/level4.png`
+                            ? `/${CONSTANT.YEAR}/leaderboard/level1.png`
+                            : `/${CONSTANT.YEAR}/leaderboard/level4.png`
                     }
                     width={isMobile ? 20 : 50}
                     height={isMobile ? 20 : 50}
@@ -306,7 +239,7 @@ const LeaderBoard: NextPage = () => {
                 </h1>
               </div>
             ))}
-            {/* {sortedLeaderboard.length === 0 && !leaderboardLoading && (
+            {sortedLeaderboard.length === 0 && !leaderboardLoading && (
               <div className="mx-3 mt-2 flex items-center justify-center">
                 <span className="text-base text-gray-300 md:text-xl">
                   The XP leaderboard is currently as empty as a blank canvas,
@@ -314,7 +247,7 @@ const LeaderBoard: NextPage = () => {
                   up!
                 </span>
               </div>
-            )} */}
+            )}
           </div>
         </div>
       </div>
