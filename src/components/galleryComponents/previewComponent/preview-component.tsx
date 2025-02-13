@@ -91,12 +91,12 @@ const PreviewComponent = ({
                 <BlurImage
                   fill
                   alt="Blurred Image"
-                  src={env.NEXT_PUBLIC_UPLOADTHING_URL + img}
+                  src={img}
                   className="object-cover blur-xl"
                 />
                 <Image
                   fill
-                  src={env.NEXT_PUBLIC_UPLOADTHING_URL + img}
+                  src={img}
                   alt="incridea"
                   className={`z-10 object-cover ${portraitImages[index] ? "object-scale-down" : ""}`}
                   priority

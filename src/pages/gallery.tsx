@@ -44,19 +44,6 @@ const Gallery: NextPage = () => {
     return () => window.removeEventListener("resize", updateClockPosition);
   }, []);
 
-  const images22: string[] = [
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6R0y97VshMbdqu9Dv5sClAGzH4NFEa8xgrwZW",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD63kfzz9uyGThZ7z4KLvCYJEoXsRPUlefFnuwk",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD656UKEcozf8HJFAlsQ20KwyZNUIoLmOVecu4g",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6R0y97VshMbdqu9Dv5sClAGzH4NFEa8xgrwZW",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6oXcQEjTAjvGsfIbWS4wiz2DCtNxYrhE6q3UR",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD64Sgn2E7gjUQEnHRB6acYe3z07wmr1FZphyNP",
-    "https://cxyw63cg3t.ufs.sh/f/rcOPZjbdsKD6dNwH6gQNk6Mso8WuK2jgRcmrVZdx5zTyB4lS",
-  ];
-
   const handleClockClick = (angle: number) => {
     const year = Object.entries(angleToScenes).find(([key, value]) =>
       value.includes(angle),
@@ -65,27 +52,52 @@ const Gallery: NextPage = () => {
   };
 
   const years = [2022, 2023, 2024, 2025] as const;
-  const imageCounts = [21, 12, 26, 0] as const;
 
-  const generateImagePaths = (
-    year: number,
-    count: number,
-    extension: string,
-  ): string[] => {
-    return Array.from(
-      { length: count },
-      (_, i) => `gallery/${year}/${i + 1}.${extension}`,
-    );
-  };
-  const img2022 = generateImagePaths(years[0], imageCounts[0], "jpg");
-  const img2023 = generateImagePaths(years[1], imageCounts[1], "jpg");
-  const img2024 = generateImagePaths(years[2], imageCounts[2], "jpg");
+  const img2022 = [
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsOScIVJcZLk63SJve9IHXzaufWNgP74idmQ1K",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsuExnVVhiNIPjmaM9C04xk6KFpZJTAsLRe5Sc",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsB2pcgGqkWUXGK6wnILoru9xPAvsyRJZftNH3",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsGpMJ6cFjF26ALSw5JVBU4dGoIChqOgp0RDWa",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYstDi04n1LGkCIZ5WMu0egqnyRjzJB4TVNcOv6",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsbYSfma6HMayVpiftmYsLCor4QwWXxc2q1lEG",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsphzPl3Sjr7fYckpVUB3JSqI0zhaeMgxFLlKC",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsgayYKyv6z8fXkcpKN4d150uF3GeYwRV6MPgi",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsXRoxBB0wR70aACo8TtYy9qKWzrHGVkx2jm5N",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYs1k4cPVuzeuBm64XfVxryzsUInKvlch8jGYk5",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsxsD4X3fD7Rd4EMFQmCBav9AunfUTXIybKc5q"
+  ]
+
+  const img2023 = [
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsKSsLAKJsFfnityNQc1AgbmkjCXPlrzTMdS9D",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsW9aaL0HN9rYsDubyU3ELWtKnzISch0e8VC24",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsbNrKlVa6HMayVpiftmYsLCor4QwWXxc2q1lE",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsb1nhnDa6HMayVpiftmYsLCor4QwWXxc2q1lE",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYspJhfChSjr7fYckpVUB3JSqI0zhaeMgxFLlKC",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsmOcvZDi5GalDMcdKkoseOfrSixqg92IP57HR",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYs1VqnK7zeuBm64XfVxryzsUInKvlch8jGYk5o",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsaW0ECTLUAYWwfIge5Buk6C2r1ycR3MhalptJ",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYs7Ia5OnUWmhgn3FxJEjMV60R2YUlHPbwf1sdX",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYszOx6zTAkVLni9IlUhGbwxyXJmDt8KsqSTcjZ",
+  ]
+
+  const img2024 = [
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYskqPH0tF3f75EiyprLQFWulsoOtNSn2b8xMwB",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsOgWmDNZLk63SJve9IHXzaufWNgP74idmQ1Kp",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsylC8KdWsWdY7KiMXRcSBezA9Nn3fvGZhT60m",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYs8ZlHO9ju8VBznFPtoWLd6bRTDXGlUMjpyxqf",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYs0A5ybjQAwRdpFyuOmDB6UY54jkXKQ9Sr2TNH",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsX7wwgh0wR70aACo8TtYy9qKWzrHGVkx2jm5N",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsMkiSa74PpubWTceyBLGsXSURtKHxQ7riC4DY",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsXFlYkD0wR70aACo8TtYy9qKWzrHGVkx2jm5N",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYsEvRbcLQ8mqF2GyD8viAZRnWJQ3hjbBM6tUpO",
+    "https://qmahmrnhvk.ufs.sh/f/WiEIO6HN9rYstAlogWJ1LGkCIZ5WMu0egqnyRjzJB4TVNcOv",
+  ]
 
   const renderActiveYearComponent = (): JSX.Element | null => {
     const components = [
-      <Inc22 imgArr={images22} key={0} />,
-      <Inc23 imgArr={images22} clockPos={clockPos} key={1} />,
-      <Inc24 imgArr={images22} key={2} />,
+      <Inc22 imgArr={img2022} key={0} />,
+      <Inc23 imgArr={img2023} clockPos={clockPos} key={1} />,
+      <Inc24 imgArr={img2024} key={2} />,
       <Inc25 key={3} />,
     ];
     return components[activeYear] ?? null;
@@ -143,11 +155,11 @@ const Gallery: NextPage = () => {
       >
         <div
           data-depth="0.4"
-          className="absolute -z-10 
+          className="absolute -z-10
              w-[140%] h-[140%] -mt-[20%] -mb-[20%]  /* Mobile adjustments */
              sm:w-[130%] sm:h-[130%] sm:-mt-[15%] sm:-mb-[15%]  /* Small screens */
              md:w-[120%] md:h-[120%] md:-mt-[10%] md:-mb-[10%]  /* Desktops */
-             bg-[url('/2025/gallery/galleryBg.webp')] bg-cover bg-center bg-no-repeat 
+             bg-[url('/2025/gallery/galleryBg.webp')] bg-cover bg-center bg-no-repeat
              blur-[5px] brightness-75"
         ></div>
       </section>
