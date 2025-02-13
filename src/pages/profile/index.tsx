@@ -24,7 +24,7 @@ const Profile: NextPage = () => {
   const router = useRouter();
   const [bombXp, setBombXp] = useState<boolean>(false);
   const [showQr, setShowQr] = useState<boolean>(false);
-  const [showAvatarModal, setShowAvatarModal] = useState<boolean>(false)
+  const [showAvatarModal, setShowAvatarModal] = useState<boolean>(false);
   const [addXp] = useMutation(AddXpDocument, {
     variables: {
       levelId: "2",
@@ -66,12 +66,7 @@ const Profile: NextPage = () => {
       <div className="flex h-screen flex-col items-center justify-center space-y-3 text-center">
         {/* Todo: Any graphic to fill space */}
         <div className="z-10 mt-8 flex h-96 items-center justify-center">
-          <Image
-            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/gamer.png`}
-            alt="404"
-            width={400}
-            height={400}
-          />
+          <Image src="/2025/gamer.png" alt="404" width={400} height={400} />
         </div>
         <h1 className="-translate-y-10 text-lg text-white lg:text-xl">
           Hey there! You need to login to view your profile page.
@@ -93,10 +88,10 @@ const Profile: NextPage = () => {
       </div>
     );
 
-    if(user.role === Role.User){
-      void router.push("/register");
-      return null;
-    }
+  if (user.role === Role.User) {
+    void router.push("/register");
+    return null;
+  }
 
   return (
     <main
@@ -106,9 +101,15 @@ const Profile: NextPage = () => {
       <div className="flex md:flex-row flex-col w-full mt-16 p-2 gap-8 h-full pb-8 relative">
         <div className="md:w-[30rem] w-full h-[85vh] rounded-lg overflow-hidden col-span-1 border-secondary-500/50 border-2 flex flex-col gap-0 md:sticky md:top-[10%]">
           <div className="w-full h-full relative">
-            <AvatarModal showModal={showAvatarModal} setShowModal={setShowAvatarModal}/>
-            <Button onClick={() => setShowAvatarModal(!showAvatarModal)} className="border-none size-10 rounded-md border-secondary-500 stroke-secondary-500 absolute top-5 left-5 z-50">
-              <UserPen className="scale-[200%]"/>
+            <AvatarModal
+              showModal={showAvatarModal}
+              setShowModal={setShowAvatarModal}
+            />
+            <Button
+              onClick={() => setShowAvatarModal(!showAvatarModal)}
+              className="border-none size-10 rounded-md border-secondary-500 stroke-secondary-500 absolute top-5 left-5 z-50"
+            >
+              <UserPen className="scale-[200%]" />
             </Button>
             <ProfileCard user={user} showQR={showQr} />
           </div>

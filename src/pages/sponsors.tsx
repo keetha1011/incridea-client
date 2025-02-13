@@ -42,6 +42,18 @@ const Sponsors: NextPage = () => {
         )}
       </button>
 
+      {/* Heading Section */}
+      <div className="mt-8 mb-12 mx-auto flex flex-col items-center gap-2 px-10">
+        <h1 className="relative font-life-craft text-center text-5xl tracking-wider text-white">
+          OUR SPONSORS
+          <div className="absolute -inset-4 -z-10 animate-pulse rounded-lg bg-emerald-900/50 blur-lg" />
+        </h1>
+        <p className="font-black-chancery text-center text-lg text-gray-100">
+          Big names backing an extraordinary fest
+        </p>
+      </div>
+      <div className="h-5" />
+
       {/* Carousel Section */}
       <div className="flex-1">
         <SponsorGearCarousel

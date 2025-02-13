@@ -141,7 +141,7 @@ export default function App({
               className={cn(
                 trap.variable,
                 lifeCraft.variable,
-                "min-h-screen font-trap tracking-wider text-lg",
+                "min-h-screen font-trap tracking-wider sm:text-lg text-sm",
               )}
             >
               {shouldRenderNavbar && <Navbar />}

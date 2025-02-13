@@ -177,22 +177,11 @@ const SponsorGearCarousel = ({
                   </h3>
                 )}
                 <div className="relative w-32 h-32 md:w-40 md:h-40">
-                  {sponsors[currentIndex]?.notCloudinary ? (
-                    <img
-                      src={`/2025/sponsors/${sponsors[currentIndex]?.logo}`}
-                      alt={sponsors[currentIndex]?.name ?? "Logo"}
-                      className="object-contain"
-                    />
-                  ) : (
-                    <img
-                      src={
-                        `${process.env.NEXT_PUBLIC_UPLOADTHING_URL}/sponsors/${sponsors[currentIndex]?.logo}` ||
-                        `/2025/sponsors/${sponsors[currentIndex]?.logo}`
-                      }
-                      alt={sponsors[currentIndex]?.name ?? "Sponsor Logo"}
-                      className="object-contain"
-                    />
-                  )}
+                  <img
+                    src={`/2025/sponsors/${sponsors[currentIndex]?.logo}`}
+                    alt={sponsors[currentIndex]?.name ?? "Sponsor Logo"}
+                    className="object-contain"
+                  />
                 </div>
 
                 <div
