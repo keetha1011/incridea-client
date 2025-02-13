@@ -40,6 +40,10 @@ const config: NextConfig = {
         protocol: "https",
         hostname: "example.com",
       },
+      // {
+      //   protocol: "https",
+      //   hostname: "placehold.co",
+      // },
     ],
   },
 

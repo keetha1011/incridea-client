@@ -16,6 +16,7 @@ import "~/styles/globals.css";
 import BackGroundGradient from "~/components/layout/background";
 import { LoaderProvider } from "~/components/loader/loaderContext";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import BaseSEO from "~/components/SEO/BaseSEO";
 
 const Navbar = dynamic(() => import("~/components/navbar"), { ssr: false });
 
@@ -131,10 +132,7 @@ export default function App({
 
       <ApolloProvider client={apolloClient}>
         <Toaster />
-        <HeadComponent
-          title="Incridea"
-          description="Official Website of Incridea 2025, National level techno-cultural fest, NMAMIT, Nitte. Innovate. Create. Ideate."
-        />
+        <BaseSEO />
         <LoaderProvider>
           <BackGroundGradient>
             <div
