@@ -77,7 +77,7 @@ export const VideoPlayer = (props: { props: [string, string] }) => {
         className="absolute z-40 flex h-screen w-screen items-center justify-center bg-black"
       >
         <Image
-          src="/2025/loader/portal/logo-combined.png"
+          src="/2025/loader/Echoes_Of_Eternity_Logo.png"
           alt=""
           height={240}
           width={240}
