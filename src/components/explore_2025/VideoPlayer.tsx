@@ -49,9 +49,8 @@ export const VideoPlayer = (props: { props: [string, string] }) => {
   return (
     <div className="absolute z-50 h-screen w-screen overflow-hidden bg-black">
       <div
-        className={`absolute z-40 h-screen w-screen ${
-          clickThru ? "pointer-events-none" : "pointer-events-auto"
-        }`}
+        className={`absolute z-40 h-screen w-screen ${clickThru ? "pointer-events-none" : "pointer-events-auto"
+          }`}
       ></div>
       <button
         onClick={() => {
@@ -77,7 +76,7 @@ export const VideoPlayer = (props: { props: [string, string] }) => {
         className="absolute z-40 flex h-screen w-screen items-center justify-center bg-black"
       >
         <Image
-          src="/2025/logo-combined.png"
+          src="/2025/loader/Echoes_Of_Eternity_Logo.webp"
           alt=""
           height={240}
           width={240}
