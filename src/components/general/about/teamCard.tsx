@@ -26,7 +26,7 @@ const TeamCard: FC<{
           className="top-0 aspect-square w-[18rem] rounded-xl object-cover"
         />
         <div>
-          <h3 className="text-center font-VikingHell text-3xl tracking-wide text-white">
+          <h3 className="text-center font-life-craft text-4xl tracking-wide text-white">
             {name}
           </h3>
           <h1 className="text-center text-xl font-semibold text-white">

@@ -39,15 +39,15 @@ export const HomeFooter = () => {
   return (
     <footer
       className={cn(
-        "absolute bottom-0 flex w-full flex-col gap-2 text-green-900 font-bold text-[1rem] md:gap-4 h-14 ",
+        "absolute bottom-0 flex w-full flex-col gap-2 text-green-900 font-semibold text-[1rem] md:gap-4 h-14 ",
       )}
     >
       {show && (
         <ul
-          className="mb-5 mx-auto  flex flex-1 flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap md:gap-5"
+          className="mb-5 mx-auto  flex flex-1 text-xs flex-row flex-wrap items-center justify-center gap-2 whitespace-nowrap md:gap-5"
           style={{
             textShadow:
-              "0 0 3px rgba(255, 215, 0, 1), 0 0 6px rgba(255, 215, 0, 0.8), 0 0 12px rgba(255, 215, 0, 0.6)",
+              "0 0 3px rgba(255, 215, 0, 0.1), 0 0 6px rgba(255, 215, 0, 0.2), 0 0 12px rgba(255, 215, 0, 0.9)",
           }}
         >
           <li className="transition-colors duration-300 hover:text-green-900">
@@ -73,18 +73,18 @@ export const HomeFooter = () => {
       )}
       {!show && (
         <p
-          className="text-center mx-auto"
+          className="text-center mx-auto text-sm"
           style={{
             textShadow:
-              "0 0 3px rgba(255, 215, 0, 1), 0 0 6px rgba(255, 215, 0, 0.8), 0 0 12px rgba(255, 215, 0, 0.6)",
+              "0 0 3px rgba(255, 215, 0, 0.4), 0 0 6px rgba(255, 215, 0, 0.2), 0 0 12px rgba(255, 215, 0, 0.4)",
           }}
         >
           <Link
-            className="flex items-center justify-center tracking-normal transition-all hover:tracking-widest hover:text-green-900"
+            className="flex items-center justify-center tracking-normal text-sm transition-all hover:tracking-widest hover:text-green-900"
             href="/team"
           >
-            Made with &nbsp;<span className="text-red-600">❤</span>&nbsp; by
-            Technical Team
+            Made with &nbsp;<span className="text-red-600 text-sm">❤</span>
+            &nbsp; by Technical Team
           </Link>
           © Incridea 2025
         </p>

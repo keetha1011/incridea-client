@@ -9,7 +9,7 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiErrorCircle } from "react-icons/bi";
 
-import {Button} from "~/components/button/button";
+import { Button } from "~/components/button/button";
 import Spinner from "~/components/spinner";
 
 type SignInFormProps = {
@@ -86,7 +86,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
         onSubmit={handleSubmit}
       >
         <h2 className="text-center text-3xl font-semibold">Welcome back!</h2>
-        <h6 className="mb-10 text-center font-semibold md:font-normal">
+        <h6 className="mb-10 text-center font-normal md:font-normal">
           Sign in using your email and password
         </h6>
         <input
@@ -127,7 +127,11 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           Forgot your password?
         </button>
 
-        <Button variant={"default"} type="submit" className="mx-1 text-lg font-life-craft tracking-widest">
+        <Button
+          variant={"default"}
+          type="submit"
+          className="mx-1 text-lg font-life-craft tracking-widest"
+        >
           Login
         </Button>
 

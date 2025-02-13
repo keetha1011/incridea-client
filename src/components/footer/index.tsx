@@ -30,10 +30,10 @@ export function FooterBody() {
       style={{ willChange: "transform" }}
       className={`relative snap-start`}
     >
-      <div className="-mt-1 flex flex-col items-center justify-between gap-5 bg-primary-700 p-5 text-gray-100 md:flex-row">
+      <div className="-mt-1 flex flex-col items-center justify-between gap-5 bg-primary-900 p-5 text-gray-100 md:flex-row">
         <div className="md:basis-1/5">
           <Image
-            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/logo-black.png`}
+            src={`/assets/png/logo-black.png`}
             width={150}
             height={100}
             alt="Incridea Logo"
@@ -58,7 +58,7 @@ export function FooterBody() {
               <Link href="/refund">Refund Policy</Link>
             </li>
             |
-            <li className="text-gray-300 hover:text-gray-100">
+            <li className="text-white transition-colors duration-300 hover:text-gray-300">
               <Link href="/contact">Contact Us</Link>
             </li>
           </ul>
@@ -87,7 +87,7 @@ export function FooterBody() {
           </ul>
         </div>
       </div>
-      <div className="bg-primary-800">
+      <div className="bg-primary-950">
         <p className="p-5 text-center text-sm text-gray-200">
           <Link
             className="flex items-center justify-center tracking-normal transition-all duration-300 hover:tracking-widest hover:text-gray-300"

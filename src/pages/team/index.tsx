@@ -7,11 +7,11 @@ const Team: NextPage = () => {
     <div className="flex min-h-screen flex-col gap-y-8 bg-transparent pb-10 pt-32">
       <div className="px-4">
         <h1
-          className={`text-center font-PressStart text-2xl font-bold text-white lg:text-4xl`}
+          className={`text-center font-life-craft text-5xl font-bold text-white lg:text-6xl`}
         >
           Incridea&apos;s Technical Team
         </h1>
-        <p className="mt-5 text-center text-lg font-bold text-white lg:text-2xl">
+        <p className="mt-5 text-center text-2xl font-bold text-white lg:text-3xl">
           Meet the developers
         </p>
       </div>
@@ -93,7 +93,7 @@ const TeamMembers = [
     instagram: "https://www.instagram.com/sammonster1920/",
     github: "https://github.com/Sammonster495",
     linkedin: "https://www.linkedin.com/in/samarth-shetty-a53018247/",
-    image: "/2025/team/samarth.jpg",  //YET TO SEND
+    image: "/2025/team/samarth.jpg", //YET TO SEND
     quote: "Coding and dancing my way through life",
     avatar: "",
   },
@@ -102,8 +102,9 @@ const TeamMembers = [
     role: "Full Stack",
     instagram: "https://www.instagram.com/pratham_ak2004?igsh=dHh5NWJleTUzZnM2",
     github: "https://github.com/pratham-ak2004",
-    linkedin: "https://www.linkedin.com/in/pratham-a-kadekar-8397a7249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-    image: "/2025/team/prataham_a_kadekar.jpg",  //YET TO SEND
+    linkedin:
+      "https://www.linkedin.com/in/pratham-a-kadekar-8397a7249?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    image: "/2025/team/prataham_a_kadekar.jpg", //YET TO SEND
     quote: "Kon'nichiwa",
     avatar: "",
   },
@@ -133,7 +134,7 @@ const TeamMembers = [
     instagram: "https://www.instagram.com/lendanieo/",
     github: "https://github.com/len-mendonca",
     linkedin: "https://in.linkedin.com/in/len-mendonca",
-    image: "/2025/team/len_mendonca.png", 
+    image: "/2025/team/len_mendonca.png",
     quote: "Maria Pitache",
     avatar: "",
   },
@@ -192,35 +193,33 @@ const TeamMembers = [
     role: "Frontend",
     instagram: "https://www.instagram.com/prakash___28__/",
     github: "https://github.com/prakashwaddar628",
-    linkedin: "https://www.linkedin.com/in/prakash-l-waddar-422760203?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    linkedin:
+      "https://www.linkedin.com/in/prakash-l-waddar-422760203?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     image: "/2025/team/prakash_waddar.jpg",
     quote: "Break loops, not your spirit. Go beyond your limits",
     avatar: "",
   },
 
-  
   {
     name: "Karthik P K",
     role: "Backend",
     instagram: "https://www.instagram.com/_karthik_p_k/",
     github: "https://github.com/karthikpk-o",
-    linkedin:
-      "https://linkedin.com/in/karthik-p-k",
+    linkedin: "https://linkedin.com/in/karthik-p-k",
     image: "/2025/team/karthik_p_k.jpg",
-    quote:
-      "The trouble is, you think you have time.",
+    quote: "The trouble is, you think you have time.",
     avatar: "",
   },
-  
+
   {
     name: "Mustafa",
     role: "Frontend",
     instagram: "https://www.instagram.com/mustafa._._.raza/",
     github: "https://github.com/Mustafa-DEV0",
-    linkedin: "https://www.linkedin.com/in/mustafa-raza-b98163350?trk=contact-info",
+    linkedin:
+      "https://www.linkedin.com/in/mustafa-raza-b98163350?trk=contact-info",
     image: "/2025/team/mustafa.jpeg",
     quote: "I write clean code… until the deadline says otherwise.",
     avatar: "",
   },
-
 ];
