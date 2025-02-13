@@ -5,7 +5,6 @@ import { useEffect, useRef } from "react";
 import { env } from "~/env";
 import { type PublishedEventsQuery } from "~/generated/generated";
 import { generateEventUrl } from "~/utils/url";
-import Image from "next/image";
 import gsap from "gsap";
 
 const Event = ({
@@ -44,12 +43,12 @@ const Event = ({
         name: "Date",
         text: event.rounds[0]?.date
           ? new Date(event.rounds[0]?.date).toLocaleString("en-IN", {
-            day: "numeric",
-            month: "short",
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
-          })
+              day: "numeric",
+              month: "short",
+              hour: "numeric",
+              minute: "numeric",
+              hour12: true,
+            })
           : "TBD",
         Icon: Calendar,
       },
@@ -96,7 +95,7 @@ const Event = ({
     <div
       event-scroll
       onClick={() => router.push(generateEventUrl(event.name, event.id))}
-      className={`relative flex w-full max-w-[80%] sm:max-w-sm md:max-w-md cursor-pointer flex-col rounded-2xl transition-transform duration-300 hover:scale-[1.02] sm:mt-10 mx-auto sm:mx-0`}
+      className={`relative flex w-full -mt-16 md:-mt-12 justify-center items-center max-w-[80%] sm:max-w-sm md:max-w-md cursor-pointer flex-col rounded-2xl transition-transform duration-300 hover:scale-[1.02] mx-auto sm:mx-0`}
       style={{ willChange: "transform" }}
     >
       <svg
@@ -104,6 +103,7 @@ const Event = ({
         viewBox="0 0 145.68 254"
         className="w-full h-full object-cover rounded-2xl"
         style={{ transform: "scale(0.95)", WebkitTransform: "scale(0.95)" }}
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
           <style>{`
@@ -164,41 +164,59 @@ const Event = ({
           height="30"
           className="object-cover z-500"
         />
-        <foreignObject
-          x="19"
-          y="18.5"
-          width="120"
-          height="123"
-          style={{
-            position: "relative",
-            overflow: "hidden",
-            aspectRatio: "1 / 1",
-          }}
-          className="image-container"
-        >
-          {event.image && (
-            <Image
-              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
-              alt={event.name}
-              layout="fill"
-              objectFit="cover"
-              className="object-cover [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
-            />
-          )}
-        </foreignObject>
+        {event.image && (
+          <image
+            href={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
+            x="19"
+            y="18.5"
+            width="120"
+            height="123"
+            preserveAspectRatio="xMidYMid slice"
+            className="object-cover [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
+          />
+        )}
 
-        <foreignObject x="-2" y="140" width="150" height="120">
+        <foreignObject
+          x="-2"
+          y="140"
+          width="150"
+          height="120"
+          style={{ position: "relative" }}
+        >
           <div className="text-white flex flex-col w-full items-center justify-center">
-            <h2 className="text-base ml-2 font-life-craft my-1 text-center italic text-white">
-              {event.name}
+            <h2 className="font-life-craft my-1 text-center italic text-white w-32 overflow-hidden whitespace-nowrap">
+              {event.name.length > 20 ? (
+                <div
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
+                    animation: "marquee 10s linear infinite",
+                  }}
+                >
+                  {event.name}
+                </div>
+              ) : (
+                event.name
+              )}
+              <style jsx>{`
+                @keyframes marquee {
+                  0% {
+                    transform: translateX(60%);
+                  }
+                  100% {
+                    transform: translateX(-60%);
+                  }
+                }
+              `}</style>
             </h2>
+
             <div className="grid grid-cols-1 gap-x-1 gap-y-1 w-full px-2 items-start -mt-1.5">
               {getEventAttributes().map((attr, i) => (
                 <div
                   key={i}
                   className="flex items-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px]
-                           bg-gradient-to-tr bg-opacity-50 from-primary-900 via-primary-800/80 to-primary-900
-                           border border-primary-300/50 text-white font-medium shadow-md"
+                     bg-gradient-to-tr bg-opacity-50 from-primary-900 via-primary-800/80 to-primary-900
+                     border border-primary-300/50 text-white font-medium shadow-md"
                 >
                   <attr.Icon width="7" height="7" className="flex-shrink-0" />
                   <span
@@ -210,35 +228,31 @@ const Event = ({
                 </div>
               ))}
             </div>
-            <a
-              href={generateEventUrl(event.name, event.id)}
-              className="mt-[10px]"
-            >
-              <div
-                className="h-5 register-button w-[136px] aspect-square bg-gradient-to-tr bg-opacity-50 from-primary-950 via-primary-900/90 to-primary-950 flex justify-center items-center relative"
-                style={{
-                  clipPath:
-                    "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
-                  WebkitClipPath:
-                    "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-                ref={buttonRef}
-              >
-                <div className="text-white font-life-craft tracking-widest italic font-semibold text-sm uppercase cursor-pointer mt-1">
-                  Register
-                  <div
-                    ref={shineRef}
-                    className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent z-10"
-                    style={{ pointerEvents: "none" }}
-                  />
-                </div>
-              </div>
-            </a>
           </div>
         </foreignObject>
       </svg>
+      <div
+        className="h-[6%] register-button w-[86%] aspect-square bg-gradient-to-tr bg-opacity-50 from-primary-950 via-primary-900/90 to-primary-950 flex justify-center items-center absolute -mt-[42.5%]"
+        style={{
+          clipPath:
+            "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
+          WebkitClipPath:
+            "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+        ref={buttonRef}
+        onClick={() => router.push(generateEventUrl(event.name, event.id))}
+      >
+        <div className="text-white font-life-craft tracking-widest italic font-semibold text-[27px] uppercase cursor-pointer mt-1">
+          Register
+          <div
+            ref={shineRef}
+            className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent z-10"
+            style={{ pointerEvents: "none" }}
+          />
+        </div>
+      </div>
     </div>
   );
 };
