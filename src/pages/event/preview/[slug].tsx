@@ -109,7 +109,7 @@ const Page = () => {
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
-                    src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
+                    src={event.image}
                     className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
                     width={1000}

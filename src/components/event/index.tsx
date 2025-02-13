@@ -2,7 +2,6 @@ import { Calendar, MapPin, Users } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-import { env } from "~/env";
 import { type PublishedEventsQuery } from "~/generated/generated";
 import { generateEventUrl } from "~/utils/url";
 import gsap from "gsap";
@@ -43,12 +42,12 @@ const Event = ({
         name: "Date",
         text: event.rounds[0]?.date
           ? new Date(event.rounds[0]?.date).toLocaleString("en-IN", {
-              day: "numeric",
-              month: "short",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            })
+            day: "numeric",
+            month: "short",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          })
           : "TBD",
         Icon: Calendar,
       },
@@ -166,7 +165,7 @@ const Event = ({
         />
         {event.image && (
           <image
-            href={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
+            href={event.image}
             x="19"
             y="18.5"
             width="120"

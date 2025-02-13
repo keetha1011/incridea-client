@@ -3,18 +3,15 @@ import dynamic from "next/dynamic";
 import { type FC } from "react";
 import { useState, useEffect } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
-import { toast } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
 
 import Button from "~/components/button";
 import Modal from "~/components/modal";
 import ToggleSwitch from "~/components/switch";
 import createToast from "~/components/toast";
-import { UploadButton } from "~/components/uploadthing/button";
 import { type EventsQuery } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
-import { env } from "~/env";
 
 // Dynamically import ReactQuill with SSR disabled
 const ReactQuill = dynamic(() => import("react-quill"), {
@@ -34,11 +31,7 @@ const EditEvent: FC<{
   const [minTeamSize, setMinTeamSize] = useState(event?.minTeamSize);
   const [venue, setVenue] = useState(event?.venue);
   const [fees, setFees] = useState(event?.fees);
-  const [banner, setBanner] = useState(
-    `${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`,
-  );
   const [showModal, setShowModal] = useState(false);
-  const [uploading, setUploading] = useState(false);
 
   const [editorState, setEditorState] = useState<string>("");
   const [updateEvent, { loading }] = useMutation(UpdateEventDocument, {
@@ -54,7 +47,6 @@ const EditEvent: FC<{
         name,
         maxTeamSize,
         minTeamSize,
-        image: banner,
         venue,
         fees,
         eventType: eventType as EventType,
@@ -75,13 +67,6 @@ const EditEvent: FC<{
     } catch (error) {
       console.log(error);
     }
-    // public-DraftStyleDefault-block
-    const style = document.createElement("style");
-    style.innerHTML = `.public-DraftStyleDefault-block {
-        margin: 0;
-      }`;
-
-    document.head.appendChild(style);
   }, [event]);
 
   return (
@@ -139,13 +124,47 @@ const EditEvent: FC<{
               >
                 Event Description
               </label>
-              <div className="w-full h-60">
+              <div className="w-full">
                 <ReactQuill
                   theme="snow"
                   value={editorState}
                   onChange={(value) => {
                     setEditorState(value);
                   }}
+                  modules={{
+                    toolbar: {
+                      container: [
+                        [{ header: "1" }, { header: "2" }, { font: [] }],
+                        [{ size: [] }],
+                        ["bold", "italic", "underline", "strike", "blockquote"],
+                        [
+                          { list: "ordered" },
+                          { list: "bullet" },
+                          { indent: "-1" },
+                          { indent: "+1" },
+                        ],
+                        ["link", "image", "video"],
+                        ["clean"],
+                      ],
+                    },
+                  }}
+                  formats={[
+                    "header",
+                    "font",
+                    "size",
+                    "bold",
+                    "italic",
+                    "underline",
+                    "strike",
+                    "blockquote",
+                    "list",
+                    "bullet",
+                    "indent",
+                    "link",
+                    "image",
+                    "video",
+                  ]}
+                  style={{ color: "white" }}
                 />
               </div>
             </div>
@@ -206,69 +225,43 @@ const EditEvent: FC<{
               </div>
               {(eventType === EventType.Team ||
                 eventType === EventType.TeamMultipleEntry) && (
-                <div className="grow basis-full md:basis-1/3">
-                  <label className="mb-2 block text-sm font-medium text-white">
-                    Team Size
-                  </label>
+                  <div className="grow basis-full md:basis-1/3">
+                    <label className="mb-2 block text-sm font-medium text-white">
+                      Team Size
+                    </label>
 
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="number"
-                      id="minTeamSize"
-                      className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-                      placeholder="Min Team Size..."
-                      value={minTeamSize}
-                      onChange={(e) =>
-                        setMinTeamSize(Number(e.target.value) || 0)
-                      }
-                      min={1}
-                    />
-                    <span className="text-white">to</span>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        id="minTeamSize"
+                        className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                        placeholder="Min Team Size..."
+                        value={minTeamSize}
+                        onChange={(e) =>
+                          setMinTeamSize(Number(e.target.value) || 0)
+                        }
+                        min={1}
+                      />
+                      <span className="text-white">to</span>
 
-                    <input
-                      type="number"
-                      id="maxTeamSize"
-                      className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
-                      placeholder="Max Team Size..."
-                      min={1}
-                      value={maxTeamSize}
-                      onChange={(e) =>
-                        setMaxTeamSize(Number(e.target.value) || 0)
-                      }
-                    />
+                      <input
+                        type="number"
+                        id="maxTeamSize"
+                        className="block w-full rounded-lg border border-gray-600 bg-gray-600 p-2.5 text-sm text-white placeholder-gray-400 ring-gray-500 focus:outline-none focus:ring-2"
+                        placeholder="Max Team Size..."
+                        min={1}
+                        value={maxTeamSize}
+                        onChange={(e) =>
+                          setMaxTeamSize(Number(e.target.value) || 0)
+                        }
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
 
             <div className="mb-6 flex flex-wrap justify-between gap-6">
-              <div className="grow basis-full md:basis-1/3">
-                <label className="mb-2 block text-sm font-medium text-white">
-                  Banner
-                </label>
-                <UploadButton
-                  endpoint="event"
-                  onUploadBegin={() => {
-                    setUploading(true);
-                  }}
-                  onClientUploadComplete={(res: { url: string }[]) => {
-                    if (res[0]) {
-                      toast.success("Image uploaded", {
-                        position: "bottom-right",
-                      });
-                      setUploading(false);
-                      setBanner(res[0].url);
-                    }
-                  }}
-                  onUploadError={(error: Error) => {
-                    console.log(error);
-                    toast.error("Image upload failed", {
-                      position: "bottom-right",
-                    });
-                    setUploading(false);
-                  }}
-                />
-              </div>
+              <div className="grow basis-full md:basis-1/3" />
               <div className="grow basis-full md:basis-1/3">
                 <div className="mb-2 flex items-center gap-2">
                   <label className="block text-sm font-medium text-white">
@@ -313,7 +306,7 @@ const EditEvent: FC<{
               type="submit"
               intent={"success"}
               onClick={saveHandler}
-              disabled={loading || uploading}
+              disabled={loading}
               className="rounded-lg"
             >
               Save

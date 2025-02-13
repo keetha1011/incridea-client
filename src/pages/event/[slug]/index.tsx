@@ -164,7 +164,7 @@ const Page = ({ event, error }: Props) => {
         className={`w-screen h-screen object-cover object-center top-0 left-0 absolute`}
       />
       <Toaster />
-      <EventSEO title={event?.name} description={event?.description} image={event?.image} url={pathname}/>
+      <EventSEO title={event?.name} description={event?.description} image={event?.image} url={pathname} />
       {error && (
         <div
           className={`absolute inset-0 flex h-screen flex-col items-center justify-center gap-5 p-10 text-white`}
@@ -202,7 +202,7 @@ const Page = ({ event, error }: Props) => {
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
-                    src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
+                    src={event.image}
                     className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
                     width={1000}

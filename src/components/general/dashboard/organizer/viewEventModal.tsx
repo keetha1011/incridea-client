@@ -89,7 +89,7 @@ export default function ViewEventModal({
             className={`${event.image ? "h-64" : "h-40 bg-gray-800/25"
               } relative mb-3 flex w-full items-end overflow-hidden rounded-lg bg-cover bg-center`}
             style={{
-              backgroundImage: event.image ? `url(${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image})` : "none",
+              backgroundImage: event.image ? `url(${event.image})` : "none",
             }}
           >
             {!event.image && (
