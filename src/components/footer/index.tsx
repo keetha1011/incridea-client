@@ -33,7 +33,7 @@ export function FooterBody() {
       <div className="-mt-1 flex flex-col items-center justify-between gap-5 bg-primary-700 p-5 text-gray-100 md:flex-row">
         <div className="md:basis-1/5">
           <Image
-            src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/logo-black.png`}
+            src="/2025/logo-black.png"
             width={150}
             height={100}
             alt="Incridea Logo"

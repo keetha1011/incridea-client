@@ -208,17 +208,17 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
   return (
     <>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* <img
         src="/2025/gallery/portal3.gif"
         alt=""
         className="absolute -bottom-20 scale-y-[2] scale-x-150 lg:scale-x-100 -translate-y-1/2 h-40 w-full "
-      />
+      /> */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      {/* <img
         src="/2025/gallery/portal3-bottom.gif"
         alt=""
         className="absolute -bottom-20 scale-x-150 lg:scale-x-100 h-40 w-full z-[99999]"
-      />
+      /> */}
       <div className="relative flex justify-center items-center h-screen translate-y-2/3">
         {queue.map((img, index) => (
           // <div

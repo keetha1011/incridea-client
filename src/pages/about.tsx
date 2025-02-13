@@ -2,17 +2,16 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import Banner from "~/components/aboutUs/banner";
-import { env } from "~/env";
 
 const images = [
-  { id: 15, alt: "a forest after an apocalypse" },
-  { id: 15, alt: "a waterfall and many rocks" },
-  { id: 15, alt: "a house on a mountain" },
-  { id: 15, alt: "some pink flowers" },
-  { id: 15, alt: "big rocks with some trees" },
-  { id: 15, alt: "a waterfall, trees and a view from the sky" },
-  { id: 15, alt: "a cool landscape" },
-  { id: 15, alt: "inside a town between two big buildings" },
+  { id: "1.webp", alt: "Image 1" },
+  { id: "2.webp", alt: "Image 2" },
+  { id: "3.webp", alt: "Image 3" },
+  { id: "4.webp", alt: "Image 4" },
+  { id: "5.webp", alt: "Image 5" },
+  { id: "6.webp", alt: "Image 6" },
+  { id: "7.webp", alt: "Image 7" },
+  { id: "8.webp", alt: "Image 8" },
 ];
 
 const About = () => {
@@ -21,16 +20,12 @@ const About = () => {
   return (
     <div className="max-w-screen-2xl mx-auto p-4 md:p-12 flex flex-col gap-y-2 md:gap-16">
       <div className="flex min-h-screen flex-col gap-y-2 md:gap-16">
-        <Banner
-          video={"https://vimeo.com/883551016?share=copy"}
-          text=""
-          credits=""
-        />
+        <Banner video={"https://vimeo.com/1055845788?share=copy"} credits="" />
 
         <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
           <div className="flex flex-col items-center justify-between gap-8 lg:flex-row">
             <Image
-              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/nitteLogoWhite.png`}
+              src="/2025/nitteLogoWhite.png"
               alt="image"
               loading="lazy"
               className="top-0 h-full w-3/4 object-contain object-center md:w-1/3"
@@ -68,15 +63,11 @@ const About = () => {
           </div>
         </span>
       </div>
-      <Banner
-        video={"https://vimeo.com/909929083?share=copy"}
-        text=""
-        credits=""
-      />
+      <Banner video={"https://vimeo.com/1055896700?share=copy"} credits="" />
       <span className="text-base text-secondary-100 md:text-lg xl:text-xl">
         <div className="relative flex flex-col items-center justify-between gap-16 lg:flex-row">
           {/* Gallery Section - Contained width, proper spacing */}
-          <div className="relative w-full lg:w-2/4 pt-24 pb-28">
+          <div className="relative w-full lg:w-2/4 md:pt-24 pt-40 pb-28">
             <style jsx>{`
               .gallery {
                 --s: min(120px, 80vw);
@@ -154,7 +145,7 @@ const About = () => {
             <div className="gallery" onClick={() => setIsActive(!isActive)}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/assets/png/logo-rim-white.png`}
+                src="/2025/logo-rim-white.png"
                 alt="Incridea Logo"
                 loading="lazy"
                 className={`object-contain logo ${isActive ? "active" : ""} object-contain origin-bottom animate-shakelogo`}
@@ -165,9 +156,9 @@ const About = () => {
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   key={id}
-                  src={`https://picsum.photos/id/${id}/300/300`}
+                  src={`/2025/about/${id}`}
                   alt={alt}
-                  className={isActive ? "active " : ""}
+                  className={`${isActive ? "active " : ""}`}
                 />
               ))}
             </div>

@@ -47,11 +47,10 @@ type BadgeGLTF = GLTF &
     };
   };
 
-
-function truncateText(text:string,maxChar=20) {
-  text = text.trim()
-  if(text.length>maxChar){
-    return text.slice(0,maxChar) + `${text.length}`;
+function truncateText(text: string, maxChar = 20) {
+  text = text.trim();
+  if (text.length > maxChar) {
+    return text.slice(0, maxChar) + `${text.length}`;
   }
   return text;
 }
@@ -154,7 +153,9 @@ function Band({
     angularDamping: 2,
     linearDamping: 2,
   };
-  const { nodes, materials } = useGLTF(`/${CONSTANT.YEAR}/3d/profile_tag.glb`) as BadgeGLTF;
+  const { nodes, materials } = useGLTF(
+    `/${CONSTANT.YEAR}/3d/profile_tag.glb`,
+  ) as BadgeGLTF;
   const texture = useTexture(`/${CONSTANT.YEAR}/badgelogo.png`);
   const { width, height } = useThree((state) => state.size);
   const [curve] = useState(
@@ -265,7 +266,7 @@ function Band({
     <>
       <group position={[0, 4, 0]}>
         <RigidBody
-        position={[0, .5, 0]}
+          position={[0, 0.5, 0]}
           ref={fixed}
           {...segmentProps}
           type="fixed"
@@ -374,7 +375,7 @@ function Band({
                         justifyContent="center"
                       >
                         <ThreeImage
-                          src={user.profileImage ?? "assets/png/ryoko.png"}
+                          src={user.profileImage ?? "2025/ryoko.png"}
                           width={130}
                           aspectRatio={0.7}
                           borderRadius={6}
@@ -401,7 +402,7 @@ function Band({
                           marginLeft={5}
                           marginRight={5}
                         >
-                          {truncateText(user.name,20)}
+                          {truncateText(user.name, 20)}
                         </Text>
                         <Text
                           overflow={"hidden"}
@@ -412,7 +413,7 @@ function Band({
                           marginLeft={5}
                           marginRight={5}
                         >
-                          {truncateText(user.college?.name ?? "",40)}
+                          {truncateText(user.college?.name ?? "", 40)}
                         </Text>
 
                         <Text
@@ -470,7 +471,7 @@ function Band({
         </RigidBody>
       </group>
       <mesh ref={band}>
-        <meshLineGeometry/>
+        <meshLineGeometry />
         <meshLineMaterial
           color="white"
           depthTest={false}

@@ -68,7 +68,7 @@ const Page = ({ data }: Props) => {
           ? CONSTANT.DATE.INCRIDEA.DAY1
           : currentDayFilter === "DAY 2"
             ? CONSTANT.DATE.INCRIDEA.DAY2
-            : CONSTANT.DATE.INCRIDEA.DAY3
+            : CONSTANT.DATE.INCRIDEA.DAY3,
       ).getDate();
       tempFilteredEvents = tempFilteredEvents.filter((event) =>
         event.rounds.some((round) => round.date?.getDate() === filteredDay),
@@ -107,8 +107,9 @@ const Page = ({ data }: Props) => {
           <div
             data-scroll-container
             ref={containerRef}
-            className={`relative px-2 md:px-10 ${filteredEvents.length > 0 ? "pt-28" : "pt-10 md:pt-20"
-              } flex flex-col items-center justify-center`}
+            className={`relative px-2 md:px-10 ${
+              filteredEvents.length > 0 ? "pt-28" : "pt-10 md:pt-20"
+            } flex flex-col items-center justify-center`}
           >
             <div
               data-scroll-section
@@ -116,7 +117,7 @@ const Page = ({ data }: Props) => {
             >
               <h1
                 data-scroll
-                className={`text-center font-life-craft text-7xl tracking-wide text-white md:text-8xl`}
+                className={`text-center font-life-craft tracking-wide text-white md:text-8xl text-5xl`}
               >
                 Events
               </h1>
@@ -149,9 +150,9 @@ const Page = ({ data }: Props) => {
                       <IoTodayOutline size="16" />
                       {currentDayFilter !== "All"
                         ? currentDayFilter
-                          .toLowerCase()
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (char) => char.toUpperCase())
+                            .toLowerCase()
+                            .replace(/_/g, " ")
+                            .replace(/\b\w/g, (char) => char.toUpperCase())
                         : "Day"}
                     </Menu.Button>
                     <Transition
@@ -167,10 +168,11 @@ const Page = ({ data }: Props) => {
                           <Menu.Item key={filter}>
                             {() => (
                               <button
-                                className={`${currentDayFilter === filter
+                                className={`${
+                                  currentDayFilter === filter
                                     ? "bg-white/20"
                                     : "bg-black/10"
-                                  } w-36 rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                } w-36 rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                 onClick={() => setCurrentDayFilter(filter)}
                               >
                                 {
@@ -200,9 +202,9 @@ const Page = ({ data }: Props) => {
                       <BiCategory size="16" />
                       {currentCategoryFilter !== AllCategory.ALL
                         ? currentCategoryFilter
-                          .toLowerCase()
-                          .replace(/_/g, " ")
-                          .replace(/\b\w/g, (char) => char.toUpperCase())
+                            .toLowerCase()
+                            .replace(/_/g, " ")
+                            .replace(/\b\w/g, (char) => char.toUpperCase())
                         : "Category"}
                     </Menu.Button>
                     <Transition
@@ -222,11 +224,12 @@ const Page = ({ data }: Props) => {
                             return (
                               <Menu.Item key={idx}>
                                 <button
-                                  className={`${currentCategoryFilter ===
-                                      (filter as EventCategory | AllCategory)
+                                  className={`${
+                                    currentCategoryFilter ===
+                                    (filter as EventCategory | AllCategory)
                                       ? "bg-white/20"
                                       : "bg-black/10"
-                                    } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                  } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                   onClick={() =>
                                     setCurrentCategoryFilter(
                                       filter as EventCategory | AllCategory,
