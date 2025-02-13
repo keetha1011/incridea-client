@@ -17,7 +17,7 @@ import RegistrationToggle from "~/components/general/dashboard/admin/registratio
 
 const AdminTab: FC<{
   AdminId: string;
-}> = ({}) => {
+}> = ({ }) => {
   const first = 200;
   const { data: branches, loading: branchesLoading } = useQuery(
     BranchesDocument,
@@ -64,7 +64,7 @@ const AdminTab: FC<{
               </div>
             )}
             <div className="max-h-80 md:max-h-screen w-full overflow-y-auto text-center md:h-[500px]">
-              {events?.events?.edges?.map((event, i) => (
+              {events?.events?.edges.sort()?.map((event, i) => (
                 <div
                   key={i}
                   className={`mb-3 ml-2 flex flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-center md:rounded-none md:p-4`}
@@ -83,11 +83,10 @@ const AdminTab: FC<{
                     <RoundsDone eventId={event?.node?.id} />
                   </h1>
                   <h1
-                    className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${
-                      event?.node?.published
-                        ? "border-green-500 text-green-500"
-                        : "border-red-500 text-red-500"
-                    }`}
+                    className={`flex basis-1/6 justify-center py-0.5 text-center text-lg ${event?.node?.published
+                      ? "border-green-500 text-green-500"
+                      : "border-red-500 text-red-500"
+                      }`}
                   >
                     {event?.node.published ? "Published" : "Pending"}
                   </h1>
@@ -124,7 +123,7 @@ const AdminTab: FC<{
             )}
             <div className="max-h-60 overflow-y-auto md:h-96 md:max-h-screen">
               {branches?.getBranches.__typename === "QueryGetBranchesSuccess" &&
-                branches.getBranches.data?.map((branch, i) => (
+                branches.getBranches.data.sort()?.map((branch, i) => (
                   <div
                     key={i}
                     className={`mb-3 flex flex-col items-start justify-between gap-3 rounded-lg bg-white/10 p-3 md:my-0 md:ml-0 md:flex-row md:items-center md:gap-5 md:rounded-none md:p-4`}
