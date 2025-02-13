@@ -1,10 +1,13 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import React, { type FC, useState } from "react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { FaSignOutAlt } from "react-icons/fa";
 
 import { Button } from "~/components/button/button";
-import { LeaveTeamDocument } from "~/generated/generated";
+import {
+  LeaveTeamDocument,
+  RegisterdEventsDocument,
+} from "~/generated/generated";
 import {
   Dialog,
   DialogContent,
@@ -19,6 +22,7 @@ const LeaveTeamModal: FC<{
   teamId: string;
 }> = ({ teamId, refetch }) => {
   const [showModal, setShowModal] = useState(false);
+  const userEvents = useQuery(RegisterdEventsDocument);
 
   const [leaveTeam, { loading }] = useMutation(LeaveTeamDocument, {
     refetchQueries: [refetch],
@@ -32,6 +36,7 @@ const LeaveTeamModal: FC<{
   const handleLeave = async (teamId: string) => {
     setShowModal(false);
     const loadingToast = toast.loading("Leaving team...");
+
     await leaveTeam({
       variables: {
         teamId,
@@ -40,6 +45,7 @@ const LeaveTeamModal: FC<{
       if (res.data?.leaveTeam.__typename === "MutationLeaveTeamSuccess") {
         toast.success("You've left the team!");
         toast.dismiss(loadingToast);
+        void userEvents.refetch();
       } else {
         toast.error(res.data?.leaveTeam.message ?? "An error occurred");
         toast.dismiss(loadingToast);

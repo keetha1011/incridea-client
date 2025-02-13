@@ -3,6 +3,7 @@ import React, { type FC, useState } from "react";
 import { BiTrashAlt } from "react-icons/bi";
 
 import Button from "~/components/button";
+import { Button as Button2025 } from "~/components/button/button";
 import Modal from "~/components/modal";
 import Spinner from "~/components/spinner";
 import createToast from "~/components/toast";
@@ -68,8 +69,8 @@ const DeleteTeamMember: FC<{
       >
         <div className="text-center text-sm">This action cannot be undone.</div>
         <div className="my-5 flex justify-center gap-3">
-          <Button
-            size={"small"}
+          <Button2025
+            variant={"default"}
             onClick={async () => await handleDelete(teamId)}
             disabled={deleteMemberLoading}
           >
@@ -78,14 +79,10 @@ const DeleteTeamMember: FC<{
             ) : (
               "Remove"
             )}
-          </Button>
-          <Button
-            size={"small"}
-            intent={"ghost"}
-            onClick={() => handleCloseModal()}
-          >
+          </Button2025>
+          <Button2025 variant={"secondary"} onClick={() => handleCloseModal()}>
             Cancel
-          </Button>
+          </Button2025>
         </div>
       </Modal>
     </>
