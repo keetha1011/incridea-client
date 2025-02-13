@@ -14,9 +14,19 @@ import Button from "~/components/button";
 import styles from "~/components/general/event/eventDetails.module.css";
 import Modal from "~/components/modal";
 import { type EventsQuery } from "~/generated/generated";
-
+import "react-quill/dist/quill.bubble.css";
 import EditEventModal from "./editEvent";
 import TeamModal from "./teamModal";
+import dynamic from "next/dynamic";
+import { env } from "~/env";
+
+
+// Dynamically import ReactQuill with SSR disabled
+const ReactQuill = dynamic(() => import("react-quill"), {
+  ssr: false,
+  loading: () => <p>Loading...</p>,
+});
+
 
 const VieweventModal: FC<{
   Event: EventsQuery["events"]["edges"][0];
@@ -83,14 +93,13 @@ const VieweventModal: FC<{
       >
         <div className="p-5 md:p-6">
           <div
-            className={`${
-              event?.image ? "h-64" : "h-40 bg-gray-800/25"
-            } relative mb-3 flex w-full items-end overflow-hidden rounded-lg bg-cover bg-center`}
+            className={`${event.image ? "h-64" : "h-40 bg-gray-800/25"
+              } relative mb-3 flex w-full items-end overflow-hidden rounded-lg bg-cover bg-center`}
             style={{
-              backgroundImage: event?.image ? `url(${event?.image})` : "none",
+              backgroundImage: event.image ? `url(${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image})` : "none",
             }}
           >
-            {!event?.image && (
+            {!event.image && (
               <span className="absolute right-1/2 top-1/3 translate-x-1/2 text-2xl italic text-white/25">
                 no image added
               </span>
@@ -98,7 +107,7 @@ const VieweventModal: FC<{
             <span className="w-full bg-gradient-to-b from-transparent to-black/70 p-5 pt-10 text-3xl font-bold">
               {event?.name}
             </span>
-            <Link href={`/event/preview/${event?.id}`} className="p-5">
+            <Link href={`/event/preview/${event.id}`} className="p-5">
               <Button intent={"secondary"}>Preview</Button>
             </Link>
           </div>
@@ -131,13 +140,12 @@ const VieweventModal: FC<{
             </div>
             <hr className="-mx-3 mb-3 opacity-30" />
             {event?.description ? (
-              //TODO(Omkar): fix styling of rendered HTML, urgent, doc team
-              <div
+              <ReactQuill
+                value={event.description}
+                readOnly={true}
+                theme="bubble"
                 className={`${styles.markup} event-description w-full`}
-                dangerouslySetInnerHTML={{
-                  __html: event.description ?? "",
-                }}
-              ></div>
+              />
             ) : (
               <p className="italic text-gray-400">No description added</p>
             )}
@@ -154,7 +162,7 @@ const VieweventModal: FC<{
             Close
           </Button>
         </div>
-      </Modal>
+      </Modal >
     </>
   );
 };

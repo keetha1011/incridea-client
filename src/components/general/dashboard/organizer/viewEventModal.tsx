@@ -14,6 +14,7 @@ import {
 import Button from "~/components/button";
 import EventDetails from "~/components/general/event/eventDetails";
 import Modal from "~/components/modal";
+import { env } from "~/env";
 import { type EventByOrganizerQuery } from "~/generated/generated";
 
 export default function ViewEventModal({
@@ -85,11 +86,10 @@ export default function ViewEventModal({
       >
         <div className="p-5 md:p-6">
           <div
-            className={`${
-              event.image ? "h-64" : "h-40 bg-gray-800/25"
-            } relative mb-3 flex w-full items-end overflow-hidden rounded-lg bg-cover bg-center`}
+            className={`${event.image ? "h-64" : "h-40 bg-gray-800/25"
+              } relative mb-3 flex w-full items-end overflow-hidden rounded-lg bg-cover bg-center`}
             style={{
-              backgroundImage: event.image ? `url(${event.image})` : "none",
+              backgroundImage: event.image ? `url(${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image})` : "none",
             }}
           >
             {!event.image && (

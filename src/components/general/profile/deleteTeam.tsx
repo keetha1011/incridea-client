@@ -54,7 +54,7 @@ const DeleteTeamModal: FC<{
           variant={"destructive"}
           className="w-full"
         >
-          {!solo && "Delete Team"}
+          {/* {!solo && "Delete Team"} */}
           {solo ? <FaSignOutAlt /> : <BiTrashAlt />}
         </Button>
       </div>

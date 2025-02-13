@@ -14,6 +14,7 @@ import { UploadButton } from "~/components/uploadthing/button";
 import { type EventsQuery } from "~/generated/generated";
 import { EventType } from "~/generated/generated";
 import { UpdateEventDocument } from "~/generated/generated";
+import { env } from "~/env";
 
 // Dynamically import ReactQuill with SSR disabled
 const ReactQuill = dynamic(() => import("react-quill"), {
@@ -33,7 +34,8 @@ const EditEvent: FC<{
   const [minTeamSize, setMinTeamSize] = useState(event?.minTeamSize);
   const [venue, setVenue] = useState(event?.venue);
   const [fees, setFees] = useState(event?.fees);
-  const [banner, setBanner] = useState(event?.image);
+  const [banner, setBanner] = useState(
+    `${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`);
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
 

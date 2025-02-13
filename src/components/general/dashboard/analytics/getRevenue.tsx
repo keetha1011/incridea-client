@@ -25,8 +25,8 @@ const RevenueCard = () => {
           <h2 className="text-2xl font-bold text-white text-center">Revenue</h2>
         </div>
         <div className="p-6">
-          <div className="flex items-center justify-center">
-            <IndianRupee className="w-11 h-11 text-gray-300" />
+          <div className="flex items-start justify-center">
+            <IndianRupee className="size-12 text-gray-300" />
             <p className="text-6xl font-bold text-white">{revenue}</p>
           </div>
         </div>

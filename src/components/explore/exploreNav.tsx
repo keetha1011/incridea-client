@@ -1,12 +1,14 @@
 import { useQuery } from "@apollo/client";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import Button from "~/components/button";
 import { GetStoneVisibilitiesDocument } from "~/generated/generated";
 import { useAuth } from "~/hooks/useAuth";
 
 export default function ExploreNav() {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const { user } = useAuth();
   const { data: userStones, loading: userStonesLoading } = useQuery(
@@ -77,10 +79,11 @@ export default function ExploreNav() {
           intent={"primary"}
           size={"medium"}
           onClick={() => {
-            setShowModal(true);
+            // setShowModal(true);
+            void router.push("/");
           }}
         >
-          Menu
+          Home
         </Button>
       </div>
     </>

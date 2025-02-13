@@ -1,9 +1,7 @@
-import {
-  type GetServerSideProps,
-  type InferGetServerSidePropsType,
-} from "next";
+import { useQuery, } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Toaster } from "react-hot-toast";
 import { BiTimeFive } from "react-icons/bi";
 import { BsTelephone } from "react-icons/bs";
@@ -19,52 +17,21 @@ import { MdOutlineMailOutline } from "react-icons/md";
 
 import EventDetails from "~/components/general/event/eventDetails";
 import EventRegistration from "~/components/general/event/eventRegistration";
-import { EventByIdDocument, type EventByIdQuery } from "~/generated/generated";
-import { client } from "~/lib/apollo";
+import { env } from "~/env";
+import { EventByIdDocument } from "~/generated/generated";
 
-type Props =
-  | {
-      event: EventByIdQuery["eventById"];
-      error?: never;
-    }
-  | {
-      event?: never;
-      error: string;
-    };
+const Page = () => {
+  const router = useRouter()
 
-const getServerSideProps: GetServerSideProps<Props> = async ({ params }) => {
-  try {
-    if (!params?.slug || params?.slug instanceof Array)
-      throw new Error("Invalid event slug");
+  const { data, loading } = useQuery(EventByIdDocument, {
+    variables: {
+      id: router.query.slug as string,
+    },
+  })
 
-    const id = params.slug.split("-").pop();
-    if (!id) throw new Error("Invalid event slug");
+  const event = data?.eventById.__typename === "QueryEventByIdSuccess" ? data.eventById.data : null
+  const error = data?.eventById.__typename === "Error" ? data.eventById.message : null
 
-    const { data: event } = await client.query({
-      query: EventByIdDocument,
-      variables: {
-        id: id,
-      },
-      fetchPolicy: "no-cache",
-    });
-    return {
-      props: {
-        event: event.eventById,
-      },
-    };
-  } catch (error) {
-    return {
-      props: {
-        error: error instanceof Error ? error.message : "Could not find event",
-      },
-    };
-  }
-};
-
-const Page = ({
-  event,
-  error,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const getEventAttributes = () => {
     if (!event) return [];
     let teamSizeText = "",
@@ -116,6 +83,8 @@ const Page = ({
     ];
   };
 
+  if (loading) return <div>Loading...</div>
+
   return (
     <div className={`relative flex items-center justify-center`}>
       <Image
@@ -140,7 +109,7 @@ const Page = ({
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
-                    src={event.image}
+                    src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
                     className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
                     width={1000}
@@ -173,10 +142,10 @@ const Page = ({
                     Details
                   </h2>
                   <div className={`mt-2 flex w-full flex-wrap gap-2`}>
-                    {getEventAttributes().map((attr) =>
+                    {getEventAttributes().map((attr, idx) =>
                       attr.text ? (
                         <div
-                          key={attr.name}
+                          key={idx}
                           className={`md:text-md flex w-full items-center gap-2 rounded-full border border-secondary-400/40 bg-[#D79128] bg-opacity-30 p-1 px-2 text-left text-sm`}
                         >
                           {
@@ -194,9 +163,9 @@ const Page = ({
                   </div>
                   <div className={`text-sm`}>
                     <div className={`grid grid-cols-1 gap-2`}>
-                      {event.rounds.map((round) => (
+                      {event.rounds.map((round, idx) => (
                         <div
-                          key={round.roundNo}
+                          key={idx}
                           className={`items-center space-y-2 rounded-xl  border border-[#D79128] bg-opacity-30 px-3 py-2 text-white bg-[#D79128]`}
                         >
                           <div className={`font-semibold`}>
@@ -337,5 +306,4 @@ const Page = ({
   );
 };
 
-export { getServerSideProps };
 export default Page;

@@ -75,7 +75,7 @@ const RoundAddModal: FC<{
                   className="flex items-center justify-between p-5 md:p-6"
                 >
                   <h3 className="text-lg font-medium leading-6 text-white">
-                    Select Date for Round {roundNo}
+                    Select Date for Round {roundNo + 1}
                   </h3>
                   <button
                     className="text-gray-400 transition-colors hover:text-white"

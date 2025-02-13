@@ -16,6 +16,8 @@ import {
   type RegisterdEventsQueryVariables,
 } from "~/generated/generated";
 import { type QueryResult } from "@apollo/client";
+import { env } from "~/env";
+import { CONSTANT } from "~/constants";
 
 const EventCard: FC<{
   teams: Extract<
@@ -52,8 +54,7 @@ const EventCard: FC<{
       <div className="flex flex-col items-center justify-center">
         <div className="relative">
           <Image
-            // TODO(Omkar): Add a fallback event pfp
-            src={event.image ?? ""}
+            src={event.image ? `${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}` : `/${CONSTANT.YEAR}/vertical_logo.png`}
             alt={event.name}
             height={300}
             width={300}

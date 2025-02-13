@@ -11,6 +11,7 @@ import Spinner from "~/components/spinner";
 import {
   EventByIdDocument,
   type EventByIdQuery,
+  type EventByIdQueryVariables,
   GetScoreSheetJuryDocument,
   type GetScoreSheetJuryQuery,
   type GetScoreSheetJuryQueryVariables,
@@ -48,10 +49,11 @@ const Page = () => {
     void router.push("/profile");
     return <div>Redirecting...</div>;
   }
-  if (!event) return <div>Event not found</div>;
+  if (!event || event.eventById.__typename === "Error") return <div>Event not found</div>;
+
   return (
     <Dashboard>
-      <RoundTabs eventId={event.eventById.id} rounds={event.eventById.rounds} />
+      <RoundTabs eventId={event.eventById.data.id} rounds={event.eventById.data.rounds} />
     </Dashboard>
   );
 };
@@ -60,10 +62,12 @@ const RoundTabs = ({
   rounds,
   eventId,
 }: {
-  rounds: EventByIdQuery["eventById"]["rounds"];
+  rounds: Extract<NonNullable<QueryResult<EventByIdQuery, EventByIdQueryVariables>["data"]>["eventById"], {
+    __typename: "QueryEventByIdSuccess";
+  }>["data"]["rounds"];
   eventId: string;
 }) => {
-  const getRoundStatus = (round: EventByIdQuery["eventById"]["rounds"][0]) => {
+  const getRoundStatus = (round: typeof rounds[number]) => {
     if (round.completed) return "COMPLETED";
     const roundTime = rounds.find((r) => r.roundNo === round.roundNo)?.date;
     if (roundTime && roundTime.getTime() > new Date().getTime())
@@ -83,11 +87,10 @@ const RoundTabs = ({
           >
             {({ selected }) => (
               <button
-                className={`whitespace-nowrap p-3 text-base font-semibold transition-colors sm:px-5 sm:py-4 sm:text-lg ${
-                  selected
-                    ? "bg-gray-900 text-white shadow-lg shadow-black"
-                    : "bg-transparent text-white hover:bg-gray-800/60"
-                }`}
+                className={`whitespace-nowrap p-3 text-base font-semibold transition-colors sm:px-5 sm:py-4 sm:text-lg ${selected
+                  ? "bg-gray-900 text-white shadow-lg shadow-black"
+                  : "bg-transparent text-white hover:bg-gray-800/60"
+                  }`}
               >
                 <span>Round {round.roundNo} </span>
                 <StatusBadge status={getRoundStatus(round)} />{" "}
@@ -98,11 +101,10 @@ const RoundTabs = ({
         <Tab className="focus:outline-none" key="winners">
           {({ selected }) => (
             <button
-              className={`whitespace-nowrap p-3 text-base font-semibold transition-colors sm:px-5 sm:py-4 sm:text-lg ${
-                selected
-                  ? "bg-gray-900 text-white shadow-lg shadow-black"
-                  : "bg-transparent text-white hover:bg-gray-800/60"
-              }`}
+              className={`whitespace-nowrap p-3 text-base font-semibold transition-colors sm:px-5 sm:py-4 sm:text-lg ${selected
+                ? "bg-gray-900 text-white shadow-lg shadow-black"
+                : "bg-transparent text-white hover:bg-gray-800/60"
+                }`}
             >
               <span>Winners</span>
             </button>
@@ -211,9 +213,9 @@ const JudgeTable = ({
     <Tab.Group>
       <Tab.List className="flex w-full items-center gap-5 bg-gray-300/20 p-2 text-white">
         <span className="ml-3 text-xl font-semibold">Judges </span>
-        {judges.map((judge) => (
+        {judges.map((judge, idx) => (
           <Tab
-            key={judge.judgeId}
+            key={idx}
             className="flex w-fit items-center gap-2 p-2 outline-none"
           >
             {({ selected }) => (
@@ -222,9 +224,8 @@ const JudgeTable = ({
                   if (judge.judgeId) setCsvData(process(judge.judgeId));
                   setJudgeName(judge?.judgeName);
                 }}
-                className={`px-4 py-2 font-semibold shadow-md hover:bg-gray-700/90 ${
-                  selected ? "bg-gray-700" : "bg-gray-600"
-                }`}
+                className={`px-4 py-2 font-semibold shadow-md hover:bg-gray-700/90 ${selected ? "bg-gray-700" : "bg-gray-600"
+                  }`}
               >
                 {judge.judgeName}
               </button>
@@ -244,13 +245,13 @@ const JudgeTable = ({
         )}
       </Tab.List>
       <Tab.Panels>
-        {judges.map((judge) => (
-          <Tab.Panel key={judge.judgeName}>
+        {judges.map((judge, idx) => (
+          <Tab.Panel key={idx}>
             <div className="hidden h-16 items-center justify-between gap-2.5 bg-white bg-opacity-20 bg-clip-padding p-1 text-xl font-bold backdrop-blur-lg backdrop-filter md:flex">
               <div className="basis-1/3 py-2.5 pl-2 text-center">Team Name</div>
-              {judge.criteria.map((criteria) => (
+              {judge.criteria.map((criteria, idx) => (
                 <div
-                  key={criteria.criteriaId}
+                  key={idx}
                   className="basis-1/3 py-2.5 pl-2 text-center"
                 >
                   {criteria.criteriaName}
@@ -263,9 +264,9 @@ const JudgeTable = ({
                 Grand Total
               </div>
             </div>
-            {teams.map((team) => (
+            {teams.map((team, idx) => (
               <div
-                key={team.teamId}
+                key={idx}
                 className="mb-3 flex w-full flex-col items-start rounded-lg bg-white/10 p-3 md:my-0 md:flex-row md:items-center md:justify-evenly md:rounded-none md:p-4 md:text-center"
               >
                 <div className="basis-1/3 py-0.5 text-center text-lg">
@@ -278,9 +279,9 @@ const JudgeTable = ({
 
                 {team.judges
                   .find((j) => j.judgeId === judge.judgeId)
-                  ?.criteria.map((criteria) => (
+                  ?.criteria.map((criteria, idx) => (
                     <div
-                      key={criteria.criteriaId}
+                      key={idx}
                       className="basis-1/3 py-0.5 text-center text-lg"
                     >
                       {criteria.score}
