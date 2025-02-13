@@ -26,12 +26,14 @@ const LoginCard: FunctionComponent<LoginCardProps> = ({
   const [gotDialogBox, setGotDialogBox] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
 
-  const router = useRouter();
-  const { verify } = router.query;
-
-  useEffect(() => {
-    if (verify) setWhichForm("signIn");
-  }, [verify, setWhichForm]);
+  // useEffect(() => {
+  //   if (cardStyle.top === "-50%" && gotDialogBox) {
+  //     // Work around to remove error and success dialog box from card when card is re-bought into viewport
+  //     // % 10 is to control overflow [which will never happen]
+  //     setCount((prev) => (prev + 1) % 10);
+  //     setGotDialogBox(false);
+  //   }
+  // }, [cardStyle.top, gotDialogBox]);
 
   return (
     // HACK: Please update anything here or in children also in auth/reset-password.tsx

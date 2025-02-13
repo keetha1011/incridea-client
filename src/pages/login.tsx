@@ -48,13 +48,6 @@ const SignIn: NextPage = () => {
     };
   } = useRouter();
 
-  console.log("query", query);
-
-  const [whichForm, setWhichForm] = useState<
-    "signIn" | "resetPassword" | "signUp" | "resendEmail"
-  >(query.whichForm ?? "signUp");
-
-
   const [smallGearRadius, setSmallGearRadius] = useState<number>(0);
   const [largeGearRadius, setLargeGearRadius] = useState<string>("0");
 
@@ -63,6 +56,20 @@ const SignIn: NextPage = () => {
 
   const [smallGearAngle, setRotationAngle1] = useState<number>(0);
   const [largeGearAngle, setRotationAngle2] = useState<number>(0);
+  const [whichForm, setWhichForm] = useState<
+    "signIn" | "resetPassword" | "signUp" | "resendEmail"
+  >(() => {
+    if (typeof window === "undefined") {
+      return "signIn";
+    } else {
+      if (localStorage.getItem("visited") === null) {
+        localStorage.setItem("visited", "true");
+        return query.whichForm ?? "signUp";
+      } else {
+        return query.whichForm ?? "signIn";
+      }
+    }
+  });
 
   const [transitioning, setTransitioning] = useState<boolean>(false);
 
@@ -79,11 +86,13 @@ const SignIn: NextPage = () => {
     [whichForm]: CARD_NEUTRAL_STYLE,
   });
 
-  const changeCard = (newForm: "signIn" | "resetPassword" | "signUp" | "resendEmail") => {
+  const changeCard = (
+    newForm: "signIn" | "resetPassword" | "signUp" | "resendEmail",
+  ) => {
     if (whichForm === newForm || transitioning) return;
 
     const audio1 = new Audio("/2025/audio/gearsounds.mp3");
-    void audio1.play()
+    void audio1.play();
 
     setRotationAngle1((prev) => prev + 360);
     setRotationAngle2((prev) => prev - 360);
@@ -109,7 +118,6 @@ const SignIn: NextPage = () => {
 
     setWhichForm(newForm);
   };
-
 
   useEffect(() => {
     const controller = new AbortController();
@@ -137,18 +145,16 @@ const SignIn: NextPage = () => {
         setScale1("");
         setBottom1("80%");
       }
-    }
+    };
 
-    handleResize()
+    handleResize();
 
     window.addEventListener("resize", handleResize, {
-      signal: controller.signal
+      signal: controller.signal,
     });
   }, []);
 
-
-  if (userLoading)
-    return <Loader />;
+  if (userLoading) return <Loader />;
 
   if (user) {
     if (user.role !== Role.User) {
@@ -158,7 +164,6 @@ const SignIn: NextPage = () => {
     void router.push("/register");
     return null;
   }
-
 
   return (
     <>
@@ -232,8 +237,7 @@ const SignIn: NextPage = () => {
         </div>
       </div>
     </>
-  )
-
+  );
 };
 
 export type { CardStyle };

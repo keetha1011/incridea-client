@@ -15,7 +15,7 @@ import {
 import { BiErrorCircle } from "react-icons/bi";
 import { BsChevronExpand } from "react-icons/bs";
 
-import {Button} from "~/components/button/button";
+import { Button } from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { CONSTANT } from "~/constants";
 import {
@@ -78,8 +78,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     const sortedColleges = [...(collegeData.colleges.data ?? [])]
       .filter((college) => {
         return (
-          college.name !== CONSTANT.COLLEGE_NAME &&
-          college.name !== "Other"
+          college.name !== CONSTANT.COLLEGE_NAME && college.name !== "Other"
         );
       })
       .sort((a, b) => {
@@ -104,11 +103,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     query === ""
       ? sortedColleges
       : sortedColleges?.filter((college) => {
-        return college?.name
-          .toLowerCase()
-          .replace(/[.,\s]/g, "")
-          .includes(query.toLowerCase().replace(/\s+/g, ""));
-      });
+          return college?.name
+            .toLowerCase()
+            .replace(/[.,\s]/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""));
+        });
 
   const resendEmail = async () => {
     setEmailSuccess(false);
@@ -222,8 +221,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${loading && "pointer-events-none cursor-not-allowed"
-        }`}
+      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${
+        loading && "pointer-events-none cursor-not-allowed"
+      }`}
     >
       <p className="mb-2 text-center text-2xl font-semibold">
         Welcome Time Traveler
@@ -237,8 +237,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             name="name"
             type="text"
             required
-            className={`${selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
-              } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
+            className={`${
+              selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
+            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
             placeholder="Name"
           />
 
@@ -258,7 +259,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                   required
                   placeholder="College"
                   displayValue={(college: { name: string }) => college.name}
-                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-white md:text-base"
+                  className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-white/90 md:text-base"
                   onChange={(e) => setQuery(e.target.value)}
                 />
                 <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -299,9 +300,10 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                     filteredColleges?.map((college) => (
                       <Combobox.Option
                         className={({ active }) =>
-                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${active
-                            ? "bg-secondary-600 text-white"
-                            : "text-gray-900"
+                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
+                            active
+                              ? "bg-secondary-600 text-white"
+                              : "text-gray-900"
                           }`
                         }
                         key={college?.id}
@@ -349,9 +351,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               onChange={handleChange}
               name="email"
               required
-              className={`${selectedCollege?.name == CONSTANT.COLLEGE_NAME &&
-                "pr-28"
-                } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]`}
+              className={`${
+                selectedCollege?.name == CONSTANT.COLLEGE_NAME && "pr-28"
+              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
               placeholder="Email"
             />
             {selectedCollege?.name === CONSTANT.COLLEGE_NAME && (
@@ -368,7 +370,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               type={showPassword ? "text" : "password"}
               required
               placeholder="Password"
-              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
+              className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]"
             />
             <button
               type="button"
@@ -385,7 +387,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             type="text"
             required
             placeholder="Mobile"
-            className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
+            className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]"
           />
 
           <div className="flex">
@@ -422,7 +424,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             </label>
           </div>
 
-          <Button className="mt-3 font-life-craft text-lg tracking-widest">Sign Up</Button>
+          <Button className="mt-3 font-life-craft text-lg tracking-widest">
+            Sign Up
+          </Button>
         </>
       )}
 
@@ -448,8 +452,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
         <div className="flex flex-col items-center gap-3 rounded-md bg-primary-900/70 p-4 text-center font-semibold text-secondary-600">
           <div>
             Verification email sent to {userInfo.email}
-            {selectedCollege?.name === CONSTANT.COLLEGE_NAME &&
-              "@nmamit.in"}
+            {selectedCollege?.name === CONSTANT.COLLEGE_NAME && "@nmamit.in"}
             <br />
             Please check your inbox.
             <hr className="mx-3 my-2 border-secondary-600" />

@@ -9,7 +9,7 @@ import {
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { BiErrorCircle } from "react-icons/bi";
 
-import {Button} from "~/components/button/button";
+import { Button } from "~/components/button/button";
 import Spinner from "~/components/spinner";
 
 type SignInFormProps = {
@@ -93,7 +93,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           value={userInfo.email}
           id="email"
           onChange={handleChange}
-          className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
+          className="border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]"
           type="email"
           name="email"
           placeholder="Email"
@@ -104,7 +104,7 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
             value={userInfo.password}
             id="password"
             onChange={handleChange}
-            className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white md:text-base md:focus:border-[#dd5c6e]"
+            className="w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]"
             type={showPassword ? "text" : "password"}
             name="password"
             placeholder="Password"
@@ -127,7 +127,11 @@ const SignInForm: FunctionComponent<SignInFormProps> = ({
           Forgot your password?
         </button>
 
-        <Button variant={"default"} type="submit" className="mx-1 text-lg font-life-craft tracking-widest">
+        <Button
+          variant={"default"}
+          type="submit"
+          className="mx-1 text-lg font-life-craft tracking-widest"
+        >
           Login
         </Button>
 
