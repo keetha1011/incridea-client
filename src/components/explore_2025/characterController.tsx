@@ -11,6 +11,7 @@ import { Character } from "~/components/explore_2025/Character";
 import stonesData from "~/components/explore_2025/data/data.json";
 import { useRouter } from "next/router";
 import { UpdateStoneVisibilitiesDocument } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 const normalizeAngle = (angle: number) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -97,7 +98,7 @@ export const CharacterController = () => {
   const [spacebarDisabled, setSpacebarDisabled] = useState(false);
   const [visibility, setVisibility] = useState<boolean[]>([]);
   const prevVisibility = useRef<boolean[]>([]);
-
+  const { user } = useAuth();
   const [setStoneVisiblity] = useMutation(UpdateStoneVisibilitiesDocument);
 
   const handleJump = () => {
@@ -212,7 +213,9 @@ export const CharacterController = () => {
           .join("");
 
         if (visibilityString !== prevVisibilityString) {
-          await handleSetTimeStone(visibilityString);
+          if (user) {
+            void handleSetTimeStone(visibilityString);
+          }
         }
         setVisibility(parsedVisibility);
         prevVisibility.current = parsedVisibility; // Update previous state
@@ -468,7 +471,7 @@ export const CharacterController = () => {
         camera.position.lerp(cameraWorldPosition.current, 0.1);
       }
 
-      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
+      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 1);
       camera.lookAt(cameraLookAt.current);
     }
 
@@ -486,7 +489,7 @@ export const CharacterController = () => {
       colliders={false}
       lockRotations
       ref={rb}
-      position={[0.4, -1.5, -3]}
+      position={[0.4, 8, -3]}
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />

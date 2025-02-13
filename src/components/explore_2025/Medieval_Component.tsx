@@ -1,7 +1,6 @@
 import { KeyboardControls, Sky, useProgress } from "@react-three/drei";
 import { OrthographicCamera } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
+import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/rapier";
 import { gsap } from "gsap";
 import React, { Suspense, useEffect, useRef, useState } from "react";
@@ -31,28 +30,6 @@ const keyboardMap = [
   { name: "jump", keys: ["Space"] },
 ];
 
-const FPSMonitor = ({
-  setEnableEffects,
-}: {
-  setEnableEffects: (state: boolean) => void;
-}) => {
-  const lastFrameTime = useRef(performance.now());
-  const frameCount = useRef(0);
-
-  useFrame(() => {
-    frameCount.current++;
-    const now = performance.now();
-    if (now - lastFrameTime.current >= 1000) {
-      const fps = frameCount.current;
-      setEnableEffects(fps >= 30);
-      frameCount.current = 0;
-      lastFrameTime.current = now;
-    }
-  });
-
-  return null;
-};
-
 export const Experience = () => {
   const { progress, active } = useProgress();
   const experienceRef = useRef<HTMLDivElement | null>(null);
@@ -64,7 +41,6 @@ export const Experience = () => {
 
   const [isRunOn, setIsRunOn] = useState(false);
   const [showLoading, setShowLoading] = useState(true);
-  const [enableEffects, setEnableEffects] = useState(true);
   const images: string[] = [
     "/2025/assets/explore/loading_background.webp",
     "/2025/assets/explore/loading_foreground.webp",
@@ -120,13 +96,13 @@ export const Experience = () => {
               <color attach="background" args={["#ffffff"]} />
               <fog attach="fog" args={["white", 3, 40]} />
               <Physics key="medieval_fantasy_book">
-                <ambientLight intensity={0.5} />
+                <ambientLight intensity={1} />
                 <directionalLight
                   intensity={3}
                   castShadow
                   position={[-5, 20, -15]}
-                  shadow-mapSize-width={isLandscape ? 1024 : 512}
-                  shadow-mapSize-height={isLandscape ? 1024 : 512}
+                  shadow-mapSize-width={256}
+                  shadow-mapSize-height={256}
                   shadow-bias={-0.00005}
                 >
                   <OrthographicCamera
@@ -148,20 +124,6 @@ export const Experience = () => {
               <Poi />
               <Sky />
             </Suspense>
-
-            <FPSMonitor setEnableEffects={setEnableEffects} />
-
-            {enableEffects && (
-              <EffectComposer enableNormalPass>
-                <Vignette eskil={false} offset={0.3} darkness={0.7} />
-                <Bloom
-                  intensity={0.2}
-                  luminanceThreshold={0.9}
-                  luminanceSmoothing={0.025}
-                  mipmapBlur={true}
-                />
-              </EffectComposer>
-            )}
           </Canvas>
         </KeyboardControls>
         <div className="pointer-events-auto sticky bottom-24 z-50 flex w-full justify-between px-8">

@@ -32,11 +32,6 @@
       "href": "https://drive.google.com/file/d/12f0EmP3QEQSmIuLVgb8gk13QPHeicZ5N/view"
     },
     {
-      "id": 2,
-      "pos": [-9, 3],
-      "href": "/events"
-    },
-    {
       "id": 4,
       "pos": [-4, -2.8],
       "href": "/explore/outro"
@@ -45,7 +40,7 @@
   "links": [
     {
       "id": 1,
-      "link": "/"
+      "link": "/events"
     },
     {
       "id": 2,
