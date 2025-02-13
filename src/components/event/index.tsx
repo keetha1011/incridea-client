@@ -97,12 +97,13 @@ const Event = ({
       event-scroll
       onClick={() => router.push(generateEventUrl(event.name, event.id))}
       className={`relative flex w-full max-w-[80%] sm:max-w-sm md:max-w-md cursor-pointer flex-col rounded-2xl transition-transform duration-300 hover:scale-[1.02] sm:mt-10 mx-auto sm:mx-0`}
+      style={{ willChange: "transform" }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 145.68 254"
         className="w-full h-full object-cover rounded-2xl"
-        style={{ transform: "scale(0.95)" }}
+        style={{ transform: "scale(0.95)", WebkitTransform: "scale(0.95)" }}
       >
         <defs>
           <style>{`
@@ -163,13 +164,24 @@ const Event = ({
           height="30"
           className="object-cover z-500"
         />
-
-        <foreignObject x="19" y="18.5" width="120" height="123">
-          {event.image && (
+        <foreignObject
+          x="19"
+          y="18.5"
+          width="120"
+          height="123"
+          style={{
+            position: "relative",
+            overflow: "hidden",
+            aspectRatio: "1 / 1",
+          }}
+          className="image-container"
+        >
+          {data.image && (
             <Image
               src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
               alt={event.name}
               layout="fill"
+              objectFit="cover"
               className="object-cover [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
             />
           )}
@@ -202,30 +214,27 @@ const Event = ({
               href={generateEventUrl(event.name, event.id)}
               className="mt-[10px]"
             >
-              <g>
-                <div
-                  className="h-5 w-[136px] bg-gradient-to-tr bg-opacity-50 from-primary-950 via-primary-900/90 to-primary-950 flex justify-center items-center relative"
-                  style={{
-                    clipPath:
-                      "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
-                    // boxShadow: "0 0 0 2px rgba(255, 255, 255, 0.8)", // Simulates a border
-                  }}
-                  ref={buttonRef}
-                >
-                  <text
-                    className="text-white font-life-craft tracking-widest italic font-semibold text-sm uppercase cursor-pointer mt-1"
-                    textAnchor="middle"
-                    fill="#E6C98D"
-                  >
-                    Register
-                    <div
-                      ref={shineRef}
-                      className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent z-10"
-                      style={{ pointerEvents: "none" }}
-                    />
-                  </text>
+              <div
+                className="h-5 register-button w-[136px] aspect-square bg-gradient-to-tr bg-opacity-50 from-primary-950 via-primary-900/90 to-primary-950 flex justify-center items-center relative"
+                style={{
+                  clipPath:
+                    "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
+                  WebkitClipPath:
+                    "polygon(0% 55%, 5% 0%, 95% 0%, 100% 55%, 95% 100%, 5% 100%)",
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+                ref={buttonRef}
+              >
+                <div className="text-white font-life-craft tracking-widest italic font-semibold text-sm uppercase cursor-pointer mt-1">
+                  Register
+                  <div
+                    ref={shineRef}
+                    className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent z-10"
+                    style={{ pointerEvents: "none" }}
+                  />
                 </div>
-              </g>
+              </div>
             </a>
           </div>
         </foreignObject>

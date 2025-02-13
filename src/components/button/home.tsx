@@ -10,7 +10,7 @@ type HomeButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   };
 
 const buttonVariants = cva(
-  "flex w-full hover:scale-110 transition-all duration-300 items-center h-14 px-14 justify-center gap-2 rounded-full text-2xl tracking-wider relative overflow-hidden",
+  "flex w-full hover:scale-110 transition-all duration-300 items-center h-14 px-10 md:px-14 justify-center gap-2 rounded-full text-2xl tracking-wider relative overflow-hidden",
   {
     variants: {
       variant: {
@@ -67,28 +67,30 @@ export default function HomeButton({
         style={{
           clipPath:
             "polygon(0% 55%, 15% 0%, 85% 0%, 100% 55%, 85% 100%, 15% 100%)",
+          userSelect: "none",
         }}
       >
-        {children}
+        <span style={{ userSelect: "none" }}>{children}</span>
         <div
           ref={shineRef}
           className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent z-10"
-          style={{ pointerEvents: "none" }}
+          style={{ pointerEvents: "none", userSelect: "none" }}
         />
         <svg
           className="absolute inset-0 w-full h-full"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 230 66"
           fill="none"
-          style={{ transform: "scale(0.99)" }}
+          style={{ transform: "scale(0.99)", userSelect: "none" }}
         >
           <defs>
             <style>{`
-                .a {
-                  fill: rgba(0,0,0,0);
-                  backdrop-filter: blur(var(--blur-3xl));
-                }
-              `}</style>
+          .a {
+            fill: rgba(0,0,0,0);
+            backdrop-filter: blur(var(--blur-3xl));
+            user-select: none; // Prevents selection
+          }
+        `}</style>
           </defs>
           <linearGradient
             id="strokeGradient"
@@ -108,7 +110,8 @@ export default function HomeButton({
             stroke={
               variant == "ghost" ? "url(#strokeGradient)" : "rgba(0,0,0,0)"
             }
-            stroke-width="6"
+            strokeWidth="6"
+            style={{ userSelect: "none" }}
           />
         </svg>
       </button>
