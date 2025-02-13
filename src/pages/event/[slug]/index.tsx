@@ -1,3 +1,4 @@
+import { type QueryResult } from "@apollo/client";
 import { type GetStaticPaths, type GetStaticProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,22 +17,26 @@ import { MdOutlineMailOutline } from "react-icons/md";
 
 import EventDetails from "~/components/general/event/eventDetails";
 import EventRegistration from "~/components/general/event/eventRegistration";
+import { env } from "~/env";
 import {
   EventByIdDocument,
   type EventByIdQuery,
+  type EventByIdQueryVariables,
   PublishedEventsSlugDocument,
 } from "~/generated/generated";
 import { client } from "~/lib/apollo";
 
 type Props =
   | {
-      event: EventByIdQuery["eventById"];
-      error?: never;
-    }
+    event: Extract<NonNullable<QueryResult<EventByIdQuery, EventByIdQueryVariables>["data"]>["eventById"], {
+      __typename: "QueryEventByIdSuccess";
+    }>["data"];
+    error?: never;
+  }
   | {
-      event?: never;
-      error: string;
-    };
+    event?: never;
+    error: string;
+  };
 
 const getStaticPaths: GetStaticPaths = async () => {
   const { data: events } = await client.query({
@@ -40,9 +45,8 @@ const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = events.publishedEvents.map((event) => ({
     params: {
-      slug: `${event.name.toLocaleLowerCase().split(" ").join("-")}-${
-        event.id
-      }`,
+      slug: `${event.name.toLocaleLowerCase().split(" ").join("-")}-${event.id
+        }`,
     },
   }));
 
@@ -68,9 +72,12 @@ const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
       fetchPolicy: "no-cache",
     });
 
+    if (event.eventById.__typename === "Error")
+      throw new Error(event.eventById.message);
+
     return {
       props: {
-        event: event.eventById,
+        event: event.eventById.data,
       },
       revalidate: 60,
     };
@@ -191,7 +198,7 @@ const Page = ({ event, error }: Props) => {
               <div className={`grow-0 space-y-4 rounded-md sm:space-y-10`}>
                 {event.image && (
                   <Image
-                    src={event.image}
+                    src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
                     className={`relative z-10 w-full rounded-t-md sm:rounded-md`}
                     alt={event.name}
                     width={1000}
@@ -263,12 +270,12 @@ const Page = ({ event, error }: Props) => {
                               </span>
                               {round.date
                                 ? new Date(round.date).toLocaleDateString(
-                                    "en-IN",
-                                    {
-                                      day: "numeric",
-                                      month: "short",
-                                    },
-                                  )
+                                  "en-IN",
+                                  {
+                                    day: "numeric",
+                                    month: "short",
+                                  },
+                                )
                                 : ""}
                             </p>
                             <p
@@ -280,13 +287,13 @@ const Page = ({ event, error }: Props) => {
                               </span>
                               {round.date
                                 ? new Date(round.date).toLocaleDateString(
-                                    "en-IN",
-                                    {
-                                      hour: "numeric",
-                                      minute: "numeric",
-                                      hour12: true,
-                                    },
-                                  )
+                                  "en-IN",
+                                  {
+                                    hour: "numeric",
+                                    minute: "numeric",
+                                    hour12: true,
+                                  },
+                                )
                                 : ""}
                             </p>
                           </div>

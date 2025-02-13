@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("/2025/loader/space-portal-bg.png");
+  background-image: url("/2025/loader/space-portal-bg.webp");
   background-size: cover;
   background-position: center;
   animation: backgroundScroll 5s linear infinite;
@@ -31,7 +31,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url("/2025/loader/space-portal.jpg");
+  background-image: url("/2025/loader/space-portal.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

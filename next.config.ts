@@ -34,7 +34,7 @@ const config: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "x79smvkrpn.ufs.sh",
+        hostname: "*.ufs.sh",
       },
       {
         protocol: "https",

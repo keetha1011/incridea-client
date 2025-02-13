@@ -9,9 +9,9 @@ import Image from "next/image";
 import gsap from "gsap";
 
 const Event = ({
-  data,
+  event,
 }: {
-  data: PublishedEventsQuery["publishedEvents"][0];
+  event: PublishedEventsQuery["publishedEvents"][0];
 }) => {
   const router = useRouter();
   const getEventAttributes = () => {
@@ -19,21 +19,21 @@ const Event = ({
       eventTypeText = "";
 
     // Team Size Formatting
-    if (data.minTeamSize === data.maxTeamSize) {
-      if (data.minTeamSize === 1) teamSizeText = "Solo";
-      else teamSizeText = `${data.minTeamSize} per Team`;
-      if (data.minTeamSize === 0) teamSizeText = "";
+    if (event.minTeamSize === event.maxTeamSize) {
+      if (event.minTeamSize === 1) teamSizeText = "Solo";
+      else teamSizeText = `${event.minTeamSize} per Team`;
+      if (event.minTeamSize === 0) teamSizeText = "";
     } else {
-      teamSizeText = `${data.minTeamSize}-${data.maxTeamSize} per Team`;
+      teamSizeText = `${event.minTeamSize}-${event.maxTeamSize} per Team`;
     }
 
     // Event Type Formatting
-    if (data.eventType.includes("MULTIPLE")) {
+    if (event.eventType.includes("MULTIPLE")) {
       eventTypeText = "Multi";
     } else {
       eventTypeText =
-        data.eventType.split("_")[0]![0] +
-        data.eventType.split("_")[0]!.slice(1).toLowerCase();
+        event.eventType.split("_")[0]![0] +
+        event.eventType.split("_")[0]!.slice(1).toLowerCase();
     }
 
     // Correctly format multiple entry
@@ -42,14 +42,14 @@ const Event = ({
     return [
       {
         name: "Date",
-        text: data.rounds[0]?.date
-          ? new Date(data.rounds[0]?.date).toLocaleString("en-IN", {
-              day: "numeric",
-              month: "short",
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            })
+        text: event.rounds[0]?.date
+          ? new Date(event.rounds[0]?.date).toLocaleString("en-IN", {
+            day: "numeric",
+            month: "short",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          })
           : "TBD",
         Icon: Calendar,
       },
@@ -60,7 +60,7 @@ const Event = ({
       },
       {
         name: "Venue",
-        text: data.venue,
+        text: event.venue,
         Icon: MapPin,
       },
     ];
@@ -94,8 +94,8 @@ const Event = ({
 
   return (
     <div
-      data-scroll
-      onClick={() => router.push(generateEventUrl(data.name, data.id))}
+      event-scroll
+      onClick={() => router.push(generateEventUrl(event.name, event.id))}
       className={`relative flex w-full max-w-[80%] sm:max-w-sm md:max-w-md cursor-pointer flex-col rounded-2xl transition-transform duration-300 hover:scale-[1.02] sm:mt-10 mx-auto sm:mx-0`}
     >
       <svg
@@ -148,9 +148,9 @@ const Event = ({
         <foreignObject x="0" y="86" width="17" height="60">
           <div className="flex items-center justify-center w-full h-full">
             <span className="text-white italic font-semibold text-[8px] uppercase transform origin-center -rotate-90 whitespace-nowrap  px-8 shadow-2xl rounded-xl">
-              {data.category?.toLowerCase() === "non_technical"
+              {event.category?.toLowerCase() === "non_technical"
                 ? "Non Tech"
-                : data.category?.toLocaleLowerCase()}
+                : event.category?.toLocaleLowerCase()}
             </span>
           </div>
         </foreignObject>
@@ -165,10 +165,10 @@ const Event = ({
         />
 
         <foreignObject x="19" y="18.5" width="120" height="123">
-          {data.image && (
+          {event.image && (
             <Image
-              src={data.image}
-              alt={data.name}
+              src={`${env.NEXT_PUBLIC_UPLOADTHING_URL}/${event.image}`}
+              alt={event.name}
               layout="fill"
               className="object-cover [clip-path:polygon(0_0,90%_0,100%_10%,100%_100%,0_100%)]"
             />
@@ -178,14 +178,14 @@ const Event = ({
         <foreignObject x="-2" y="140" width="150" height="120">
           <div className="text-white flex flex-col w-full items-center justify-center">
             <h2 className="text-base ml-2 font-life-craft my-1 text-center italic text-white">
-              {data.name}
+              {event.name}
             </h2>
             <div className="grid grid-cols-1 gap-x-1 gap-y-1 w-full px-2 items-start -mt-1.5">
               {getEventAttributes().map((attr, i) => (
                 <div
                   key={i}
-                  className="flex items-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px] 
-                           bg-gradient-to-tr bg-opacity-50 from-primary-900 via-primary-800/80 to-primary-900 
+                  className="flex items-center h-3.5 text-[7px] gap-1 rounded-md px-2 py-[7px]
+                           bg-gradient-to-tr bg-opacity-50 from-primary-900 via-primary-800/80 to-primary-900
                            border border-primary-300/50 text-white font-medium shadow-md"
                 >
                   <attr.Icon width="7" height="7" className="flex-shrink-0" />
@@ -199,7 +199,7 @@ const Event = ({
               ))}
             </div>
             <a
-              href={generateEventUrl(data.name, data.id)}
+              href={generateEventUrl(event.name, event.id)}
               className="mt-[10px]"
             >
               <g>

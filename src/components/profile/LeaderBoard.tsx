@@ -13,6 +13,7 @@ import {
   GetXpLeaderboardDocument,
 } from "~/generated/generated";
 import { AuthStatus, useAuth } from "~/hooks/useAuth";
+import toast from "react-hot-toast";
 
 const techTeamPid = CONSTANT.PID.TECH_TEAM;
 
@@ -178,7 +179,9 @@ function LeaderBoard({
           variant={"destructive"}
           className="w-full hover:scale-[105%]"
           onClick={async () => {
+            toast.loading("Logging out...");
             await signOut();
+            toast.success("Logged out successfully");
           }}
         >
           Log out <LogOut />

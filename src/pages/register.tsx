@@ -1,9 +1,11 @@
 import { useQuery } from "@apollo/client";
-import { Bed } from "lucide-react";
+import { Bed, LogOut } from "lucide-react";
 import { type NextPage } from "next";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 import Button from "~/components/button";
 import ViewUserAccommodation from "~/components/general/profile/viewUserAccommodation";
@@ -44,9 +46,22 @@ const Register: NextPage = () => {
           register yourself for the fest by clicking the button below.
         </h5>
         <div className="mx-auto mt-6 max-w-7xl rounded-sm bg-white/20 px-5 py-4 md:mt-8 md:px-10 md:py-7">
-          <h2 className="text-base font-semibold md:text-2xl">
-            Terms and Conditions
-          </h2>
+          <div className="flex w-full justify-between items-center">
+            <h2 className="text-base font-semibold md:text-2xl">
+              Terms and Conditions
+            </h2>
+            <Button
+              intent={"danger"}
+              className="flex gap-2"
+              onClick={async () => {
+                toast.loading("Logging out...");
+                await signOut();
+                toast.success("Logged out successfully");
+              }}
+            >
+              <LogOut />
+            </Button>
+          </div>
           <p className="mt-2 mb-4">
             Two different categories of participants are permitted to
             participate:
@@ -80,35 +95,38 @@ const Register: NextPage = () => {
             about the guidelines and regulations
           </div>
 
-          <div className="flex flex-col-reverse justify-between items-center md:flex-row">
-            {registrationLoading || !registrationData ? (
-              <Button intent="info">Loading...</Button>
-            ) : registrationData.getRegistrationsOpen.__typename === "Error" ? (
-              <Button className="mb-4 mt-8 flex gap-2" disabled>
-                Unexpected error occured
+          <div className="flex flex-col-reverse justify-between items-center my-4 gap-4 md:flex-row">
+            {registrationLoading || !registrationData ?
+              <Button intent="info">
+                Loading...
               </Button>
-            ) : registrationData.getRegistrationsOpen.data ? (
-              <Button
-                className="mb-4 mt-8 flex gap-2"
-                onClick={() => makePayment()}
-              >
-                Register Now
-              </Button>
-            ) : (
-              <Button className="mb-4 mt-8 flex gap-2" disabled>
-                Registration are closed.
-              </Button>
-            )}
-            {useStatus === AuthStatus.AUTHENTICATED &&
-              user.college &&
-              user.college.id !== "1" && (
-                <Link href="/accommodation">
-                  <Button className="mb-4 mt-8 flex gap-2">
-                    <Bed />
-                    Accomodation
+              : registrationData.getRegistrationsOpen.__typename === "Error" ?
+                <Button
+                  className="flex gap-2"
+                  disabled>Unexpected error occured</Button>
+                : registrationData.getRegistrationsOpen.data ? (
+                  <Button
+                    className="flex gap-2"
+                    onClick={() => makePayment()}
+                  >
+                    Register Now
                   </Button>
-                </Link>
-              )}
+                ) : (
+                  <Button
+                    className="flex gap-2"
+                    disabled
+                  >
+                    Registrations are closed.
+                  </Button>
+                )}
+            {useStatus === AuthStatus.AUTHENTICATED && user.college && user.college.id !== "1" &&
+              <Link href="/accommodation">
+                <Button className="flex gap-2" >
+                  <Bed />
+                  Accomodation
+                </Button>
+              </Link>
+            }
           </div>
 
           <h1 className="mt-2 text-xs text-gray-100 md:text-sm">

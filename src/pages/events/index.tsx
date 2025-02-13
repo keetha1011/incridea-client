@@ -107,9 +107,8 @@ const Page = ({ data }: Props) => {
           <div
             data-scroll-container
             ref={containerRef}
-            className={`relative px-2 md:px-10 ${
-              filteredEvents.length > 0 ? "pt-28" : "pt-10 md:pt-20"
-            } flex flex-col items-center justify-center`}
+            className={`relative px-2 md:px-10 ${filteredEvents.length > 0 ? "pt-28" : "pt-10 md:pt-20"
+              } flex flex-col items-center justify-center`}
           >
             <div
               data-scroll-section
@@ -126,7 +125,7 @@ const Page = ({ data }: Props) => {
                 data-scroll
                 className={`text-md mx-2 mb-6 mt-2 text-center tracking-wide text-white md:mt-4 md:text-xl font`}
               >
-                40 Exciting Events Await, Each Marking a Unique Moment in Time’s
+                40 Exciting Events Await, Each Marking a Unique Moment in Time&apos;s
                 Journey!
               </h2>
 
@@ -150,9 +149,9 @@ const Page = ({ data }: Props) => {
                       <IoTodayOutline size="16" />
                       {currentDayFilter !== "All"
                         ? currentDayFilter
-                            .toLowerCase()
-                            .replace(/_/g, " ")
-                            .replace(/\b\w/g, (char) => char.toUpperCase())
+                          .toLowerCase()
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())
                         : "Day"}
                     </Menu.Button>
                     <Transition
@@ -168,11 +167,10 @@ const Page = ({ data }: Props) => {
                           <Menu.Item key={filter}>
                             {() => (
                               <button
-                                className={`${
-                                  currentDayFilter === filter
-                                    ? "bg-white/20"
-                                    : "bg-black/10"
-                                } w-36 rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                className={`${currentDayFilter === filter
+                                  ? "bg-white/20"
+                                  : "bg-black/10"
+                                  } w-36 rounded-full border border-primary-300/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                 onClick={() => setCurrentDayFilter(filter)}
                               >
                                 {
@@ -202,9 +200,9 @@ const Page = ({ data }: Props) => {
                       <BiCategory size="16" />
                       {currentCategoryFilter !== AllCategory.ALL
                         ? currentCategoryFilter
-                            .toLowerCase()
-                            .replace(/_/g, " ")
-                            .replace(/\b\w/g, (char) => char.toUpperCase())
+                          .toLowerCase()
+                          .replace(/_/g, " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())
                         : "Category"}
                     </Menu.Button>
                     <Transition
@@ -224,12 +222,11 @@ const Page = ({ data }: Props) => {
                             return (
                               <Menu.Item key={idx}>
                                 <button
-                                  className={`${
-                                    currentCategoryFilter ===
+                                  className={`${currentCategoryFilter ===
                                     (filter as EventCategory | AllCategory)
-                                      ? "bg-white/20"
-                                      : "bg-black/10"
-                                  } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
+                                    ? "bg-white/20"
+                                    : "bg-black/10"
+                                    } w-36 rounded-full border border-primary-200/80 px-3 py-1.5 text-sm text-white transition-all duration-300 hover:bg-white/10`}
                                   onClick={() =>
                                     setCurrentCategoryFilter(
                                       filter as EventCategory | AllCategory,
@@ -260,6 +257,7 @@ const Page = ({ data }: Props) => {
                 <div className="flex flex-nowrap items-center justify-between gap-2 md:gap-14 md:flex-nowrap">
                   <a
                     href="https://drive.google.com/file/d/12f0EmP3QEQSmIuLVgb8gk13QPHeicZ5N/"
+                    target="_blank"
                     download
                   >
                     <button className="inline-flex h-[40px] min-w-0 w-auto items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary-200/80 bg-black/30 px-4 py-2 text-sm text-white md:text-lg">
@@ -268,6 +266,7 @@ const Page = ({ data }: Props) => {
                   </a>
                   <a
                     href="https://drive.google.com/file/d/1KF0Y-z0_bDHQBj6JfQcvZ5H2ezgQ9_wq/view?usp=sharing"
+                    target="_blank"
                     download
                   >
                     <button className="inline-flex h-[40px] min-w-0 w-auto items-center justify-center gap-2 whitespace-nowrap rounded-full border border-primary-200/80 bg-black/30 px-4 py-2 text-sm text-white md:text-lg">
@@ -289,7 +288,7 @@ const Page = ({ data }: Props) => {
             >
               {filteredEvents.length > 0 ? (
                 filteredEvents.map((event) => (
-                  <Event key={event.id} data={event} />
+                  <Event key={event.id} event={event} />
                 ))
               ) : (
                 <div

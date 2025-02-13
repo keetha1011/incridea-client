@@ -1,10 +1,10 @@
 import { generateUploadDropzone } from "@uploadthing/react";
 import { getSession } from "next-auth/react";
-import { type ComponentProps } from "react";
+import { memo, type ComponentProps } from "react";
 
 import { env } from "~/env";
 
-const UploadDropzone = (
+const UploadDropzone = memo((
   props: ComponentProps<ReturnType<typeof generateUploadDropzone>> & {
     customId?: string;
   },
@@ -22,6 +22,8 @@ const UploadDropzone = (
       })}
     />
   );
-};
+})
+
+UploadDropzone.displayName = "UploadDropzone";
 
 export { UploadDropzone };

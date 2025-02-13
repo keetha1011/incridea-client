@@ -16,7 +16,6 @@ import { BiErrorCircle } from "react-icons/bi";
 import { BsChevronExpand } from "react-icons/bs";
 
 import { Button } from "~/components/button/button";
-import { Button } from "~/components/button/button";
 import Spinner from "~/components/spinner";
 import { CONSTANT } from "~/constants";
 import {
@@ -104,11 +103,11 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
     query === ""
       ? sortedColleges
       : sortedColleges?.filter((college) => {
-          return college?.name
-            .toLowerCase()
-            .replace(/[.,\s]/g, "")
-            .includes(query.toLowerCase().replace(/\s+/g, ""));
-        });
+        return college?.name
+          .toLowerCase()
+          .replace(/[.,\s]/g, "")
+          .includes(query.toLowerCase().replace(/\s+/g, ""));
+      });
 
   const resendEmail = async () => {
     setEmailSuccess(false);
@@ -222,9 +221,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
   return (
     <form
       onSubmit={handleSubmit}
-      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${
-        loading && "pointer-events-none cursor-not-allowed"
-      }`}
+      className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${loading && "pointer-events-none cursor-not-allowed"
+        }`}
     >
       <p className="mb-2 text-center text-2xl font-medium">Welcome Timekeper</p>
 
@@ -236,9 +234,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
             name="name"
             type="text"
             required
-            className={`${
-              selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
-            } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
+            className={`${selectedCollege?.name === "Other" ? "mt-2" : "mt-2"
+              } border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
             placeholder="Name"
           />
 
@@ -299,10 +296,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                     filteredColleges?.map((college) => (
                       <Combobox.Option
                         className={({ active }) =>
-                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${
-                            active
-                              ? "bg-secondary-600 text-white"
-                              : "text-gray-900"
+                          `relative cursor-pointer select-none px-4 py-2 text-xs md:text-base ${active
+                            ? "bg-secondary-600 text-white"
+                            : "text-gray-900"
                           }`
                         }
                         key={college?.id}
@@ -350,9 +346,8 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
               onChange={handleChange}
               name="email"
               required
-              className={`${
-                selectedCollege?.name == CONSTANT.COLLEGE_NAME && "pr-28"
-              } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
+              className={`${selectedCollege?.name == CONSTANT.COLLEGE_NAME && "pr-28"
+                } w-full border-b border-gray-400 bg-transparent px-1 py-2 text-sm outline-none transition-all placeholder:text-white/90 md:text-base md:focus:border-[#dd5c6e]`}
               placeholder="Email"
             />
             {selectedCollege?.name === CONSTANT.COLLEGE_NAME && (

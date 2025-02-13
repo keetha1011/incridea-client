@@ -6,7 +6,7 @@ import { CONSTANT } from "~/constants";
 
 // Images in public folder for faster loading
 const hourglass = `/${CONSTANT.YEAR}/loader/hourglass.webp`;
-const logo = `/${CONSTANT.YEAR}/loader/Echoes_of_Eternity_Logo.webp`;
+const logo = `/${CONSTANT.YEAR}/loader/Echoes_Of_Eternity_Logo.webp`
 
 const LoadingScreen = () => {
   const containerRef = useRef(null);
@@ -53,7 +53,7 @@ const LoadingScreen = () => {
         </div>
         <div
           ref={logoRef}
-          className="absolute bottom-[22%] md:bottom-[20%] xl:-translate-1/2"
+          className="absolute bottom-[32%] md:bottom-[30%] xl:-translate-1/2"
         >
           <Image
             src={logo}
