@@ -73,6 +73,7 @@ const Inc23 = ({
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
+                    rel="preload"
                     src={imgArr[index]}
                     onClick={() => handleImageClick(index)}
                     className="object-cover w-full h-full rounded-lg shadow-lg transition-transform duration-700 ease-in-out"

@@ -69,7 +69,7 @@ const Register: NextPage = () => {
           <ol className="mt-2 list-decimal space-y-4 pl-4">
             <li>
               {" "}
-              Students of <u>NMAM Institute of Technology</u>, who pays{" "}
+              Students of <u>NMAM Institute of Technology</u>, who pay{" "}
               <span className="font-semibold">
                 ₹{CONSTANT.REG_AMOUNT_IN_INR.INTERNAL}(+2.22% Razorpay charges)
               </span>{" "}
@@ -78,7 +78,7 @@ const Register: NextPage = () => {
             <li>
               {" "}
               Students of external <u>Engineering and Sister Nitte colleges</u>,
-              who pays{" "}
+              who pay{" "}
               <span className="font-semibold">
                 ₹{CONSTANT.REG_AMOUNT_IN_INR.EXTERNAL}(+2.22% Razorpay charges)
               </span>{" "}

@@ -224,7 +224,7 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
       className={`relative flex min-h-full flex-col justify-center gap-3 px-3 py-3 ${loading && "pointer-events-none cursor-not-allowed"
         }`}
     >
-      <p className="mb-2 text-center text-2xl font-medium">Welcome Timekeper</p>
+      <p className="mb-2 text-center text-2xl font-medium">Welcome Timekeeper</p>
 
       {!emailSuccess && (
         <>
@@ -254,7 +254,9 @@ const SignUpForm: FunctionComponent<SignUpFormProps> = ({
                 <Combobox.Input
                   required
                   placeholder="College"
-                  displayValue={(college: { name: string }) => college.name}
+                  displayValue={(college: { name: string }) =>
+                    college?.name ?? ""
+                  }
                   className="w-full bg-transparent py-2 pl-1 pr-10 text-sm outline-none placeholder:text-white/90 md:text-base"
                   onChange={(e) => setQuery(e.target.value)}
                 />

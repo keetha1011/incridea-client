@@ -11,6 +11,7 @@ import { Character } from "~/components/explore_2025/Character";
 import stonesData from "~/components/explore_2025/data/data.json";
 import { useRouter } from "next/router";
 import { UpdateStoneVisibilitiesDocument } from "~/generated/generated";
+import { useAuth } from "~/hooks/useAuth";
 
 const normalizeAngle = (angle: number) => {
   while (angle > Math.PI) angle -= 2 * Math.PI;
@@ -97,7 +98,7 @@ export const CharacterController = () => {
   const [spacebarDisabled, setSpacebarDisabled] = useState(false);
   const [visibility, setVisibility] = useState<boolean[]>([]);
   const prevVisibility = useRef<boolean[]>([]);
-
+  const { user } = useAuth();
   const [setStoneVisiblity] = useMutation(UpdateStoneVisibilitiesDocument);
 
   const handleJump = () => {
@@ -200,7 +201,7 @@ export const CharacterController = () => {
 
   // TimeStones: update the visibility (and trigger the mutation if changed)
   useEffect(() => {
-    const updateVisibility = async () => {
+    const updateVisibility = () => {
       const storedVisibility = localStorage.getItem("stoneVisibility");
       if (storedVisibility) {
         const parsedVisibility = JSON.parse(storedVisibility) as boolean[];
@@ -212,7 +213,9 @@ export const CharacterController = () => {
           .join("");
 
         if (visibilityString !== prevVisibilityString) {
-          await handleSetTimeStone(visibilityString);
+          if (user) {
+            void handleSetTimeStone(visibilityString);
+          }
         }
         setVisibility(parsedVisibility);
         prevVisibility.current = parsedVisibility; // Update previous state
@@ -330,8 +333,8 @@ export const CharacterController = () => {
       stones.forEach((stone, index) => {
         const distance = Math.sqrt(
           (pos.x - stone.pos[0]) ** 2 +
-            (pos.y - stone.pos[1]) ** 2 +
-            (pos.z - stone.pos[2]) ** 2,
+          (pos.y - stone.pos[1]) ** 2 +
+          (pos.z - stone.pos[2]) ** 2,
         );
         if (distance <= 0.5 && visibility[index]) {
           const newVisibility = [...visibility];
@@ -349,7 +352,7 @@ export const CharacterController = () => {
       locations.forEach((location) => {
         const distance = Math.sqrt(
           (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
-            (pos.z - (location.pos?.[1] ?? 0)) ** 2,
+          (pos.z - (location.pos?.[1] ?? 0)) ** 2,
         );
 
         if (redirectedLocations.current.has(location.id)) {
@@ -365,7 +368,7 @@ export const CharacterController = () => {
             const timer = setInterval(() => {
               const currentDistance = Math.sqrt(
                 (pos.x - (location.pos?.[0] ?? 0)) ** 2 +
-                  (pos.z - (location.pos?.[1] ?? 0)) ** 2,
+                (pos.z - (location.pos?.[1] ?? 0)) ** 2,
               );
 
               // If the user has moved out of range, cancel the countdown.
@@ -448,9 +451,9 @@ export const CharacterController = () => {
         intersects.length > 0 &&
         intersects[0] &&
         intersects[0].distance <
-          cameraWorldPosition.current.distanceTo(
-            cameraLookAtWorldPosition.current,
-          )
+        cameraWorldPosition.current.distanceTo(
+          cameraLookAtWorldPosition.current,
+        )
       ) {
         if (intersects[0]) {
           const newCameraPos = cameraLookAtWorldPosition.current
@@ -468,7 +471,7 @@ export const CharacterController = () => {
         camera.position.lerp(cameraWorldPosition.current, 0.1);
       }
 
-      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 0.1);
+      cameraLookAt.current.lerp(cameraLookAtWorldPosition.current, 1);
       camera.lookAt(cameraLookAt.current);
     }
 
@@ -486,7 +489,7 @@ export const CharacterController = () => {
       colliders={false}
       lockRotations
       ref={rb}
-      position={[0.4, -1.5, -3]}
+      position={[0.4, 8, -3]}
     >
       <group ref={container}>
         <group ref={cameraTarget} position-z={1} />

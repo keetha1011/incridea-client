@@ -235,6 +235,7 @@ const Inc24 = ({ imgArr }: { imgArr: string[] }) => {
           // </div>
           // eslint-disable-next-line @next/next/no-img-element
           <img
+            rel="preload"
             key={index}
             ref={setImageRef(img)}
             src={img}

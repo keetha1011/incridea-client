@@ -118,8 +118,8 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
     >
       {imgArr.map((img, index) => (
         <div
-          key={img}
-          className="absolute transform transition-all duration-300 ease-in-out stack-item 
+          key={index}
+          className="absolute transform transition-all duration-300 ease-in-out stack-item
           top-[15%] "
         >
           <div className="relative translate-y-[10%] right-[8%] w-[90vw] sm:w-[200vw] h-[100vh] sm:h-[50vh] max-w-[1000px] max-h-[800px] sm:translate-y-[70%] sm:right-[4%]">
@@ -132,12 +132,13 @@ const Inc22 = ({ imgArr }: { imgArr: string[] }) => {
             />
 
             <div className="absolute inset-10 flex justify-center items-center">
-              <Image
-                src={`/${img}`}
+              <img
+                rel="preload"
+                className="object-fit"
+                src={img}
                 alt={`Image ${index + 1}`}
                 height={200}
                 width={200}
-                objectFit="contain"
                 onClick={() => handleClick(index)}
                 style={{
                   height: "190px",
